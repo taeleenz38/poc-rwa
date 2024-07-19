@@ -1,0 +1,62 @@
+A$DC deployed at: 0xAe2E85cfc8378416Ce9Da64Cbb6C473066595508
+
+Deployer - 0x15fBe48b8d5C29Ac8EAD7E24486F2c88cabCba21
+Pvt Key - 957632735f6c053f8196c4bb0f7cca92c2717c22b3d9b2dba6996a26afadc93a
+
+Guardian - 0x7Dc1DDc069ef2786e891f335BEf3931a7dC56b9C
+Pvt Key - c1520fa18f6b8952f325cef584445734d7e56b952f1e31eeb31f87f7e6f53c89
+
+managerAdmin - 0x60A66E0D499022fDC942F8A1D6b83ccE706AbA1F
+Pvt Key - 0f6a7b7874c25d188a36a376ca9459eb5093d922df35db28ef70cc849af22f0d
+
+pauser - 0x091337034dDBFC9E6Bd8991E74666ef64a6B4FAf
+Pvt Key - 2b3bd009d42a8b8ae242a510992b0103979ff39e235dba430c272457e13e00ab
+
+assetSender - 0xC4673e328B01F96b5d00C19EE2a54F6E33d2D2c7
+Pvt Key - d30ecb798427cbc503d138d35fc43b08f06cfcfccb46b082b689d0f15406d013
+
+feeRecipient - 0x28b6E34777ABe0381975aF90BE9E3dd294E8C659
+Pvt Key - 4d305845d0bde748226e317a2352286206174ee5debf9e98528b8bc83df0f899
+
+instantMintAdmin - 0x0fa59c6c40EC3Acf1cff1712406a42d9b0a3a282
+Pvt Key - c1c5151cc9e8079b67a45066fe8a63f2138028abf3b1d8aee823c3fc1cd402c8
+
+relayer - 0xaE25e557E887Dcf97a020987F9Eb7f60a6694f34
+Pvt Key - dc4e41081fa47236d07cac16fd6c68eb82cb8818a764698d1c6681b0689d9b82
+
+USDY user - 0x9A23a122059719f692506117976Bb4e821cC3A2e
+Pvt Key - 93e7ced8c2070859aa79894d1813aacdb8e6db4dc3f054c0cbf2dd3c2eb65a80
+
+Contract Addresses:
+
+allowlist: 0x7870d41DBAd9E620D1f3E00810113869E6254DF7
+ABI can be found at: my-usdy/deployments/sepolia/Allowlist.json
+
+allowlistFactory: 0xDEd1AC55267B17E74553f82D195c44eF61B29E92
+ABI can be found at: my-usdy/deployments/sepolia/AllowlistFactory.json
+
+allowlistImplementation: 0x0Bf085F1278Be8F3fEcF3c072465583610848D77
+
+blocklist: 0x46b0a317cA081427B8ec59bBdd12B563b7D44CF1
+ABI can be found at: my-usdy/deployments/sepolia/Blocklist.json
+
+ProxyAdminAllowlist: 0x56D8eE41272D3E7fa735c702BA919E8Cde9563dB
+ABI can be found at: my-usdy/deployments/sepolia/ProxyAdminAllowlist.json
+
+ProxyAdminUSDY: 0xad25C19897911A162A47614929FD57F56cc5d9A4
+
+USDYPricer: 0xdf6a0C313a6698E75736a57Af5F175D3a46EaE71
+ABI can be found at:  my-usdy/deployments/sepolia/USDY_Pricer.json
+
+USDY: 0x6ce6ffa6ed182048C32614b3468ED93aDF64B0FD
+ABI can be found at: my-usdy/deployments/sepolia/USDY.json
+
+USDYFactory: 0xe8DD952D4bBA8Cd0a2F8a3BC32BDEd83dFBf71FF
+ABI can be found at: my-usdy/deployments/sepolia/USDYFactory.json
+
+USDYImplementation: 0x20863bc7d2674141dCb15EDFDd9a2Da9830F8AFc
+
+USDYManager: 0xd8C14885F3fC7a3CD6C765404Ac9BBf01C052163
+ABI can be found at: my-usdy/deployments/sepolia/USDYManager.json
+
+##

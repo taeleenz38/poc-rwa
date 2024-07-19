@@ -1,0 +1,4604 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\chainalysis\\ISanctionsList.sol": {
+      "lastModificationDate": 1720168095191,
+      "contentHash": "67f11b27766e574bc7d568bd374321ac",
+      "sourceName": "contracts/external/chainalysis/ISanctionsList.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "ISanctionsList"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\sanctions\\SanctionsListClientUpgradeable.sol": {
+      "lastModificationDate": 1720168095275,
+      "contentHash": "5ca9b92898c055d1eb50cf2d1309e9d0",
+      "sourceName": "contracts/sanctions/SanctionsListClientUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+        "contracts/external/chainalysis/ISanctionsList.sol",
+        "contracts/sanctions/ISanctionsListClient.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "SanctionsListClientUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\proxy\\Initializable.sol": {
+      "lastModificationDate": 1720168095239,
+      "contentHash": "0a0a6acacd8dd21b9b9f448876d564e9",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "Initializable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\sanctions\\ISanctionsListClient.sol": {
+      "lastModificationDate": 1720168095274,
+      "contentHash": "b339cdc4c82bef38c0e1cd593a686f99",
+      "sourceName": "contracts/sanctions/ISanctionsListClient.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/chainalysis/ISanctionsList.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "ISanctionsListClient"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\AddressUpgradeable.sol": {
+      "lastModificationDate": 1720168095247,
+      "contentHash": "de75a58a891dd5c692cf42dfe9b55d71",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "AddressUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\USDY.sol": {
+      "lastModificationDate": 1720192723831,
+      "contentHash": "878717657df1beafd27124039f18fa23",
+      "sourceName": "contracts/usdy/USDY.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20PresetMinterPauserUpgradeable.sol",
+        "contracts/usdy/blocklist/BlocklistClientUpgradeable.sol",
+        "contracts/usdy/allowlist/AllowlistClientUpgradeable.sol",
+        "contracts/sanctions/SanctionsListClientUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "USDY"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC20\\ERC20PresetMinterPauserUpgradeable.sol": {
+      "lastModificationDate": 1720168095225,
+      "contentHash": "2e00b98eb99630375928723226b8ce6a",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20PresetMinterPauserUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20BurnableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20PausableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20PresetMinterPauserUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\blocklist\\BlocklistClientUpgradeable.sol": {
+      "lastModificationDate": 1720168095285,
+      "contentHash": "c7db659567fc12c92441523b74b47094",
+      "sourceName": "contracts/usdy/blocklist/BlocklistClientUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IBlocklist.sol",
+        "contracts/interfaces/IBlocklistClient.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "BlocklistClientUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\allowlist\\AllowlistClientUpgradeable.sol": {
+      "lastModificationDate": 1720168095282,
+      "contentHash": "3797401bf89b46c9441255df3cf7af4b",
+      "sourceName": "contracts/usdy/allowlist/AllowlistClientUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IAllowlist.sol",
+        "contracts/interfaces/IAllowlistClient.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "AllowlistClientUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC20\\ERC20Upgradeable.sol": {
+      "lastModificationDate": 1720168095224,
+      "contentHash": "efc6a0fca390a262cf4230a3060239f3",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/IERC20MetadataUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20Upgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC20\\ERC20BurnableUpgradeable.sol": {
+      "lastModificationDate": 1720168095226,
+      "contentHash": "ccc3dcdd2d93dfd59858dd024efabedd",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20BurnableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20BurnableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC20\\ERC20PausableUpgradeable.sol": {
+      "lastModificationDate": 1720168095229,
+      "contentHash": "5ff6331bf1e62a9f649cad6aba19f4de",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20PausableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20PausableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\access\\AccessControlEnumerableUpgradeable.sol": {
+      "lastModificationDate": 1720168095243,
+      "contentHash": "069530779a9100a165cb4fb6badccb35",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/EnumerableSetUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControlEnumerableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol": {
+      "lastModificationDate": 1720168095248,
+      "contentHash": "ea767bca77a35e4719caf1f0b76ed426",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ContextUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC20\\IERC20Upgradeable.sol": {
+      "lastModificationDate": 1720168095227,
+      "contentHash": "b2b0c552e3093e792417f7a1ca93b75c",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Upgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC20\\IERC20MetadataUpgradeable.sol": {
+      "lastModificationDate": 1720168095228,
+      "contentHash": "d1c2fe55a0711f5aa84416c115a67130",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/IERC20MetadataUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20MetadataUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol": {
+      "lastModificationDate": 1720168095245,
+      "contentHash": "c97f133c4ee9459f52e8b14d6d225048",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PausableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\access\\IAccessControlEnumerableUpgradeable.sol": {
+      "lastModificationDate": 1720168095241,
+      "contentHash": "82071cbc236b7f2bb32e9003de35a793",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./IAccessControlUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControlEnumerableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol": {
+      "lastModificationDate": 1720168095240,
+      "contentHash": "8a4fd01c8c9bb3d7bfa254f805436ab6",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ERC165Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControlUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\EnumerableSetUpgradeable.sol": {
+      "lastModificationDate": 1720168095250,
+      "contentHash": "2d5a7570d0bd9225be9767041a6e1ab8",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/EnumerableSetUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EnumerableSetUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\access\\IAccessControlUpgradeable.sol": {
+      "lastModificationDate": 1720168095242,
+      "contentHash": "a290879e3cb93ddcc24ea8b207c3ef49",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControlUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\StringsUpgradeable.sol": {
+      "lastModificationDate": 1720168095251,
+      "contentHash": "3a0944439378edb532de8872be617b9f",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StringsUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\ERC165Upgradeable.sol": {
+      "lastModificationDate": 1720168095246,
+      "contentHash": "76165ca2eba25f4054e5b1ddf3b489e5",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/ERC165Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/IERC165Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC165Upgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\IERC165Upgradeable.sol": {
+      "lastModificationDate": 1720168095251,
+      "contentHash": "a6c1ac7a801f869b849efb7e9a6f4d87",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/IERC165Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165Upgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IBlocklist.sol": {
+      "lastModificationDate": 1720168095261,
+      "contentHash": "16a7e7dc8a9924a948a80c22c49472bd",
+      "sourceName": "contracts/interfaces/IBlocklist.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IBlocklist"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IBlocklistClient.sol": {
+      "lastModificationDate": 1720168095260,
+      "contentHash": "6022dc52ebc3688edd17432a1c475d9e",
+      "sourceName": "contracts/interfaces/IBlocklistClient.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IBlocklist.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IBlocklistClient"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IAllowlist.sol": {
+      "lastModificationDate": 1720168095264,
+      "contentHash": "c41b13ba66b25ed6423a29202444b6b4",
+      "sourceName": "contracts/interfaces/IAllowlist.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IAllowlist"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IAllowlistClient.sol": {
+      "lastModificationDate": 1720168095257,
+      "contentHash": "986227000a6907c494199a07175a7e42",
+      "sourceName": "contracts/interfaces/IAllowlistClient.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IAllowlist.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IAllowlistClient"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\USDYFactory.sol": {
+      "lastModificationDate": 1720168095277,
+      "contentHash": "d9e4a6a9a73479183aae6e4a29483a51",
+      "sourceName": "contracts/usdy/USDYFactory.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/ProxyAdmin.sol",
+        "contracts/Proxy.sol",
+        "contracts/usdy/USDY.sol",
+        "contracts/interfaces/IMulticall.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "USDYFactory"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\ProxyAdmin.sol": {
+      "lastModificationDate": 1720168095212,
+      "contentHash": "39e20c5be60de4106b1f83bb734a6608",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/ProxyAdmin.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/TransparentUpgradeableProxy.sol",
+        "contracts/external/openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ProxyAdmin"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\Proxy.sol": {
+      "lastModificationDate": 1720168095267,
+      "contentHash": "0f5330664a7e47571f1bfe6ec5cb7b42",
+      "sourceName": "contracts/Proxy.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/TransparentUpgradeableProxy.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "TokenProxy"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IMulticall.sol": {
+      "lastModificationDate": 1720168095263,
+      "contentHash": "28c3de29bcad0b1040bf798a9788c5a8",
+      "sourceName": "contracts/interfaces/IMulticall.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IMulticall"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\TransparentUpgradeableProxy.sol": {
+      "lastModificationDate": 1720168095213,
+      "contentHash": "0a984c94bcb805a0b53ad44a76ad8620",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/TransparentUpgradeableProxy.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/ERC1967Proxy.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TransparentUpgradeableProxy"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\access\\Ownable.sol": {
+      "lastModificationDate": 1720168095220,
+      "contentHash": "0b0a6e623f8756234ddba77477d8cf48",
+      "sourceName": "contracts/external/openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\ERC1967Proxy.sol": {
+      "lastModificationDate": 1720168095210,
+      "contentHash": "df985e7ed7bcb95a69250819c859c713",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/ERC1967Proxy.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/Proxy.sol",
+        "contracts/external/openzeppelin/contracts/proxy/ERC1967Upgrade.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC1967Proxy"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\Proxy.sol": {
+      "lastModificationDate": 1720168095216,
+      "contentHash": "02d892cbd36a55494f7cc7c398f0716a",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/Proxy.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Proxy"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\ERC1967Upgrade.sol": {
+      "lastModificationDate": 1720168095215,
+      "contentHash": "5aa94ea3a5e754fd784516211ca4da7b",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/ERC1967Upgrade.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/IBeacon.sol",
+        "contracts/external/openzeppelin/contracts/proxy/draft-IERC1822.sol",
+        "contracts/external/openzeppelin/contracts/utils/Address.sol",
+        "contracts/external/openzeppelin/contracts/utils/StorageSlot.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "ERC1967Upgrade"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\IBeacon.sol": {
+      "lastModificationDate": 1720168095214,
+      "contentHash": "e240571a2866af3e7c34b4659314e5fa",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/IBeacon.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IBeacon"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\proxy\\draft-IERC1822.sol": {
+      "lastModificationDate": 1720168095211,
+      "contentHash": "9d15420372b58ae10cb565cb68ceb43d",
+      "sourceName": "contracts/external/openzeppelin/contracts/proxy/draft-IERC1822.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC1822Proxiable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\Address.sol": {
+      "lastModificationDate": 1720168095201,
+      "contentHash": "bcd15f417cdcc569d6d547d2ed16dc82",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\StorageSlot.sol": {
+      "lastModificationDate": 1720168095197,
+      "contentHash": "c9c883f9c88d1843ec5b7a98644b0d29",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/StorageSlot.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StorageSlot"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\Context.sol": {
+      "lastModificationDate": 1720168095200,
+      "contentHash": "962479218e29d01e3a71a471d440e9fc",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\allowlist\\AllowlistFactory.sol": {
+      "lastModificationDate": 1720168095280,
+      "contentHash": "ab264f35975fe94148b09f095e36804b",
+      "sourceName": "contracts/usdy/allowlist/AllowlistFactory.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/ProxyAdmin.sol",
+        "contracts/usdy/allowlist/AllowlistProxy.sol",
+        "contracts/usdy/allowlist/AllowlistUpgradeable.sol",
+        "contracts/interfaces/IMulticall.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "AllowlistFactory"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\allowlist\\AllowlistProxy.sol": {
+      "lastModificationDate": 1720168095279,
+      "contentHash": "46fbe20d01ff977b2e5c83bdab1c493e",
+      "sourceName": "contracts/usdy/allowlist/AllowlistProxy.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/proxy/TransparentUpgradeableProxy.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "AllowlistProxy"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\allowlist\\AllowlistUpgradeable.sol": {
+      "lastModificationDate": 1720168095281,
+      "contentHash": "8d5ebde2f31b4150f885cebc6c2da867",
+      "sourceName": "contracts/usdy/allowlist/AllowlistUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/utils/cryptography/ECDSA.sol",
+        "contracts/interfaces/IAllowlist.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "AllowlistUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\cryptography\\ECDSA.sol": {
+      "lastModificationDate": 1720168095204,
+      "contentHash": "d6642c5e042f3b3972a145bfac50360a",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/cryptography/ECDSA.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../Strings.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ECDSA"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\Strings.sol": {
+      "lastModificationDate": 1720168095205,
+      "contentHash": "38c9557e61cc45ff1001a82164af4ffc",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Strings"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721PresetMinterPauserAutoIdUpgradeable.sol": {
+      "lastModificationDate": 1720168095234,
+      "contentHash": "94889514b8eed5ef47ba7d9149fd1d0a",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721PresetMinterPauserAutoIdUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721EnumerableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721BurnableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721PausableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/CounterUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721PresetMinterPauserAutoIdUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol": {
+      "lastModificationDate": 1720168095230,
+      "contentHash": "27bff42101cb2fc08526e5410b9501d5",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721MetadataUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ERC165Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721Upgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721EnumerableUpgradeable.sol": {
+      "lastModificationDate": 1720168095238,
+      "contentHash": "b343f235b352dec1e4df57d15073df69",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721EnumerableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721EnumerableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721EnumerableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721BurnableUpgradeable.sol": {
+      "lastModificationDate": 1720168095235,
+      "contentHash": "3051ca7e0685b262b78bc1613368dbb0",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721BurnableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721BurnableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721PausableUpgradeable.sol": {
+      "lastModificationDate": 1720168095236,
+      "contentHash": "4259fef70dd5bc4929cb7929416a4b5b",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721PausableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "contracts/external/openzeppelin/contracts-upgradeable/proxy/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721PausableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\utils\\CounterUpgradeable.sol": {
+      "lastModificationDate": 1720168095249,
+      "contentHash": "6eed5d4bd434d3294272ca7373d535df",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/utils/CounterUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "CountersUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\IERC721Upgradeable.sol": {
+      "lastModificationDate": 1720168095231,
+      "contentHash": "6c59e3140480dea8376ce03935222be5",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/utils/IERC165Upgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721Upgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\IERC721ReceiverUpgradeable.sol": {
+      "lastModificationDate": 1720168095233,
+      "contentHash": "430cb6c794c8c223be548151420e8b2d",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721ReceiverUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\IERC721MetadataUpgradeable.sol": {
+      "lastModificationDate": 1720168095237,
+      "contentHash": "ab2e60ea10f6e2d732530a4bb9a04cdd",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721MetadataUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721MetadataUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts-upgradeable\\token\\ERC721\\IERC721EnumerableUpgradeable.sol": {
+      "lastModificationDate": 1720168095232,
+      "contentHash": "ae89b6115b394b98fc46a8cf36f9f567",
+      "sourceName": "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721EnumerableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721EnumerableUpgradeable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\blocklist\\BlocklistClient.sol": {
+      "lastModificationDate": 1720168095285,
+      "contentHash": "04d34dc44ba7a014e7be84f3b872aee9",
+      "sourceName": "contracts/usdy/blocklist/BlocklistClient.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IBlocklist.sol",
+        "contracts/interfaces/IBlocklistClient.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "BlocklistClient"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\blocklist\\Blocklist.sol": {
+      "lastModificationDate": 1720168095286,
+      "contentHash": "080ddf6fec96f1d1c8b00dae1cc7a379",
+      "sourceName": "contracts/usdy/blocklist/Blocklist.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/access/Ownable2Step.sol",
+        "contracts/interfaces/IBlocklist.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "Blocklist"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\access\\Ownable2Step.sol": {
+      "lastModificationDate": 1720168095222,
+      "contentHash": "d1a6b23762582eee019907fc582c366c",
+      "sourceName": "contracts/external/openzeppelin/contracts/access/Ownable2Step.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable2Step"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\token\\SafeERC20.sol": {
+      "lastModificationDate": 1720168095208,
+      "contentHash": "c199fe013fb8dbfb3f7adea056682b9f",
+      "sourceName": "contracts/external/openzeppelin/contracts/token/SafeERC20.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol",
+        "contracts/external/openzeppelin/contracts/utils/Address.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeERC20"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\token\\IERC20.sol": {
+      "lastModificationDate": 1720168095207,
+      "contentHash": "f148d6c6c24376a4bd92d639423cfeed",
+      "sourceName": "contracts/external/openzeppelin/contracts/token/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\RWAHub.sol": {
+      "lastModificationDate": 1720184253105,
+      "contentHash": "720dfe1fe07a75276402a2759ba7e981",
+      "sourceName": "contracts/RWAHub.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IPricerReader.sol",
+        "contracts/interfaces/IRWALike.sol",
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol",
+        "contracts/external/openzeppelin/contracts/token/SafeERC20.sol",
+        "contracts/interfaces/IRWAHub.sol",
+        "contracts/external/openzeppelin/contracts/token/IERC20Metadata.sol",
+        "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol",
+        "contracts/external/openzeppelin/contracts/security/ReentrancyGuard.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "RWAHub"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IPricerReader.sol": {
+      "lastModificationDate": 1720168095254,
+      "contentHash": "14a0a23ccb5337212f60a7acbd8c0cb5",
+      "sourceName": "contracts/interfaces/IPricerReader.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IPricerReader"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IRWALike.sol": {
+      "lastModificationDate": 1720168095257,
+      "contentHash": "06540229c1ca26c8e186827d8107a3be",
+      "sourceName": "contracts/interfaces/IRWALike.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWALike"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IRWAHub.sol": {
+      "lastModificationDate": 1720168095259,
+      "contentHash": "89034b8a9564352432645bf19fede9b0",
+      "sourceName": "contracts/interfaces/IRWAHub.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAHub"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\token\\IERC20Metadata.sol": {
+      "lastModificationDate": 1720168095209,
+      "contentHash": "e85a3889288311840fbd157e10d4380b",
+      "sourceName": "contracts/external/openzeppelin/contracts/token/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\access\\AccessControlEnumerable.sol": {
+      "lastModificationDate": 1720168095218,
+      "contentHash": "a40481bd5956eb433df92e78428bbe30",
+      "sourceName": "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/access/IAccessControlEnumerable.sol",
+        "contracts/external/openzeppelin/contracts/access/AccessControl.sol",
+        "contracts/external/openzeppelin/contracts/utils/EnumerableSet.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControlEnumerable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\security\\ReentrancyGuard.sol": {
+      "lastModificationDate": 1720168095195,
+      "contentHash": "5060138c86ac36bb81771d81ffd4681f",
+      "sourceName": "contracts/external/openzeppelin/contracts/security/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\access\\IAccessControlEnumerable.sol": {
+      "lastModificationDate": 1720168095221,
+      "contentHash": "7eee8271270ad9b03b3f673b9dd163fc",
+      "sourceName": "contracts/external/openzeppelin/contracts/access/IAccessControlEnumerable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/access/IAccessControl.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControlEnumerable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\access\\AccessControl.sol": {
+      "lastModificationDate": 1720168095217,
+      "contentHash": "eb38c7bdcb68dec8b24c35d145a9db08",
+      "sourceName": "contracts/external/openzeppelin/contracts/access/AccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/access/IAccessControl.sol",
+        "contracts/external/openzeppelin/contracts/utils/Context.sol",
+        "contracts/external/openzeppelin/contracts/utils/Strings.sol",
+        "contracts/external/openzeppelin/contracts/utils/ERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControl"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\EnumerableSet.sol": {
+      "lastModificationDate": 1720168095197,
+      "contentHash": "fa85628426814cb56fe580adface1418",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/EnumerableSet.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EnumerableSet"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\access\\IAccessControl.sol": {
+      "lastModificationDate": 1720168095219,
+      "contentHash": "b76f77a3456b820b68bddeb1f5e636f2",
+      "sourceName": "contracts/external/openzeppelin/contracts/access/IAccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControl"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\ERC165.sol": {
+      "lastModificationDate": 1720168095199,
+      "contentHash": "be2888ee0ad5d140bd93b7b8348ebd2f",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/ERC165.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/utils/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC165"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\IERC165.sol": {
+      "lastModificationDate": 1720168095202,
+      "contentHash": "46678e8c289b7d1d049557b6940c2353",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\RWAHubOffChainRedemptions.sol": {
+      "lastModificationDate": 1720168095266,
+      "contentHash": "b02b2c8d0943f29f24d0b294ab438eec",
+      "sourceName": "contracts/RWAHubOffChainRedemptions.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/RWAHub.sol",
+        "contracts/interfaces/IRWAHubOffChainRedemptions.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "RWAHubOffChainRedemptions"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IRWAHubOffChainRedemptions.sol": {
+      "lastModificationDate": 1720168095258,
+      "contentHash": "0992a7a0e1eab1e97af151944f5e6f40",
+      "sourceName": "contracts/interfaces/IRWAHubOffChainRedemptions.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAHubOffChainRedemptions"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\USDYManager.sol": {
+      "lastModificationDate": 1720184021384,
+      "contentHash": "71d2d4ebda5b9afabaa63002a061ba6d",
+      "sourceName": "contracts/usdy/USDYManager.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/RWAHubOffChainRedemptions.sol",
+        "contracts/interfaces/IUSDYManager.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "USDYManager"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IUSDYManager.sol": {
+      "lastModificationDate": 1720168095262,
+      "contentHash": "f8ba5ab2a0e5bfdf2957ffaa83af508c",
+      "sourceName": "contracts/interfaces/IUSDYManager.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IUSDYManager"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\rwaOracles\\RWAOracleRateCheck.sol": {
+      "lastModificationDate": 1720168095271,
+      "contentHash": "c44fcc486276d66274f51deeda554af6",
+      "sourceName": "contracts/rwaOracles/RWAOracleRateCheck.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/rwaOracles/IRWAOracle.sol",
+        "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "RWAOracleRateCheck"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\rwaOracles\\IRWAOracle.sol": {
+      "lastModificationDate": 1720168095269,
+      "contentHash": "777f3970abc53398522a21b27e5672c9",
+      "sourceName": "contracts/rwaOracles/IRWAOracle.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAOracle"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\rwaOracles\\IRWAOracleExternalComparisonCheck.sol": {
+      "lastModificationDate": 1720168095272,
+      "contentHash": "efdf404327a9c418d31ca34a0c242374",
+      "sourceName": "contracts/rwaOracles/IRWAOracleExternalComparisonCheck.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/rwaOracles/IRWAOracle.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAOracleExternalComparisonCheck"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\rwaOracles\\RWAOracleExternalComparisonCheck.sol": {
+      "lastModificationDate": 1720168095273,
+      "contentHash": "70ead7bce64b0074afdcb003c636d74e",
+      "sourceName": "contracts/rwaOracles/RWAOracleExternalComparisonCheck.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/chainlink/AggregatorV3Interface.sol",
+        "contracts/rwaOracles/IRWAOracleExternalComparisonCheck.sol",
+        "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "RWAOracleExternalComparisonCheck"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\chainlink\\AggregatorV3Interface.sol": {
+      "lastModificationDate": 1720168095192,
+      "contentHash": "e044253ea870e8897441404895142d2b",
+      "sourceName": "contracts/external/chainlink/AggregatorV3Interface.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "AggregatorV3Interface"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\PricerWithOracle.sol": {
+      "lastModificationDate": 1720168095265,
+      "contentHash": "c8d9f80e9c91332f2421fa99e16df118",
+      "sourceName": "contracts/PricerWithOracle.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol",
+        "contracts/interfaces/IPricerWithOracle.sol",
+        "contracts/Pricer.sol",
+        "contracts/rwaOracles/IRWAOracleSetter.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "PricerWithOracle"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IPricerWithOracle.sol": {
+      "lastModificationDate": 1720168095254,
+      "contentHash": "1579d8b6dc09c5ede56f4b5b0db98bc3",
+      "sourceName": "contracts/interfaces/IPricerWithOracle.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IPricer.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IPricerWithOracle"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\Pricer.sol": {
+      "lastModificationDate": 1720168095288,
+      "contentHash": "721ad189d26e4bd850d765c6b04a96fc",
+      "sourceName": "contracts/Pricer.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol",
+        "contracts/interfaces/IPricer.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "Pricer"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\rwaOracles\\IRWAOracleSetter.sol": {
+      "lastModificationDate": 1720168095270,
+      "contentHash": "774d56690ef25f87dc6fc243853e5a34",
+      "sourceName": "contracts/rwaOracles/IRWAOracleSetter.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAOracleSetter"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IPricer.sol": {
+      "lastModificationDate": 1720168095255,
+      "contentHash": "dd011a0220ce77f67df4b17d74a0d9d0",
+      "sourceName": "contracts/interfaces/IPricer.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IPricer"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\cryptography\\EIP712.sol": {
+      "lastModificationDate": 1720168095204,
+      "contentHash": "70bb0e0df3a3fb24d1429af632419ee9",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/cryptography/EIP712.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./ECDSA.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EIP712"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\token\\ERC20.sol": {
+      "lastModificationDate": 1720168095207,
+      "contentHash": "ad27189ec8e4c3e4c162db13979c0615",
+      "sourceName": "contracts/external/openzeppelin/contracts/token/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol",
+        "contracts/external/openzeppelin/contracts/token/IERC20Metadata.sol",
+        "contracts/external/openzeppelin/contracts/utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IWommf.sol": {
+      "lastModificationDate": 1720168095264,
+      "contentHash": "fcc255dda2129511f622aabd7d317a7e",
+      "sourceName": "contracts/interfaces/IWommf.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IWOMMF"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IOmmf.sol": {
+      "lastModificationDate": 1720168095253,
+      "contentHash": "1028406062026b75256ad8be2548a301",
+      "sourceName": "contracts/interfaces/IOmmf.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/token/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IOMMF"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\security\\Pausable.sol": {
+      "lastModificationDate": 1720168095195,
+      "contentHash": "8f5437791b25e3c781e08c01a25c4c79",
+      "sourceName": "contracts/external/openzeppelin/contracts/security/Pausable.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/openzeppelin/contracts/utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Pausable"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IRWAHubNonStableInstantMint.sol": {
+      "lastModificationDate": 1720168095256,
+      "contentHash": "0e1cda218facad9342a4124773ef5817",
+      "sourceName": "contracts/interfaces/IRWAHubNonStableInstantMint.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IRWAHub.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAHubNonStableInstantMint"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\usdy\\allowlist\\AllowlistClient.sol": {
+      "lastModificationDate": 1720168095278,
+      "contentHash": "c1b5eed077699dcca632873e8069080d",
+      "sourceName": "contracts/usdy/allowlist/AllowlistClient.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/interfaces/IAllowlist.sol",
+        "contracts/interfaces/IAllowlistClient.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "AllowlistClient"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\sanctions\\SanctionsListClient.sol": {
+      "lastModificationDate": 1720168095276,
+      "contentHash": "5d2224e29b6286ecb761539a55183ae4",
+      "sourceName": "contracts/sanctions/SanctionsListClient.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "contracts/external/chainalysis/ISanctionsList.sol",
+        "contracts/sanctions/ISanctionsListClient.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "SanctionsListClient"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\external\\openzeppelin\\contracts\\utils\\Counters.sol": {
+      "lastModificationDate": 1720168095199,
+      "contentHash": "61180062d4a08cdbaa554c4eb3104db2",
+      "sourceName": "contracts/external/openzeppelin/contracts/utils/Counters.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Counters"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\interfaces\\IRWAHubInstantMints.sol": {
+      "lastModificationDate": 1720168095260,
+      "contentHash": "a700342138be4f24b99e2137613b49db",
+      "sourceName": "contracts/interfaces/IRWAHubInstantMints.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "IRWAHubInstantMints"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\contracts\\Token.sol": {
+      "lastModificationDate": 1720168095189,
+      "contentHash": "d57c1279883c64c6564fc24c2996bfa6",
+      "sourceName": "contracts/Token.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "A$DC"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\ERC20.sol": {
+      "lastModificationDate": 1720180407984,
+      "contentHash": "3ae5166c6827a9cf1a7a462d1632b464",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1720180415521,
+      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
+      "lastModificationDate": 1720180404771,
+      "contentHash": "f07feb4a44b1a4872370da5aa70e8e46",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "C:\\my-usdy-custom\\my-usdy\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\extensions\\IERC20Metadata.sol": {
+      "lastModificationDate": 1720180415672,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    }
+  }
+}

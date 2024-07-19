@@ -1,0 +1,336 @@
+{
+  "address": "0x46b0a317cA081427B8ec59bBdd12B563b7D44CF1",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        }
+      ],
+      "name": "BlockedAddressesAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        }
+      ],
+      "name": "BlockedAddressesRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferStarted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        }
+      ],
+      "name": "addToBlocklist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "isBlocked",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        }
+      ],
+      "name": "removeFromBlocklist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xdf0831363392effea8e298864f4b3171753b46049172cd5fb9ece86413974821",
+  "receipt": {
+    "to": null,
+    "from": "0x15fBe48b8d5C29Ac8EAD7E24486F2c88cabCba21",
+    "contractAddress": "0x46b0a317cA081427B8ec59bBdd12B563b7D44CF1",
+    "transactionIndex": 11,
+    "gasUsed": "464559",
+    "logsBloom": "0x00000000000000000000000000000400000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000001000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000100000000000000000000000000000000000000000000002000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000004000000000000000000000000000000000000",
+    "blockHash": "0x48ec7edd3eafa87162033b564dcc27da290a784e1b474db38b1d0556786d785c",
+    "transactionHash": "0xdf0831363392effea8e298864f4b3171753b46049172cd5fb9ece86413974821",
+    "logs": [
+      {
+        "transactionIndex": 11,
+        "blockNumber": 6274377,
+        "transactionHash": "0xdf0831363392effea8e298864f4b3171753b46049172cd5fb9ece86413974821",
+        "address": "0x46b0a317cA081427B8ec59bBdd12B563b7D44CF1",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x00000000000000000000000015fbe48b8d5c29ac8ead7e24486f2c88cabcba21"
+        ],
+        "data": "0x",
+        "logIndex": 5,
+        "blockHash": "0x48ec7edd3eafa87162033b564dcc27da290a784e1b474db38b1d0556786d785c"
+      }
+    ],
+    "blockNumber": 6274377,
+    "cumulativeGasUsed": "2658472",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "5855a53555d0b692c677618bcb41c21f",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"}],\"name\":\"BlockedAddressesAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"}],\"name\":\"BlockedAddressesRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"}],\"name\":\"addToBlocklist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"isBlocked\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"}],\"name\":\"removeFromBlocklist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Ondo Finance\",\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"The new owner accepts the ownership transfer.\"},\"addToBlocklist(address[])\":{\"params\":{\"accounts\":\"Array of addresses to block\"}},\"isBlocked(address)\":{\"params\":{\"addr\":\"Address to check\"},\"returns\":{\"_0\":\"True if account is blocked, false otherwise\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pendingOwner()\":{\"details\":\"Returns the address of the pending owner.\"},\"removeFromBlocklist(address[])\":{\"params\":{\"accounts\":\"Array of addresses to unblock\"}},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner.\"}},\"title\":\"Blocklist\",\"version\":1},\"userdoc\":{\"events\":{\"BlockedAddressesAdded(address[])\":{\"notice\":\"Event emitted when addresses are added to the blocklist\"},\"BlockedAddressesRemoved(address[])\":{\"notice\":\"Event emitted when addresses are removed from the blocklist\"}},\"kind\":\"user\",\"methods\":{\"addToBlocklist(address[])\":{\"notice\":\"Function to add a list of accounts to the blocklist\"},\"isBlocked(address)\":{\"notice\":\"Function to check if an account is blocked\"},\"name()\":{\"notice\":\"Returns name of contract\"},\"removeFromBlocklist(address[])\":{\"notice\":\"Function to remove a list of accounts from the blocklist\"}},\"notice\":\"This contract manages the blocklist status for accounts.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/usdy/blocklist/Blocklist.sol\":\"Blocklist\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":100},\"remappings\":[]},\"sources\":{\"contracts/external/openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\n// OpenZeppelin Contracts v4.4.1 (access/Ownable.sol)\\r\\n\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\nimport \\\"contracts/external/openzeppelin/contracts/utils/Context.sol\\\";\\r\\n\\r\\n/**\\r\\n * @dev Contract module which provides a basic access control mechanism, where\\r\\n * there is an account (an owner) that can be granted exclusive access to\\r\\n * specific functions.\\r\\n *\\r\\n * By default, the owner account will be the one that deploys the contract. This\\r\\n * can later be changed with {transferOwnership}.\\r\\n *\\r\\n * This module is used through inheritance. It will make available the modifier\\r\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\r\\n * the owner.\\r\\n */\\r\\nabstract contract Ownable is Context {\\r\\n  address private _owner;\\r\\n\\r\\n  event OwnershipTransferred(\\r\\n    address indexed previousOwner,\\r\\n    address indexed newOwner\\r\\n  );\\r\\n\\r\\n  /**\\r\\n   * @dev Initializes the contract setting the deployer as the initial owner.\\r\\n   */\\r\\n  constructor() {\\r\\n    _transferOwnership(_msgSender());\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @dev Returns the address of the current owner.\\r\\n   */\\r\\n  function owner() public view virtual returns (address) {\\r\\n    return _owner;\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @dev Throws if called by any account other than the owner.\\r\\n   */\\r\\n  modifier onlyOwner() {\\r\\n    require(owner() == _msgSender(), \\\"Ownable: caller is not the owner\\\");\\r\\n    _;\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @dev Leaves the contract without owner. It will not be possible to call\\r\\n   * `onlyOwner` functions anymore. Can only be called by the current owner.\\r\\n   *\\r\\n   * NOTE: Renouncing ownership will leave the contract without an owner,\\r\\n   * thereby removing any functionality that is only available to the owner.\\r\\n   */\\r\\n  function renounceOwnership() public virtual onlyOwner {\\r\\n    _transferOwnership(address(0));\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @dev Transfers ownership of the contract to a new account (`newOwner`).\\r\\n   * Can only be called by the current owner.\\r\\n   */\\r\\n  function transferOwnership(address newOwner) public virtual onlyOwner {\\r\\n    require(newOwner != address(0), \\\"Ownable: new owner is the zero address\\\");\\r\\n    _transferOwnership(newOwner);\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @dev Transfers ownership of the contract to a new account (`newOwner`).\\r\\n   * Internal function without access restriction.\\r\\n   */\\r\\n  function _transferOwnership(address newOwner) internal virtual {\\r\\n    address oldOwner = _owner;\\r\\n    _owner = newOwner;\\r\\n    emit OwnershipTransferred(oldOwner, newOwner);\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0x4fb67c7da585219cc3786bb3f7fcfe2d209dbcb9177de37917f00aa9baa11e0f\",\"license\":\"MIT\"},\"contracts/external/openzeppelin/contracts/access/Ownable2Step.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\n// OpenZeppelin Contracts (last updated v4.8.0) (access/Ownable2Step.sol)\\r\\n\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\nimport \\\"./Ownable.sol\\\";\\r\\n\\r\\n/**\\r\\n * @dev Contract module which provides access control mechanism, where\\r\\n * there is an account (an owner) that can be granted exclusive access to\\r\\n * specific functions.\\r\\n *\\r\\n * By default, the owner account will be the one that deploys the contract. This\\r\\n * can later be changed with {transferOwnership} and {acceptOwnership}.\\r\\n *\\r\\n * This module is used through inheritance. It will make available all functions\\r\\n * from parent (Ownable).\\r\\n */\\r\\nabstract contract Ownable2Step is Ownable {\\r\\n    address private _pendingOwner;\\r\\n\\r\\n    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);\\r\\n\\r\\n    /**\\r\\n     * @dev Returns the address of the pending owner.\\r\\n     */\\r\\n    function pendingOwner() public view virtual returns (address) {\\r\\n        return _pendingOwner;\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @dev Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one.\\r\\n     * Can only be called by the current owner.\\r\\n     */\\r\\n    function transferOwnership(address newOwner) public virtual override onlyOwner {\\r\\n        _pendingOwner = newOwner;\\r\\n        emit OwnershipTransferStarted(owner(), newOwner);\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`) and deletes any pending owner.\\r\\n     * Internal function without access restriction.\\r\\n     */\\r\\n    function _transferOwnership(address newOwner) internal virtual override {\\r\\n        delete _pendingOwner;\\r\\n        super._transferOwnership(newOwner);\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @dev The new owner accepts the ownership transfer.\\r\\n     */\\r\\n    function acceptOwnership() public virtual {\\r\\n        address sender = _msgSender();\\r\\n        require(pendingOwner() == sender, \\\"Ownable2Step: caller is not the new owner\\\");\\r\\n        _transferOwnership(sender);\\r\\n    }\\r\\n}\",\"keccak256\":\"0xe395078c31c3dc3b6d4d65076f8d1f350de97ed8517565962adb325b1b85c705\",\"license\":\"MIT\"},\"contracts/external/openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\n// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)\\r\\n\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\n/**\\r\\n * @dev Provides information about the current execution context, including the\\r\\n * sender of the transaction and its data. While these are generally available\\r\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\r\\n * manner, since when dealing with meta-transactions the account sending and\\r\\n * paying for execution may not be the actual sender (as far as an application\\r\\n * is concerned).\\r\\n *\\r\\n * This contract is only required for intermediate, library-like contracts.\\r\\n */\\r\\nabstract contract Context {\\r\\n  function _msgSender() internal view virtual returns (address) {\\r\\n    return msg.sender;\\r\\n  }\\r\\n\\r\\n  function _msgData() internal view virtual returns (bytes calldata) {\\r\\n    return msg.data;\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0x248c7821bf32188e9b730c665c92682b1906bc7718a1e100223ebbc7377bd580\",\"license\":\"MIT\"},\"contracts/interfaces/IBlocklist.sol\":{\"content\":\"/**SPDX-License-Identifier: BUSL-1.1\\r\\n\\r\\n      \\u2584\\u2584\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2584\\r\\n   \\u2553\\u2588\\u2588\\u2580\\u2514 ,\\u2553\\u2584\\u2584\\u2584, '\\u2580\\u2588\\u2588\\u2584\\r\\n  \\u2588\\u2588\\u2580 \\u2584\\u2588\\u2588\\u2580\\u2580\\u2559\\u2559\\u2580\\u2580\\u2588\\u2588\\u2584 \\u2514\\u2588\\u2588\\u00b5           ,,       ,,      ,     ,,,            ,,,\\r\\n \\u2588\\u2588 ,\\u2588\\u2588\\u00ac \\u2584\\u2588\\u2588\\u2588\\u2588\\u2584  \\u2580\\u2588\\u2584 \\u2559\\u2588\\u2584      \\u2584\\u2588\\u2588\\u2588\\u2580\\u2580\\u2588\\u2588\\u2588\\u2584   \\u2588\\u2588\\u2588\\u2584    \\u2588\\u2588  \\u2588\\u2588\\u2588\\u2580\\u2580\\u2580\\u2588\\u2588\\u2588\\u2584    \\u2584\\u2588\\u2588\\u2588\\u2580\\u2580\\u2588\\u2588\\u2588,\\r\\n\\u2588\\u2588  \\u2588\\u2588 \\u2552\\u2588\\u2580'   \\u2559\\u2588\\u258c \\u2559\\u2588\\u258c \\u2588\\u2588     \\u2590\\u2588\\u2588      \\u2588\\u2588\\u2588  \\u2588\\u2588\\u2588\\u2588\\u2588,  \\u2588\\u2588  \\u2588\\u2588\\u258c    \\u2514\\u2588\\u2588\\u258c  \\u2588\\u2588\\u258c     \\u2514\\u2588\\u2588\\u258c\\r\\n\\u2588\\u2588 \\u2590\\u2588\\u258c \\u2588\\u2588      \\u255f\\u2588  \\u2588\\u258c \\u255f\\u2588     \\u2588\\u2588\\u258c      \\u2590\\u2588\\u2588  \\u2588\\u2588 \\u2514\\u2588\\u2588\\u2588 \\u2588\\u2588  \\u2588\\u2588\\u258c     \\u255f\\u2588\\u2588 j\\u2588\\u2588       \\u255f\\u2588\\u2588\\r\\n\\u255f\\u2588  \\u2588\\u2588 \\u2559\\u2588\\u2588    \\u2584\\u2588\\u2580 \\u2590\\u2588\\u258c \\u2588\\u2588     \\u2559\\u2588\\u2588      \\u2588\\u2588\\u258c  \\u2588\\u2588   \\u2559\\u2588\\u2588\\u2588\\u2588  \\u2588\\u2588\\u258c    \\u2584\\u2588\\u2588\\u2580  \\u2588\\u2588\\u258c     ,\\u2588\\u2588\\u2580\\r\\n \\u2588\\u2588 \\\"\\u2588\\u2588, \\u2559\\u2580\\u2580\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2310      \\u2559\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2580   \\u2588\\u2588     \\u2559\\u2588\\u2588  \\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2580\\u2580     \\u2559\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2580`\\r\\n  \\u2588\\u2588\\u2584 \\u2559\\u2580\\u2588\\u2588\\u2584\\u2584\\u2584\\u2584\\u2584,,,                \\u00ac\\u2500                                    '\\u2500\\u00ac\\r\\n   \\u2559\\u2580\\u2588\\u2588\\u2584 '\\u2559\\u2559\\u2559\\u2580\\u2580\\u2580\\u2580\\u2580\\u2580\\u2580\\u2580\\r\\n      \\u2559\\u2580\\u2580\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588R\\u2310\\r\\n\\r\\n */\\r\\npragma solidity 0.8.16;\\r\\n\\r\\ninterface IBlocklist {\\r\\n  function addToBlocklist(address[] calldata accounts) external;\\r\\n\\r\\n  function removeFromBlocklist(address[] calldata accounts) external;\\r\\n\\r\\n  function isBlocked(address account) external view returns (bool);\\r\\n\\r\\n  /**\\r\\n   * @notice Event emitted when addresses are added to the blocklist\\r\\n   *\\r\\n   * @param accounts The addresses that were added to the blocklist\\r\\n   */\\r\\n  event BlockedAddressesAdded(address[] accounts);\\r\\n\\r\\n  /**\\r\\n   * @notice Event emitted when addresses are removed from the blocklist\\r\\n   *\\r\\n   * @param accounts The addresses that were removed from the blocklist\\r\\n   */\\r\\n  event BlockedAddressesRemoved(address[] accounts);\\r\\n}\\r\\n\",\"keccak256\":\"0x7c8c824f639cd56c330192d8e6cb1fc4a1f05ad769e6bf862355fd771dae54cd\",\"license\":\"BUSL-1.1\"},\"contracts/usdy/blocklist/Blocklist.sol\":{\"content\":\"/**SPDX-License-Identifier: BUSL-1.1\\r\\n\\r\\n      \\u2584\\u2584\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2584\\r\\n   \\u2553\\u2588\\u2588\\u2580\\u2514 ,\\u2553\\u2584\\u2584\\u2584, '\\u2580\\u2588\\u2588\\u2584\\r\\n  \\u2588\\u2588\\u2580 \\u2584\\u2588\\u2588\\u2580\\u2580\\u2559\\u2559\\u2580\\u2580\\u2588\\u2588\\u2584 \\u2514\\u2588\\u2588\\u00b5           ,,       ,,      ,     ,,,            ,,,\\r\\n \\u2588\\u2588 ,\\u2588\\u2588\\u00ac \\u2584\\u2588\\u2588\\u2588\\u2588\\u2584  \\u2580\\u2588\\u2584 \\u2559\\u2588\\u2584      \\u2584\\u2588\\u2588\\u2588\\u2580\\u2580\\u2588\\u2588\\u2588\\u2584   \\u2588\\u2588\\u2588\\u2584    \\u2588\\u2588  \\u2588\\u2588\\u2588\\u2580\\u2580\\u2580\\u2588\\u2588\\u2588\\u2584    \\u2584\\u2588\\u2588\\u2588\\u2580\\u2580\\u2588\\u2588\\u2588,\\r\\n\\u2588\\u2588  \\u2588\\u2588 \\u2552\\u2588\\u2580'   \\u2559\\u2588\\u258c \\u2559\\u2588\\u258c \\u2588\\u2588     \\u2590\\u2588\\u2588      \\u2588\\u2588\\u2588  \\u2588\\u2588\\u2588\\u2588\\u2588,  \\u2588\\u2588  \\u2588\\u2588\\u258c    \\u2514\\u2588\\u2588\\u258c  \\u2588\\u2588\\u258c     \\u2514\\u2588\\u2588\\u258c\\r\\n\\u2588\\u2588 \\u2590\\u2588\\u258c \\u2588\\u2588      \\u255f\\u2588  \\u2588\\u258c \\u255f\\u2588     \\u2588\\u2588\\u258c      \\u2590\\u2588\\u2588  \\u2588\\u2588 \\u2514\\u2588\\u2588\\u2588 \\u2588\\u2588  \\u2588\\u2588\\u258c     \\u255f\\u2588\\u2588 j\\u2588\\u2588       \\u255f\\u2588\\u2588\\r\\n\\u255f\\u2588  \\u2588\\u2588 \\u2559\\u2588\\u2588    \\u2584\\u2588\\u2580 \\u2590\\u2588\\u258c \\u2588\\u2588     \\u2559\\u2588\\u2588      \\u2588\\u2588\\u258c  \\u2588\\u2588   \\u2559\\u2588\\u2588\\u2588\\u2588  \\u2588\\u2588\\u258c    \\u2584\\u2588\\u2588\\u2580  \\u2588\\u2588\\u258c     ,\\u2588\\u2588\\u2580\\r\\n \\u2588\\u2588 \\\"\\u2588\\u2588, \\u2559\\u2580\\u2580\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2310      \\u2559\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2580   \\u2588\\u2588     \\u2559\\u2588\\u2588  \\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2580\\u2580     \\u2559\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2580`\\r\\n  \\u2588\\u2588\\u2584 \\u2559\\u2580\\u2588\\u2588\\u2584\\u2584\\u2584\\u2584\\u2584,,,                \\u00ac\\u2500                                    '\\u2500\\u00ac\\r\\n   \\u2559\\u2580\\u2588\\u2588\\u2584 '\\u2559\\u2559\\u2559\\u2580\\u2580\\u2580\\u2580\\u2580\\u2580\\u2580\\u2580\\r\\n      \\u2559\\u2580\\u2580\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588R\\u2310\\r\\n\\r\\n */\\r\\npragma solidity 0.8.16;\\r\\nimport \\\"contracts/external/openzeppelin/contracts/access/Ownable2Step.sol\\\";\\r\\nimport \\\"contracts/interfaces/IBlocklist.sol\\\";\\r\\n\\r\\n/**\\r\\n * @title Blocklist\\r\\n * @author Ondo Finance\\r\\n * @notice This contract manages the blocklist status for accounts.\\r\\n */\\r\\ncontract Blocklist is Ownable2Step, IBlocklist {\\r\\n  constructor() {}\\r\\n\\r\\n  // {<address> => is account blocked}\\r\\n  mapping(address => bool) private blockedAddresses;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns name of contract\\r\\n   */\\r\\n  function name() external pure returns (string memory) {\\r\\n    return \\\"Ondo Finance Blocklist Oracle\\\";\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @notice Function to add a list of accounts to the blocklist\\r\\n   *\\r\\n   * @param accounts Array of addresses to block\\r\\n   */\\r\\n  function addToBlocklist(address[] calldata accounts) external onlyOwner {\\r\\n    for (uint256 i; i < accounts.length; ++i) {\\r\\n      blockedAddresses[accounts[i]] = true;\\r\\n    }\\r\\n    emit BlockedAddressesAdded(accounts);\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @notice Function to remove a list of accounts from the blocklist\\r\\n   *\\r\\n   * @param accounts Array of addresses to unblock\\r\\n   */\\r\\n  function removeFromBlocklist(address[] calldata accounts) external onlyOwner {\\r\\n    for (uint256 i; i < accounts.length; ++i) {\\r\\n      blockedAddresses[accounts[i]] = false;\\r\\n    }\\r\\n    emit BlockedAddressesRemoved(accounts);\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @notice Function to check if an account is blocked\\r\\n   *\\r\\n   * @param addr Address to check\\r\\n   *\\r\\n   * @return True if account is blocked, false otherwise\\r\\n   */\\r\\n  function isBlocked(address addr) external view returns (bool) {\\r\\n    return blockedAddresses[addr];\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0x12d2a3101bdd2918bf8ea365ca2bc0d0ef0a427552be65f83c5374978bacabbb\",\"license\":\"BUSL-1.1\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061001a3361001f565b610096565b600180546001600160a01b031916905561004381610046602090811b61049017901c565b50565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6106ee806100a56000396000f3fe608060405234801561001057600080fd5b50600436106100835760003560e01c806306fdde0314610088578063715018a6146100d057806379ba5097146100da5780638da5cb5b146100e2578063ab63e69c14610102578063e30c397814610115578063f2fde38b14610126578063f71a55f814610139578063fbac39511461014c575b600080fd5b604080518082018252601d81527f4f6e646f2046696e616e636520426c6f636b6c697374204f7261636c65000000602082015290516100c791906104f9565b60405180910390f35b6100d8610188565b005b6100d86101cc565b6100ea610246565b6040516001600160a01b0390911681526020016100c7565b6100d8610110366004610547565b610255565b6001546001600160a01b03166100ea565b6100d86101343660046105d8565b610332565b6100d8610147366004610547565b6103bf565b61017861015a3660046105d8565b6001600160a01b031660009081526002602052604090205460ff1690565b60405190151581526020016100c7565b33610191610246565b6001600160a01b0316146101c05760405162461bcd60e51b81526004016101b7906105fa565b60405180910390fd5b6101ca60006104e0565b565b60015433906001600160a01b0316811461023a5760405162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b60648201526084016101b7565b610243816104e0565b50565b6000546001600160a01b031690565b3361025e610246565b6001600160a01b0316146102845760405162461bcd60e51b81526004016101b7906105fa565b60005b818110156102f4576000600260008585858181106102a7576102a761062f565b90506020020160208101906102bc91906105d8565b6001600160a01b031681526020810191909152604001600020805460ff19169115159190911790556102ed81610645565b9050610287565b507f825ac0fb57c227a7d56aba274d9e0e69c9c6b837841a26298e3e0148c201ba28828260405161032692919061066c565b60405180910390a15050565b3361033b610246565b6001600160a01b0316146103615760405162461bcd60e51b81526004016101b7906105fa565b600180546001600160a01b0319166001600160a01b038316908117909155610387610246565b6001600160a01b03167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e2270060405160405180910390a350565b336103c8610246565b6001600160a01b0316146103ee5760405162461bcd60e51b81526004016101b7906105fa565b60005b8181101561045e576001600260008585858181106104115761041161062f565b905060200201602081019061042691906105d8565b6001600160a01b031681526020810191909152604001600020805460ff191691151591909117905561045781610645565b90506103f1565b507f3a615a701ac9b684212c0070be113e8c7847390b2cb8a03c9998684e2a86ae29828260405161032692919061066c565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b600180546001600160a01b031916905561024381610490565b600060208083528351808285015260005b818110156105265785810183015185820160400152820161050a565b506000604082860101526040601f19601f8301168501019250505092915050565b6000806020838503121561055a57600080fd5b823567ffffffffffffffff8082111561057257600080fd5b818501915085601f83011261058657600080fd5b81358181111561059557600080fd5b8660208260051b85010111156105aa57600080fd5b60209290920196919550909350505050565b80356001600160a01b03811681146105d357600080fd5b919050565b6000602082840312156105ea57600080fd5b6105f3826105bc565b9392505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052603260045260246000fd5b60006001820161066557634e487b7160e01b600052601160045260246000fd5b5060010190565b60208082528181018390526000908460408401835b868110156106ad576001600160a01b0361069a846105bc565b1682529183019190830190600101610681565b50969550505050505056fea2646970667358221220bfbd763ca9a7d9c7571edc742d3373c9a51b70763b9b65155b63d8317f32e3e864736f6c63430008100033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100835760003560e01c806306fdde0314610088578063715018a6146100d057806379ba5097146100da5780638da5cb5b146100e2578063ab63e69c14610102578063e30c397814610115578063f2fde38b14610126578063f71a55f814610139578063fbac39511461014c575b600080fd5b604080518082018252601d81527f4f6e646f2046696e616e636520426c6f636b6c697374204f7261636c65000000602082015290516100c791906104f9565b60405180910390f35b6100d8610188565b005b6100d86101cc565b6100ea610246565b6040516001600160a01b0390911681526020016100c7565b6100d8610110366004610547565b610255565b6001546001600160a01b03166100ea565b6100d86101343660046105d8565b610332565b6100d8610147366004610547565b6103bf565b61017861015a3660046105d8565b6001600160a01b031660009081526002602052604090205460ff1690565b60405190151581526020016100c7565b33610191610246565b6001600160a01b0316146101c05760405162461bcd60e51b81526004016101b7906105fa565b60405180910390fd5b6101ca60006104e0565b565b60015433906001600160a01b0316811461023a5760405162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b60648201526084016101b7565b610243816104e0565b50565b6000546001600160a01b031690565b3361025e610246565b6001600160a01b0316146102845760405162461bcd60e51b81526004016101b7906105fa565b60005b818110156102f4576000600260008585858181106102a7576102a761062f565b90506020020160208101906102bc91906105d8565b6001600160a01b031681526020810191909152604001600020805460ff19169115159190911790556102ed81610645565b9050610287565b507f825ac0fb57c227a7d56aba274d9e0e69c9c6b837841a26298e3e0148c201ba28828260405161032692919061066c565b60405180910390a15050565b3361033b610246565b6001600160a01b0316146103615760405162461bcd60e51b81526004016101b7906105fa565b600180546001600160a01b0319166001600160a01b038316908117909155610387610246565b6001600160a01b03167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e2270060405160405180910390a350565b336103c8610246565b6001600160a01b0316146103ee5760405162461bcd60e51b81526004016101b7906105fa565b60005b8181101561045e576001600260008585858181106104115761041161062f565b905060200201602081019061042691906105d8565b6001600160a01b031681526020810191909152604001600020805460ff191691151591909117905561045781610645565b90506103f1565b507f3a615a701ac9b684212c0070be113e8c7847390b2cb8a03c9998684e2a86ae29828260405161032692919061066c565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b600180546001600160a01b031916905561024381610490565b600060208083528351808285015260005b818110156105265785810183015185820160400152820161050a565b506000604082860101526040601f19601f8301168501019250505092915050565b6000806020838503121561055a57600080fd5b823567ffffffffffffffff8082111561057257600080fd5b818501915085601f83011261058657600080fd5b81358181111561059557600080fd5b8660208260051b85010111156105aa57600080fd5b60209290920196919550909350505050565b80356001600160a01b03811681146105d357600080fd5b919050565b6000602082840312156105ea57600080fd5b6105f3826105bc565b9392505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052603260045260246000fd5b60006001820161066557634e487b7160e01b600052601160045260246000fd5b5060010190565b60208082528181018390526000908460408401835b868110156106ad576001600160a01b0361069a846105bc565b1682529183019190830190600101610681565b50969550505050505056fea2646970667358221220bfbd763ca9a7d9c7571edc742d3373c9a51b70763b9b65155b63d8317f32e3e864736f6c63430008100033",
+  "devdoc": {
+    "author": "Ondo Finance",
+    "kind": "dev",
+    "methods": {
+      "acceptOwnership()": {
+        "details": "The new owner accepts the ownership transfer."
+      },
+      "addToBlocklist(address[])": {
+        "params": {
+          "accounts": "Array of addresses to block"
+        }
+      },
+      "isBlocked(address)": {
+        "params": {
+          "addr": "Address to check"
+        },
+        "returns": {
+          "_0": "True if account is blocked, false otherwise"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "pendingOwner()": {
+        "details": "Returns the address of the pending owner."
+      },
+      "removeFromBlocklist(address[])": {
+        "params": {
+          "accounts": "Array of addresses to unblock"
+        }
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner."
+      }
+    },
+    "title": "Blocklist",
+    "version": 1
+  },
+  "userdoc": {
+    "events": {
+      "BlockedAddressesAdded(address[])": {
+        "notice": "Event emitted when addresses are added to the blocklist"
+      },
+      "BlockedAddressesRemoved(address[])": {
+        "notice": "Event emitted when addresses are removed from the blocklist"
+      }
+    },
+    "kind": "user",
+    "methods": {
+      "addToBlocklist(address[])": {
+        "notice": "Function to add a list of accounts to the blocklist"
+      },
+      "isBlocked(address)": {
+        "notice": "Function to check if an account is blocked"
+      },
+      "name()": {
+        "notice": "Returns name of contract"
+      },
+      "removeFromBlocklist(address[])": {
+        "notice": "Function to remove a list of accounts from the blocklist"
+      }
+    },
+    "notice": "This contract manages the blocklist status for accounts.",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8191,
+        "contract": "contracts/usdy/blocklist/Blocklist.sol:Blocklist",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 8296,
+        "contract": "contracts/usdy/blocklist/Blocklist.sol:Blocklist",
+        "label": "_pendingOwner",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 15454,
+        "contract": "contracts/usdy/blocklist/Blocklist.sol:Blocklist",
+        "label": "blockedAddresses",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_address,t_bool)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      }
+    }
+  }
+}
