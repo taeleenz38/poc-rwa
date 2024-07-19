@@ -1,13 +1,14 @@
+
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 import { cookieStorage, createStorage } from 'wagmi'
 import { mainnet, sepolia } from 'wagmi/chains'
 
-export const projectId = '087264563b883013f3b7f4cd1c1572d1'
+export const projectId = '61f079f4d433c01b6d2a74a1e78cd40e'
 
 const metadata = {
-  name: 'Fund Tokenisation',
-  description: 'Web3Modal Example',
+  name: 'POC-RWA',
+  description: 'AppKit Example',
   url: 'https://localhost:3000',
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
