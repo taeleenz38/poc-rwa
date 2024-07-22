@@ -13,10 +13,10 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {status !== "connected" && <div className="text-center mt-80 font-bold text-2xl">Please Connect Your Wallet</div>}
-      {address === "0x3aE47F6F7B2705De921374f57Df212C18343cC9d" && (
+      {address === "0xD44B3b1e21d5F55f5b5Bb050E68218552aa4eAfC" && (
         <UserFunctions />
       )}
-      {address === "0xe0e3D4141D7FC3697AD469b4ED5b149D30b7069B" && (
+      {address === "0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565" && (
         <AdminFunctions />
       )}
     </main>
