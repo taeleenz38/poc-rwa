@@ -1,52 +1,62 @@
 "use client";
 import { ethers } from "ethers";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "../../../../../../blockchain/artifacts/contracts/interfaces/IAllowlist.sol/IAllowlist.json";
-import {
-  useWriteContract,
-  useSignMessage,
-  useWaitForTransactionReceipt,
-} from "wagmi";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
-interface AllowlistProps {
+interface SetValidTermIndexesProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [validTermIndexes, setValidTermIndexes] = useState<number[]>([]);
   const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setWalletAddress(null);
+    setValidTermIndexes([]);
     setTxHash(null);
   };
+
   const onCloseModal = () => {
     onClose();
     resetForm();
   };
 
-  const onWalletAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWalletAddress(e.target.value);
+  const onValidTermSetValidTermIndexesChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    const indexes = value
+      .split(",")
+      .map((item) => parseInt(item.trim(), 10))
+      .filter((item) => !isNaN(item));
+    setValidTermIndexes(indexes);
   };
 
-  const handleAllowlist = async () => {
+  const handleSetValidTermIndexes = async () => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_ALLOWLIST_ADDRESS as `0x${string}`,
-        functionName: "setAccountStatus",
-        args: [walletAddress as `0x${string}`, 0, true],
+        functionName: "setValidTermIndexes",
+        args: [validTermIndexes],
       });
       setTxHash(tx);
-      console.log("Term successfully added - transaction hash:", tx);
+      console.log(
+        "Successfully set valid term indexes - transaction hash:",
+        tx
+      );
     } catch (error) {
-      console.error("Error adding term to allowlist:", error);
+      console.error("Error setting valid term indexes:", error);
     }
   };
 
@@ -60,18 +70,18 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center">
       <div className="p-6 rounded-lg shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Add User To Allowlist</h2>
+          <h2 className="text-xl font-bold">Set Valid Term Indexes</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField
-          label="Wallet Address:"
-          value={walletAddress || ""}
-          onChange={onWalletAddressChange}
+          label="Valid Term Indexes:"
+          value={validTermIndexes.join(", ")}
+          onChange={onValidTermSetValidTermIndexesChange}
         />
         <div className="w-full flex justify-center">
           <Submit
-            onClick={handleAllowlist}
-            label={isPending ? "Confirming..." : "Add User"}
+            onClick={handleSetValidTermIndexes}
+            label={isPending ? "Confirming..." : "Set"}
             disabled={isPending || isLoading}
           />
         </div>
@@ -90,4 +100,4 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default Allowlist;
+export default SetValidTermIndexes;

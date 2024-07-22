@@ -12,7 +12,11 @@ export default function Home() {
   });
   return (
     <main className="min-h-screen">
-      {status !== "connected" && <div className="text-center mt-80 font-bold text-2xl">Please Connect Your Wallet</div>}
+      {status !== "connected" && (
+        <div className="text-center mt-80 font-bold text-2xl">
+          Please Connect Your Wallet
+        </div>
+      )}
       {address === "0xD44B3b1e21d5F55f5b5Bb050E68218552aa4eAfC" && (
         <UserFunctions />
       )}
@@ -22,3 +26,5 @@ export default function Home() {
     </main>
   );
 }
+
+//
