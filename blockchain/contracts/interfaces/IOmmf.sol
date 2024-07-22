@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: MIT
+import "contracts/external/openzeppelin/contracts/token/IERC20.sol";
+
+pragma solidity 0.8.16; // latest available for using OZ
+
+interface IOMMF is IERC20 {
+  function getPooledCashByShares(uint256) external view returns (uint256);
+
+  function getSharesByPooledCash(uint256) external view returns (uint256);
+
+  function submit(address _referral) external payable returns (uint256);
+}
