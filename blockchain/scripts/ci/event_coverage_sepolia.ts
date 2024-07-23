@@ -23,11 +23,11 @@ async function main() {
   const signers = await ethers.getSigners();
 
   const usdcWhaleSigner = signers[0];
-  const guardian = signers[1];
-  const managerAdmin = signers[2];
+  const guardian = signers[0];
+  const managerAdmin = signers[0];
   // const pauser = signers[3];
-  const assetSender = signers[4];
-  const user = signers[7];
+  const assetSender = signers[0];
+  const user = signers[1];
 
   const audc = await ethers.getContractAt("A$DC", USDC_MAINNET);
   const abbyManager = await ethers.getContract("ABBYManager");
@@ -115,10 +115,10 @@ async function main() {
   await tx2.wait(); 
   console.log("setClaimableTimestamp done!!");
   
-  // for (var i = 0; i < 10; i++){
-  //   await waitForNextBlock()
-  //   console.log("Block incremented by one.");
-  // }
+  for (var i = 0; i < 10; i++){
+    await waitForNextBlock()
+    console.log("Block incremented by one.");
+  }
   
  
   const currentTimestamp = (await ethers.provider.getBlock()).timestamp;
