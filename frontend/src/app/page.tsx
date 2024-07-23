@@ -5,26 +5,46 @@ import UserFunctions from "@/app/components/organisms/UserFunctions";
 import AdminFunctions from "@/app/components/organisms/AdminFunctions";
 import { useAccount } from "wagmi";
 import { config } from "@/config";
+import { PackageCard } from "./components/organisms/PackageCard";
+import {
+  BaseIcon,
+  EthIcon,
+  SolanaIcon,
+  MoonbeamIcon,
+  LiquidIcon,
+} from "@/app/components/atoms/Icons";
 
 export default function Home() {
-  const { address, status } = useAccount({
-    config,
-  });
   return (
-    <main className="min-h-screen">
-      {status !== "connected" && (
-        <div className="text-center mt-80 font-bold text-2xl">
-          Please Connect Your Wallet
-        </div>
-      )}
-      {address === "0xD44B3b1e21d5F55f5b5Bb050E68218552aa4eAfC" && (
-        <UserFunctions />
-      )}
-      {address === "0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565" && (
-        <AdminFunctions />
-      )}
+    <main className="h-screen bg-light text-white px-96 text-black">
+      <h1 className="text-5xl font-semibold pt-14 w-3/5">
+        Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
+      </h1>
+      <h2 className="text-xl mt-10 w-1/2">
+        Copiam is bridging the next generation of financial infrastructure in
+        DeFi with access to the deepest, most efficient institutional FX and
+        capital markets in TradFi.
+      </h2>
+      <div className="flex p-2 mt-10">
+        <PackageCard
+          heading="ABBY"
+          subHeading="Australian Dollar Yield"
+          APY="4.3%"
+          TVL="$327.50M"
+          href="/invest"
+          backgroundImage="url('/background.svg')"
+          footerText="For Wholesale Investors"
+          chains={
+            <>
+              <BaseIcon />
+              <EthIcon />
+              <SolanaIcon />
+              <MoonbeamIcon />
+              <LiquidIcon />
+            </>
+          }
+        />
+      </div>
     </main>
   );
 }
-
-//

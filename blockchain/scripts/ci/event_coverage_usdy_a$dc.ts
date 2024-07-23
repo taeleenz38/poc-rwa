@@ -78,7 +78,7 @@ async function main() {
   console.log("Request Subscription!");
   const tx = await usdyManager.connect(user).requestSubscription(parseUnits("20000", 18), { gasPrice, gasLimit });
   const receipt = await tx.wait();
-  console.log("--------------------Request Subscription done!----------------------------------", receipt);
+  console.log("--------------------Request Subscription done!-----------------------", receipt);
   
   
   const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);

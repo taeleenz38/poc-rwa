@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Montserrat } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { cookieToInitialState } from "wagmi";
 import { config } from "@/config";
 import Web3ModalProvider from "@/context";
 import Navbar from "@/app/components/Navbar";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+const notoSans = Noto_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Real World Asset - POC",
-  description: "Real World Asset - POC",
+  title: "COPIAM",
+  description: "COPIAM",
 };
 
 export default function RootLayout({
@@ -21,8 +21,8 @@ export default function RootLayout({
 }>) {
   const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
-    <html lang="en">
-      <body className={montserrat.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={notoSans.className}>
         <Navbar />
         <Web3ModalProvider initialState={initialState}>
           {children}

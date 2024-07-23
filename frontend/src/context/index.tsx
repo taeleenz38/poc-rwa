@@ -17,8 +17,8 @@ createWeb3Modal({
   wagmiConfig: config,
   projectId,
   themeVariables: {
-    "--w3m-accent": "#8a69df",
-    "--w3m-color-mix": "#8a69df",
+    "--w3m-accent": "#C99383",
+    "--w3m-color-mix": "#C99383",
   },
 });
 
