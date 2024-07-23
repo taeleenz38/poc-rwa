@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Button from "@/app/components/atoms/Buttons/Button";
 
-type FundDetailsProps = {
+type FundDetailsAdminProps = {
   logoSrc: string;
   altText: string;
   fundName: string;
@@ -11,13 +11,9 @@ type FundDetailsProps = {
   price: string;
   tvl: string;
   chains: React.ReactNode;
-  Button1Text: string;
-  Button2Text: string;
-  Button1Class: string;
-  Button2Class: string;
 };
 
-const FundDetails = (props: FundDetailsProps) => {
+const FundDetailsAdmin = (props: FundDetailsAdminProps) => {
   const {
     logoSrc,
     altText,
@@ -27,16 +23,12 @@ const FundDetails = (props: FundDetailsProps) => {
     price,
     tvl,
     chains,
-    Button1Text,
-    Button2Text,
-    Button1Class,
-    Button2Class,
   } = props;
 
   return (
     <div className="bg-[#122A5F] flex justify-center items-center">
       <div className="max-w-screen-xl h-full bg-hero-pattern bg-no-repeat bg-right-bottom bg-70% grid lg:grid-cols-2 grid-cols-1 pt-20 pb-36 px-8 font-normal text-light bg-url('/assets/ABBY-background.svg')">
-        <div className="grid col-span-1 ">
+        <div className="grid col-span-1">
           <div className="flex justify-start items-center gap-x-2 mb-1">
             <Image
               src={logoSrc}
@@ -53,8 +45,14 @@ const FundDetails = (props: FundDetailsProps) => {
             <span className="text-3xl align-top">*</span>
           </p>
           <div className="flex gap-x-2 mt-3">
-            <Button text={Button1Text} className={Button1Class} />
-            <Button text={Button2Text} className={Button2Class} />
+            <Button
+              text="Set Price"
+              className="bg-light text-primary hover:bg-primary hover:text-light"
+            />
+            <Button
+              text="Update Price ID"
+              className="bg-[#122A5F] text-light hover:bg-primary"
+            />
           </div>
           <div className="flex justify-between items-center pt-14 gap-x-8 gap-y-2">
             <div className="flex-col justify-start font-normal items-center text-light">
@@ -76,4 +74,4 @@ const FundDetails = (props: FundDetailsProps) => {
   );
 };
 
-export default FundDetails;
+export default FundDetailsAdmin;

@@ -1,16 +1,14 @@
 import React from "react";
-import Disclaimer from "@/app/components/molecules/disclaimer";
 import FundDetails from "@/app/components/organisms/FundDetails";
-import FundDescription from "@/app/components/organisms/FundDescription";
 import {
-  BaseIcon,
   EthIcon,
   SolanaIcon,
   MoonbeamIcon,
   LiquidIcon,
+  BaseIcon,
 } from "@/app/components/atoms/Icons";
 
-const Invest = () => {
+const Pricing = () => {
   return (
     <div>
       <FundDetails
@@ -21,8 +19,8 @@ const Invest = () => {
         yieldText="Stable, high-quality Australian Dollar yield"
         price="$1.0445"
         tvl="$327.50M"
-        Button1Text="Buy AYF"
-        Button2Text="Redeem"
+        Button1Text="Set Price"
+        Button2Text="Update Price ID"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-[#122A5F] text-light hover:bg-primary"
         chains={
@@ -35,9 +33,8 @@ const Invest = () => {
           </>
         }
       />
-      <FundDescription />
     </div>
   );
 };
 
-export default Invest;
+export default Pricing;

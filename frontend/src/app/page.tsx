@@ -27,9 +27,9 @@ export default function Home() {
       </h2>
       <div className="flex p-2 mt-10">
         <PackageCard
-          heading="ABBY"
+          heading="AYF"
           subHeading="Australian Dollar Yield"
-          APY="4.3%"
+          PRICE="1.048"
           TVL="$327.50M"
           href="/invest"
           backgroundImage="url('/background.svg')"

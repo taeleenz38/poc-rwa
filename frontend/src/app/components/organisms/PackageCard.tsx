@@ -8,7 +8,7 @@ type PackageCardProps = {
   backgroundImage: string;
   heading: string;
   subHeading: string;
-  APY: string;
+  PRICE: string;
   TVL: string;
   footerText: string;
   chains: React.ReactNode;
@@ -20,7 +20,7 @@ export const PackageCard = (props: PackageCardProps) => {
     backgroundImage,
     heading,
     subHeading,
-    APY,
+    PRICE,
     TVL,
     footerText,
     chains,
@@ -50,7 +50,7 @@ export const PackageCard = (props: PackageCardProps) => {
         </div>
         <div className="flex flex-col space-y-4">
           <div>
-            <h1 className=" font-medium text-4xl">{APY} APY</h1>
+            <h1 className=" font-medium text-4xl">${PRICE}</h1>
           </div>
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2   ">

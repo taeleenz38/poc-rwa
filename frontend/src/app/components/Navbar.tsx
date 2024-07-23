@@ -4,11 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAccount } from "wagmi";
 import { config } from "@/config";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  const { address, status } = useAccount({
-    config,
-  });
+  const { address } = useAccount({ config });
+  const currentPath = usePathname();
+
   return (
     <div className="flex w-full justify-between items-center px-80 border-b-2 border-light py-6 bg-primary text-light">
       <div className="flex items-center">
@@ -25,19 +26,25 @@ const Navbar = () => {
           <>
             <Link
               href="/invest"
-              className="font-semibold mr-14 text-xl hover:border-b"
+              className={`font-semibold mr-14 text-xl hover:border-b ${
+                currentPath === "/invest" ? "border-b" : ""
+              }`}
             >
               Invest
             </Link>
             <Link
-              href="#"
-              className="font-semibold mr-14 text-xl hover:border-b"
+              href="/portfolio"
+              className={`font-semibold mr-14 text-xl hover:border-b ${
+                currentPath === "/portfolio" ? "border-b" : ""
+              }`}
             >
               Portfolio
             </Link>
             <Link
-              href="#"
-              className="font-semibold mr-14 text-xl hover:border-b"
+              href="/about"
+              className={`font-semibold mr-14 text-xl hover:border-b ${
+                currentPath === "/about" ? "border-b" : ""
+              }`}
             >
               About
             </Link>
@@ -46,20 +53,26 @@ const Navbar = () => {
         {address === "0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565" && (
           <>
             <Link
-              href="/admin"
-              className="font-semibold mr-14 text-xl hover:border-b"
+              href="/pricing"
+              className={`font-semibold mr-14 text-xl hover:border-b ${
+                currentPath === "/pricing" ? "border-b" : ""
+              }`}
             >
-              Admin
+              Pricing
             </Link>
             <Link
               href="/allowlist"
-              className="font-semibold mr-14 text-xl hover:border-b"
+              className={`font-semibold mr-14 text-xl hover:border-b ${
+                currentPath === "/allowlist" ? "border-b" : ""
+              }`}
             >
               Allowlist
             </Link>
             <Link
-              href="#"
-              className="font-semibold mr-14 text-xl hover:border-b"
+              href="/about"
+              className={`font-semibold mr-14 text-xl hover:border-b ${
+                currentPath === "/about" ? "border-b" : ""
+              }`}
             >
               About
             </Link>
