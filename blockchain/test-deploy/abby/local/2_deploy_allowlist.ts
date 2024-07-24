@@ -1,6 +1,3 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
-import { KYC_REGISTRY } from "../../mainnet_constants";
 const { ethers, deployments, getNamedAccounts } = require("hardhat");
 
 async function main () {

@@ -1,15 +1,10 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
-import { KYC_REGISTRY, SANCTION_ADDRESS } from "../../mainnet_constants";
-const { ethers, deployments, getNamedAccounts } = require("hardhat");
-
 async function main() {
   const { save } = deployments;
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
   const signers = await ethers.getSigners();
 
-  const guardian = signers[0];
+  const guardian = signers[1];
   console.log('the guardian address is:', guardian.address);
 
   await deploy("ABBYFactory", {
@@ -18,18 +13,20 @@ async function main() {
     log: true,
   });
 
-  // USDY deps
+  // ABBY deps
   const factory = await ethers.getContract("ABBYFactory");
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
   const tx = await factory
     .connect(guardian)
-    .deployABBY("ABBY", "ABBY", [
+    .deployABBY("AYF", "AYF", [
       blocklist.address,
-      allowlist.address,
-      SANCTION_ADDRESS,
+      allowlist.address
     ]);
+
+  //ABBY (AYF) - DEFAULT_ADMIN_ROLE, PAUSER_ROLE - guardian, owner - guardian
+  //MINTER_ROLE - manager
   
   const receipt = await tx.wait();
 
@@ -58,8 +55,8 @@ async function main() {
   };
 
   await save("ABBY", abbyProxied);
-  await save("ProxyAdminUSDY", abbyAdmin);
-  await save("USDYImplementation", abbyImpl);
+  await save("ProxyAdminABBY", abbyAdmin);
+  await save("ABBYImplementation", abbyImpl);
 };
 
 main().catch((error) => {

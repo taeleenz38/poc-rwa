@@ -3,9 +3,6 @@ pragma solidity 0.8.16;
 
 /**
  * @title IMulticall
- * @author Ondo Finance
- * @notice This interface dictates the required external functions for Ondo's
- *         multicall contract.
  */
 interface IMulticall {
   /// @dev External call data structure

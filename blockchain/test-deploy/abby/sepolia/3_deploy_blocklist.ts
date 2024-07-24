@@ -1,13 +1,10 @@
-import { KYC_REGISTRY } from "../../mainnet_constants";
-const { ethers, deployments, getNamedAccounts } = require("hardhat");
-
 async function main() {
   const { save } = deployments;
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
   const signers = await ethers.getSigners();
 
-  const guardian = signers[0];
+  const guardian = signers[1];
 
   // Deploy the Blocklist contract
   await deploy("Blocklist", {

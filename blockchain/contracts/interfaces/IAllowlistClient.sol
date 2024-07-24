@@ -5,8 +5,6 @@ import "contracts/interfaces/IAllowlist.sol";
 
 /**
  * @title IAllowlistClient
- * @author Ondo Finance
- * @notice The client interface for Ondo's Allowlist contract.
  */
 interface IAllowlistClient {
   /// @notice Returns reference to the allowlist that this client queries

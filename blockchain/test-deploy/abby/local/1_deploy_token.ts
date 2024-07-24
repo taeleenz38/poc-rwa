@@ -1,5 +1,4 @@
 import {ethers} from "hardhat";
-import * as fs from 'fs';
 const { deployments, getNamedAccounts } = require("hardhat");
 
 async function main() {

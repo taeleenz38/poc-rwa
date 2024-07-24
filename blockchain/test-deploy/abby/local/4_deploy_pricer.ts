@@ -1,7 +1,4 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
 import { parseUnits } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
 const { ethers, deployments, getNamedAccounts } = require("hardhat");
 
 async function main() {
@@ -12,17 +9,17 @@ async function main() {
   const guardian = signers[1];
   const managerAdmin = signers[2];
 
-  await deploy("USDY_Pricer", {
+  await deploy("ABBY_Pricer", {
     from: deployer,
     contract: "Pricer",
     args: [guardian.address, managerAdmin.address],
     log: true,
   });
 
-  const pricer = await ethers.getContract("USDY_Pricer");
+  const pricer = await ethers.getContract("ABBY_Pricer");
 
   // Set price to $1
-  await pricer.connect(managerAdmin).addPrice(parseUnits("10", 18), "1");
+  // await pricer.connect(managerAdmin).addPrice(parseUnits("10", 18), "1");
 };
 
 main().catch((error) => {
