@@ -11,7 +11,7 @@ const Navbar = () => {
   const currentPath = usePathname();
 
   return (
-    <div className="flex w-full justify-between items-center px-80 border-b-2 border-light py-6 bg-primary text-light">
+    <div className="flex w-full justify-between items-center px-80 border-b-2 border-light py-4 bg-primary text-light">
       <div className="flex items-center">
         <Link href="/">
           <Image
@@ -26,24 +26,24 @@ const Navbar = () => {
           <>
             <Link
               href="/invest"
-              className={`font-semibold mr-14 text-xl hover:border-b ${
-                currentPath === "/invest" ? "border-b" : ""
+              className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                currentPath === "/invest" ? "text-secondary" : ""
               }`}
             >
               Invest
             </Link>
             <Link
               href="/portfolio"
-              className={`font-semibold mr-14 text-xl hover:border-b ${
-                currentPath === "/portfolio" ? "border-b" : ""
+              className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                currentPath === "/portfolio" ? "text-secondary" : ""
               }`}
             >
               Portfolio
             </Link>
             <Link
               href="/about"
-              className={`font-semibold mr-14 text-xl hover:border-b ${
-                currentPath === "/about" ? "border-b" : ""
+              className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                currentPath === "/about" ? "text-secondary" : ""
               }`}
             >
               About
@@ -54,24 +54,24 @@ const Navbar = () => {
           <>
             <Link
               href="/pricing"
-              className={`font-semibold mr-14 text-xl hover:border-b ${
-                currentPath === "/pricing" ? "border-b" : ""
+              className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                currentPath === "/pricing" ? "text-secondary" : ""
               }`}
             >
               Pricing
             </Link>
             <Link
               href="/allowlist"
-              className={`font-semibold mr-14 text-xl hover:border-b ${
-                currentPath === "/allowlist" ? "border-b" : ""
+              className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                currentPath === "/allowlist" ? "text-secondary" : ""
               }`}
             >
               Allowlist
             </Link>
             <Link
               href="/about"
-              className={`font-semibold mr-14 text-xl hover:border-b ${
-                currentPath === "/about" ? "border-b" : ""
+              className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                currentPath === "/about" ? "text-secondary" : ""
               }`}
             >
               About

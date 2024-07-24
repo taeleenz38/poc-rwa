@@ -20,7 +20,7 @@ const TextField: React.FC<TextFieldProps> = ({
       <label className="block font-bold w-1/4 mr-4">{label}</label>
       <input
         type={type}
-        className="mt-1 bg-slate-800 block w-full px-3 py-2 border border-white rounded-md shadow-sm focus:outline-none focus:ring-[#8a69df] focus:border-[#8a69df]"
+        className="mt-1 text-black bg-slate-800 block w-full px-3 py-2 border border-light rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
         value={value}
         onChange={onChange}
       />

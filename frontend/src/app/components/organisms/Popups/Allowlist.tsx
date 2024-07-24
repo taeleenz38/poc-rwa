@@ -57,8 +57,8 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg shadow-md shadow-white w-1/4">
+    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl font-bold">Add User To Allowlist</h2>
           <CloseButton onClick={onCloseModal} />
@@ -68,7 +68,7 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
           value={walletAddress || ""}
           onChange={onWalletAddressChange}
         />
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-end">
           <Submit
             onClick={handleAllowlist}
             label={isPending ? "Confirming..." : "Add User"}

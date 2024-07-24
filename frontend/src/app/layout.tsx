@@ -6,6 +6,7 @@ import { cookieToInitialState } from "wagmi";
 import { config } from "@/config";
 import Web3ModalProvider from "@/context";
 import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 const notoSans = Noto_Sans({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Web3ModalProvider initialState={initialState}>
           {children}
         </Web3ModalProvider>
+        <Footer />
       </body>
     </html>
   );

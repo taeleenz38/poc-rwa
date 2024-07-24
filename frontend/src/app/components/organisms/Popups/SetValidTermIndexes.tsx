@@ -18,12 +18,12 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
   onClose,
 }) => {
   const [validTermIndexes, setValidTermIndexes] = useState<number[]>([]);
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [tx2Hash, setTx2Hash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
     setValidTermIndexes([]);
-    setTxHash(null);
+    setTx2Hash(null);
   };
 
   const onCloseModal = () => {
@@ -50,7 +50,7 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
         functionName: "setValidTermIndexes",
         args: [validTermIndexes],
       });
-      setTxHash(tx);
+      setTx2Hash(tx2Hash);
       console.log(
         "Successfully set valid term indexes - transaction hash:",
         tx
@@ -61,7 +61,7 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
   };
 
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
-    hash: txHash as `0x${string}`,
+    hash: tx2Hash as `0x${string}`,
   });
 
   if (!isOpen) return null;
@@ -85,12 +85,12 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
             disabled={isPending || isLoading}
           />
         </div>
-        {txHash && (
+        {tx2Hash && (
           <div className="mt-4 text-white">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {txHash}
+                Transaction successful! Hash: {tx2Hash}
               </p>
             )}
           </div>

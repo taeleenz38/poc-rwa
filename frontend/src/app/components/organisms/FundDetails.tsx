@@ -1,6 +1,11 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/app/components/atoms/Buttons/Button";
+import RequestDeposit from "@/app/components/organisms/Popups/RequestDeposit";
+import RequestRedemption from "@/app/components/organisms/Popups/RequestRedemption";
+import Allowlist from "@/app/components/organisms/Popups/Allowlist";
+import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
 
 type FundDetailsProps = {
   logoSrc: string;
@@ -15,6 +20,8 @@ type FundDetailsProps = {
   Button2Text: string;
   Button1Class: string;
   Button2Class: string;
+  onButton1Click: () => void;
+  onButton2Click: () => void;
 };
 
 const FundDetails = (props: FundDetailsProps) => {
@@ -31,6 +38,8 @@ const FundDetails = (props: FundDetailsProps) => {
     Button2Text,
     Button1Class,
     Button2Class,
+    onButton1Click,
+    onButton2Click,
   } = props;
 
   return (
@@ -53,8 +62,16 @@ const FundDetails = (props: FundDetailsProps) => {
             <span className="text-3xl align-top">*</span>
           </p>
           <div className="flex gap-x-2 mt-3">
-            <Button text={Button1Text} className={Button1Class} />
-            <Button text={Button2Text} className={Button2Class} />
+            <Button
+              text={Button1Text}
+              className={Button1Class}
+              onClick={onButton1Click}
+            />
+            <Button
+              text={Button2Text}
+              className={Button2Class}
+              onClick={onButton2Click}
+            />
           </div>
           <div className="flex justify-between items-center pt-14 gap-x-8 gap-y-2">
             <div className="flex-col justify-start font-normal items-center text-light">

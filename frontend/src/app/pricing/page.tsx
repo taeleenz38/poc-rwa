@@ -10,7 +10,7 @@ import {
 
 const Pricing = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <FundDetails
         logoSrc="/LOGO.png"
         altText="Fund logo"
