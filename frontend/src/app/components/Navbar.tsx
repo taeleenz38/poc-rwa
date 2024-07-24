@@ -11,7 +11,7 @@ const Navbar = () => {
   const currentPath = usePathname();
 
   return (
-    <div className="flex w-full justify-between items-center px-80 border-b-2 border-light py-4 bg-primary text-light">
+    <div className="flex w-full fixed top-0 justify-between z-20 items-center px-80 border-b-2 border-light py-4 bg-primary text-light">
       <div className="flex items-center">
         <Link href="/">
           <Image
@@ -69,12 +69,12 @@ const Navbar = () => {
               Allowlist
             </Link>
             <Link
-              href="/about"
+              href="/admin"
               className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                currentPath === "/about" ? "text-secondary" : ""
+                currentPath === "/admin" ? "text-secondary" : ""
               }`}
             >
-              About
+              Admin
             </Link>
           </>
         )}

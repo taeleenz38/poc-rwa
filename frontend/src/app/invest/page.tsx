@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import Disclaimer from "@/app/components/molecules/disclaimer";
 import FundDetails from "@/app/components/organisms/FundDetails";
@@ -21,10 +23,12 @@ const Invest = () => {
         yieldText="Stable, high-quality Australian Dollar yield"
         price="$1.0445"
         tvl="$327.50M"
-        Button1Text="Buy AYF"
-        Button2Text="Redeem"
+        Button1Text="Request Subscription"
+        Button2Text="Request Redemption"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-[#122A5F] text-light hover:bg-primary"
+        onButton1Click={() => {}}
+        onButton2Click={() => {}}
         chains={
           <>
             <EthIcon className="lg:w-8 lg:h-8" />

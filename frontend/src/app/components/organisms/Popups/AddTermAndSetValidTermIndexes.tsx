@@ -117,7 +117,7 @@ const AddTermAndSetValidTermIndexes: React.FC<
           />
         </div>
         {txHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white mb-4">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <p className="text-white overflow-x-scroll">
