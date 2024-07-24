@@ -1,6 +1,3 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
-import { KYC_REGISTRY } from "../../mainnet_constants";
 const { ethers, deployments, getNamedAccounts } = require("hardhat");
 
 async function main () {
@@ -10,7 +7,7 @@ async function main () {
   const signers = await ethers.getSigners();
   
   console.log("The deployer is:", deployer.address);
-  const guardian = signers[0];
+  const guardian = signers[1];
 
   //let gasPrice = await ethers.provider.getGasPrice();
   //gasPrice = gasPrice.mul(ethers.BigNumber.from(110)).div(ethers.BigNumber.from(100));
@@ -28,7 +25,8 @@ async function main () {
 
   const tx = await factory
     .connect(guardian)
-    .deployAllowlist(guardian.address, guardian.address);
+    .deployAllowlist(guardian.address, guardian.address); // admin - DEFAULT_ADMIN_ROLE - ALLOWLIST_ADMIN - addTerm - setCurrentTermIndex - setValidTermIndexes
+                                                          // setter - ALLOWLIST_SETTER - setAccountStatus
 
   const receipt = await tx.wait();
   

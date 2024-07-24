@@ -11,7 +11,7 @@ Note: Execute during low Sepolia congestion periods.
 
 ## Deploy AUDC contract:
 ```
-npx hardhat run .\test-deploy\usdy\sepolia\1_deploy_token.ts --network sepolia
+npx hardhat run .\test-deploy\abby\sepolia\1_deploy_token.ts --network sepolia
 ```
 
 Output: 
@@ -23,31 +23,31 @@ Edit ```test-deploy\mainnet_constants.ts```, set the ```A$DC address as``` the `
 ## Deploy Allowlist:
 
 ```
-npx hardhat run .\test-deploy\usdy\sepolia\2_deploy_allowlist.ts --network sepolia
+npx hardhat run .\test-deploy\abby\sepolia\2_deploy_allowlist.ts --network sepolia
 ```
 
 ## Deploy Blocklist:
 
 ```
-npx hardhat run .\test-deploy\usdy\sepolia\3_deploy_blocklist.ts --network sepolia
+npx hardhat run .\test-deploy\abby\sepolia\3_deploy_blocklist.ts --network sepolia
 ```
 
 ## Deploy pricer:
 
 ```
-npx hardhat run .\test-deploy\usdy\sepolia\4_deploy_pricer.ts --network sepolia
+npx hardhat run .\test-deploy\abby\sepolia\4_deploy_pricer.ts --network sepolia
 ```
 
-## Deploy USDY factory:
+## Deploy ABBY factory:
 
 ```
-npx hardhat run .\test-deploy\usdy\sepolia\5_deploy_usdy_factory.ts --network sepolia
+npx hardhat run .\test-deploy\abby\sepolia\5_deploy_abby_factory.ts --network sepolia
 ```
 
-## Deploy USDY manager:
+## Deploy ABBY manager:
 
 ```
-npx hardhat run .\test-deploy\usdy\sepolia\6_deploy_usdyManager.ts --network sepolia
+npx hardhat run .\test-deploy\abby\sepolia\6_deploy_abbyManager.ts --network sepolia
 ```
 
 ## End-to-End flow:
@@ -58,15 +58,15 @@ npx hardhat run .\scripts\ci\event_coverage_sepolia.ts --network sepolia
 ### The above scripts does the following:
 
 1. Guardian adds the user address to the allowlist.
-2. AUDC Whale signer transfers AUDC to user, and approves USDY manager to spend AUDC on user's behalf.
+2. AUDC Whale signer transfers AUDC to user, and approves ABBY manager to spend AUDC on user's behalf.
 3. User requests subscription parsing an AUDC amount 
      a. AUDC is deposited to the asset receipient.
      b. A deposit ID is generated.
 4. Manager Admin sets the price for the deposit ID.
-5. Manager Admin sets the claim timestamp (i.e., a block timestamp after which the user can receive USDY tokens).
-6. User invokes "claimMint" with their deposit ID to receive USDY tokens.
-7. USDY manager address granted approval to spend USDY tokens.
-8. User requests redemption of USDY tokens back to AUDC - in this step the USDY of the user is burnt.
+5. Manager Admin sets the claim timestamp (i.e., a block timestamp after which the user can receive ABBY tokens).
+6. User invokes "claimMint" with their deposit ID to receive ABBY tokens.
+7. ABBY manager address granted approval to spend ABBY tokens.
+8. User requests redemption of ABBY tokens back to AUDC - in this step the ABBY of the user is burnt.
 9. Manager admin sets the price for the redemption by invoking "setPriceIdForRedemptions".
 10. AUDC whale signer transfers AUDC to asset sender, and the asset sender provides approval to the user.
 11. User invokes "claimRedemption" parsing the deposit ID, and the user is refunded AUDC.

@@ -25,13 +25,11 @@ contract ABBY is
     string memory name,
     string memory symbol,
     address blocklist,
-    address allowlist,
-    address sanctionsList
+    address allowlist
   ) public initializer {
     __ERC20PresetMinterPauser_init(name, symbol);
     __BlocklistClientInitializable_init(blocklist);
     __AllowlistClientInitializable_init(allowlist);
-    __SanctionsListClientInitializable_init(sanctionsList);
   }
 
   /**
@@ -79,18 +77,18 @@ contract ABBY is
     if (from != msg.sender && to != msg.sender) {
       require(
         _isAllowed(msg.sender),
-        "USDY: 'sender' address not on allowlist"
+        "ABBY: 'sender' address not on allowlist"
       );
     }
 
     if (from != address(0)) {
       // If not minting
-      require(_isAllowed(from), "USDY: 'from' address not on allowlist");
+      require(_isAllowed(from), "ABBY: 'from' address not on allowlist");
     }
 
     if (to != address(0)) {
       // If not burning
-      require(_isAllowed(to), "USDY: 'to' address not on allowlist");
+      require(_isAllowed(to), "ABBY: 'to' address not on allowlist");
     }
   }
 

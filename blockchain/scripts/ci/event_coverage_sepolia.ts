@@ -1,35 +1,23 @@
-import { waitNSecondsUntilNodeUp } from "../utils/util";
-import { keccak256, parseUnits } from "ethers/lib/utils";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signers";
+import { parseUnits } from "ethers/lib/utils";
 import { expect } from "chai";
 
+import { ethers } from "hardhat";
+import { BigNumber } from "ethers";
 import {
-  getImpersonatedSigner,
-  setUSDCBalance,
-  increaseBlockTimestamp,
-} from "../utils/util";
-
-import { network, ethers } from "hardhat";
-import { ERC20 } from "../../typechain";
-import { BigNumber, Signer, providers } from "ethers";
-import {
-  KYC_REGISTRY,
-  PROD_GUARDIAN_USDY,
-  SANCTION_ADDRESS,
-  USDC_MAINNET,
-} from "../../test-deploy/mainnet_constants";
+  AUDC_ADDRESS,
+} from "../../test-deploy/constants";
 
 async function main() {
   const signers = await ethers.getSigners();
 
   const usdcWhaleSigner = signers[0];
-  const guardian = signers[0];
-  const managerAdmin = signers[0];
-  // const pauser = signers[3];
-  const assetSender = signers[0];
-  const user = signers[1];
+  const guardian = signers[1];
+  const managerAdmin = signers[2];
+  const pauser = signers[3];
+  const assetSender = signers[4];
+  const user = signers[7];
 
-  const audc = await ethers.getContractAt("A$DC", USDC_MAINNET);
+  const audc = await ethers.getContractAt("A$DC", AUDC_ADDRESS);
   const abbyManager = await ethers.getContract("ABBYManager");
   const pricer = await ethers.getContract("ABBY_Pricer");
   const allowlist = await ethers.getContract("Allowlist");
@@ -126,14 +114,14 @@ async function main() {
   console.log('claim timestamp:', block+100);
  
 
-  //mint usdy/rwa tokens based on the deposited A$DC
+  //mint abby/rwa tokens based on the deposited A$DC
 
   const tx3 = await abbyManager.connect(managerAdmin).claimMint([FIRST_DEPOSIT_ID], { gasPrice, gasLimit });
   await tx3.wait(); 
   console.log("user claimed balance!");
   const balClaimed = await abby.balanceOf(user.address, { gasPrice, gasLimit });
-  console.log("balance of minted usdy/rwa tokens", balClaimed.toString());
-  //this is the amount of rwa/usdy tokens minted to user
+  console.log("balance of minted abby/rwa tokens", balClaimed.toString());
+  //this is the amount of rwa/abby tokens minted to user
   expect(balClaimed).eq(parseUnits("2000", 18));
   console.log("balance claimed assert passed!");
   
@@ -147,10 +135,10 @@ async function main() {
 
   console.log("price added to pricer and price updated in pricer!")
 
-  //redeem the rwa/usdy tokens back to A$DC
+  //redeem the rwa/abby tokens back to A$DC
   const tx6 = await abby.connect(user).approve(abbyManager.address, parseUnits("20000", 18), { gasPrice, gasLimit });
   await tx6.wait(); 
-  console.log("approving to spend usdy tokens!");
+  console.log("approving to spend abby tokens!");
   
 
   //requesting redemptions

@@ -8,11 +8,11 @@ import "contracts/abby/ABBY.sol";
 import "contracts/interfaces/IMulticall.sol";
 
 /**
- * @title USDYFactory
- * @notice This contract serves as a Factory for the upgradable USDY token contract.
- *         Upon calling `deployUSDY` the `guardian` address (set in constructor) will
+ * @title ABBYFactory
+ * @notice This contract serves as a Factory for the upgradable ABBY token contract.
+ *         Upon calling `deployABBY` the `guardian` address (set in constructor) will
  *         deploy the following:
- *         1) USDY - The implementation contract, ERC20 contract with the initializer disabled
+ *         1) ABBY - The implementation contract, ERC20 contract with the initializer disabled
  *         2) ProxyAdmin - OZ ProxyAdmin contract, used to upgrade the proxy instance.
  *                         @notice Owner is set to `guardian` address.
  *         3) TransparentUpgradeableProxy - OZ, proxy contract. Admin is set to `address(proxyAdmin)`.
@@ -29,7 +29,6 @@ contract ABBYFactory is IMulticall {
   struct ABBYListData {
     address blocklist;
     address allowlist;
-    address sanctionsList;
   }
 
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -46,7 +45,7 @@ contract ABBYFactory is IMulticall {
   }
 
   /**
-   * @dev This function will deploy an upgradable instance of USDY
+   * @dev This function will deploy an upgradable instance of ABBY
    *
    * @param name   The name of the token we want to deploy.
    * @param ticker The ticker for the token we want to deploy.
@@ -80,8 +79,7 @@ contract ABBYFactory is IMulticall {
       name,
       ticker,
       listData.blocklist,
-      listData.allowlist,
-      listData.sanctionsList
+      listData.allowlist
     );
 
     abbyProxied.grantRole(DEFAULT_ADMIN_ROLE, guardian);

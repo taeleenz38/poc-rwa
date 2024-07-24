@@ -1,6 +1,4 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
-import { KYC_REGISTRY, SANCTION_ADDRESS } from "../../mainnet_constants";
+import { SANCTION_ADDRESS } from "../../constants";
 const { ethers, deployments, getNamedAccounts } = require("hardhat");
 
 async function main() {
@@ -12,20 +10,20 @@ async function main() {
   const guardian = signers[1];
   console.log('the guardian address is:', guardian.address);
 
-  await deploy("USDYFactory", {
+  await deploy("ABBYFactory", {
     from: deployer,
     args: [guardian.address],
     log: true,
   });
 
-  // USDY deps
-  const factory = await ethers.getContract("USDYFactory");
+  // ABBY deps
+  const factory = await ethers.getContract("ABBYFactory");
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
   const tx = await factory
     .connect(guardian)
-    .deployUSDY("USDY", "USDY", [
+    .deployABBY("ABBY", "ABBY", [
       blocklist.address,
       allowlist.address,
       SANCTION_ADDRESS,
@@ -33,33 +31,33 @@ async function main() {
   
   const receipt = await tx.wait();
 
-  const usdyProxy = await factory.usdyProxy();
-  const usdyProxyAdmin = await factory.usdyProxyAdmin();
-  const usdyImplementation = await factory.usdyImplementation();
+  const abbyProxy = await factory.abbyProxy();
+  const abbyProxyAdmin = await factory.abbyProxyAdmin();
+  const abbyImplementation = await factory.abbyImplementation();
 
-  console.log(`\nThe USDY proxy is deployed @: ${usdyProxy}`);
-  console.log(`The USDY proxy admin is deployed @: ${usdyProxyAdmin}`);
-  console.log(`The USDY Implementation is deployed @: ${usdyImplementation}\n`);
+  console.log(`\nThe ABBY proxy is deployed @: ${abbyProxy}`);
+  console.log(`The ABBY proxy admin is deployed @: ${abbyProxyAdmin}`);
+  console.log(`The ABBY Implementation is deployed @: ${abbyImplementation}\n`);
 
-  const usdyArtifact = await deployments.getExtendedArtifact("USDY");
+  const abbyArtifact = await deployments.getExtendedArtifact("ABBY");
   const paAtrifact = await deployments.getExtendedArtifact("ProxyAdmin");
 
-  let usdyProxied = {
-    address: usdyProxy,
-    ...usdyArtifact,
+  let abbyProxied = {
+    address: abbyProxy,
+    ...abbyArtifact,
   };
-  let usdyAdmin = {
-    address: usdyProxyAdmin,
-    ...usdyProxyAdmin,
+  let abbyAdmin = {
+    address: abbyProxyAdmin,
+    ...abbyProxyAdmin,
   };
-  let usdyImpl = {
-    address: usdyImplementation,
-    ...usdyImplementation,
+  let abbyImpl = {
+    address: abbyImplementation,
+    ...abbyImplementation,
   };
 
-  await save("USDY", usdyProxied);
-  await save("ProxyAdminUSDY", usdyAdmin);
-  await save("USDYImplementation", usdyImpl);
+  await save("ABBY", abbyProxied);
+  await save("ProxyAdminABBY", abbyAdmin);
+  await save("ABBYImplementation", abbyImpl);
 };
 
 main().catch((error) => {

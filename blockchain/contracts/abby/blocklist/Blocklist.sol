@@ -17,7 +17,7 @@ contract Blocklist is Ownable2Step, IBlocklist {
    * @notice Returns name of contract
    */
   function name() external pure returns (string memory) {
-    return "Ondo Finance Blocklist Oracle";
+    return "Abby Finance Blocklist";
   }
 
   /**

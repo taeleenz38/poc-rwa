@@ -1,5 +1,4 @@
 import {ethers} from "hardhat";
-import * as fs from 'fs';
 const { deployments, getNamedAccounts } = require("hardhat");
 
 async function main() {
@@ -8,14 +7,14 @@ async function main() {
   console.log('starting deployment of token!', deployer.address); 
   
     // Deploy the Blocklist contract
-    await deploy("A$DC", {
+    await deploy("AUDC", {
       from: deployer,
       args: [],
       log: true,
     });
     // Get the deployed A$DC contract instance
-    const audc = await ethers.getContract("A$DC");
-    console.log("deployed A$DC address:", audc.address);
+    const audc = await ethers.getContract("AUDC");
+    console.log("deployed AUDC address:", audc.address);
   
 
   //const tokenFactory = await ethers.getContractFactory("A$DC");

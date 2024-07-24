@@ -5,8 +5,6 @@ import "contracts/interfaces/IBlocklist.sol";
 
 /**
  * @title IBlocklistClient
- * @author Ondo Finance
- * @notice The client interface for the Blocklist contract.
  */
 interface IBlocklistClient {
   /// @notice Returns reference to the blocklist that this client queries

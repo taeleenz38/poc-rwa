@@ -1,5 +1,5 @@
-import { KYC_REGISTRY } from "../../mainnet_constants";
-const { ethers, deployments, getNamedAccounts } = require("hardhat");
+import {ethers} from "hardhat";
+const { deployments, getNamedAccounts } = require("hardhat");
 
 async function main() {
   const { save } = deployments;

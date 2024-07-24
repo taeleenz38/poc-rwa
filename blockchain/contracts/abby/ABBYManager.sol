@@ -24,8 +24,7 @@ contract ABBYManager is
     address _feeRecipient,
     uint256 _minimumDepositAmount,
     uint256 _minimumRedemptionAmount,
-    address blocklist,
-    address sanctionsList
+    address blocklist
   )
     RWAHubOffChainRedemptions(
       _collateral,

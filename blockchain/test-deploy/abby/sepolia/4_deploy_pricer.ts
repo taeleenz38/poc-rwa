@@ -1,7 +1,4 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
 import { parseUnits } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
 const { ethers, deployments, getNamedAccounts } = require("hardhat");
 
 async function main() {
@@ -9,8 +6,8 @@ async function main() {
   const { deploy } = deployments;
   const signers = await ethers.getSigners();
 
-  const guardian = signers[0];
-  const managerAdmin = signers[0];
+  const guardian = signers[1]; //DEFAULT_ADMIN_ROLE
+  const managerAdmin = signers[2]; //PRICE_UPDATE_ROLE - addPrice - updatePrice
 
   console.log("signers====> ", signers);
 
