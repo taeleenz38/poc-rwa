@@ -97,7 +97,7 @@ const Navbar = () => {
                   currentPath === "/admin" ? "text-secondary" : ""
                 }`}
               >
-                Admin
+                Claim
               </Link>
             </>
           )}

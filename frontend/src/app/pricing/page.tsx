@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import {
@@ -8,6 +8,7 @@ import {
   LiquidIcon,
   BaseIcon,
 } from "@/app/components/atoms/Icons";
+import PricingSection from "@/app/components/molecules/PricingSection";
 
 const Pricing = () => {
   return (
@@ -36,6 +37,7 @@ const Pricing = () => {
           </>
         }
       />
+      <PricingSection />
     </div>
   );
 };
