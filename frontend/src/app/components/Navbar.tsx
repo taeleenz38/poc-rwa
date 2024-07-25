@@ -76,12 +76,12 @@ const Navbar = () => {
           address === "0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565" && (
             <>
               <Link
-                href="/pricing"
+                href="/admin"
                 className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                  currentPath === "/pricing" ? "text-secondary" : ""
+                  currentPath === "/admin" ? "text-secondary" : ""
                 }`}
               >
-                Pricing
+                Admin
               </Link>
               <Link
                 href="/allowlist"
@@ -91,14 +91,14 @@ const Navbar = () => {
               >
                 Allowlist
               </Link>
-              <Link
+              {/* <Link
                 href="/admin"
                 className={`font-semibold mr-14 text-xl hover:text-secondary ${
                   currentPath === "/admin" ? "text-secondary" : ""
                 }`}
               >
-                Claim
-              </Link>
+                Claim Timestamps
+              </Link> */}
             </>
           )}
       </div>

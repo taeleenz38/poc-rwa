@@ -28,7 +28,7 @@ const Portfolio = () => {
       <Balance tokenSymbol="AUDC" balanceData={audcData} isLoading={audcLoading} />
       <Balance tokenSymbol="AYF" balanceData={ayfData} isLoading={ayfLoading} />
       <div className="bg-primary flex-grow mt-20 px-96 py-8 text-light">
-        <h2 className="font-medium text-2xl">Claimable AYF Tokens</h2>
+        <h2 className="font-medium text-2xl">Pending AYF Tokens</h2>
       </div>
     </div>
   );
