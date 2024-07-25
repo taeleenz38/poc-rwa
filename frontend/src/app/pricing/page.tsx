@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import {
@@ -10,7 +11,7 @@ import {
 
 const Pricing = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-primary">
       <FundDetails
         logoSrc="/LOGO.png"
         altText="Fund logo"
@@ -19,10 +20,12 @@ const Pricing = () => {
         yieldText="Stable, high-quality Australian Dollar yield"
         price="$1.0445"
         tvl="$327.50M"
-        Button1Text="Set Price"
-        Button2Text="Update Price ID"
+        Button1Text="Add Price"
+        Button2Text="Update Price"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-[#122A5F] text-light hover:bg-primary"
+        onButton1Click={() => console.log("Add Price")}
+        onButton2Click={() => console.log("Update Price")}
         chains={
           <>
             <EthIcon className="lg:w-8 lg:h-8" />

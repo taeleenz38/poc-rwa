@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
 import AddToList from "@/app/components/organisms/Popups/Allowlist";
+import AllowlistWallets from "@/app/components/organisms/AllowlistWallets";
 import {
   BaseIcon,
   EthIcon,
@@ -26,7 +27,7 @@ const Allowlist = () => {
     setIsAddTermAndSetValidTermIndexesOpen(true);
   };
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-primary">
       <FundDetails
         logoSrc="/LOGO.png"
         altText="Fund logo"
@@ -59,6 +60,7 @@ const Allowlist = () => {
         isOpen={isAddTermAndSetValidTermIndexesOpen}
         onClose={() => setIsAddTermAndSetValidTermIndexesOpen(false)}
       />
+      <AllowlistWallets />
     </div>
   );
 };
