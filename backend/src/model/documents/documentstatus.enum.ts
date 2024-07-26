@@ -1,0 +1,9 @@
+
+export enum DocumentStatus {
+
+    NOT_SENT = 'NOT_SENT',
+    SENT = 'SENT',
+    SIGN_PENDING = 'SIGN_PENDING',
+    SIGN_COMPLETED = 'SIGN_COMPLETED',
+    SIGN_DECLINED = 'SIGN_DECLINED',
+}
