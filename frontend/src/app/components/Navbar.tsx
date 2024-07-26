@@ -73,7 +73,7 @@ const Navbar = () => {
             </>
           )}
         {!scrolled &&
-          address === "0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565" && (
+          address === "0x4F23d02A315fCDC3Ea7C86deD0b1F4061Dc6639a" && (
             <>
               <Link
                 href="/admin"
