@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { AppService } from './app.service';
-import { AppController } from './app.controller';
+import { KycVerifcationService } from './verification/verification.service';
+import { AppController } from './verification/verification.controller';
 
 @Module({
   imports: [HttpModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [KycVerifcationService],
 })
 export class AppModule {}

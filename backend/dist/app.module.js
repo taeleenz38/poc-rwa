@@ -9,16 +9,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
-const app_service_1 = require("./app.service");
-const app_controller_1 = require("./app.controller");
+const verification_service_1 = require("./verification/verification.service");
+const verification_controller_1 = require("./verification/verification.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [axios_1.HttpModule],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        controllers: [verification_controller_1.AppController],
+        providers: [verification_service_1.KycVerifcationService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

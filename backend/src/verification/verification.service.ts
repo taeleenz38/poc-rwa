@@ -7,14 +7,16 @@ import * as fs from 'fs';
 import * as FormData from 'form-data';
 import { from, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DocumentDto } from './document.dto';
+import { DocumentDto } from '../dto/request/document.dto';
+import { ApplicantResponse, ReviewResponse } from '../dto/response/response.dto';
 
 const SUMSUB_APP_TOKEN = 'sbx:Wll3qaMR0kyjw7NX7omsnR5K.fCmtkrFha7wjp1hzuQJZUBN1kDft5VFM';
 const SUMSUB_SECRET_KEY = '5pr1ymYaiPQ6pKcBTcbTCxcEwZur7Oio';
 const SUMSUB_BASE_URL = 'https://api.sumsub.com';
+const verficationLevel = 'basic-kyc-level';
 
 @Injectable()
-export class AppService {
+export class KycVerifcationService {
   constructor(private readonly httpService: HttpService) {
     this.httpService.axiosRef.interceptors.request.use(this.createSignature.bind(this));
   }
@@ -36,8 +38,9 @@ export class AppService {
     return config;
   }
 
-  async createApplicant(externalUserId: string, levelName: string): Promise<any> {
-    const url = `/resources/applicants?levelName=${encodeURIComponent(levelName)}`;
+  async createApplicant(): Promise<ApplicantResponse> {
+    const url = `/resources/applicants?levelName=${encodeURIComponent(verficationLevel)}`;
+    const externalUserId = Date.now();
     const body = { externalUserId };
 
     const config: AxiosRequestConfig = {
@@ -58,7 +61,7 @@ export class AppService {
           map((res: AxiosResponse) => res.data),
         ),
       );
-      return response;
+      return new ApplicantResponse(response.id);
     } catch (error) {
       throw new HttpException(error.response?.data || error.message, HttpStatus.BAD_REQUEST);
     }
@@ -108,7 +111,7 @@ export class AppService {
     }
   }
 
-  async getApplicantStatus(applicantId: string): Promise<any> {
+  async getApplicantStatus(applicantId: string): Promise<ReviewResponse> {
     const url = `/resources/applicants/${applicantId}/status`;
 
     const config: AxiosRequestConfig = {
@@ -127,7 +130,8 @@ export class AppService {
           map((res: AxiosResponse) => res.data),
         ),
       );
-      return response;
+
+      return new ReviewResponse(response.reviewStatus, response.reviewResult?.reviewAnswer);
     } catch (error) {
       throw new HttpException(error.response?.data || error.message, HttpStatus.BAD_REQUEST);
     }
