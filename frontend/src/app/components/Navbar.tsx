@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAccount } from "wagmi";
 import { config } from "@/config";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Button from "./atoms/Buttons/Button";
 
 const Navbar = () => {
   const { address } = useAccount({ config });
   const currentPath = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,7 +104,13 @@ const Navbar = () => {
             </>
           )}
       </div>
-      {!scrolled && <w3m-button />}
+      {!scrolled && (
+        <div className="flex  gap-2">
+          <Button text={"SignIn"} onClick={() => {}} />
+          <Button text={"SignUp"} onClick={() => {}} />
+          <w3m-button />
+        </div>
+      )}
     </div>
   );
 };
