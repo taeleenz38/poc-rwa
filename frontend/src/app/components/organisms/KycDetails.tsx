@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Button from "../atoms/Buttons/Button";
-import InputWithLabel from "../atoms/Inputs/InputWithLabel";
+import Button from "@/app/components/atoms/Buttons/Button";
+import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
 
 type KycDetailsProps = {
   logoSrc: string;

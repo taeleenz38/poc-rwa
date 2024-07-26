@@ -106,8 +106,8 @@ const Navbar = () => {
       </div>
       {!scrolled && (
         <div className="flex  gap-2">
-          <Button text={"SignIn"} onClick={() => {}} />
-          <Button text={"SignUp"} onClick={() => {}} />
+          <Button text={"Sign In"} className="border-0 hover:bg-secondary py-1 px-3" onClick={() => {}} />
+          <Button text={"Sign Up"} className="bg-light text-primary py-1 px-3" onClick={() => {}} />
           <w3m-button />
         </div>
       )}
