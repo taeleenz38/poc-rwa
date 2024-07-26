@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
+import SetPrice from "@/app/components/organisms/Popups/SetPrice";
+import UpdatePrice from "@/app/components/organisms/Popups/UpdatePrice";
 import {
   EthIcon,
   SolanaIcon,
@@ -11,9 +13,15 @@ import {
 import PricingSection from "@/app/components/molecules/PricingSection";
 
 const Pricing = () => {
-  const handleButton1Click = () => {};
+  const [isSetPriceOpen, setIsSetPriceOpen] = React.useState(false);
+  const [isUpdatePriceOpen, setIsUpdatePriceOpen] = React.useState(false);
+  const handleButton1Click = () => {
+    setIsSetPriceOpen(true);
+  };
 
-  const handleButton2Click = () => {};
+  const handleButton2Click = () => {
+    setIsUpdatePriceOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-primary">
@@ -42,6 +50,14 @@ const Pricing = () => {
         }
       />
       <PricingSection />
+      <SetPrice
+        isOpen={isSetPriceOpen}
+        onClose={() => setIsSetPriceOpen(false)}
+      />
+      <UpdatePrice
+        isOpen={isUpdatePriceOpen}
+        onClose={() => setIsUpdatePriceOpen(false)}
+      />
     </div>
   );
 };
