@@ -12,7 +12,7 @@ import "@openzeppelin/hardhat-upgrades";
 import { HardhatUserConfig } from "hardhat/config";
 
 const deployer = process.env.DEPLOYER!; //0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565 - 0
-const guargian = process.env.GUARDIAN!; //0xC7257c10B5D809B7407f662523CF2E7C3Ea8E716 - 1
+const guardian = process.env.GUARDIAN!; //0xC7257c10B5D809B7407f662523CF2E7C3Ea8E716 - 1
 const managerAdmin = process.env.MANAGER_ADMIN!; //0xB433CDEbaf52E83F6aF8ec318b09b48519DD8519 - 2
 const pauser = process.env.PAUSER!; //0x69Efd0bb8a81CFB92c58222f7b6974EfC00E1Cb5 - 3
 const assetSender = process.env.ASSET_SENDER!; //0x9F93Eab82877B46bADf70Bb88Ad370Bb5d6BFA1D - 4
@@ -71,7 +71,7 @@ const config: HardhatUserConfig = {
   networks: {
     sepolia: {
       url: 'https://eth-sepolia.g.alchemy.com/v2/KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe',
-      accounts: [deployer, guargian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
+      accounts: [deployer, guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
       gasPrice: 10000000000,
     }
   },

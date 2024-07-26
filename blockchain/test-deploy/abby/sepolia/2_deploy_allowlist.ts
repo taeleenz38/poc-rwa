@@ -21,7 +21,7 @@ async function main () {
     log: true
   });
 
-  const factory = await ethers.getContract("AllowlistFactory");
+  const factory = await ethers.getContract("AllowlistFactory");//0x8E5a0Fdbdd6a3901666065E3656b6A8B01F95c72
 
   const tx = await factory
     .connect(guardian)
