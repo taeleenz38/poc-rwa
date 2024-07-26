@@ -11,6 +11,10 @@ import {
 import PricingSection from "@/app/components/molecules/PricingSection";
 
 const Pricing = () => {
+  const handleButton1Click = () => {};
+
+  const handleButton2Click = () => {};
+
   return (
     <div className="min-h-screen bg-primary">
       <FundDetails
@@ -25,8 +29,8 @@ const Pricing = () => {
         Button2Text="Update Price"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-[#122A5F] text-light hover:bg-primary"
-        onButton1Click={() => console.log("Add Price")}
-        onButton2Click={() => console.log("Update Price")}
+        onButton1Click={handleButton1Click}
+        onButton2Click={handleButton2Click}
         chains={
           <>
             <EthIcon className="lg:w-8 lg:h-8" />
