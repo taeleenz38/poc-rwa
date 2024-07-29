@@ -24,7 +24,7 @@ const Pricing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-light">
+    <div className="min-h-screen bg-white">
       <FundDetails
         logoSrc="/LOGO.png"
         altText="Fund logo"

@@ -14,7 +14,7 @@ import {
 
 export default function Home() {
   return (
-    <main className="h-screen bg-light px-96 text-black">
+    <main className="h-screen bg-white px-96 text-black">
       <h1 className="text-5xl font-semibold pt-14 w-3/5">
         Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
       </h1>

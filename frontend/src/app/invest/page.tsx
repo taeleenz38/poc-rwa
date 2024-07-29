@@ -3,6 +3,7 @@
 import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import FundDescription from "@/app/components/organisms/FundDescription";
+import Contact from "@/app/components/molecules/Contact";
 import {
   BaseIcon,
   EthIcon,
@@ -24,7 +25,7 @@ const Invest = () => {
         tvl="$327.50M"
         Button1Text="Buy"
         Button2Text="Redeem"
-        Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
+        Button1Class="bg-white text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-secondary text-light hover:bg-primary"
         onButton1Click={() => {}}
         onButton2Click={() => {}}
@@ -39,6 +40,7 @@ const Invest = () => {
         }
       />
       <FundDescription />
+      <Contact />
     </div>
   );
 };

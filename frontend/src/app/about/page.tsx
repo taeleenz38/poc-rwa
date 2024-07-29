@@ -4,7 +4,7 @@ import Contact from "@/app/components/molecules/Contact";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-light flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <AboutSection />
       <Contact />
     </div>
