@@ -5,29 +5,29 @@ async function main () {
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
   const signers = await ethers.getSigners();
+  const deployerSigner = signers[0];
+  const guardian = process.env.GUARDIAN_WALLET!;
   
-  console.log("The deployer is:", deployer.address);
-  const guardian = signers[1];
+  console.log("The deployer is:", deployerSigner.address);
   console.log("The guardian is:", guardian);
-
-  //let gasPrice = await ethers.provider.getGasPrice();
-  //gasPrice = gasPrice.mul(ethers.BigNumber.from(110)).div(ethers.BigNumber.from(100));
 
   // Define a gas limit
   const gasLimit = 600000;
 
-  await deploy("AllowlistFactory", {
+  // Deploy AllowlistFactory contract
+  const deployResult = await deploy("AllowlistFactory", {
     from: deployer,
-    args: ["0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565"],
+    args: [deployerSigner.address],  // Pass args as an array
     log: true
   });
 
   const factory = await ethers.getContract("AllowlistFactory");
 
+  // Deploy Allowlist via the factory contract
   const tx = await factory
-    .connect(guardian)
-    .deployAllowlist("0x4F23d02A315fCDC3Ea7C86deD0b1F4061Dc6639a", "0x4F23d02A315fCDC3Ea7C86deD0b1F4061Dc6639a"); // admin - DEFAULT_ADMIN_ROLE - ALLOWLIST_ADMIN - addTerm - setCurrentTermIndex - setValidTermIndexes
-                                                          // setter - ALLOWLIST_SETTER - setAccountStatus
+    .connect(deployerSigner)
+    .deployAllowlist(guardian, guardian); // admin - DEFAULT_ADMIN_ROLE - ALLOWLIST_ADMIN - addTerm - setCurrentTermIndex - setValidTermIndexes
+                                          // setter - ALLOWLIST_SETTER - setAccountStatus
 
   const receipt = await tx.wait();
   
@@ -37,14 +37,10 @@ async function main () {
 
   console.log(`\nThe Allowlist proxy is deployed @: ${allowProxy}`);
   console.log(`The Allowlist proxy admin is deployed @: ${allowProxyAdmin}`);
-  console.log(
-    `The Allowlist Implementation is deployed @: ${allowImplementation}\n`
-  );
+  console.log(`The Allowlist Implementation is deployed @: ${allowImplementation}\n`);
 
-  const allowlistArtifact = await deployments.getExtendedArtifact(
-    "AllowlistUpgradeable"
-  );
-  const paAtrifact = await deployments.getExtendedArtifact("ProxyAdmin");
+  const allowlistArtifact = await deployments.getExtendedArtifact("AllowlistUpgradeable");
+  const paArtifact = await deployments.getExtendedArtifact("ProxyAdmin");
 
   let allowlistProxied = {
     address: allowProxy,
@@ -52,11 +48,11 @@ async function main () {
   };
   let allowlistAdmin = {
     address: allowProxyAdmin,
-    ...paAtrifact,
+    ...paArtifact,
   };
   let allowlistImpl = {
     address: allowImplementation,
-    ...allowImplementation,
+    ...allowlistArtifact,  // Use the correct artifact
   };
 
   await save("Allowlist", allowlistProxied);
@@ -68,5 +64,3 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-
-

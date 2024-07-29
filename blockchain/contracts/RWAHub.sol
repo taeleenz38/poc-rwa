@@ -20,7 +20,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   IPricerReader public pricer;
   // Address to receive deposits
   address public constant assetRecipient =
-    0xBbCBbd4b0dfEFdd5eeed2e5b07e305b0A7Bc6bF9; // ABBY - CB Deposit Address
+    0x0686b3a7B9bE2751bB51084a6E0E7DB7f1746eb1; // ABBY - CB Deposit Address
   // Address to send redemptions
   address public assetSender;
   // Address fee recipient
@@ -98,6 +98,9 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     _grantRole(DEFAULT_ADMIN_ROLE, managerAdmin);
     _grantRole(MANAGER_ADMIN, managerAdmin);
     _grantRole(PAUSER_ADMIN, pauser);
+    _grantRole(PRICE_ID_SETTER_ROLE, managerAdmin);
+    _grantRole(keccak256("TIMESTAMP_SETTER_ROLE"), managerAdmin);
+    
     _setRoleAdmin(PAUSER_ADMIN, MANAGER_ADMIN);
     _setRoleAdmin(PRICE_ID_SETTER_ROLE, MANAGER_ADMIN);
     _setRoleAdmin(RELAYER_ROLE, MANAGER_ADMIN);
