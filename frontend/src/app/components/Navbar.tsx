@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Button from "./atoms/Buttons/Button";
 import CloseButton from "./atoms/Buttons/CloseButton";
 
+
 const Navbar = () => {
   const { address } = useAccount({ config });
   const currentPath = usePathname();
