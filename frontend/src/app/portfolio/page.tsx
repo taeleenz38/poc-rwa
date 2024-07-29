@@ -22,11 +22,14 @@ const Portfolio = () => {
   });
 
   return (
-    <div className="min-h-screen bg-light flex flex-col px-96 py-24">
-      <h1 className="text-2xl font-semibold mb-4">Your Portfolio</h1>
-      <h3 className="mb-12">Take and manage your portfolio</h3>
+    <div className="min-h-screen bg-light flex flex-col pt-24">
+      <h1 className="px-96 text-3xl font-semibold mb-4">Your Portfolio</h1>
+      <h3 className="px-96 mb-12">Take and manage your portfolio</h3>
       <Balance tokenSymbol="AUDC" balanceData={audcData} isLoading={audcLoading} />
       <Balance tokenSymbol="AYF" balanceData={ayfData} isLoading={ayfLoading} />
+      <div className="bg-primary flex-grow mt-20 px-96 py-8 text-light">
+        <h2 className="font-medium text-2xl">Pending AYF Tokens</h2>
+      </div>
     </div>
   );
 };

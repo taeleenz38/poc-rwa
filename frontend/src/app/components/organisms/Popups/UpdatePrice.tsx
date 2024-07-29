@@ -12,42 +12,48 @@ import {
 } from "wagmi";
 import { config } from "@/config";
 
-interface AddPriceProps {
+interface UpdatePriceProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
-  const [addPrice, setAddPrice] = useState<string | null>(null);
+const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
+  const [priceId, setPriceId] = useState<string | null>(null);
+  const [updatePrice, setUpdatePrice] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setAddPrice(null);
+    setUpdatePrice(null);
   };
   const onCloseModal = () => {
     onClose();
     resetForm();
   };
 
-  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddPrice(e.target.value);
+  const onPriceIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpdatePrice(e.target.value);
   };
 
-  const price = Number(addPrice);
+  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpdatePrice(e.target.value);
+  };
 
-  const handleAddPrice = async () => {
+  const priceID = Number(priceId);
+  const price = Number(updatePrice);
+
+  const handleUpdatePrice = async () => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC__ADDRESS as `0x${string}`,
-        functionName: "addPrice",
-        args: [price, Math.floor(Date.now() / 1000)],
+        functionName: "updatePrice",
+        args: [priceID, price],
       });
       setTxHash(tx);
-      console.log("Price successfully added - transaction hash:", tx);
+      console.log("Price successfully updated - transaction hash:", tx);
     } catch (error) {
-      console.error("Error adding price:", error);
+      console.error("Error updating price:", error);
     }
   };
 
@@ -65,14 +71,19 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField
-          label="Add Price:"
-          value={addPrice || ""}
+          label="Price ID:"
+          value={priceId || ""}
+          onChange={onPriceIdChange}
+        />{" "}
+        <InputField
+          label="Price:"
+          value={updatePrice || ""}
           onChange={onPriceChange}
         />
         <div className="w-full flex justify-end">
           <Submit
-            onClick={handleAddPrice}
-            label={isPending ? "Confirming..." : "Add Price"}
+            onClick={handleUpdatePrice}
+            label={isPending ? "Confirming..." : "Update Price"}
             disabled={isPending || isLoading}
           />
         </div>
@@ -91,4 +102,4 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddPrice;
+export default UpdatePrice;

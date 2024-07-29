@@ -2,11 +2,12 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { DropboxsignModule } from './dropboxsign/dropboxsign.module';
 import { Document } from './model/documents/document.entity';
 import { User } from './model/user/user.entity';
+import { KycVerifcationService } from './verification/verification.service';
+import { AppController } from './verification/verification.controller';
+
 
 @Module({
   imports: [HttpModule, DropboxsignModule, ConfigModule.forRoot({
@@ -19,6 +20,6 @@ import { User } from './model/user/user.entity';
     entities: [User, Document],
   }),],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [KycVerifcationService],
 })
 export class AppModule {}
