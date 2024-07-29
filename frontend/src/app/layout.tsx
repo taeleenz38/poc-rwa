@@ -25,9 +25,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={notoSans.className}>
         <Navbar />
-        <Web3ModalProvider initialState={initialState}>
-          {children}
-        </Web3ModalProvider>
+        <div className="pt-[92px]">
+          <Web3ModalProvider initialState={initialState}>
+            {children}
+          </Web3ModalProvider>
+        </div>
         <Footer />
       </body>
     </html>

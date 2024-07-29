@@ -11,6 +11,7 @@ const config: Config = {
       primary: "#031329",
       secondary: "#C99383",
       black: "#000000",
+      white: "#FFFFFF",
       light: "#F5F2F2",
     },
     extend: {

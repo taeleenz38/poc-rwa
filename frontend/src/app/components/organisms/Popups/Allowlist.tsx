@@ -60,7 +60,7 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
       <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Add User To Allowlist</h2>
+          <h2 className="text-xl text-primary font-bold">Add User To Allowlist</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField

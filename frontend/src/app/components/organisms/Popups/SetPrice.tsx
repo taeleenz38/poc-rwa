@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
+import abi from "../../../../../../blockchain/artifacts/contracts/Pricer.sol/Pricer.json";
 import {
   useWriteContract,
   useSignMessage,
@@ -11,55 +12,83 @@ import {
 } from "wagmi";
 import { config } from "@/config";
 
-interface SetPriceProps {
+interface AddPriceProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SetPrice: React.FC<SetPriceProps> = ({ isOpen, onClose }) => {
-  const [onchainId, setOnchainId] = useState<string | null>(null);
+const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
+  const [addPrice, setAddPrice] = useState<string | null>(null);
+  const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setOnchainId(null);
+    setAddPrice(null);
   };
   const onCloseModal = () => {
     onClose();
     resetForm();
   };
 
-  const onOnchainIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOnchainId(e.target.value);
+  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddPrice(e.target.value);
   };
 
-  const handleSetPrice = async () => {
-    return null;
+  const price = Number(addPrice);
+
+  const handleAddPrice = async () => {
+    try {
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC__ADDRESS as `0x${string}`,
+        functionName: "addPrice",
+        args: [price, Math.floor(Date.now() / 1000)],
+      });
+      setTxHash(tx);
+      console.log("Price successfully added - transaction hash:", tx);
+    } catch (error) {
+      console.error("Error adding price:", error);
+    }
   };
+
+  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
+    hash: txHash as `0x${string}`,
+  });
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg shadow-md shadow-white w-1/4">
+    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Set Price</h2>
+          <h2 className="text-xl font-bold">Add User To Allowlist</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField
-          label="ONCHAIN-ID:"
-          value={onchainId || ""}
-          onChange={onOnchainIdChange}
+          label="Add Price:"
+          value={addPrice || ""}
+          onChange={onPriceChange}
         />
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-end">
           <Submit
-            onClick={handleSetPrice}
-            label={isPending ? "Confirming..." : "Set Price"}
-            disabled={isPending}
+            onClick={handleAddPrice}
+            label={isPending ? "Confirming..." : "Add Price"}
+            disabled={isPending || isLoading}
           />
         </div>
+        {txHash && (
+          <div className="mt-4 text-white">
+            {isLoading && <p>Transaction is pending...</p>}
+            {receipt && (
+              <p className="text-white overflow-x-scroll">
+                Transaction successful! Hash: {txHash}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default SetPrice;
+export default AddPrice;

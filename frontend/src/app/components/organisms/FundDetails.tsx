@@ -43,7 +43,7 @@ const FundDetails = (props: FundDetailsProps) => {
   } = props;
 
   return (
-    <div className="bg-[#122A5F] flex justify-center items-center">
+    <div className="bg-primary flex justify-center items-center z-10">
       <div className="max-w-screen-xl h-full bg-hero-pattern bg-no-repeat bg-right-bottom bg-70% grid lg:grid-cols-2 grid-cols-1 pt-20 pb-36 px-8 font-normal text-light bg-url('/assets/ABBY-background.svg')">
         <div className="grid col-span-1 ">
           <div className="flex justify-start items-center gap-x-2 mb-1">
