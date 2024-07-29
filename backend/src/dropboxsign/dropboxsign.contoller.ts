@@ -12,7 +12,7 @@ export class DropBoxSignServiceController {
     /**
      * sendSignRequest
      */
-    @Post('/sendSignRequest')
+    @Post('/send')
     public sendSignRequest(@Body() signRequest: SignRequestDto) {
         return this.signService.sendSignRequest(signRequest);
     }
