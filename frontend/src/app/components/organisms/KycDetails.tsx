@@ -4,7 +4,9 @@ import React, { useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import Image from "next/image";
 import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
+import SelectField from "@/app/components/atoms/Inputs/SelectInput";
 import Stepper from "@/app/components/atoms/Stepper";
+import FileUpload from "@/app/components/atoms/Inputs/FileUpload";
 
 type KycDetailsProps = {
   logoSrc: string;
@@ -32,7 +34,13 @@ const KycDetails = (props: KycDetailsProps) => {
 
   const handleChange =
     (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      setter(e.target.value);
+    };
+
+  const handleSelectChange =
+    (setter: React.Dispatch<React.SetStateAction<string>>) =>
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
       setter(e.target.value);
     };
 
@@ -61,6 +69,10 @@ const KycDetails = (props: KycDetailsProps) => {
     });
   };
 
+  const documentOptions = [
+    { label: "Driver's License", value: "drivers_license" },
+  ];
+
   return (
     <div className="flex justify-between items-center min-h-screen bg-gray-100">
       <div className="flex flex-col items-center justify-center w-1/2 bg-primary min-h-screen p-4">
@@ -83,7 +95,9 @@ const KycDetails = (props: KycDetailsProps) => {
         </div>
       </div>
       <div className="min-h-screen flex flex-col justify-center items-center w-1/2 p-8">
-        <h1 className="text-3xl text-primary font-semibold mb-8">Investor Onboarding</h1>
+        <h1 className="text-3xl text-primary font-semibold mb-8">
+          Investor Onboarding
+        </h1>
         <form
           className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md"
           onSubmit={handleSubmit}
@@ -155,16 +169,6 @@ const KycDetails = (props: KycDetailsProps) => {
                 widthfull={true}
               />
               <InputWithLabel
-                id="idDocType"
-                name="idDocType"
-                type="text"
-                label="Document Type"
-                placeholder="Enter document type"
-                value={idDocType}
-                onChange={handleChange(setIdDocType)}
-                widthfull={true}
-              />
-              <InputWithLabel
                 id="validUntil"
                 name="validUntil"
                 type="date"
@@ -173,6 +177,13 @@ const KycDetails = (props: KycDetailsProps) => {
                 value={validUntil}
                 onChange={handleChange(setValidUntil)}
                 widthfull={true}
+              />
+              <SelectField
+                label="Document Type:"
+                value={idDocType}
+                onChange={handleSelectChange(setIdDocType)}
+                options={documentOptions}
+                className="mb-4"
               />
               <InputWithLabel
                 id="number"
@@ -184,21 +195,24 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setNumber)}
                 widthfull={true}
               />
-              <InputWithLabel
-                id="idDocSubType"
-                name="idDocSubType"
-                type="text"
-                label="Document Subtype"
-                placeholder="Enter document subtype"
-                value={idDocSubType}
-                onChange={handleChange(setIdDocSubType)}
-                widthfull={true}
-              />
             </div>
           )}
           {currentStep === 3 && (
             <div className="flex flex-col p-2">
-              {/* Upload File Goes Here */}
+              <FileUpload
+                label="Upload Front of Driver's License"
+                onChange={(file) => {
+                  console.log(file);
+                }}
+                className="mb-8"
+              />
+              <FileUpload
+                label="Upload Back of Driver's License"
+                onChange={(file) => {
+                  console.log(file);
+                }}
+                className="mb-4"
+              />
             </div>
           )}
           <div className="flex justify-between mt-8">
@@ -209,20 +223,20 @@ const KycDetails = (props: KycDetailsProps) => {
                 onClick={prevStep}
               />
             )}
-            {currentStep < 3 ? (
-              <div className="flex justify-end w-full">
+            <div className="flex-1 flex justify-end">
+              {currentStep < totalSteps ? (
                 <Button
                   text="Next"
                   className="hover:bg-primary text-primary hover:text-white w-44 py-2"
                   onClick={nextStep}
                 />
-              </div>
-            ) : (
-              <Button
-                text="Submit"
-                className="hover:bg-primary text-primary hover:text-white w-44 py-2"
-              />
-            )}
+              ) : (
+                <Button
+                  text="Submit"
+                  className="hover:bg-primary text-primary hover:text-white w-44 py-2"
+                />
+              )}
+            </div>
           </div>
         </form>
       </div>
