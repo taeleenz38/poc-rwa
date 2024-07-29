@@ -15,7 +15,7 @@ import { User } from './model/user/user.entity';
     type: 'sqlite',
     database: 'db/database.db',
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: [User, Document],
   }),],
   controllers: [AppController],

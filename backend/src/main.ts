@@ -9,6 +9,6 @@ async function bootstrap() {
       transform: true // Transform is recomended configuration for avoind issues with arrays of files transformations
     })
   );
-  await app.listen(8000);
+  await app.listen(3000);
 }
 bootstrap();
