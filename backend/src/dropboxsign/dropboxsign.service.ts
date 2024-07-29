@@ -36,7 +36,15 @@ export class DropBoxSignService {
                 defaultType: DropboxSign.SubSigningOptions.DefaultTypeEnum.Draw,
             };
 
-            const signer = this.userRepo.create();
+            const user = await this.userRepo.findOneBy({ email: request.email });
+
+            var signer;
+            if (user) {
+                signer = user;
+            } else {
+                signer = this.userRepo.create();
+            }
+
             signer.email = request.email;
             signer.firstName = request.firstName;
             signer.lastName = request.lastName;
