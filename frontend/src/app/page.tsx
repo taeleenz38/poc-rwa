@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
 import Navbar from "@/app/components/Navbar";
-import UserFunctions from "@/app/components/organisms/UserFunctions";
-import AdminFunctions from "@/app/components/organisms/AdminFunctions";
 import { useAccount } from "wagmi";
 import { config } from "@/config";
 import { PackageCard } from "./components/organisms/PackageCard";

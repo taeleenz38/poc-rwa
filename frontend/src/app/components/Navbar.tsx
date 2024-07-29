@@ -75,7 +75,7 @@ const Navbar = () => {
             </>
           )}
         {!scrolled &&
-          address === "0x4F23d02A315fCDC3Ea7C86deD0b1F4061Dc6639a" && (
+          address === "0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565" && (
             <>
               <Link
                 href="/admin"
@@ -106,8 +106,18 @@ const Navbar = () => {
       </div>
       {!scrolled && (
         <div className="flex  gap-2">
-          <Button text={"Sign In"} className="border-0 hover:bg-secondary py-1 px-3" onClick={() => {}} />
-          <Button text={"Sign Up"} className="bg-light text-primary py-1 px-3" onClick={() => {}} />
+          <Button
+            text={"Sign In"}
+            className="border-0 hover:bg-secondary py-1 px-3"
+            onClick={() => {}}
+          />
+          <Link href="/kyc">
+            <Button
+              text={"Sign Up"}
+              className="bg-light text-primary py-1 px-3"
+              onClick={() => {}}
+            />
+          </Link>
           <w3m-button />
         </div>
       )}

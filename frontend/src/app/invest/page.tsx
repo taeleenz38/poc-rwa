@@ -25,7 +25,7 @@ const Invest = () => {
         Button1Text="Buy"
         Button2Text="Redeem"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
-        Button2Class="bg-[#122A5F] text-light hover:bg-primary"
+        Button2Class="bg-secondary text-light hover:bg-primary"
         onButton1Click={() => {}}
         onButton2Click={() => {}}
         chains={

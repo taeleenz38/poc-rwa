@@ -3,8 +3,8 @@ import Button from "@/app/components/atoms/Buttons/Button";
 
 const PricingSection = () => {
   return (
-    <div className="w-2/3 mx-auto text-light flex justify-between items-center mt-8">
-      <div className="w-1/2 mx-auto text-light mt-8 pr-12 border-r-2">
+    <div className="w-2/3 mx-auto text-primary flex justify-between items-center mt-8">
+      <div className="w-1/2 mx-auto text-primary mt-8 pr-12 border-r-2">
         <div className="flex justify-between items-center">
           <div className="text-xl font-medium">Incoming Deposit Requests</div>
           <div>
@@ -21,7 +21,7 @@ const PricingSection = () => {
           </div>
         </div>
       </div>
-      <div className="w-1/2 mx-auto text-light mt-8 pl-12">
+      <div className="w-1/2 mx-auto text-primary mt-8 pl-12">
         <div className="flex justify-between items-center">
           <div className="text-xl font-medium">Pending Redemption Requests</div>
           <Button

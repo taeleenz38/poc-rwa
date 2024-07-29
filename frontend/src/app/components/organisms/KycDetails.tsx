@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import Button from "@/app/components/atoms/Buttons/Button";
+import Image from "next/image";
 import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
 
 type KycDetailsProps = {
@@ -15,24 +15,39 @@ type KycDetailsProps = {
 
 const KycDetails = (props: KycDetailsProps) => {
   const { logoSrc, altText, fundName, fundDescription, yieldText } = props;
+  const [idDocType, setIdDocType] = useState("");
+  const [country, setCountry] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [issuedDate, setIssuedDate] = useState("");
+  const [validUntil, setValidUntil] = useState("");
+  const [number, setNumber] = useState("");
+  const [dob, setDob] = useState("");
+  const [placeOfBirth, setPlaceOfBirth] = useState("");
+  const [idDocSubType, setIdDocSubType] = useState("");
 
   const [value, setValue] = useState("");
 
   return (
-    // <div className="bg-[#122A5F] flex justify-center items-center z-10">
-    <div className=" flex justify-center items-center ">
-      {/* <div className="max-w-screen-xl h-full bg-hero-pattern bg-no-repeat bg-right-bottom bg-70% grid lg:grid-cols-2 grid-cols-1 pt-20 pb-36 px-8 font-normal text-light bg-url('/assets/ABBY-background.svg')"></div> */}
-      <div>
+    <div className="flex justify-between items-center">
+      <div className="flex flex-col items-center justify-center w-1/2 bg-primary min-h-screen">
+        <div className="">
+          <Image src="/LOGO.png" alt="small logo" className="rounded-full" width={75} height={75} />
+          <p className="text-2xl font-medium mt-4 text-light">Onboard to AYF</p>
+        </div>
+      </div>
+      <div className="min-h-screen flex flex-col justify-center items-center w-1/2">
+        <h1 className="text-2xl font-semibold mb-10">Investor Onboarding</h1>
         <form>
           <div className="grid grid-cols-2 gap-2 border border-white p-4">
-            <div className="flex flex-col  p-2">
+            <div className="flex flex-col p-2">
               <InputWithLabel
                 id="idDocType"
                 name="idDocType"
                 type="text"
                 label="Document Type"
                 placeholder="Enter document type"
-                value={value}
+                value={idDocType}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -42,7 +57,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="text"
                 label="Country"
                 placeholder="Enter country"
-                value={value}
+                value={country}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -52,18 +67,17 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="text"
                 label="First Name"
                 placeholder="Enter first name"
-                value={value}
+                value={firstName}
                 onChange={() => {}}
                 widthfull={true}
               />
-
               <InputWithLabel
                 id="lastName"
                 name="lastName"
                 type="text"
                 label="Last Name"
                 placeholder="Enter last name"
-                value={value}
+                value={lastName}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -73,12 +87,11 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="date"
                 label="Issued Date"
                 placeholder="Enter issued date"
-                value={value}
+                value={issuedDate}
                 onChange={() => {}}
                 widthfull={true}
               />
             </div>
-
             <div className="flex flex-col  p-2">
               <InputWithLabel
                 id="validUntil"
@@ -86,7 +99,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="date"
                 label="Valid Until"
                 placeholder="Enter valid until date"
-                value={value}
+                value={validUntil}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -96,7 +109,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="text"
                 label="Document Number"
                 placeholder="Enter document number"
-                value={value}
+                value={number}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -106,7 +119,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="date"
                 label="Date of Birth"
                 placeholder="Enter date of birth"
-                value={value}
+                value={dob}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -116,7 +129,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="text"
                 label="Place of Birth (Optional)"
                 placeholder="Enter place of birth"
-                value={value}
+                value={placeOfBirth}
                 onChange={() => {}}
                 widthfull={true}
               />
@@ -126,13 +139,18 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="text"
                 label="Document Subtype"
                 placeholder="Enter document subtype"
-                value={value}
+                value={idDocSubType}
                 onChange={() => {}}
                 widthfull={true}
               />
             </div>
           </div>
-          <button type="submit">Submit</button>
+          <div className="flex justify-center">
+            <Button
+              text="Submit"
+              className="hover:bg-primary hover:text-white w-1/5 mt-10"
+            />
+          </div>
         </form>
       </div>
     </div>

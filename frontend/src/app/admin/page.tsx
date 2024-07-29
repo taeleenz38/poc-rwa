@@ -24,7 +24,7 @@ const Pricing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-primary">
+    <div className="min-h-screen bg-light">
       <FundDetails
         logoSrc="/LOGO.png"
         altText="Fund logo"
@@ -36,7 +36,7 @@ const Pricing = () => {
         Button1Text="Add Price"
         Button2Text="Update Price"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
-        Button2Class="bg-[#122A5F] text-light hover:bg-primary"
+        Button2Class="bg-secondary text-light hover:bg-primary"
         onButton1Click={handleButton1Click}
         onButton2Click={handleButton2Click}
         chains={
