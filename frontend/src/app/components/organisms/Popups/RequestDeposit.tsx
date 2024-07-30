@@ -5,10 +5,13 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
+import audcabi from "@/artifacts/AUDC.json";
+
 import {
   useWriteContract,
   useSignMessage,
   useWaitForTransactionReceipt,
+  useReadContract,
 } from "wagmi";
 import { config } from "@/config";
 
@@ -24,6 +27,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
 
   const resetForm = () => {
     setAmount("");
+    setTxHash(null);
   };
   const onCloseModal = () => {
     onClose();
@@ -34,9 +38,40 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
     setAmount(e.target.value);
   };
 
+  const ABI = audcabi.abi;
+
+  const approval = useReadContract({
+    abi: ABI,
+    address: "0x84D506a853A5775885Ad59802a752bBdC2F1A377",
+    functionName: "allowance",
+    args: [
+      "0x0079D6728F84784BD2Ba27862235DE2430d1A9DC",
+      "0xd18E9C7Db20D4B97a3134C2604c7b81afBfF971d",
+    ],
+  });
+
+  console.log(approval);
+
   const handleRequestDeposit = async () => {
     try {
-      const depositAmount = BigNumber.from(amount);
+      const approvalAmount = BigNumber.from(amount).mul(
+        BigNumber.from(10).pow(18)
+      );
+
+      const tx = await writeContractAsync({
+        abi: audcabi.abi,
+        address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
+        functionName: "approve",
+        args: [process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS, approvalAmount],
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const depositAmount = BigNumber.from(amount).mul(
+        BigNumber.from(10).pow(18)
+      );
 
       const tx = await writeContractAsync({
         abi: abi.abi,

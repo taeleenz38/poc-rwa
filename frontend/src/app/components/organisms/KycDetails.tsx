@@ -8,7 +8,6 @@ import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
 import SelectField from "@/app/components/atoms/Inputs/SelectInput";
 import Stepper from "@/app/components/atoms/Stepper";
 import FileUpload from "@/app/components/atoms/Inputs/FileUpload";
-import axios from "axios";
 import VerificationPopup from "./Popups/VerificationPopup";
 
 type KycDetailsProps = {
