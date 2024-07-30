@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import Image from "next/image";
 import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
@@ -38,6 +38,7 @@ const KycDetails = (props: KycDetailsProps) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const totalSteps = 3;
   const stepLabels = ["Personal Info", "Document Info", "Upload Document"];
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange =
     (setter: React.Dispatch<React.SetStateAction<string>>) =>
@@ -52,18 +53,29 @@ const KycDetails = (props: KycDetailsProps) => {
     };
 
   const nextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+    setCurrentStep((prevStep) => {
+      const newStep = prevStep + 1;
+      if (newStep <= totalSteps) {
+        return newStep;
+      }
+      return prevStep; // or handle exceeding steps if necessary
+    });
   };
 
   const prevStep = () => {
-    setCurrentStep((prevStep) => prevStep - 1);
+    setCurrentStep((prevStep) => {
+      const newStep = prevStep - 1;
+      if (newStep >= 1) {
+        return newStep;
+      }
+      return prevStep; // or handle steps below 1 if necessary
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
-      if (frontFile !== null && backtFile !== null) {
+      setIsLoading(true);
+      if (currentStep === totalSteps) {
         console.log("Submitting form...");
 
         // First, create the applicant to get the ID
@@ -136,6 +148,14 @@ const KycDetails = (props: KycDetailsProps) => {
           setIsModalOpen(true);
           setFrontFile(null);
           setBackFile(null);
+          setFirstName("");
+          setLastName("");
+          setIssuedDate("");
+          setValidUntil("");
+          setNumber("");
+          setDob("");
+          setPlaceOfBirth("");
+
           const statusURL =
             process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + id;
           const status = await axios.get(statusURL);
@@ -144,6 +164,9 @@ const KycDetails = (props: KycDetailsProps) => {
       }
     } catch (error) {
       console.error("Error submitting KYC application:", error);
+    } finally {
+      setIsLoading(false);
+      setCurrentStep(1);
     }
   };
 
@@ -373,10 +396,7 @@ const KycDetails = (props: KycDetailsProps) => {
         <h1 className="text-3xl text-primary font-semibold mb-8">
           Investor Onboarding
         </h1>
-        <form
-          className="w-full max-w-2xl bg-while border border-black p-8 rounded-lg shadow-md"
-          onSubmit={handleSubmit}
-        >
+        <div className="w-full max-w-2xl bg-while border border-black p-8 rounded-lg shadow-md">
           {currentStep === 1 && (
             <div className="flex flex-col p-2">
               <InputWithLabel
@@ -502,7 +522,6 @@ const KycDetails = (props: KycDetailsProps) => {
                 text="Previous"
                 className="hover:bg-primary text-primary hover:text-white w-44 py-2"
                 onClick={prevStep}
-                type="button"
               />
             )}
             <div className="flex-1 flex justify-end">
@@ -511,18 +530,20 @@ const KycDetails = (props: KycDetailsProps) => {
                   text="Next"
                   className="hover:bg-primary text-primary hover:text-white w-44 py-2"
                   onClick={nextStep}
-                  type="button"
                 />
               ) : (
-                <Button
-                  text="Submit"
-                  className="hover:bg-primary text-primary hover:text-white w-44 py-2"
-                  type="submit"
-                />
+                currentStep === totalSteps && (
+                  <Button
+                    text={`${isLoading ? "Submitting..." : "Submit"}`}
+                    className="hover:bg-primary text-primary hover:text-white w-44 py-2"
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                  />
+                )
               )}
             </div>
           </div>
-        </form>
+        </div>
       </div>
 
       <VerificationPopup

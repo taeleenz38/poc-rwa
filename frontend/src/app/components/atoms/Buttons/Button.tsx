@@ -4,20 +4,22 @@ interface ButtonProps {
   text: string;
   className?: string;
   onClick?: () => void;
-  type?: "submit" | "reset" | "button";
+
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   text,
   className,
   onClick,
-  type = "button",
+
+  disabled,
 }) => {
   return (
     <button
       className={`border-2 py-2 px-4 rounded-lg ${className} duration-200`}
       onClick={onClick}
-      type={type}
+      disabled={disabled}
     >
       {text}
     </button>
