@@ -4,7 +4,7 @@ import { useState } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
-import abi from "../../../../../../blockchain/artifacts/contracts/interfaces/IAllowlist.sol/IAllowlist.json";
+import abi from "@/artifacts/IAllowlist.json";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 

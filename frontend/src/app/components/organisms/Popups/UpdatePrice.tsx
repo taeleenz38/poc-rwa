@@ -1,10 +1,10 @@
 "use client";
-import { ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
-import abi from "../../../../../../blockchain/artifacts/contracts/Pricer.sol/Pricer.json";
+import abi from "@/artifacts/Pricer.json";
 import {
   useWriteContract,
   useSignMessage,
@@ -18,13 +18,14 @@ interface UpdatePriceProps {
 }
 
 const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
-  const [priceId, setPriceId] = useState<string | null>(null);
-  const [updatePrice, setUpdatePrice] = useState<string | null>(null);
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [priceId, setPriceId] = useState<string>("");
+  const [updatePrice, setUpdatePrice] = useState<string>("");
+  const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setUpdatePrice(null);
+    setPriceId("");
+    setUpdatePrice("");
   };
   const onCloseModal = () => {
     onClose();
@@ -39,14 +40,14 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
     setUpdatePrice(e.target.value);
   };
 
-  const priceID = Number(priceId);
-  const price = Number(updatePrice);
-
   const handleUpdatePrice = async () => {
+    const priceID = BigNumber.from(priceId);
+
+    const price = BigNumber.from(updatePrice);
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC__ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_PRICER_ADDRESS as `0x${string}`,
         functionName: "updatePrice",
         args: [priceID, price],
       });

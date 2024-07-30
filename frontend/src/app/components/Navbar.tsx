@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation";
 import Button from "./atoms/Buttons/Button";
 import CloseButton from "./atoms/Buttons/CloseButton";
 
-
 const Navbar = () => {
   const { address } = useAccount({ config });
   const currentPath = usePathname();
@@ -37,13 +36,17 @@ const Navbar = () => {
   }, []);
 
   const handleSignIn = () => {
-    if (username === "tedhansen" && password === "123") {
+    if (username === "ted" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("admin");
       setShowModal(false);
-    } else if (username === "johndoe" && password === "123") {
+    } else if (username === "john" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("user");
+      setShowModal(false);
+    } else if (username === "alice" && password === "123") {
+      setIsLoggedIn(true);
+      setUserRole("guardian");
       setShowModal(false);
     } else {
       alert("Invalid credentials");
@@ -71,52 +74,58 @@ const Navbar = () => {
             className="mr-16"
           />
         </Link>
-        {!scrolled && isLoggedIn && userRole === "user" && (
+        {!scrolled && isLoggedIn && (
           <>
-            <Link
-              href="/invest"
-              className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                currentPath === "/invest" ? "text-secondary" : ""
-              }`}
-            >
-              Invest
-            </Link>
-            <Link
-              href="/portfolio"
-              className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                currentPath === "/portfolio" ? "text-secondary" : ""
-              }`}
-            >
-              Portfolio
-            </Link>
-            <Link
-              href="/about"
-              className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                currentPath === "/about" ? "text-secondary" : ""
-              }`}
-            >
-              About
-            </Link>
-          </>
-        )}
-        {!scrolled && isLoggedIn && userRole === "admin" && (
-          <>
-            <Link
-              href="/admin"
-              className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                currentPath === "/admin" ? "text-secondary" : ""
-              }`}
-            >
-              Admin
-            </Link>
-            <Link
-              href="/allowlist"
-              className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                currentPath === "/allowlist" ? "text-secondary" : ""
-              }`}
-            >
-              Allowlist
-            </Link>
+            {userRole === "user" && (
+              <>
+                <Link
+                  href="/invest"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/invest" ? "text-secondary" : ""
+                  }`}
+                >
+                  Invest
+                </Link>
+                <Link
+                  href="/portfolio"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/portfolio" ? "text-secondary" : ""
+                  }`}
+                >
+                  Portfolio
+                </Link>
+                <Link
+                  href="/about"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/about" ? "text-secondary" : ""
+                  }`}
+                >
+                  About
+                </Link>
+              </>
+            )}
+            {userRole === "admin" && (
+              <>
+                <Link
+                  href="/admin"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/admin" ? "text-secondary" : ""
+                  }`}
+                >
+                  Admin
+                </Link>
+              </>
+            )}
+            {userRole === "guardian" && (
+              <Link
+                href="/allowlist"
+                className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  currentPath === "/allowlist" ? "text-secondary" : ""
+                }`}
+              >
+                Allowlist
+              </Link>
+            )}
           </>
         )}
       </div>

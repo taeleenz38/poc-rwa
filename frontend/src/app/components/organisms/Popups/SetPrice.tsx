@@ -1,10 +1,10 @@
 "use client";
-import { ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
-import abi from "../../../../../../blockchain/artifacts/contracts/Pricer.sol/Pricer.json";
+import abi from "@/artifacts/Pricer.json";
 import {
   useWriteContract,
   useSignMessage,
@@ -18,12 +18,12 @@ interface AddPriceProps {
 }
 
 const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
-  const [addPrice, setAddPrice] = useState<string | null>(null);
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [addPrice, setAddPrice] = useState<string>("");
+  const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setAddPrice(null);
+    setAddPrice("");
   };
   const onCloseModal = () => {
     onClose();
@@ -34,15 +34,15 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
     setAddPrice(e.target.value);
   };
 
-  const price = Number(addPrice);
-
   const handleAddPrice = async () => {
+    const price = BigNumber.from(addPrice);
+    const timestamp = BigNumber.from(Math.floor(Date.now() / 1000));
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC__ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_PRICER_ADDRESS as `0x${string}`,
         functionName: "addPrice",
-        args: [price, Math.floor(Date.now() / 1000)],
+        args: [price, timestamp],
       });
       setTxHash(tx);
       console.log("Price successfully added - transaction hash:", tx);
