@@ -252,43 +252,43 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   ) external virtual nonReentrant ifNotPaused(redemptionPaused) {
     uint256 fees;
     uint256 redemptionsSize = redemptionIds.length;
-    for (uint256 i = 0; i < redemptionsSize; ++i) {
-      Redeemer memory member = redemptionIdToRedeemer[redemptionIds[i]];
-      //_checkRestrictions(member.user);
-      if (member.priceId == 0) {
-        // Then the price for this redemption has not been set
-        revert PriceIdNotSet();
-      }
+    // for (uint256 i = 0; i < redemptionsSize; ++i) {
+    //   Redeemer memory member = redemptionIdToRedeemer[redemptionIds[i]];
+    //   //_checkRestrictions(member.user);
+    //   if (member.priceId == 0) {
+    //     // Then the price for this redemption has not been set
+    //     revert PriceIdNotSet();
+    //   }
 
-      // Calculate collateral due and fees
-      uint256 price = pricer.getPrice(member.priceId);
-      uint256 collateralDue = _getRedemptionAmountForRwa(
-        member.amountRwaTokenBurned,
-        price
-      );
-      uint256 fee = _getRedemptionFees(collateralDue);
-      uint256 collateralDuePostFees = collateralDue - fee;
-      fees += fee;
+    //   // Calculate collateral due and fees
+    //   uint256 price = pricer.getPrice(member.priceId);
+    //   uint256 collateralDue = _getRedemptionAmountForRwa(
+    //     member.amountRwaTokenBurned,
+    //     price
+    //   );
+    //   uint256 fee = _getRedemptionFees(collateralDue);
+    //   uint256 collateralDuePostFees = collateralDue - fee;
+    //   fees += fee;
 
-      delete redemptionIdToRedeemer[redemptionIds[i]];
+    //   delete redemptionIdToRedeemer[redemptionIds[i]];
 
-      collateral.safeTransferFrom(
-        assetSender,
-        member.user,
-        collateralDuePostFees
-      );
+    //   collateral.safeTransferFrom(
+    //     assetSender,
+    //     member.user,
+    //     collateralDuePostFees
+    //   );
 
-      emit RedemptionCompleted(
-        member.user,
-        redemptionIds[i],
-        member.amountRwaTokenBurned,
-        collateralDuePostFees,
-        price
-      );
-    }
-    if (fees > 0) {
-      collateral.safeTransferFrom(assetSender, feeRecipient, fees);
-    }
+    //   emit RedemptionCompleted(
+    //     member.user,
+    //     redemptionIds[i],
+    //     member.amountRwaTokenBurned,
+    //     collateralDuePostFees,
+    //     price
+    //   );
+    // }
+    // if (fees > 0) {
+    //   collateral.safeTransferFrom(assetSender, feeRecipient, fees);
+    // }
   }
 
   /*//////////////////////////////////////////////////////////////

@@ -2,7 +2,6 @@
 /blockchain/deployments/
 /blockchain/typechain/
 /blockchain/cache/
-/blockchain/artifacts/
 /backend/node_modules/
 /backend/dist
 /backend/build
