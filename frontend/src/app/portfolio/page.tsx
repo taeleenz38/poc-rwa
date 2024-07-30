@@ -2,7 +2,7 @@
 import React from "react";
 import { useAccount, useBalance } from "wagmi";
 import { config } from "@/config";
-import Balance from "@/app/components/molecules/Balance"; 
+import Balance from "@/app/components/molecules/Balance";
 import Contact from "@/app/components/molecules/Contact";
 
 const Portfolio = () => {
@@ -26,7 +26,11 @@ const Portfolio = () => {
     <div className="min-h-screen bg-white flex flex-col pt-24">
       <h1 className="px-96 text-3xl font-semibold mb-4">Your Portfolio</h1>
       <h3 className="px-96 mb-12">Take and manage your portfolio</h3>
-      <Balance tokenSymbol="AUDC" balanceData={audcData} isLoading={audcLoading} />
+      <Balance
+        tokenSymbol="AUDC"
+        balanceData={audcData}
+        isLoading={audcLoading}
+      />
       <Balance tokenSymbol="AYF" balanceData={ayfData} isLoading={ayfLoading} />
       <div className="bg-primary flex-grow mt-20 px-96 py-8 text-light">
         <h2 className="font-medium text-2xl">Pending AYF Tokens</h2>

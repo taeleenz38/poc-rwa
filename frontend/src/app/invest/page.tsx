@@ -1,9 +1,9 @@
 "use client";
-
 import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import FundDescription from "@/app/components/organisms/FundDescription";
 import Contact from "@/app/components/molecules/Contact";
+import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import {
   BaseIcon,
   EthIcon,
@@ -13,6 +13,15 @@ import {
 } from "@/app/components/atoms/Icons";
 
 const Invest = () => {
+  const [isBuyOpen, setIsBuyOpen] = React.useState(false);
+  const handleButton1Click = () => {
+    setIsBuyOpen(true);
+  };
+
+  const handleButton2Click = () => {
+    setIsBuyOpen(true);
+  };
+  
   return (
     <div>
       <FundDetails
@@ -27,8 +36,8 @@ const Invest = () => {
         Button2Text="Redeem"
         Button1Class="bg-white text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-secondary text-light hover:bg-primary"
-        onButton1Click={() => {}}
-        onButton2Click={() => {}}
+        onButton1Click={handleButton1Click}
+        onButton2Click={handleButton2Click}
         chains={
           <>
             <EthIcon className="lg:w-8 lg:h-8" />
@@ -41,6 +50,7 @@ const Invest = () => {
       />
       <FundDescription />
       <Contact />
+      <Buy isOpen={isBuyOpen} onClose={() => setIsBuyOpen(false)} />
     </div>
   );
 };

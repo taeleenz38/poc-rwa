@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from "axios";
 import Button from "@/app/components/atoms/Buttons/Button";
 import Image from "next/image";
 import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
@@ -19,6 +20,7 @@ type KycDetailsProps = {
 const KycDetails = (props: KycDetailsProps) => {
   const { logoSrc, altText, fundName, fundDescription, yieldText } = props;
   const [idDocType, setIdDocType] = useState("");
+  const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -26,7 +28,6 @@ const KycDetails = (props: KycDetailsProps) => {
   const [validUntil, setValidUntil] = useState("");
   const [number, setNumber] = useState("");
   const [dob, setDob] = useState("");
-  const [placeOfBirth, setPlaceOfBirth] = useState("");
   const [idDocSubType, setIdDocSubType] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
@@ -52,21 +53,36 @@ const KycDetails = (props: KycDetailsProps) => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({
-      idDocType,
-      country,
+    const requestData = {
       firstName,
       lastName,
-      issuedDate,
-      validUntil,
-      number,
-      dob,
-      placeOfBirth,
-      idDocSubType,
-    });
+      email,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/contract-sign/send",
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Sign request sent successfully:", response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error sending sign request:",
+          error.response?.data || error.message
+        );
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
   };
 
   const documentOptions = [
@@ -125,6 +141,16 @@ const KycDetails = (props: KycDetailsProps) => {
                 widthfull={true}
               />
               <InputWithLabel
+                id="email"
+                name="email"
+                type="email"
+                label="Email"
+                placeholder="Enter email"
+                value={email}
+                onChange={handleChange(setEmail)}
+                widthfull={true}
+              />
+              <InputWithLabel
                 id="country"
                 name="country"
                 type="text"
@@ -132,16 +158,6 @@ const KycDetails = (props: KycDetailsProps) => {
                 placeholder="Enter country"
                 value={country}
                 onChange={handleChange(setCountry)}
-                widthfull={true}
-              />
-              <InputWithLabel
-                id="placeOfBirth"
-                name="placeOfBirth"
-                type="text"
-                label="Place of Birth (Optional)"
-                placeholder="Enter place of birth"
-                value={placeOfBirth}
-                onChange={handleChange(setPlaceOfBirth)}
                 widthfull={true}
               />
               <InputWithLabel
