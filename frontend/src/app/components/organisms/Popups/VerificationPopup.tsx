@@ -122,7 +122,7 @@ const VerificationPopup = ({
           </span>
           {status === "Done" ? (
             <>
-              <Button text={"Send Documents To Email"} onClick={sendSignRequest} />
+              <Button text={"Send Document To Email"} onClick={sendSignRequest} />
               <span>
                 {isDocumentSigned
                   ? "Documents have been signed!"
