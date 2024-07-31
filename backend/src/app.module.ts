@@ -7,6 +7,8 @@ import { Document } from './model/documents/document.entity';
 import { User } from './model/user/user.entity';
 import { KycVerifcationService } from './verification/verification.service';
 import { AppController } from './verification/verification.controller';
+import { AlchemyController } from './alchemy/controller/alchemy.controller';
+import { AlchemyService } from './alchemy/service/alchemy.service';
 
 
 @Module({
@@ -19,7 +21,7 @@ import { AppController } from './verification/verification.controller';
     logging: false,
     entities: [User, Document],
   }),],
-  controllers: [AppController],
-  providers: [KycVerifcationService],
+  controllers: [AppController, AlchemyController],
+  providers: [KycVerifcationService, AlchemyService],
 })
 export class AppModule {}
