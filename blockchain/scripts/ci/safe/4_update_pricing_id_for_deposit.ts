@@ -35,7 +35,7 @@ async function main() {
 
   const gasLimit = 600000;
 
-  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(4), 32);
 
   console.log("Getting latest price to string", (await pricer.getLatestPrice({ gasPrice, gasLimit })).toString());
 

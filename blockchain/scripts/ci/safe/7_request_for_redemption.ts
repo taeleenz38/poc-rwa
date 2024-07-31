@@ -74,7 +74,7 @@ async function main() {
     }
 
     // Requesting redemption
-    const requestRedemptionData = abbyManager.interface.encodeFunctionData("requestRedemption", [parseUnits("1200", 18)]);
+    const requestRedemptionData = abbyManager.interface.encodeFunctionData("requestRedemption", [parseUnits("100", 18)]);
 
     const redemptionTxData: SafeTransactionDataPartial = {
       to: abbyManager.address,

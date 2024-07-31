@@ -1,11 +1,8 @@
-import { parseUnits } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 import { AUDC_ADDRESS } from "../../../test-deploy/constants";
 import Safe from "@gnosis.pm/safe-core-sdk";
 import EthersAdapter from "@gnosis.pm/safe-ethers-lib";
 import { SafeTransactionDataPartial } from "@gnosis.pm/safe-core-sdk-types";
-import { BigNumber } from "ethers";
-import { expect } from "chai";
 
 async function main() {
   const signers = await ethers.getSigners();

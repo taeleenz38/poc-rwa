@@ -1,5 +1,4 @@
 import { ethers } from "hardhat";
-import { RWAHUB_ADDRESS } from "../../test-deploy/constants"; // Update with the correct path and address
 
 async function main() {
   const signers = await ethers.getSigners();
@@ -8,7 +7,7 @@ async function main() {
   const abbyManager = await ethers.getContract("ABBYManager");
 
   // Sample deposit ID and redemption ID (Replace these with actual IDs you want to check)
-  const sampleDepositId = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+  const sampleDepositId = ethers.utils.hexZeroPad(ethers.utils.hexlify(4), 32);
   const sampleRedemptionId = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
 
   // Get depositor details
