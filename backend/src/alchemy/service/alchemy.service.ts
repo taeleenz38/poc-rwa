@@ -51,7 +51,8 @@ export class AlchemyService {
       const partLength = Math.ceil(data.length / 2);
       const part1 = data.slice(0, partLength);
       let pricing: PricingResponse = {
-        priceId: ethers.BigNumber.from(log.topics[1]).toString(),
+        // priceId: ethers.BigNumber.from(log.topics[1]).toString(),
+        priceId: log.topics[1].toString(),
         price: ethers.utils.formatEther(ethers.BigNumber.from(part1).toBigInt())
 
       };
@@ -60,7 +61,8 @@ export class AlchemyService {
     console.log(pricingResponse);
 
     priceChangedLogs.forEach(log => {
-      const changedPriceId = ethers.BigNumber.from(log.topics[1]).toString();
+      // const changedPriceId = ethers.BigNumber.from(log.topics[1]).toString();
+      const changedPriceId = log.topics[1].toString();
 
       const data = ethers.utils.arrayify(log.data);
       const partLength = Math.ceil(data.length / 4);
@@ -211,7 +213,7 @@ export class AlchemyService {
     return accountStatusResponse;
   }
 
-  async getMintList(): Promise<MintRequestedResponse[]> {
+  async getPendingDepositRequestList(): Promise<MintRequestedResponse[]> {
     let mintRequestResponse: MintRequestedResponse[] = [];
     const settings = {
       apiKey: API_KEY,
@@ -255,22 +257,22 @@ export class AlchemyService {
       }
     });
 
-    const mintCompltedInterface = new Utils.Interface(MINT_COMPLETED_ABI);
-    const mintCompltedSetTopics = mintCompltedInterface.encodeFilterTopics('MintCompleted', []);
+    const priceIdSetFoDeposit = new Utils.Interface(PRICEIDSETFORDEPOSIT_ABI);
+    const priceIdSetFoDepositTopics = priceIdSetFoDeposit.encodeFilterTopics('PriceIdSetForDeposit', []);
 
-    let mintCompltedSetLogs = await alchemy.core.getLogs({
+    let logs = await alchemy.core.getLogs({
       fromBlock: "0x0",
       toBlock: "latest",
       address: address,
-      topics: mintCompltedSetTopics,
+      topics: priceIdSetFoDepositTopics,
     });
 
-    const ifaceMintComplted = new ethers.utils.Interface(MINT_COMPLETED_ABI);
-    mintCompltedSetLogs.forEach((log) => {
+    const mintCompleted = new ethers.utils.Interface(PRICEIDSETFORDEPOSIT_ABI);
+    logs.forEach((log) => {
       try {
-        const decodedLog = ifaceMintComplted.parseLog(log);
-        const depositId = decodedLog.args.depositId;
-        mintRequestResponse = mintRequestResponse.filter(item => item.depositId !== depositId);
+        const decodedLog = mintCompleted.parseLog(log);
+        const depositIdSet = decodedLog.args.depositIdSet;
+        mintRequestResponse = mintRequestResponse.filter(item => item.depositId !== depositIdSet);
 
       } catch (error) {
         console.error("Error decoding log:", error);
@@ -382,7 +384,7 @@ export class AlchemyService {
 
     const priceList = this.getPricing();
     const claimableList = this.getClaimableTimestampList();
-    const mintList = this.getMintList();
+    const mintList = this.getPendingDepositRequestList();
 
 
     //we have all required data need to combine and get the list

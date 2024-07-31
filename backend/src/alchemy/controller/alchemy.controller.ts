@@ -26,9 +26,9 @@ export class AlchemyController {
     return this.appService.getAccountStatus();
   }
 
-  @Get("/mint-requested-list")
+  @Get("/pending-deposit-request-list")
   getMintRequestedList(): Promise<MintRequestedResponse[]> {
-    return this.appService.getMintList();
+    return this.appService.getPendingDepositRequestList();
   }
 
   @Get("/claimable-timestamp-list")
