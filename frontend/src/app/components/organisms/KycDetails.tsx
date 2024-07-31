@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import Image from "next/image";
@@ -8,6 +7,7 @@ import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
 import SelectField from "@/app/components/atoms/Inputs/SelectInput";
 import Stepper from "@/app/components/atoms/Stepper";
 import FileUpload from "@/app/components/atoms/Inputs/FileUpload";
+import axios from "axios";
 import VerificationPopup from "./Popups/VerificationPopup";
 
 type KycDetailsProps = {
@@ -20,8 +20,7 @@ type KycDetailsProps = {
 
 const KycDetails = (props: KycDetailsProps) => {
   const { logoSrc, altText, fundName, fundDescription, yieldText } = props;
-  const [idDocType, setIdDocType] = useState("");
-  const [email, setEmail] = useState("");
+  const [idDocType, setIdDocType] = useState("ID_CARD");
   const [country, setCountry] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -442,16 +441,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 widthfull={true}
                 required={true}
               />
-              <InputWithLabel
-                id="email"
-                name="email"
-                type="email"
-                label="Email"
-                placeholder="Enter email"
-                value={email}
-                onChange={handleChange(setEmail)}
-                widthfull={true}
-              />
+
               <SelectField
                 label="Country"
                 value={country}
