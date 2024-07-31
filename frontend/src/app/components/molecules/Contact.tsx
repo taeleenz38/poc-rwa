@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Contact = () => {
   return (
-    <div className="bg-primary px-96 py-24 flex justify-between items-center flex-grow">
+    <div className="bg-primary px-96 py-24 flex justify-between items-center">
       <div>
         <Image
           src="/LOGO-DARK.png"

@@ -1,10 +1,10 @@
 "use client";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
-import abi from "@/artifacts/Pricer.json";
+import abi from "@/artifacts/ABBYManager.json";
 import {
   useWriteContract,
   useSignMessage,
@@ -12,49 +12,52 @@ import {
 } from "wagmi";
 import { config } from "@/config";
 
-interface UpdatePriceProps {
+interface SetPriceIdForDepositIdProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
+const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [depositId, setDepositId] = useState<string>("");
   const [priceId, setPriceId] = useState<string>("");
-  const [updatePrice, setUpdatePrice] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
+    setDepositId("");
     setPriceId("");
-    setUpdatePrice("");
   };
+
   const onCloseModal = () => {
     onClose();
     resetForm();
   };
 
-  const onPriceIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatePrice(e.target.value);
-  };
-
   const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatePrice(e.target.value);
+    setPriceId(e.target.value);
   };
 
-  const handleUpdatePrice = async () => {
-    const priceID = BigNumber.from(priceId);
+  const onDepositIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDepositId(e.target.value);
+  };
 
-    const price = BigNumber.from(updatePrice);
+  const handleSetPriceIdForDepositId = async () => {
+    const depositIdFormatted = ethers.utils.formatBytes32String(depositId);
+    const price = BigNumber.from(priceId);
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_PRICER_ADDRESS as `0x${string}`,
-        functionName: "updatePrice",
-        args: [priceID, price],
+        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "setPriceIdForDeposits",
+        args: [[depositIdFormatted], [price]],
       });
       setTxHash(tx);
-      console.log("Price successfully updated - transaction hash:", tx);
+      console.log("Price Id Successfully Set - transaction hash:", tx);
     } catch (error) {
-      console.error("Error updating price:", error);
+      console.error("Error setting priceId:", error);
     }
   };
 
@@ -68,22 +71,22 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
       <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Update Price</h2>
+          <h2 className="text-xl font-bold">Set Price Id For Deposit Id</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField
-          label="Price ID:"
-          value={priceId || ""}
-          onChange={onPriceIdChange}
-        />{" "}
+          label="Deposit Id:"
+          value={depositId || ""}
+          onChange={onDepositIdChange}
+        />
         <InputField
-          label="Price:"
-          value={updatePrice || ""}
+          label="Price Id:"
+          value={priceId || ""}
           onChange={onPriceChange}
         />
         <div className="w-full flex justify-end">
           <Submit
-            onClick={handleUpdatePrice}
+            onClick={handleSetPriceIdForDepositId}
             label={isPending ? "Confirming..." : "Confirm"}
             disabled={isPending || isLoading}
           />
@@ -103,4 +106,4 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default UpdatePrice;
+export default SetPriceIdForDepositId;

@@ -61,18 +61,18 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
       <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Add User To Allowlist</h2>
+          <h2 className="text-xl font-bold">Add Price</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField
-          label="Add Price:"
+          label="Price:"
           value={addPrice || ""}
           onChange={onPriceChange}
         />
         <div className="w-full flex justify-end">
           <Submit
             onClick={handleAddPrice}
-            label={isPending ? "Confirming..." : "Add Price"}
+            label={isPending ? "Confirming..." : "Confirm"}
             disabled={isPending || isLoading}
           />
         </div>

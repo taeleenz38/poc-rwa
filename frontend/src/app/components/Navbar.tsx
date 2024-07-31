@@ -114,6 +114,14 @@ const Navbar = () => {
                 >
                   Admin
                 </Link>
+                <Link
+                  href="/pricing"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/pricing" ? "text-secondary" : ""
+                  }`}
+                >
+                  Pricing
+                </Link>
               </>
             )}
             {userRole === "guardian" && (

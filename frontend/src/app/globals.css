@@ -17,3 +17,8 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  display: none;
+}
