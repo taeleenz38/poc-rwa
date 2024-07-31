@@ -4,13 +4,32 @@ import Submit from "../../atoms/Buttons/Submit";
 import Button from "../../atoms/Buttons/Button";
 import axios from "axios";
 
-type Props = { isOpen: boolean; onClose: () => void; id: string };
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
-const VerificationPopup = ({ isOpen, onClose, id }: Props) => {
+const VerificationPopup = ({
+  isOpen,
+  onClose,
+  id,
+  firstName,
+  lastName,
+  email,
+}: Props) => {
   const [status, setStatus] = useState<"Submitted" | "Init" | "Done">(
     "Submitted"
   );
+  const [documentStatus, setDocumentStatus] = useState<
+    "Submitted" | "Init" | "Done"
+  >("Submitted");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDocumentSigned, setIsDocumentSigned] = useState(false);
+
   const getStatus = async () => {
     try {
       setIsLoading(true);
@@ -27,6 +46,53 @@ const VerificationPopup = ({ isOpen, onClose, id }: Props) => {
       console.log(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const sendSignRequest = async () => {
+    const requestData = {
+      firstName,
+      lastName,
+      email,
+    };
+
+    try {
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_BACKEND_API + "/contract-sign/send",
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Sign request sent successfully:", response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error sending sign request:",
+          error.response?.data || error.message
+        );
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
+
+  const getDocumentStatus = async (email: string) => {
+    try {
+      const documentStatusUrl = `${process.env.NEXT_PUBLIC_BACKEND_API}/contract-sign/status?email=${email}`;
+
+      const response = await axios.get(documentStatusUrl);
+      if (response.data.status === "SIGN_COMPLETED") {
+        setDocumentStatus("Done");
+      } else {
+        setDocumentStatus("Init");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsDocumentSigned(true);
     }
   };
 
@@ -51,11 +117,18 @@ const VerificationPopup = ({ isOpen, onClose, id }: Props) => {
             {status === "Done"
               ? "You have been verified !"
               : status === "Init"
-              ? "Verification is been proccessed. Try Again !"
+              ? "Verification is being processed. Try Again !"
               : ""}
           </span>
           {status === "Done" ? (
-            <Button text={"Sign Documents"} onClick={() => {}} />
+            <>
+              <Button text={"Send Documents To Email"} onClick={sendSignRequest} />
+              <span>
+                {isDocumentSigned
+                  ? "Documents have been signed!"
+                  : "Waiting for document signing to be signed..."}
+              </span>
+            </>
           ) : (
             <Button
               text={` ${isLoading ? "Checking Status..." : "Get Verified"}`}

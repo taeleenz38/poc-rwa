@@ -24,6 +24,7 @@ const KycDetails = (props: KycDetailsProps) => {
   const [country, setCountry] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [issuedDate, setIssuedDate] = useState("");
   const [validUntil, setValidUntil] = useState("");
   const [number, setNumber] = useState("");
@@ -441,6 +442,17 @@ const KycDetails = (props: KycDetailsProps) => {
                 widthfull={true}
                 required={true}
               />
+              <InputWithLabel
+                id="email"
+                name="email"
+                type="email"
+                label="Email"
+                placeholder="Enter email"
+                value={email}
+                onChange={handleChange(setEmail)}
+                widthfull={true}
+                required={true}
+              />
 
               <SelectField
                 label="Country"
@@ -570,6 +582,9 @@ const KycDetails = (props: KycDetailsProps) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         id={applicationid as unknown as string}
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
       />
     </div>
   );
