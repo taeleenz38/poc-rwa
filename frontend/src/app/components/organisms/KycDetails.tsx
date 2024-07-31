@@ -40,6 +40,7 @@ const KycDetails = (props: KycDetailsProps) => {
   const totalSteps = 3;
   const stepLabels = ["Personal Info", "Document Info", "Upload Document"];
   const [isLoading, setIsLoading] = useState(false);
+  const [applicationid, setApplicationId] = useState();
 
   const handleChange =
     (setter: React.Dispatch<React.SetStateAction<string>>) =>
@@ -73,9 +74,27 @@ const KycDetails = (props: KycDetailsProps) => {
     });
   };
 
+  const isFormValid = () => {
+    return (
+      country.trim() !== "" &&
+      firstName.trim() !== "" &&
+      lastName.trim() !== "" &&
+      issuedDate.trim() !== "" &&
+      validUntil.trim() !== "" &&
+      number.trim() !== "" &&
+      dob.trim() !== "" &&
+      placeOfBirth.trim() !== "" &&
+      idDocSubType !== undefined
+    );
+  };
+
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
+
+      if (!isFormValid()) {
+      }
+
       if (currentStep === totalSteps) {
         console.log("Submitting form...");
 
@@ -84,6 +103,7 @@ const KycDetails = (props: KycDetailsProps) => {
           process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/applicant";
         const response = await axios.post(applicantUrl);
         const id = response.data.id;
+        setApplicationId(id);
 
         // Now, upload the document with the ID
         const documentUrl =
@@ -559,6 +579,7 @@ const KycDetails = (props: KycDetailsProps) => {
       <VerificationPopup
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        id={applicationid as unknown as string}
       />
     </div>
   );

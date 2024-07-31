@@ -33,13 +33,13 @@ const InputWithLabel: FC<InputWithLabelProps> = ({
       type={type}
       id={id}
       name={name}
-      className={`mt-1 block w-full px-3 py-2 border font-semibold border-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary ${
+      className={`mt-1 block w-full px-3 py-2 border font-semibold bg-gray border-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary ${
         border && "border border-black"
       }`}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      required={required}
+      required
     />
   </div>
 );
