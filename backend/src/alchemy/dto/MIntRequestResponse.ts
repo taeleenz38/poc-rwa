@@ -4,4 +4,5 @@ export class MintRequestedResponse {
     collateralAmountDeposited: string;
     depositAmountAfterFee: string;
     feeAmount: string;
+    priceId?: string;
 }

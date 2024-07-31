@@ -6,6 +6,7 @@ import { AccountStatusResponse } from '../dto/AccountStatusResponse';
 import { MintRequestedResponse } from '../dto/MIntRequestResponse';
 import { ClaimableTimestampResponse } from '../dto/ClaimableTimestampResponse';
 import { RedemptionRequestResponse } from '../dto/RedemptionRequestResponse';
+import { ClaimableList } from '../dto/ClaimableList';
 
 @Controller()
 export class AlchemyController {
@@ -39,5 +40,10 @@ export class AlchemyController {
   @Get("/redemption-requested-list")
   getRedemptionRequestedList(): Promise<RedemptionRequestResponse[]> {
     return this.appService.getRedemptionRequestedList();
+  }
+
+  @Get("/claimable-details")
+  getClaimableDetails(): Promise<ClaimableList[]> {
+    return this.appService.getClaimableDetails();
   }
 }
