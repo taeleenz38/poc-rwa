@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { BigNumber, ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
 import { config } from "@/config";
 import Balance from "@/app/components/molecules/Balance";
@@ -60,12 +61,17 @@ const Portfolio = () => {
   }, []);
 
   const claimMint = async (depositId: string) => {
+    const depositIdFormatted = Number(depositId);
+    const depositIdHexlified = ethers.utils.hexZeroPad(
+      ethers.utils.hexlify(depositIdFormatted),
+      32
+    );
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
         functionName: "claimMint",
-        args: [depositId],
+        args: [[depositIdHexlified]],
       });
       console.log("Claim Mint Successful! - transaction hash:", tx);
     } catch (error) {
@@ -110,7 +116,7 @@ const Portfolio = () => {
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="mb-2">
-                          <strong>Claim Timestamp:</strong>{" "}
+                          <strong>Claim Timestamp (UTC):</strong>{" "}
                           {token.claimTimestamp}
                         </p>
                         <p className="mb-2">

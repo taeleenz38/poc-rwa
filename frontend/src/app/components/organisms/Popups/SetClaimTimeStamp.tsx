@@ -22,13 +22,11 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
   onClose,
 }) => {
   const [depositId, setDepositId] = useState<string>("");
-  const [claimTimestamp, setClaimTimestamp] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
     setDepositId("");
-    setClaimTimestamp("");
   };
 
   const onCloseModal = () => {
@@ -36,23 +34,26 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     resetForm();
   };
 
-  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setClaimTimestamp(e.target.value);
-  };
 
   const onDepositIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDepositId(e.target.value);
   };
 
   const handleSetClaimTimestamp = async () => {
-    const depositIdFormatted = ethers.utils.formatBytes32String(depositId);
-    const claimTimestampFormatted = BigNumber.from(claimTimestamp);
+    const depositIdFormatted = Number(depositId);
+    const depositIdHexlified = ethers.utils.hexZeroPad(
+      ethers.utils.hexlify(depositIdFormatted),
+      32
+    );
+    const currentTime = Math.floor(Date.now() / 1000);
+    const claimTimestampFormatted = BigNumber.from(currentTime + 300);
+    console.log(currentTime, claimTimestampFormatted);
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "ClaimableTimestampSet",
-        args: [claimTimestampFormatted, depositIdFormatted],
+        functionName: "setClaimableTimestamp",
+        args: [claimTimestampFormatted, [depositIdHexlified]],
       });
       setTxHash(tx);
       console.log("Price Id Successfully Set - transaction hash:", tx);
@@ -78,11 +79,6 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
           label="Deposit Id:"
           value={depositId || ""}
           onChange={onDepositIdChange}
-        />
-        <InputField
-          label="Claim Timestamp:"
-          value={claimTimestamp || ""}
-          onChange={onPriceChange}
         />
         <div className="w-full flex justify-end">
           <Submit

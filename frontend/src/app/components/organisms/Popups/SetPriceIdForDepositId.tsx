@@ -45,14 +45,16 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   };
 
   const handleSetPriceIdForDepositId = async () => {
-    const depositIdFormatted = ethers.utils.formatBytes32String(depositId);
+    const depositIdFormatted = Number(depositId);
+    const depositIdHexlified = ethers.utils.hexZeroPad(ethers.utils.hexlify(depositIdFormatted), 32);
     const price = BigNumber.from(priceId);
+    console.log("Setting priceId for depositId:", depositIdHexlified, price);
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
         functionName: "setPriceIdForDeposits",
-        args: [[depositIdFormatted], [price]],
+        args: [[depositIdHexlified], [price]],
       });
       setTxHash(tx);
       console.log("Price Id Successfully Set - transaction hash:", tx);
