@@ -13,7 +13,9 @@ const config: Config = {
       black: "#000000",
       white: "#FFFFFF",
       light: "#F5F2F2",
-      gray: "#ebebeb",
+      gray: "#e6e6e6",
+      orange: "#FFA500",
+      red: "#FF0000",
     },
     extend: {
       backgroundImage: {

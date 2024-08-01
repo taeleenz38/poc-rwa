@@ -17,7 +17,8 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`border-2 py-2 px-4 rounded-lg ${className} duration-200`}
+      className={`py-2 px-4 ${className} transition-transform duration-500 hover:scale-105 `}
+      style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
       onClick={onClick}
       disabled={disabled}
     >

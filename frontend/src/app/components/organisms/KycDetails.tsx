@@ -7,7 +7,7 @@ import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
 import SelectField from "@/app/components/atoms/Inputs/SelectInput";
 import Stepper from "@/app/components/atoms/Stepper";
 import FileUpload from "@/app/components/atoms/Inputs/FileUpload";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import VerificationPopup from "./Popups/VerificationPopup";
 
 type KycDetailsProps = {
@@ -34,13 +34,15 @@ const KycDetails = (props: KycDetailsProps) => {
     "FRONT_SIDE" | "BACK_SIDE"
   >();
   const [currentStep, setCurrentStep] = useState(1);
-  const [frontFile, setFrontFile] = useState<File | null>();
-  const [backtFile, setBackFile] = useState<File | null>();
+  const [frontFile, setFrontFile] = useState<File | null>(null);
+  const [backtFile, setBackFile] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const totalSteps = 3;
   const stepLabels = ["Personal Info", "Document Info", "Upload Document"];
   const [isLoading, setIsLoading] = useState(false);
   const [applicationid, setApplicationId] = useState();
+  const [validateForm, setValidateForm] = useState(true);
+  const [error, setError] = useState("");
 
   const handleChange =
     (setter: React.Dispatch<React.SetStateAction<string>>) =>
@@ -83,111 +85,117 @@ const KycDetails = (props: KycDetailsProps) => {
       validUntil.trim() !== "" &&
       number.trim() !== "" &&
       dob.trim() !== "" &&
-      placeOfBirth.trim() !== "" &&
-      idDocSubType !== undefined
+      frontFile !== null &&
+      backtFile !== null
     );
   };
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
+      setError("");
 
-      if (!isFormValid()) {
-      }
+      if (isFormValid()) {
+        setValidateForm(true);
+        if (currentStep === totalSteps) {
+          console.log("Submitting form...");
 
-      if (currentStep === totalSteps) {
-        console.log("Submitting form...");
+          // First, create the applicant to get the ID
+          const applicantUrl =
+            process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/applicant";
+          const response = await axios.post(applicantUrl);
+          const id = response.data.id;
+          setApplicationId(id);
 
-        // First, create the applicant to get the ID
-        const applicantUrl =
-          process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/applicant";
-        const response = await axios.post(applicantUrl);
-        const id = response.data.id;
-        setApplicationId(id);
+          // Now, upload the document with the ID
+          const documentUrl =
+            process.env.NEXT_PUBLIC_BACKEND_API +
+            "/kyc/applicants/" +
+            id +
+            "/documents";
 
-        // Now, upload the document with the ID
-        const documentUrl =
-          process.env.NEXT_PUBLIC_BACKEND_API +
-          "/kyc/applicants/" +
-          id +
-          "/documents";
+          console.log(documentUrl, "documentUrl");
 
-        console.log(documentUrl, "documentUrl");
+          // Prepare the form data object
+          const formDataFront = new FormData();
+          formDataFront.append("idDocType", idDocType);
+          formDataFront.append("country", country);
+          formDataFront.append("firstName", firstName);
+          formDataFront.append("lastName", lastName);
+          formDataFront.append("issuedDate", issuedDate);
+          formDataFront.append("validUntil", validUntil);
+          formDataFront.append("number", number);
+          formDataFront.append("dob", dob);
+          formDataFront.append("placeOfBirth", placeOfBirth);
+          formDataFront.append("idDocSubType", "FRONT_SIDE");
+          if (frontFile) {
+            formDataFront.append("file", frontFile); // frontFile should be a File object
+          } else {
+            console.error("No front file selected");
+          }
 
-        // Prepare the form data object
-        const formDataFront = new FormData();
-        formDataFront.append("idDocType", idDocType);
-        formDataFront.append("country", country);
-        formDataFront.append("firstName", firstName);
-        formDataFront.append("lastName", lastName);
-        formDataFront.append("issuedDate", issuedDate);
-        formDataFront.append("validUntil", validUntil);
-        formDataFront.append("number", number);
-        formDataFront.append("dob", dob);
-        formDataFront.append("placeOfBirth", placeOfBirth);
-        formDataFront.append("idDocSubType", "FRONT_SIDE");
-        if (frontFile) {
-          formDataFront.append("file", frontFile); // frontFile should be a File object
-        } else {
-          console.error("No front file selected");
+          const formDataBack = new FormData();
+          formDataBack.append("idDocType", idDocType);
+          formDataBack.append("country", country);
+          formDataBack.append("firstName", firstName);
+          formDataBack.append("lastName", lastName);
+          formDataBack.append("issuedDate", issuedDate);
+          formDataBack.append("validUntil", validUntil);
+          formDataBack.append("number", number);
+          formDataBack.append("dob", dob);
+          formDataBack.append("placeOfBirth", placeOfBirth);
+          formDataBack.append("idDocSubType", "BACK_SIDE");
+          if (backtFile) {
+            formDataBack.append("file", backtFile); // backFile should be a File object
+          } else {
+            console.error("No back file selected");
+          }
+
+          console.log("Sending front file...");
+          const resfront = await axios.post(documentUrl, formDataFront, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          console.log("Front file response:", resfront);
+
+          console.log("Sending back file...");
+          const resBack = await axios.post(documentUrl, formDataBack, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          console.log("Back file response:", resBack);
+
+          if (resfront.status === 201 && resBack.status === 201) {
+            setIsModalOpen(true);
+            setFrontFile(null);
+            setBackFile(null);
+            setFirstName("");
+            setLastName("");
+            setIssuedDate("");
+            setValidUntil("");
+            setNumber("");
+            setDob("");
+            setPlaceOfBirth("");
+            setFrontFile(null);
+            setBackFile(null);
+
+            const statusURL =
+              process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + id;
+            const status = await axios.get(statusURL);
+            console.log(status, "status");
+          }
         }
-
-        const formDataBack = new FormData();
-        formDataBack.append("idDocType", idDocType);
-        formDataBack.append("country", country);
-        formDataBack.append("firstName", firstName);
-        formDataBack.append("lastName", lastName);
-        formDataBack.append("issuedDate", issuedDate);
-        formDataBack.append("validUntil", validUntil);
-        formDataBack.append("number", number);
-        formDataBack.append("dob", dob);
-        formDataBack.append("placeOfBirth", placeOfBirth);
-        formDataBack.append("idDocSubType", "BACK_SIDE");
-        if (backtFile) {
-          formDataBack.append("file", backtFile); // backFile should be a File object
-        } else {
-          console.error("No back file selected");
-        }
-
-        console.log("Sending front file...");
-        const resfront = await axios.post(documentUrl, formDataFront, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log("Front file response:", resfront);
-
-        console.log("Sending back file...");
-        const resBack = await axios.post(documentUrl, formDataBack, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log("Back file response:", resBack);
-
-        if (resfront.status === 201 && resBack.status === 201) {
-          setIsModalOpen(true);
-          setFrontFile(null);
-          setBackFile(null);
-          setFirstName("");
-          setLastName("");
-          setIssuedDate("");
-          setValidUntil("");
-          setNumber("");
-          setDob("");
-          setPlaceOfBirth("");
-
-          const statusURL =
-            process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + id;
-          const status = await axios.get(statusURL);
-          console.log(status, "status");
-        }
+        setCurrentStep(1);
+      } else {
+        setValidateForm(false);
       }
     } catch (error) {
       console.error("Error submitting KYC application:", error);
+      setError("An error occurred during submission. Please try again.");
     } finally {
       setIsLoading(false);
-      setCurrentStep(1);
     }
   };
 
@@ -413,13 +421,31 @@ const KycDetails = (props: KycDetailsProps) => {
           </div>
         </div>
       </div>
-      <div className="min-h-screen flex flex-col justify-center items-center w-1/2 p-8">
-        <h1 className="text-3xl text-primary font-semibold mb-8">
-          Investor Onboarding
+      <div className="min-h-screen flex flex-col justify-center items-center w-1/2 p-8 gap-4">
+        <Image
+          src={logoSrc}
+          alt={altText}
+          className="rounded-full"
+          width={75}
+          height={75}
+        />
+        <h1 className="text-3xl text-primary font-bold  text-center pb-3">
+          Investor Onboarding Suite
         </h1>
-        <div className="w-full max-w-2xl bg-while border border-black p-8 rounded-lg shadow-md">
+        <div
+          className="w-full max-w-2xl bg-while  p-8 rounded-lg "
+          style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
+        >
+          <h1 className="text-base text-primary font-semibold  text-center pb-9">
+            {currentStep === 1
+              ? "*Please provide your personal information, including your name, country, and date of birth"
+              : currentStep === 2
+              ? "*Upload the necessary document details, such as identification dates and document number"
+              : "*Submit the required documents, ensuring all information is accurate and up-to-date"}
+          </h1>
+
           {currentStep === 1 && (
-            <div className="flex flex-col p-2">
+            <div className="flex flex-col p-4 border border-gray rounded-md">
               <InputWithLabel
                 id="firstName"
                 name="firstName"
@@ -487,7 +513,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
           {currentStep === 2 && (
-            <div className="flex flex-col p-2">
+            <div className="flex flex-col p-4 border border-gray rounded-md">
               <InputWithLabel
                 id="issuedDate"
                 name="issuedDate"
@@ -531,7 +557,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
           {currentStep === 3 && (
-            <div className="flex flex-col p-2">
+            <div className="flex flex-col p-2  border-2 border-gray rounded-md">
               <FileUpload
                 label="Upload Front of Driver's License"
                 onChange={(file) => {
@@ -548,31 +574,46 @@ const KycDetails = (props: KycDetailsProps) => {
               />
             </div>
           )}
-          <div className="flex justify-between mt-8">
-            {currentStep > 1 && (
-              <Button
-                text="Previous"
-                className="hover:bg-primary text-primary hover:text-white w-44 py-2"
-                onClick={prevStep}
-              />
+          <div className="flex flex-col justify-center items-center gap-6">
+            {!validateForm && (
+              <span className="text-base font-semibold text-orange text-pretty mt-7">
+                {" "}
+                Please Ensure all fields are filled out correctly and try again
+              </span>
             )}
-            <div className="flex-1 flex justify-end">
-              {currentStep < totalSteps ? (
+            {error && (
+              <span className="text-base font-semibold text-red text-pretty mt-7">
+                {error}
+              </span>
+            )}
+            <div className="flex justify-between w-full mt-4">
+              {currentStep > 1 && (
                 <Button
-                  text="Next"
+                  text="Previous"
                   className="hover:bg-primary text-primary hover:text-white w-44 py-2"
-                  onClick={nextStep}
+                  onClick={prevStep}
                 />
-              ) : (
-                currentStep === totalSteps && (
-                  <Button
-                    text={`${isLoading ? "Submitting..." : "Submit"}`}
-                    className="hover:bg-primary text-primary hover:text-white w-44 py-2"
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                  />
-                )
               )}
+              <div className="flex-1 flex justify-end">
+                {currentStep < totalSteps ? (
+                  <Button
+                    text="Next"
+                    className="hover:bg-primary text-primary hover:text-white w-44 py-2"
+                    onClick={nextStep}
+                  />
+                ) : (
+                  currentStep === totalSteps && (
+                    <Button
+                      text={`${isLoading ? "Submitting..." : "Submit"}`}
+                      className={`hover:bg-primary text-primary hover:text-white w-44 py-2 ${
+                        isLoading && "bg-primary text-white"
+                      }`}
+                      onClick={handleSubmit}
+                      disabled={isLoading}
+                    />
+                  )
+                )}
+              </div>
             </div>
           </div>
         </div>
