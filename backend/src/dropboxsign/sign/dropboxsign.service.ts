@@ -1,27 +1,28 @@
 import * as DropboxSign from "@dropbox/sign";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as fs from 'fs';
 import { DocType, Document } from "src/repository/model/documents/document.entity";
 import { DocumentStatus } from "src/repository/model/documents/documentstatus.enum";
 import { User } from "src/repository/model/user/user.entity";
+import { DocumentRepoService } from "src/repository/service/document.repo.service";
 import { Repository } from "typeorm";
+import { DownloadDocumentDto } from "../dto/downloaddocument.dto";
 import { SignRequestDto } from "../dto/signrequest.dto";
 import { SginStatusDto } from "../dto/signstatus.dto";
 
 @Injectable()
 export class DropBoxSignService {
 
-    constructor(@InjectRepository(Document) private documentRepo: Repository<Document>,
-        @InjectRepository(User) private userRepo: Repository<User>) {
+    private signatureRequestApi = new DropboxSign.SignatureRequestApi();
 
+    constructor(@InjectRepository(Document) private documentRepo: Repository<Document>,
+        @InjectRepository(User) private userRepo: Repository<User>, private docRepoService: DocumentRepoService) {
+        this.signatureRequestApi.username = process.env.DROPBOX_SIGN_API_KEY;
     }
 
     async sendSignRequest(request: SignRequestDto) {
         try {
-            const signatureRequestApi = new DropboxSign.SignatureRequestApi();
-            signatureRequestApi.username = process.env.DROPBOX_SIGN_API_KEY;
-
             const signer1: DropboxSign.SubSignatureRequestSigner = {
                 emailAddress: request.email,
                 name: request.firstName + ' ' + request.lastName,
@@ -74,7 +75,7 @@ export class DropBoxSignService {
                 signingOptions,
                 testMode: Boolean(process.env.DROPBOX_SIGN_TEST_MODE),
             };
-            const result = signatureRequestApi.signatureRequestSend(data);
+            const result = this.signatureRequestApi.signatureRequestSend(data);
             result.then(response => {
                 doc.status = DocumentStatus.SENT;
                 this.documentRepo.save(doc);
@@ -160,5 +161,19 @@ export class DropBoxSignService {
             return Promise.resolve(dto);
         }
         throw new NotFoundException('Requested Document is not found!')
+    }
+
+    public async downloadSignedDocumentLink(email: string): Promise<DownloadDocumentDto> {
+        const doc = await this.docRepoService.findDocByEmail(email);
+        try {
+            const result = await this.signatureRequestApi.signatureRequestFilesAsFileUrl(doc.xid);
+            const dto = new DownloadDocumentDto();
+            dto.downloadUrl = result.body.fileUrl;
+            return Promise.resolve(dto);
+        } catch (error) {
+            console.error(error)
+            console.error('Error occurred while requesting the download url! Email: ' + email);
+            throw new InternalServerErrorException('Error occurred while requesting the download url! Email: ' + email);
+        }
     }
 }
