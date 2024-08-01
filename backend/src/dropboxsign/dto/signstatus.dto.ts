@@ -1,5 +1,5 @@
-import { DocType } from "src/model/documents/document.entity";
-import { DocumentStatus } from "src/model/documents/documentstatus.enum";
+import { DocType } from "src/repository/model/documents/document.entity";
+import { DocumentStatus } from "src/repository/model/documents/documentstatus.enum";
 
 export class SginStatusDto {
 

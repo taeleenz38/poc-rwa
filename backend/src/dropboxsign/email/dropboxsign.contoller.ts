@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query, Req, Res } from "@nestjs/common";
 import { Request } from "express";
 import { FormDataRequest } from "nestjs-form-data";
+import { SignRequestDto } from "../dto/signrequest.dto";
 import { DropBoxSignService } from "./dropboxsign.service";
-import { SignRequestDto } from "./dto/signrequest.dto";
 
 @Controller('/contract-sign')
 export class DropBoxSignServiceController {

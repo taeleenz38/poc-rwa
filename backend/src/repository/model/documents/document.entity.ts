@@ -56,6 +56,13 @@ export class Document extends BaseEntity {
     })
     type: DocType;
 
+    @Column({
+        type: 'varchar',
+        name: 'signature_id',
+        nullable: true
+    })
+    signatureId: string
+
     @ManyToOne(() => User, (user) => user.documents)
     @JoinColumn({ name: 'id', referencedColumnName: 'id' })
     user: User;
