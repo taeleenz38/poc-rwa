@@ -218,6 +218,7 @@ export class AlchemyService {
     let allMintRequestResponse: MintRequestedResponse[] = [];
     let pendingMintRequestResponse: MintRequestedResponse[] = [];
     let priceIdForDepositList: PriceIdForDeposit[] = [];
+    let mintCompletedList: string[] = [];
 
     const settings = {
       apiKey: API_KEY,
@@ -277,11 +278,19 @@ export class AlchemyService {
       try {
         const decodedLog = mintCompleted.parseLog(log);
         const depositId = decodedLog.args.depositId;
-        const matchingDeposits = allMintRequestResponse.filter(item => item.depositId !== depositId);
+        mintCompletedList.push(depositId);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    allMintRequestResponse.forEach((value) => {
+      try {
+        const matchingDeposits = mintCompletedList.filter(item => item === value.depositId);
 
          // Add matching deposits to mintList
-         if (matchingDeposits.length > 0) {
-          pendingMintRequestResponse.push(...matchingDeposits);
+         if (!matchingDeposits || matchingDeposits.length == 0) {
+          pendingMintRequestResponse.push(value);
         }
 
       } catch (error) {
@@ -333,6 +342,7 @@ export class AlchemyService {
     let returnMintRequestResponse: MintRequestedResponse[] = [];
     let allMintRequestResponse: MintRequestedResponse[] = [];
     let pendingMintRequestResponse: MintRequestedResponse[] = [];
+    let mintCompletedList: string[] = [];
     let priceIdForDepositList: PriceIdForDeposit[] = [];
 
     const settings = {
@@ -393,11 +403,19 @@ export class AlchemyService {
       try {
         const decodedLog = mintCompleted.parseLog(log);
         const depositId = decodedLog.args.depositId;
-        const matchingDeposits = allMintRequestResponse.filter(item => item.depositId !== depositId);
+        mintCompletedList.push(depositId);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    allMintRequestResponse.forEach((value) => {
+      try {
+        const matchingDeposits = mintCompletedList.filter(item => item === value.depositId);
 
          // Add matching deposits to mintList
-         if (matchingDeposits.length > 0) {
-          pendingMintRequestResponse.push(...matchingDeposits);
+         if (!matchingDeposits || matchingDeposits.length == 0) {
+          pendingMintRequestResponse.push(value);
         }
 
       } catch (error) {
@@ -620,7 +638,6 @@ export class AlchemyService {
       }
     });
 
-    console.log("claimableList-====================>", returnClaimList);
 
 
     //deposit if
