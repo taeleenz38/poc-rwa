@@ -27,4 +27,9 @@ export class DropBoxSignServiceController {
     public getStatus(@Query('email') email: string) {
         return this.signService.getSignStatus(email);
     }
+
+    @Get('/download/link')
+    public getSignedDocument(@Query('email') email: string) {
+        return this.signService.downloadSignedDocumentLink(email);
+    }
 }
