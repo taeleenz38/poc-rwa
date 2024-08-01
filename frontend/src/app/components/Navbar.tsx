@@ -167,8 +167,8 @@ const Navbar = () => {
         </div>
       )}
       {showModal && (
-        <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded">
+        <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center ">
+          <div className="bg-white p-8 rounded transform scale-0 animate-zoomIn duration-1000">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-xl">Sign In</h2>
               <CloseButton onClick={() => setShowModal(false)} />
