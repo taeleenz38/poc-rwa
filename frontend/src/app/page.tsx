@@ -24,13 +24,32 @@ export default function Home() {
         DeFi with access to the deepest, most efficient institutional FX and
         capital markets in TradFi.
       </h2>
-      <div className="flex p-2 mt-10">
+      <div className="flex p-2 mt-10 gap-11">
         <PackageCard
           heading="AYF"
-          subHeading="Australian Dollar Yield"
+          subHeading="Australian Yield Fund"
           PRICE="1.048"
           TVL="$327.50M"
           href="/invest"
+          backgroundImage="url('/background.svg')"
+          footerText="For Wholesale Investors"
+          chains={
+            <>
+              <BaseIcon />
+              <EthIcon />
+              <SolanaIcon />
+              <MoonbeamIcon />
+              <LiquidIcon />
+            </>
+          }
+        />
+
+        <PackageCard
+          heading="A$DC"
+          subHeading="Australian Dollar Digital Coin"
+          PRICE="9.048"
+          TVL="$836.50M"
+          href=""
           backgroundImage="url('/background.svg')"
           footerText="For Wholesale Investors"
           chains={

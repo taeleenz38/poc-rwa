@@ -102,10 +102,10 @@ const VerificationPopup = ({
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl text-light font-bold">
+    <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center ">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3 transform scale-0 animate-zoomIn duration-1000">
+        <div className="flex justify-between items-center mb-8 border-b pb-3">
+          <h2 className="text-xl text-white font-bold w-full text-center">
             Verification Has Been Submitted
           </h2>
           <CloseButton onClick={onCloseModal} />
@@ -117,12 +117,15 @@ const VerificationPopup = ({
             {status === "Done"
               ? "You have been verified !"
               : status === "Init"
-              ? "Verification is being processed. Try Again !"
+              ? "Verification is being proccessed. Try Again !"
               : ""}
           </span>
           {status === "Done" ? (
             <>
-              <Button text={"Send Document To Email"} onClick={sendSignRequest} />
+              <Button
+                text={"Send Document To Email"}
+                onClick={sendSignRequest}
+              />
               <span>
                 {isDocumentSigned
                   ? "Documents have been signed!"
@@ -133,6 +136,7 @@ const VerificationPopup = ({
             <Button
               text={` ${isLoading ? "Checking Status..." : "Get Verified"}`}
               onClick={getStatus}
+              className="bg-white text-black"
             />
           )}
         </div>

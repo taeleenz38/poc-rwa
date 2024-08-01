@@ -29,7 +29,7 @@ export const PackageCard = (props: PackageCardProps) => {
   return (
     <Link href={href}>
       <div
-        className="rounded-xl bg-primary opacity-100 text-light flex flex-col justify-between h-96 p-2 max-w-2xl mt-10 hover:opacity-90 hover:cursor-pointer shadow-black shadow-md"
+        className="rounded-xl bg-primary opacity-100 text-light flex flex-col justify-between h-96 p-2 max-w-2xl mt-10 hover:opacity-90 hover:cursor-pointer shadow-black shadow-md transition-transform duration-500 hover:scale-105 "
         style={{
           backgroundImage,
           backgroundPosition: "left",
