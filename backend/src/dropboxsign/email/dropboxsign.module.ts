@@ -10,6 +10,7 @@ import { DropBoxSignService } from './dropboxsign.service';
 @Module({
     providers: [DropBoxSignService, UserDocumentRepoService],
     controllers: [DropBoxSignServiceController],
-    imports: [NestjsFormDataModule, TypeOrmModule.forFeature([User, Document])]
+    imports: [NestjsFormDataModule, TypeOrmModule.forFeature([User, Document])],
+    exports: [DropBoxSignModule]
 })
 export class DropBoxSignModule { }

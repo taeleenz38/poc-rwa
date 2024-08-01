@@ -12,6 +12,7 @@ import { DropBoxEmbeddedSignService } from "./dropboxsign.embedded.service";
 @Module({
     providers: [DropBoxEmbeddedSignService],
     controllers: [DropBoxSignEmbeddedController],
-    imports: [NestjsFormDataModule, TypeOrmModule.forFeature([User, Document]), RepoServiceModule]
+    imports: [NestjsFormDataModule, TypeOrmModule.forFeature([User, Document]), RepoServiceModule],
+    exports: [DropBoxSignEmbeddedModule]
 })
 export class DropBoxSignEmbeddedModule { }
