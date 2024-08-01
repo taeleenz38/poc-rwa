@@ -2,12 +2,12 @@ import * as DropboxSign from "@dropbox/sign";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as fs from 'fs';
-import { DocType, Document } from "src/model/documents/document.entity";
-import { DocumentStatus } from "src/model/documents/documentstatus.enum";
-import { User } from "src/model/user/user.entity";
+import { DocType, Document } from "src/repository/model/documents/document.entity";
+import { DocumentStatus } from "src/repository/model/documents/documentstatus.enum";
+import { User } from "src/repository/model/user/user.entity";
 import { Repository } from "typeorm";
-import { SignRequestDto } from "./dto/signrequest.dto";
-import { SginStatusDto } from "./dto/signstatus.dto";
+import { SignRequestDto } from "../dto/signrequest.dto";
+import { SginStatusDto } from "../dto/signstatus.dto";
 
 @Injectable()
 export class DropBoxSignService {
