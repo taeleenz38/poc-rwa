@@ -560,7 +560,8 @@ export class AlchemyService {
     const claimableList = await this.getClaimableTimestampList();
     const mintList = await this.getDepositRequestListWithPriceId();
 
-    console.log("priceList-====================>", priceList);
+    // console.log("mintList-====================>", mintList);
+    // console.log("priceList-====================>", priceList);
     // console.log("claimableList-====================>", claimableList);
 
     mintList.forEach((value) => {
@@ -586,10 +587,9 @@ export class AlchemyService {
       }
     });
 
-
     claimList.forEach((value) => {
       try {
-        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === value.priceId);
+        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(value.priceId).toString());
     
         // Add matching deposits to mintList
         if (matchingDeposits.length > 0) {
