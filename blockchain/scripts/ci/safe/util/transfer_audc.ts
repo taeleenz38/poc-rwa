@@ -21,7 +21,7 @@ async function main() {
   const gasLimit = 600000;
 
   try {
-    const userSafe: string = process.env.STABLE_COIN_USER_WALLET!;
+    const userSafe: string = "0xcADdc83e3deE71d680a3C2b029Ec04c4B0357a6b";
 
     const tx = await audc.connect(usdcWhaleSigner).transfer(userSafe, parseUnits("50000", 18), { gasPrice, gasLimit });
     await tx.wait();
