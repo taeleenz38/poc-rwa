@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,6 +20,14 @@ const Navbar = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const storedLoggedIn = localStorage.getItem("isLoggedIn");
+    const storedUserRole = localStorage.getItem("userRole");
+
+    if (storedLoggedIn && storedUserRole) {
+      setIsLoggedIn(true);
+      setUserRole(storedUserRole);
+    }
+
     const handleScroll = () => {
       if (window.scrollY > 0) {
         setScrolled(true);
@@ -39,14 +47,20 @@ const Navbar = () => {
     if (username === "ted" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("admin");
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "admin");
       setShowModal(false);
     } else if (username === "john" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("user");
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "user");
       setShowModal(false);
     } else if (username === "alice" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("guardian");
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "guardian");
       setShowModal(false);
     } else {
       alert("Invalid credentials");
@@ -56,6 +70,8 @@ const Navbar = () => {
   const handleSignOut = () => {
     setIsLoggedIn(false);
     setUserRole("");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
   };
 
   return (
