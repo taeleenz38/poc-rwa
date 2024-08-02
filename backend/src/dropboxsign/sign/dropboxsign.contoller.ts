@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query, Req, Res } from "@nestjs/common";
 import { Request } from "express";
 import { FormDataRequest } from "nestjs-form-data";
+import { SignRequestDto } from "../dto/signrequest.dto";
 import { DropBoxSignService } from "./dropboxsign.service";
-import { SignRequestDto } from "./dto/signrequest.dto";
 
 @Controller('/contract-sign')
 export class DropBoxSignServiceController {
@@ -26,5 +26,10 @@ export class DropBoxSignServiceController {
     @Get('/status')
     public getStatus(@Query('email') email: string) {
         return this.signService.getSignStatus(email);
+    }
+
+    @Get('/download/link')
+    public getSignedDocument(@Query('email') email: string) {
+        return this.signService.downloadSignedDocumentLink(email);
     }
 }
