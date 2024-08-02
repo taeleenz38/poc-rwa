@@ -47,6 +47,10 @@ export class AlchemyController {
     return this.appService.getPendingApprovalRedemptionList();
   }
 
+  @Get("/claimable-redemption-list")
+  getClaimableRedemptionList(): Promise<RedemptionRequestResponse[]> {
+    return this.appService.getClaimableRedemptionList();
+  }
 
   @Get("/claimable-details")
   getClaimableDetails(): Promise<ClaimableList[]> {

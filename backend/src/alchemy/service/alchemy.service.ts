@@ -60,10 +60,9 @@ export class AlchemyService {
       };
       pricingResponse.push(pricing);
     });
-    console.log(pricingResponse);
 
     priceChangedLogs.forEach(log => {
-      // const changedPriceId = ethers.BigNumber.from(log.topics[1]).toString();
+  
       const changedPriceId = log.topics[1].toString();
 
       const data = ethers.utils.arrayify(log.data);
@@ -76,63 +75,8 @@ export class AlchemyService {
         pricingResponse[index].price = changedPrice;
       }
     })
-    console.log(pricingResponse);
     return pricingResponse;
   }
-  /*
-    async getAllowList(): Promise<string> { 
-      let allowListResponse: AllowListResponse[] = [];
-      const settings = {
-        apiKey: API_KEY,
-        network: Network.ETH_SEPOLIA
-      };
-      const alchemy = new Alchemy(settings);
-      let address = ALLOW_LIST_ADDRESS
-  
-      const allowListDaoInterface = new Utils.Interface(ALLOW_LIST_ABI);
-      const allowListSetTopics = allowListDaoInterface.encodeFilterTopics('TermAdded', []);
-  
-      let allowListSetLogs = await alchemy.core.getLogs(
-        {
-          fromBlock: '0x0',
-          toBlock: 'latest',
-          address: address,
-          topics: allowListSetTopics,
-        }
-      );
-  
-      const types = ['bytes32', 'bytes32'];
-  
-      // console.log(allowListSetLogs);
-      allowListSetLogs.forEach(log => {
-  
-        // console.log(part1)
-        const iface = new ethers.utils.Interface(ALLOW_LIST_ABI);
-        try {
-          const decodedLog = iface.parseLog(log);
-          console.log(decodedLog.args);
-        } catch (error) {
-          console.error('Error decoding log:', error);
-        }
-  
-  
-        // console.log(ethers.utils.defaultAbiCoder.decode(types, part1));
-        // console.log(ethers.BigNumber.from(part2).toBigInt());
-        // let allowList: AllowListResponse = {
-        //   termIndex: ethers.BigNumber.from(log.topics[1]).toString(),
-        //   message: ethers.utils.formatEther(ethers.BigNumber.from(part1).toBigInt())
-          
-        // };
-        // allowListResponse.push(allowList);
-      });
-  
-      // console.log(allowListResponse);
-  
-      return 'success';
-    }
-  }
-  */
-
   async getTermIndexList(): Promise<AllowListResponse[]> {
     let allowListResponse: AllowListResponse[] = [];
     const settings = {
@@ -490,15 +434,11 @@ export class AlchemyService {
       try {
         const decodedLog = iface.parseLog(log);
         const depositId = decodedLog.args.depositId;
-        // console.log("timestamp====>", ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt());
         const claimTimestampBigInt = ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt();
         const claimTimestampNumber = Number(claimTimestampBigInt); // Convert to Number
         const claimTimestampDate = new Date(claimTimestampNumber * 1000); // Convert to milliseconds
         const claimTimestampFormatted = claimTimestampDate.toISOString(); // Format as ISO string
-        console.log("claimTimestampBigInt==>", claimTimestampBigInt);
-        console.log("claimTimestampFormatted===>", claimTimestampFormatted)
-        // const claimTimestamp = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt());
-        console.log(decodedLog);
+
         let claimableTimestampList: ClaimableTimestampResponse = {
           depositId: depositId,
           claimTimestamp: claimTimestampFormatted,
@@ -580,10 +520,6 @@ export class AlchemyService {
     const claimableList = await this.getClaimableTimestampList();
     const mintList = await this.getDepositRequestListWithPriceId();
 
-    // console.log("mintList-====================>", mintList);
-    // console.log("priceList-====================>", priceList);
-    // console.log("claimableList-====================>", claimableList);
-
     mintList.forEach((value) => {
       try {
         const matchingDeposits = claimableList.filter(item => item.depositId === value.depositId);
@@ -639,249 +575,9 @@ export class AlchemyService {
       }
     });
 
-
-
-    //deposit if
-    //address
-    //claimable time
-    //amount
-
-
-    //we have all required data need to combine and get the list
-    //mintRequestResponse ->depositAmountAfterFee, depositId
-    //priceIdForDeposit -> depositId,priceId
-    //priceList ->priceid,price
-    //claimableList ->depositId, claimTimestamp
-
-    //return {depositAmountAfterFee/price, claimTimestamp}
     return returnClaimList;
   }
 
-
-  // async getPendingRedemptionList(): Promise<RedemptionRequestResponse[]> {
-  //   let redemptionRequestResponse: RedemptionRequestResponse[] = []
-  //   const settings = {
-  //     apiKey: API_KEY,
-  //     network: Network.ETH_SEPOLIA,
-  //   };
-  //   const alchemy = new Alchemy(settings);
-  //   let address = ABBY_MANAGER_ADDRESS;
-
-  //   const redemptionRequestedStatusInterface = new Utils.Interface(REDEMPTION_REQUESTED_ABI);
-  //   const redemptionRequestedStatusSetTopics = redemptionRequestedStatusInterface.encodeFilterTopics('RedemptionRequested', []);
-
-  //   const redemptionCompletedStatusInterface = new Utils.Interface(REDEMPTION_COMPLETED_ABI);
-  //   const redemptionCompletedStatusSetTopics = redemptionCompletedStatusInterface.encodeFilterTopics('RedemptionCompleted', []);
-
-
-  //   let redemptionRequestedLogs = await alchemy.core.getLogs({
-  //     fromBlock: "0x0",
-  //     toBlock: "latest",
-  //     address: address,
-  //     topics: redemptionRequestedStatusSetTopics,
-  //   });
-  //   let iface = new ethers.utils.Interface(REDEMPTION_REQUESTED_ABI);
-
-  //   redemptionRequestedLogs.forEach((log) => {
-  //     try {
-  //       const decodedLog = iface.parseLog(log);
-  //       const user = decodedLog.args.user;
-  //       const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-  //       const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
-
-  //       let redemptionRequest: RedemptionRequestResponse = {
-  //         user: user,
-  //         redemptionId: redemptionId,
-  //         rwaAmountIn: rwaAmountIn,
-  //       };
-  //       redemptionRequestResponse.push(redemptionRequest);
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   let redemptionCompletedLogs = await alchemy.core.getLogs({
-  //     fromBlock: "0x0",
-  //     toBlock: "latest",
-  //     address: address,
-  //     topics: redemptionCompletedStatusSetTopics,
-  //   });
-  //   iface = new ethers.utils.Interface(REDEMPTION_COMPLETED_ABI);
-
-  //   let completedRedemptionIds = new Set();
-
-  //   redemptionCompletedLogs.forEach((log) => {
-  //     try {
-  //       const decodedLog = iface.parseLog(log);
-  //       const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-  //       completedRedemptionIds.add(redemptionId);
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   // Filter out the completed redemption requests
-  //   let filteredRedemptionRequests = redemptionRequestResponse.filter(request => !completedRedemptionIds.has(request.redemptionId));
-
-  //   console.log('Filtered Redemption Requests:', filteredRedemptionRequests);
-  //   return filteredRedemptionRequests;
-  // }
-
-  // async getPendingRedemptionList(): Promise<RedemptionRequestResponse[]> {
-  //   let returnRedeemRequestResponse: RedemptionRequestResponse[] = [];
-  //   let allRedeemRequestResponse: RedemptionRequestResponse[] = [];
-  //   let pendingRedeemRequestResponse: RedemptionRequestResponse[] = [];
-  //   let priceIdForRedemptionList: PriceIdForRedemption[] = [];
-  //   let redeemCompletedList: string[] = [];
-
-  //   const settings = {
-  //     apiKey: API_KEY,
-  //     network: Network.ETH_SEPOLIA,
-  //   };
-  //   const alchemy = new Alchemy(settings);
-  //   let address = ABBY_MANAGER_ADDRESS;
-
-  //   const redemptionRequestedStatusInterface = new Utils.Interface(REDEMPTION_REQUESTED_ABI);
-  //   const redemptionRequestedStatusSetTopics = redemptionRequestedStatusInterface.encodeFilterTopics('RedemptionRequested', []);
-
-
-  //   let redeemRequestSetLogs = await alchemy.core.getLogs({
-  //     fromBlock: "0x0",
-  //     toBlock: "latest",
-  //     address: address,
-  //     topics: redemptionRequestedStatusSetTopics,
-  //   });
-
-  //   let iface = new ethers.utils.Interface(REDEMPTION_REQUESTED_ABI);
-
-  //   redeemRequestSetLogs.forEach((log) => {
-  //     try {
-  //       const decodedLog = iface.parseLog(log);
-  //       const user = decodedLog.args.user;
-  //       const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-  //       const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
-
-  //       let redemptionRequest: RedemptionRequestResponse = {
-  //         user: user,
-  //         redemptionId: redemptionId,
-  //         rwaAmountIn: rwaAmountIn,
-  //       };
-  //       allRedeemRequestResponse.push(redemptionRequest);
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   const redemptionCompletedStatusInterface = new Utils.Interface(REDEMPTION_COMPLETED_ABI);
-  //   const redemptionCompletedStatusSetTopics = redemptionCompletedStatusInterface.encodeFilterTopics('RedemptionCompleted', []);
-
-  //   let redeemCompletedlogs = await alchemy.core.getLogs({
-  //     fromBlock: "0x0",
-  //     toBlock: "latest",
-  //     address: address,
-  //     topics: redemptionCompletedStatusSetTopics,
-  //   });
-
-  //   // const mintCompleted = new ethers.utils.Interface(REDEMPTION_COMPLETED_ABI);
-  //   iface = new ethers.utils.Interface(REDEMPTION_COMPLETED_ABI);
-
-  //   let completedRedemptionIds = new Set();
-  //   redeemCompletedlogs.forEach((log) => {
-  //     try {
-  //       const decodedLog = iface.parseLog(log);
-  //       const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-
-
-  //       redeemCompletedList.push(redemptionId);
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   allRedeemRequestResponse.forEach((value) => {
-  //     try {
-  //       const matchingDeposits = redeemCompletedList.filter(item => item === value.redemptionId);
-
-  //        // Add matching deposits to mintList
-  //        if (!matchingDeposits || matchingDeposits.length == 0) {
-  //         pendingRedeemRequestResponse.push(value);
-  //       }
-
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   const priceIdSet = new Utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
-  //   const priceIdSetTopics = priceIdSet.encodeFilterTopics('PriceIdSetForRedemption', []);
-
-  //   let priceIdLogs = await alchemy.core.getLogs({
-  //     fromBlock: "0x0",
-  //     toBlock: "latest",
-  //     address: address,
-  //     topics: priceIdSetTopics,
-  //   });
-
-  //   const priceIdSetForRedeem = new ethers.utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
-  //   priceIdLogs.forEach((log) => {
-  //     try {
-  //       const decodedLog = priceIdSetForRedeem.parseLog(log);
-  //       const redeemIdSet = decodedLog.args.redemptionIdSet;
-  //       const priceId = decodedLog.args.priceIdSet;
-  //       const priceIdForRedeem: PriceIdForRedemption = {priceId:priceId, redeemId:redeemIdSet};
-  //       priceIdForRedemptionList.push(priceIdForRedeem);
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   pendingRedeemRequestResponse.forEach((value) => {//2
-  //     try {
-  //       const priceIdNotMatch = priceIdForRedemptionList.filter(item => item.redeemId === value.redemptionId);
-
-  //       // Add matching deposits to mintList
-  //       if (!priceIdNotMatch || priceIdNotMatch.length == 0) {
-  //         // value.priceId = priceIdMatch[0].priceId;
-  //         returnRedeemRequestResponse.push(value);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-
-  //   const redeemApprovalSet = new Utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
-  //   const redeemApprovalTopics = redeemApprovalSet.encodeFilterTopics('PriceIdSetForRedemption', []);
-
-  //   let redeemApprovalLogs = await alchemy.core.getLogs({
-  //     fromBlock: "0x0",
-  //     toBlock: "latest",
-  //     address: address,
-  //     topics: redeemApprovalTopics,
-  //   });
-
-  //   let redeemApprovalId = new Set();
-
-  //   // const redeemApprovalLogs = new ethers.utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
-  //   priceIdLogs.forEach((log) => {
-  //     try {
-  //       const decodedLog = redeemApprovalSet.parseLog(log);
-  //       const redeemIdSet = ethers.BigNumber.from(decodedLog.args.redemptionIdSet).toString();
-  //       redeemApprovalId.add(redeemIdSet);
-  //     } catch (error) {
-  //       console.error("Error decoding log:", error);
-  //     }
-  //   });
-
-  //   console.log(redeemApprovalId);
-
-  //   console.log(returnRedeemRequestResponse);
-
-  //   let filteredRedemptionRequests = returnRedeemRequestResponse.filter(request => !redeemApprovalId.has(request.redemptionId));
-
-
-  //   return filteredRedemptionRequests;
-  // }
 
   async getPendingRedemptionList(): Promise<RedemptionRequestResponse[]> {
     let approvedRedeemptionIds = new Set();
@@ -1107,13 +803,14 @@ export class AlchemyService {
       }
     });
 
-    pendingRedeemptionList = pendingRedeemptionList.filter(request => pricedRedeemptionIds.has(request.redemptionId));
-
     const priceList:PricingResponse[] = await this.getPricing(); 
     
     pendingRedeemptionList.forEach((value) => {
       try {
-        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(value.priceId).toString());
+
+        const reeemItem = pricedRedeemptionIdList.filter(item => item.redeemId === value.redemptionId);
+        if (reeemItem.length > 0) {
+        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
     
         // Add matching deposits to mintList
         if (matchingDeposits.length > 0) {
@@ -1130,11 +827,160 @@ export class AlchemyService {
             };
             claimableRedemptionResponse.push(claimableRedemption);
         }
+      }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    
+    });
+
+    return claimableRedemptionResponse;
+  }
+
+  async getClaimableRedemptionList(): Promise<RedemptionRequestResponse[]> {
+    let approvedRedeemptionIds = new Set();
+    let pricedRedeemptionIdList: PriceIdForRedemption[] = [];
+    let completedRedemptionIds = new Set();
+    let pricedRedeemptionIds = new Set();
+    let allRedeemptionList: RedemptionRequestResponse[] = [];
+    let pendingRedeemptionList: RedemptionRequestResponse[] = [];
+    let claimableRedemptionResponse: ClaimableRedemptionResponse[] = []
+
+    const settings = {
+      apiKey: API_KEY,
+      network: Network.ETH_SEPOLIA,
+    };
+    const alchemy = new Alchemy(settings);
+    let address = ABBY_MANAGER_ADDRESS;
+
+    const redemptionRequestedsInterface = new Utils.Interface(REDEMPTION_REQUESTED_ABI);
+    const redemptionRequestedTopics = redemptionRequestedsInterface.encodeFilterTopics('RedemptionRequested', []);
+
+    let redeemRequestSetLogs = await alchemy.core.getLogs({
+      fromBlock: "0x0",
+      toBlock: "latest",
+      address: address,
+      topics: redemptionRequestedTopics,
+    });
+
+    redeemRequestSetLogs.forEach((log) => {
+      try {
+        const decodedLog = redemptionRequestedsInterface.parseLog(log);
+        const user = decodedLog.args.user;
+        const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
+        const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
+
+        let redemptionRequest: RedemptionRequestResponse = {
+          user: user,
+          redemptionId: redemptionId,
+          rwaAmountIn: rwaAmountIn,
+        };
+        allRedeemptionList.push(redemptionRequest);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
     });
 
+    const redemptionCompletedInterface = new Utils.Interface(REDEMPTION_COMPLETED_ABI);
+    const redemptionCompletedSetTopics = redemptionCompletedInterface.encodeFilterTopics('RedemptionCompleted', []);
+
+    let redeemCompletedlogs = await alchemy.core.getLogs({
+      fromBlock: "0x0",
+      toBlock: "latest",
+      address: address,
+      topics: redemptionCompletedSetTopics,
+    });
+
+    redeemCompletedlogs.forEach((log) => {
+      try {
+        const decodedLog = redemptionCompletedInterface.parseLog(log);
+        const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
+        completedRedemptionIds.add(redemptionId);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    pendingRedeemptionList = allRedeemptionList.filter(request => !completedRedemptionIds.has(request.redemptionId));
+
+    const redemptionApprovalInterface = new Utils.Interface(REDEMPTION_APPROVAL_ABI);
+    const redeemApprovalTopics = redemptionApprovalInterface.encodeFilterTopics('RedemptionApproved', []);
+
+    let redeemApprovalLogs = await alchemy.core.getLogs({
+      fromBlock: "0x0",
+      toBlock: "latest",
+      address: address,
+      topics: redeemApprovalTopics,
+    });
+
+    redeemApprovalLogs.forEach((log) => {
+      try {
+        const decodedLog = redemptionApprovalInterface.parseLog(log);
+        const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
+        approvedRedeemptionIds.add(redemptionId);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    pendingRedeemptionList = pendingRedeemptionList.filter(request => approvedRedeemptionIds.has(request.redemptionId));
+
+    const redemptionPricingInterface = new Utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
+    const redemptionPricedSetTopics = redemptionPricingInterface.encodeFilterTopics('PriceIdSetForRedemption', []);
+
+    let priceIdLogs = await alchemy.core.getLogs({
+      fromBlock: "0x0",
+      toBlock: "latest",
+      address: address,
+      topics: redemptionPricedSetTopics,
+    });
+
+    const priceIdSetForRedeem = new ethers.utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
+    priceIdLogs.forEach((log) => {
+      try {
+        const decodedLog = priceIdSetForRedeem.parseLog(log);
+        const redeemIdSet = ethers.BigNumber.from(decodedLog.args.redemptionIdSet).toString();
+        const priceId = decodedLog.args.priceIdSet;
+        const priceIdForRedeem: PriceIdForRedemption = {priceId:priceId, redeemId:redeemIdSet};
+        pricedRedeemptionIdList.push(priceIdForRedeem);
+        pricedRedeemptionIds.add(redeemIdSet);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    const priceList:PricingResponse[] = await this.getPricing(); 
+    
+    pendingRedeemptionList.forEach((value) => {
+      try {
+
+        const reeemItem = pricedRedeemptionIdList.filter(item => item.redeemId === value.redemptionId);
+        if (reeemItem.length > 0) {
+        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
+    
+        // Add matching deposits to mintList
+        if (matchingDeposits.length > 0) {
+          const redemptionAmount = parseFloat(value.rwaAmountIn);
+          const price = parseFloat(matchingDeposits[0].price);
+    
+          const redeemAmount: number = redemptionAmount * price;
+          const claimableRedemption: ClaimableRedemptionResponse = {
+              user: value.user,
+              redemptionId: value.redemptionId,
+              priceId: value.priceId,
+              redeemAmount: redeemAmount,
+              rwaAmountIn: value.rwaAmountIn
+            };
+            claimableRedemptionResponse.push(claimableRedemption);
+        }
+      }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    
+    });
+
     return claimableRedemptionResponse;
   }
+
 }
