@@ -1,5 +1,5 @@
 import * as DropboxSign from "@dropbox/sign";
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotAcceptableException } from "@nestjs/common";
 import * as fs from 'fs';
 import { DocumentStatus } from "src/repository/model/documents/documentstatus.enum";
 import { DocumentRepoService } from "src/repository/service/document.repo.service";
@@ -22,7 +22,12 @@ export class DropBoxEmbeddedSignService {
 
     public async signEmbedded(signRequest: SignRequestDto): Promise<EmbeddedSignDataDto> {
 
-        const userDoc = await this.userDocRepoService.saveUserAndCreateDoc(signRequest);
+        const doc = await this.docService.findDocByEmail(signRequest.email);
+        if (process.env.SIGN_DOC_FILE_TEST_MODE === 'false' && doc.status === DocumentStatus.SIGN_COMPLETED) {
+            throw new NotAcceptableException('The requested document has already been signed!');
+        }
+
+        const userDoc = await this.userDocRepoService.saveUserAndCreateDoc(signRequest);        
 
         // Create signer ids
         const sigId = await this.createSignerId(signRequest, userDoc);
