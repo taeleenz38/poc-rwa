@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
-import Image from "next/image";
+import FileUpload from "@/app/components/atoms/Inputs/FileUpload";
 import InputWithLabel from "@/app/components/atoms/Inputs/InputWithLabel";
 import SelectField from "@/app/components/atoms/Inputs/SelectInput";
 import Stepper from "@/app/components/atoms/Stepper";
-import FileUpload from "@/app/components/atoms/Inputs/FileUpload";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import Image from "next/image";
+import React, { useState } from "react";
 import VerificationPopup from "./Popups/VerificationPopup";
 
 type KycDetailsProps = {
@@ -171,8 +171,8 @@ const KycDetails = (props: KycDetailsProps) => {
             setIsModalOpen(true);
             setFrontFile(null);
             setBackFile(null);
-            setFirstName("");
-            setLastName("");
+            // setFirstName("");
+            // setLastName("");
             setIssuedDate("");
             setValidUntil("");
             setNumber("");
