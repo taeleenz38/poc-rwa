@@ -43,13 +43,18 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       const approvalAmount = BigNumber.from(amount).mul(
         BigNumber.from(10).pow(18)
       );
-      const totalApprovalAmount = approvalAmount.mul(BigNumber.from(105)).div(BigNumber.from(100));
+      const totalApprovalAmount = approvalAmount
+        .mul(BigNumber.from(105))
+        .div(BigNumber.from(100));
 
       const tx = await writeContractAsync({
         abi: audcabi.abi,
         address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
         functionName: "approve",
-        args: [process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS, totalApprovalAmount],
+        args: [
+          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS,
+          totalApprovalAmount,
+        ],
       });
     } catch (error) {
       console.error("Error:", error);
@@ -73,7 +78,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       console.error("Error requesting deposit:", error);
     }
   };
-  
+
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
@@ -82,20 +87,29 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Buy AYF</h2>
+          <div></div>
+          <h2 className="text-xl font-semibold">Buy AYF</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <InputField
-          label="AMOUNT:"
-          value={amount || ""}
-          onChange={onAmountChange}
-        />
+        <div className="text-center px-8 text-2xl mb-4 font-bold">
+          Please enter the amount of AUDC you wish to deposit in return for AYF.
+        </div>
+        <div className="text-center text-secondary text-opacity-80 mb-6">
+          *Understand that crypto payments are not reversible.
+        </div>
+        <div className="w-5/6 text-center mx-auto mb-8">
+          <InputField
+            label="AMOUNT:"
+            value={amount || ""}
+            onChange={onAmountChange}
+          />
+        </div>
         <div className="w-full flex justify-center">
           <Submit
             onClick={handleRequestDeposit}
-            label={isPending ? "Confirming..." : "Buy"}
+            label={isPending ? "Confirming..." : "Confirm"}
             disabled={isPending}
           />
         </div>

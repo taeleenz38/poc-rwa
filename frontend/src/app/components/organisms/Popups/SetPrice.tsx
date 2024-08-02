@@ -59,17 +59,26 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
+          <div></div>
           <h2 className="text-xl font-bold">Add Price</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <InputField
-          label="Price:"
-          value={addPrice || ""}
-          onChange={onPriceChange}
-        />
-        <div className="w-full flex justify-end">
+        <div className="text-center px-8 text-2xl mb-4 font-bold">
+          Please enter the desired price for AYF (Australian Yield Fund).
+        </div>
+        <div className="text-center text-secondary text-opacity-80 mb-6">
+          *Understand that this transaction is not reversible.
+        </div>
+        <div className="w-5/6 text-center mx-auto mb-8">
+          <InputField
+            label="Price:"
+            value={addPrice || ""}
+            onChange={onPriceChange}
+          />
+        </div>
+        <div className="w-full flex justify-center">
           <Submit
             onClick={handleAddPrice}
             label={isPending ? "Confirming..." : "Confirm"}

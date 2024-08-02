@@ -4,6 +4,7 @@ import { BigNumber, ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
 import { config } from "@/config";
 import Balance from "@/app/components/molecules/Balance";
+import Balance2 from "@/app/components/molecules/Balance2";
 import Contact from "@/app/components/molecules/Contact";
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
@@ -95,7 +96,7 @@ const Portfolio = () => {
           portfolio&apos;s performance.
         </h3>
 
-        <div className="flex mx-80 py-2   items-center justify-center bg-multi-color-gradient gap-20 ">
+        <div className="flex mx-80 py-2 items-center justify-center bg-multi-color-gradient gap-20 ">
           <Balance
             tokenSymbol="AUDC"
             balanceData={audcData}
@@ -110,7 +111,7 @@ const Portfolio = () => {
 
         <div className="flex justify-between px-80 mt-8 gap-10">
           <div
-            className="flex flex-col gap-y-4 py-8 w-[60%] h-fit p-5"
+            className="flex flex-col gap-y-4 py-8 w-1/2 h-fit p-5"
             style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
           >
             <Accordion
@@ -118,31 +119,48 @@ const Portfolio = () => {
                 {
                   title: "Holdings",
                   content: (
-                    <h2 className="font-semibold text-2xl mb-4">Holdings</h2>
+                    <>
+                      <Balance2
+                        tokenSymbol="AUDC"
+                        balanceData={audcData}
+                        isLoading={audcLoading}
+                      />
+                      <Balance2
+                        tokenSymbol="AYF"
+                        balanceData={ayfData}
+                        isLoading={ayfLoading}
+                      />
+                    </>
                   ),
                 },
                 {
                   title: "Transactions",
                   content: (
-                    <h2 className="font-semibold text-2xl mb-4">
-                      Transactions
-                    </h2>
+                    <div className="flex flex-col text-xl">
+                      <div className="flex justify-between p-2">
+                        <div>Deposit - Buy AYF</div>
+                        <div>5,940 <span className="font-semibold">AUDC</span></div>
+                      </div>
+                      <div className="flex justify-between p-2">
+                        <div>Deposit - Buy AYF</div>
+                        <div>1,000 <span className="font-semibold">AUDC</span></div>
+                      </div>
+                      <div className="flex justify-between p-2">
+                        <div>Deposit - Buy AYF</div>
+                        <div>6,000 <span className="font-semibold">AUDC</span></div>
+                      </div>
+                    </div>
                   ),
                 },
                 {
                   title: "Allocation",
-                  content: (
-                    <h2 className="font-semibold text-2xl mb-4">Allocation</h2>
-                  ),
+                  content: <h2 className="font-semibold text-xl mb-4">N/A</h2>,
                 },
               ]}
             />
-            {/* <h2 className="font-semibold text-2xl mb-4">Holdings</h2>
-            <h2 className="font-semibold text-2xl mb-4">Transactions</h2>
-            <h2 className="font-semibold text-2xl mb-4">Allocation</h2> */}
           </div>
           <div
-            className="flex flex-col w-[46%] py-8 text-primary  overflow-y-scroll h-fit p-5"
+            className="flex flex-col w-1/2 py-8 text-primary  overflow-y-scroll h-fit p-5"
             style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
           >
             <h2 className="flex font-semibold text-2xl mb-4 justify-center items-center">

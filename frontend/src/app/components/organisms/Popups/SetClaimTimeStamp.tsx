@@ -34,7 +34,6 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     resetForm();
   };
 
-
   const onDepositIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDepositId(e.target.value);
   };
@@ -70,17 +69,26 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Set Claim Timestamp</h2>
+          <div></div>
+          <h2 className="text-xl font-semibold">Set Claim Timestamp</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <InputField
-          label="Deposit Id:"
-          value={depositId || ""}
-          onChange={onDepositIdChange}
-        />
-        <div className="w-full flex justify-end">
+        <div className="text-center px-8 text-2xl mb-4 font-bold">
+          Please enter the Deposit ID for which you want to set a claim timestamp.
+        </div>
+        <div className="text-center text-secondary text-opacity-80 mb-6">
+          *Understand that this transaction is not reversible.
+        </div>
+        <div className="w-5/6 text-center mx-auto mb-8">
+          <InputField
+            label="Deposit ID:"
+            value={depositId || ""}
+            onChange={onDepositIdChange}
+          />
+        </div>
+        <div className="w-full flex justify-center">
           <Submit
             onClick={handleSetClaimTimestamp}
             label={isPending ? "Confirming..." : "Confirm"}

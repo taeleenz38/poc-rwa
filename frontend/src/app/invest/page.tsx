@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
+import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription from "@/app/components/organisms/FundDescription";
 import Contact from "@/app/components/molecules/Contact";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
@@ -24,7 +25,7 @@ const Invest = () => {
 
   return (
     <div>
-      <FundDetails
+      <FundDetails2
         logoSrc="/LOGO.png"
         altText="Fund logo"
         fundName="AYF"
@@ -32,7 +33,7 @@ const Invest = () => {
         yieldText="Stable, high-quality Australian Dollar yield"
         price="$1.0445"
         tvl="$327.50M"
-        Button1Text="Buy"
+        Button1Text="Buy AYF"
         Button2Text="Redeem"
         Button1Class="bg-white text-primary hover:bg-primary hover:text-light"
         Button2Class="bg-secondary text-light hover:bg-primary"
@@ -47,7 +48,6 @@ const Invest = () => {
             <MoonbeamIcon className="lg:w-8 lg:h-8" />
           </>
         }
-        view={"Invest"}
       />
       <FundDescription />
       <Contact />

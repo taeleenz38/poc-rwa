@@ -1,10 +1,9 @@
 import React, { ReactNode, useState, useEffect } from "react";
 
-// Define the props for the AccordionItem component
 interface AccordionItemProps {
   title: string;
   content: ReactNode;
-  defaultOpen?: boolean; // Optional prop for default open state
+  defaultOpen?: boolean;
 }
 
 // AccordionItem component
@@ -23,29 +22,12 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
     <div>
       <div
         onClick={toggleAccordion}
-        className="cursor-pointer p-2.5 bg-gray border-b border-black flex justify-between items-center rounded-t-md rounded-b-md"
+        className="cursor-pointer p-4 bg-primary text-white flex justify-between items-center rounded-t-md rounded-b-md mb-4"
       >
-        <h3 style={{ margin: 0 }}>{title}</h3>
-        <span
-          style={{
-            fontWeight: "bold",
-            fontSize: "1.5rem",
-          }}
-        >
-          {isOpen ? "-" : "+"}
-        </span>
+        <h3 className="m-0 text-xl font-semibold">{title}</h3>
+        <span className="font-bold text-xl">{isOpen ? "-" : "+"}</span>
       </div>
-      {isOpen && (
-        <div
-          style={{
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderTop: "none",
-          }}
-        >
-          {content}
-        </div>
-      )}
+      {isOpen && <div className="mb-4 shadow-md  rounded-md p-4">{content}</div>}
     </div>
   );
 };
@@ -64,7 +46,7 @@ const Accordion: React.FC<AccordionProps> = ({ data }) => {
           key={index}
           title={item.title}
           content={item.content}
-          defaultOpen={index === 0} // Open the first item by default
+          defaultOpen={index === 0}
         />
       ))}
     </div>
