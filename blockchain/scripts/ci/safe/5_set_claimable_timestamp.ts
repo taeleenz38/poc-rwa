@@ -35,7 +35,7 @@ async function main() {
   
   const gasLimit = 600000;
 
-  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(3), 32);
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(2), 32);
 
   const block = (await ethers.provider.getBlock('latest')).timestamp;
   console.log(block);

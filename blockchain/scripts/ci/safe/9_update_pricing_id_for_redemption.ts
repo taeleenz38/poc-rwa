@@ -32,7 +32,7 @@ async function main() {
   gasPrice = gasPrice.mul(ethers.BigNumber.from(200)).div(ethers.BigNumber.from(100));
   const gasLimit = 600000;
 
-  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(2), 32);
 
   console.log("Setting up Gnosis Safe...");
   const signer = managerAdmin.provider.getSigner(managerAdmin.address);

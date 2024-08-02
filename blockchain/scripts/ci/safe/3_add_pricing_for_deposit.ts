@@ -47,7 +47,7 @@ async function main() {
 
   try {
     // Encode the addPrice function data
-    const addPriceData = pricer.interface.encodeFunctionData("addPrice", [parseUnits("10", 18), 1]);
+    const addPriceData = pricer.interface.encodeFunctionData("addPrice", [parseUnits("6", 18), 1]);
 
     const txData: SafeTransactionDataPartial = {
       to: pricer.address,

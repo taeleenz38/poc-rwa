@@ -32,7 +32,7 @@ async function main() {
   
   const gasLimit = 600000;
 
-  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(2), 32);
 
   // Setting up Gnosis Safe
   // const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;

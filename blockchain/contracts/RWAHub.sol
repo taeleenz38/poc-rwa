@@ -231,11 +231,28 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
       revert RedemptionTooSmall();
     }
     bytes32 redemptionId = bytes32(redemptionRequestCounter++);
-    redemptionIdToRedeemer[redemptionId] = Redeemer(msg.sender, amount, 0);
+    redemptionIdToRedeemer[redemptionId] = Redeemer(msg.sender, amount, 0, false);
 
     rwa.burnFrom(msg.sender, amount);
 
     emit RedemptionRequested(msg.sender, redemptionId, amount);
+  }
+
+  /**
+   * @notice Function used by asset sender to approve redeem request
+   *
+   * @param redemptionIds The amount (in units of `rwa`) that a user wishes to redeem
+   *               from the fund
+   */
+  function approveRedemptionRequest(
+    bytes32[] calldata redemptionIds
+  ) external virtual nonReentrant ifNotPaused(redemptionPaused) {
+    uint256 redemptionsSize = redemptionIds.length;
+    for (uint256 i = 0; i < redemptionsSize; ++i) {
+      Redeemer storage member = redemptionIdToRedeemer[redemptionIds[i]];
+      member.approved = true;
+      emit RedemptionApproved(redemptionIds[i]);
+    }
   }
 
   /**
@@ -445,7 +462,8 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     redemptionIdToRedeemer[redemptionIdToOverwrite] = Redeemer(
       user,
       rwaTokenAmountBurned,
-      priceId
+      priceId,
+      false
     );
     emit RedeemerOverwritten(
       redemptionIdToOverwrite,

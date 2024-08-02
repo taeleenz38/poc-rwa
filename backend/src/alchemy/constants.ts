@@ -1,7 +1,7 @@
 export const API_KEY = 'KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe';
-export const PRICING_ADDRESS = '0x4800eD2AC2e76bf6A7e9511A8c6b8DB312570098';
-export const ALLOW_LIST_ADDRESS = '0x2f05251F216AEDC3FFeA3AC628ABC4307b67248c';
-export const ABBY_MANAGER_ADDRESS = '0xE1f90FdA638712c29Df97b662564aC26a11e1C2f';
+export const PRICING_ADDRESS = '0xdec6f74A04d6594E9CF312eaDDd046a56e1FCa08';
+export const ALLOW_LIST_ADDRESS = '0x421771083e8a602740bc892EF64f301Defb0D03b';
+export const ABBY_MANAGER_ADDRESS = '0x1CA55734102F7c91Fc93d8DcdB2bAA474b259a38';
 export const PRICE_ADDED_ABI = `[{
     "anonymous": false,
     "inputs": [
@@ -244,6 +244,27 @@ export const MINT_COMPLETED_ABI = `[    {
       "name": "MintCompleted",
       "type": "event"
     }]`;
+
+    export const PRICEIDSETFORREDEMPTION_ABI = `[    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "redemptionIdSet",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "priceIdSet",
+          "type": "uint256"
+        }
+      ],
+      "name": "PriceIdSetForRedemption",
+      "type": "event"
+    }]`;
+    
 export const CLAIMABLETIMESTAMP_ABI = `[    {
       "anonymous": false,
       "inputs": [
@@ -281,4 +302,18 @@ export const PRICEIDSETFORDEPOSIT_ABI = `[    {
       ],
       "name": "PriceIdSetForDeposit",
       "type": "event"
-    }]`
+    }]`;
+
+    export const REDEMPTION_APPROVAL_ABI = `[{
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "redemptionId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "RedemptionApproved",
+      "type": "event"
+    }]`;

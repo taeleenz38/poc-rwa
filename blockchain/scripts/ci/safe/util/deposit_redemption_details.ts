@@ -7,8 +7,8 @@ async function main() {
   const abbyManager = await ethers.getContract("ABBYManager");
 
   // Sample deposit ID and redemption ID (Replace these with actual IDs you want to check)
-  const sampleDepositId = ethers.utils.hexZeroPad(ethers.utils.hexlify(5), 32);
-  const sampleRedemptionId = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+  const sampleDepositId = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+  const sampleRedemptionId = ethers.utils.hexZeroPad(ethers.utils.hexlify(2), 32);
 
   // Get depositor details
   const depositor = await abbyManager.depositIdToDepositor(sampleDepositId);

@@ -42,7 +42,6 @@ async function main() {
     const assetSenderSafe: string = process.env.ASSET_SENDER_WALLET!;
     console.log("assetSenderSafe==>", assetSenderSafe);
 
-
     // Ensure the Safe has enough ETH for gas
     const safeBalance = await ethers.provider.getBalance(assetSenderSafe);
     const estimatedGasCost = gasPrice.mul(gasLimit);
@@ -53,17 +52,12 @@ async function main() {
     const safeSdk = await Safe.create({ ethAdapter, safeAddress: assetSenderSafe });
     console.log("Gnosis Safe setup complete.");
 
-    // Check balance and allowance
-    // const balance = await abby.balanceOf(userSafe);
-    // if (balance.lt(parseUnits("2000", 18))) {
-    //   throw new Error("Insufficient ABBY balance in the Safe wallet.");
-    // }
-
     const allowance = await audc.allowance(assetSenderSafe, abbyManager.address);
-    console.log("allowance====>", allowance.toString());
+    const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+
     if (allowance.lt(parseUnits("20000", 18))) {
-      // Approve ABBY tokens
-      const approveData = abby.interface.encodeFunctionData("approve", [abbyManager.address, parseUnits("20000", 18)]);
+      // Approve AUDC tokens
+      const approveData = audc.interface.encodeFunctionData("approve", [abbyManager.address, parseUnits("20000", 18)]);
       const approveTxData: SafeTransactionDataPartial = {
         to: audc.address,
         value: "0",
@@ -75,8 +69,46 @@ async function main() {
         gasLimit: ethers.BigNumber.from('3000000'), // Set a higher gas limit
         gasPrice: ethers.utils.parseUnits('100', 'gwei') // Set a higher gas price
       });
-      console.log("Approval provided for ABBY!");
+      console.log("Approval provided for AUDC!");
     }
+
+    // Requesting redemption approval
+    const redemptionApprovalData = abbyManager.interface.encodeFunctionData(
+      "approveRedemptionRequest",
+      [[FIRST_DEPOSIT_ID]]
+    );
+
+    const redemptionTxData: SafeTransactionDataPartial = {
+      to: abbyManager.address,
+      value: "0",
+      data: redemptionApprovalData,
+    };
+
+    console.log("Creating Safe redemption transaction...");
+    const redemptionTransaction = await safeSdk.createTransaction({ safeTransactionData: redemptionTxData });
+    console.log("Safe redemption transaction created.");
+
+    console.log("Signing Safe redemption transaction...");
+    await safeSdk.signTransaction(redemptionTransaction);
+    console.log("Safe redemption transaction signed.");
+
+    // Execute the redemption transaction with a higher gas price
+    console.log("Executing Safe redemption transaction...");
+    const executeRedemptionTxResponse = await safeSdk.executeTransaction(redemptionTransaction, {
+      gasLimit: ethers.BigNumber.from('3000000'), // Set a higher gas limit
+      gasPrice: ethers.utils.parseUnits('100', 'gwei') // Set a higher gas price
+    });
+
+    // Log the redemption transaction hash
+    const redemptionTransactionHash = executeRedemptionTxResponse.transactionResponse?.hash;
+    console.log("Redemption transaction hash:", redemptionTransactionHash);
+    console.log(executeRedemptionTxResponse);
+    
+    console.log("Waiting for transaction confirmation...");
+    const receipt = await executeRedemptionTxResponse.transactionResponse?.wait();
+    console.log("Transaction confirmed, hash:", redemptionTransactionHash);
+    console.log(receipt);
+
   } catch (error) {
     console.error("Error during Safe setup or transaction:", error);
     throw error;

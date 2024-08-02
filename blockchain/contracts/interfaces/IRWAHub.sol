@@ -14,11 +14,14 @@ interface IRWAHub {
     address user;
     uint256 amountRwaTokenBurned;
     uint256 priceId;
+    bool approved;
   }
 
   function requestSubscription(uint256 amount) external;
 
   function claimMint(bytes32[] calldata depositIds) external;
+
+  function approveRedemptionRequest(bytes32[] calldata redemptionIds) external;
 
   function requestRedemption(uint256 amount) external;
 
@@ -281,6 +284,10 @@ interface IRWAHub {
     uint256 newPriceId,
     uint256 oldRWATokenAmountBurned,
     uint256 newRWATokenAmountBurned
+  );
+
+  event RedemptionApproved(
+    bytes32 indexed redemptionId
   );
 
   /// ERRORS ///
