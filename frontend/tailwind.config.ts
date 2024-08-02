@@ -25,6 +25,8 @@ const config: Config = {
         "hero-pattern": "url('/usdy-background.svg')",
         "multi-color-gradient":
           "linear-gradient(to right, white, #031329, #031329, #031329, white)",
+        "multi-color-gradient-div":
+          "linear-gradient(to right, #031329, white, white, white, #031329), linear-gradient(to bottom, #031329, white, white, white, #031329)",
       },
     },
   },

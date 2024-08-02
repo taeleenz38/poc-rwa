@@ -51,7 +51,7 @@ const Allowlist = () => {
             <MoonbeamIcon className="lg:w-8 lg:h-8" />
           </>
         }
-        view="AllowList"
+        view={"AllowList"}
       />
       <AddToList
         isOpen={isAllowlistOpen}
@@ -61,7 +61,6 @@ const Allowlist = () => {
         isOpen={isAddTermAndSetValidTermIndexesOpen}
         onClose={() => setIsAddTermAndSetValidTermIndexesOpen(false)}
       />
-      <AllowlistWallets />
     </div>
   );
 };
