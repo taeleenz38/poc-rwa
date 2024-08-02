@@ -23,6 +23,8 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "hero-pattern": "url('/usdy-background.svg')",
+        "multi-color-gradient":
+          "linear-gradient(to right, white, #031329, #031329, #031329, white)",
       },
     },
   },

@@ -6,6 +6,7 @@ import RequestDeposit from "@/app/components/organisms/Popups/RequestDeposit";
 import RequestRedemption from "@/app/components/organisms/Popups/RequestRedemption";
 import Allowlist from "@/app/components/organisms/Popups/Allowlist";
 import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
+import PriceList from "../molecules/PriceList";
 
 type FundDetailsProps = {
   logoSrc: string;
@@ -22,6 +23,7 @@ type FundDetailsProps = {
   Button2Class: string;
   onButton1Click: () => void;
   onButton2Click: () => void;
+  view: "Portfolio" | "AllowList" | "PriceList" | "Invest";
 };
 
 const FundDetails = (props: FundDetailsProps) => {
@@ -40,13 +42,18 @@ const FundDetails = (props: FundDetailsProps) => {
     Button2Class,
     onButton1Click,
     onButton2Click,
+    view,
   } = props;
 
   return (
-    <div className="bg-primary flex justify-center items-center z-10">
-      <div className="max-w-screen-xl h-full bg-hero-pattern bg-no-repeat bg-right-bottom bg-70% grid lg:grid-cols-2 grid-cols-1 pt-20 pb-36 px-8 font-normal text-light">
-        <div className="grid col-span-1 ">
-          <div className="flex justify-start items-center gap-x-2 mb-1">
+    <div className="bg-primary flex justify-center items-center z-10 w-full">
+      <div className=" grid grid-cols-2 text-white w-full mx-20">
+        <div className="flex flex-col  justify-center items-center mb-4">
+          <div
+            className={`flex justify-start items-center gap-x-2 mb-1 ${
+              view === "Invest" && "mt-4"
+            } `}
+          >
             <Image
               src={logoSrc}
               alt={altText}
@@ -56,8 +63,14 @@ const FundDetails = (props: FundDetailsProps) => {
             />
             <p className="uppercase text-3xl">{fundName}</p>
           </div>
-          <p className="mb-3 text-sm opacity-80">{fundDescription}</p>
-          <p className="lg:text-6xl text-4xl mb-5">
+          <p
+            className={`${
+              view === "Invest" ? "mb-12" : "mb-20"
+            } text-sm opacity-80`}
+          >
+            {fundDescription}
+          </p>
+          <p className="lg:text-6xl text-4xl w-3/4  text-pretty text-center mb-8">
             {yieldText}
             <span className="text-3xl align-top">*</span>
           </p>
@@ -87,6 +100,12 @@ const FundDetails = (props: FundDetailsProps) => {
               <div className="flex justify-start items-center">{chains}</div>
             </div>
           </div>
+        </div>
+        <div className="text-white flex justify-center items-center">
+          {view === "PriceList" && <PriceList />}
+          {view === "Invest" && (
+            <div className="bg-hero-pattern bg-no-repeat bg-right-bottom flex w-full h-full "></div>
+          )}
         </div>
       </div>
     </div>
