@@ -8,6 +8,7 @@ import Contact from "@/app/components/molecules/Contact";
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
 import { useWriteContract } from "wagmi";
+import Accordion from "../components/organisms/accordion";
 
 type ClaimableToken = {
   user: string;
@@ -82,25 +83,75 @@ const Portfolio = () => {
   return (
     <>
       <div className="min-h-screen bg-white flex flex-col pt-24 text-primary">
-        <h1 className="px-96 text-4xl font-semibold mb-4">Your Portfolio</h1>
-        <h3 className="px-96 mb-12">Take and manage your portfolio</h3>
-        <Balance
-          tokenSymbol="AUDC"
-          balanceData={audcData}
-          isLoading={audcLoading}
-        />
-        <Balance
-          tokenSymbol="AYF"
-          balanceData={ayfData}
-          isLoading={ayfLoading}
-        />
-        <div className="flex justify-between px-96 mt-8">
-          <div className="flex flex-col w-[46%] py-8 text-primary h-[70vh] overflow-y-scroll">
-            <h2 className="font-semibold text-2xl mb-4">Pending AYF Tokens</h2>
+        <h1 className="flex px-80 text-4xl font-semibold mb-4 items-center justify-center">
+          Explore and Manage Your Investment Portfolio
+        </h1>
+        <h3 className="flex items-center justify-center px-80 ">
+          Take control of your portfolio by easily curating and managing your
+          investments.
+        </h3>
+        <h3 className="px-80 flex items-center justify-center mb-12">
+          Keep track of your assets, make informed decisions, and optimize your
+          portfolio's performance.
+        </h3>
+
+        <div className="flex mx-80 py-2   items-center justify-center bg-multi-color-gradient gap-20 ">
+          <Balance
+            tokenSymbol="AUDC"
+            balanceData={audcData}
+            isLoading={audcLoading}
+          />
+          <Balance
+            tokenSymbol="AYF"
+            balanceData={ayfData}
+            isLoading={ayfLoading}
+          />
+        </div>
+
+        <div className="flex justify-between px-80 mt-8 gap-10">
+          <div
+            className="flex flex-col gap-y-4 py-8 w-[60%] h-fit p-5"
+            style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
+          >
+            <Accordion
+              data={[
+                {
+                  title: "Holdings",
+                  content: (
+                    <h2 className="font-semibold text-2xl mb-4">Holdings</h2>
+                  ),
+                },
+                {
+                  title: "Transactions",
+                  content: (
+                    <h2 className="font-semibold text-2xl mb-4">
+                      Transactions
+                    </h2>
+                  ),
+                },
+                {
+                  title: "Allocation",
+                  content: (
+                    <h2 className="font-semibold text-2xl mb-4">Allocation</h2>
+                  ),
+                },
+              ]}
+            />
+            {/* <h2 className="font-semibold text-2xl mb-4">Holdings</h2>
+            <h2 className="font-semibold text-2xl mb-4">Transactions</h2>
+            <h2 className="font-semibold text-2xl mb-4">Allocation</h2> */}
+          </div>
+          <div
+            className="flex flex-col w-[46%] py-8 text-primary  overflow-y-scroll h-fit p-5"
+            style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
+          >
+            <h2 className="flex font-semibold text-2xl mb-4 justify-center items-center">
+              Pending AYF Tokens
+            </h2>
             {isFetching ? (
               <p>Loading claimable tokens...</p>
             ) : (
-              <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-4 border border-gray">
                 {claimableTokens.map((token) => (
                   <div
                     key={token.depositId}
@@ -134,11 +185,6 @@ const Portfolio = () => {
                 ))}
               </div>
             )}
-          </div>
-          <div className="flex flex-col gap-y-4 py-8 w-[46%]">
-            <h2 className="font-semibold text-2xl mb-4">Holdings</h2>
-            <h2 className="font-semibold text-2xl mb-4">Transactions</h2>
-            <h2 className="font-semibold text-2xl mb-4">Allocation</h2>
           </div>
         </div>
       </div>

@@ -27,9 +27,11 @@ const PriceList = () => {
   }, []);
 
   return (
-    <div className="w-2/5 h-[40vh] py-2 mx-auto text-primary flex flex-col mt-8">
-      <div className="text-xl font-semibold mb-6">Price List</div>
-      <div className="flex flex-col gap-y-2 h-[80vh] overflow-y-scroll">
+    <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white  flex flex-col mt-8 rounded-md">
+      <div className="text-3xl font-semibold mb-6 text-center mt-4">
+        Pricing Overview
+      </div>
+      <div className="flex flex-col gap-y-2 h-[80vh] overflow-y-scroll border border-gray rounded-md p-4">
         {priceItems.map((item) => (
           <div key={item.priceId} className="p-4 rounded-lg shadow-md">
             <h3 className="text-lg font-medium mb-2">

@@ -21,7 +21,7 @@ const Invest = () => {
   const handleButton2Click = () => {
     setIsBuyOpen(true);
   };
-  
+
   return (
     <div>
       <FundDetails
@@ -47,6 +47,7 @@ const Invest = () => {
             <MoonbeamIcon className="lg:w-8 lg:h-8" />
           </>
         }
+        view={"Invest"}
       />
       <FundDescription />
       <Contact />

@@ -49,8 +49,9 @@ const Pricing = () => {
             <MoonbeamIcon className="lg:w-8 lg:h-8" />
           </>
         }
+        view={"PriceList"}
       />
-      <PriceList />
+
       <Contact />
       <SetPrice
         isOpen={isSetPriceOpen}
