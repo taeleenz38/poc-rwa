@@ -92,7 +92,7 @@ const Portfolio = () => {
         </h3>
         <h3 className="px-80 flex items-center justify-center mb-12">
           Keep track of your assets, make informed decisions, and optimize your
-          portfolio's performance.
+          portfolio&apos;s performance.
         </h3>
 
         <div className="flex mx-80 py-2   items-center justify-center bg-multi-color-gradient gap-20 ">
