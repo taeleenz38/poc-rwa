@@ -7,6 +7,7 @@ import RequestRedemption from "@/app/components/organisms/Popups/RequestRedempti
 import Allowlist from "@/app/components/organisms/Popups/Allowlist";
 import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
 import PriceList from "../molecules/PriceList";
+import AllowlistWallets from "./AllowlistWallets";
 
 type FundDetailsProps = {
   logoSrc: string;
@@ -47,13 +48,9 @@ const FundDetails = (props: FundDetailsProps) => {
 
   return (
     <div className="bg-primary flex justify-center items-center z-10 w-full">
-      <div className="grid grid-cols-2 text-white w-full mx-20">
-        <div className="flex flex-col  justify-center items-center mb-4">
-          <div
-            className={`flex justify-start items-center gap-x-2 mb-1 ${
-              view === "Invest" && "mt-4"
-            } `}
-          >
+      <div className=" grid grid-cols-2 text-white w-full">
+        <div className="flex flex-col ml-80   justify-center items-start mb-4">
+          <div className={`flex justify-start items-center gap-x-2 mb-1 mt-10`}>
             <Image
               src={logoSrc}
               alt={altText}
@@ -70,7 +67,10 @@ const FundDetails = (props: FundDetailsProps) => {
           >
             {fundDescription}
           </p>
-          <p className="lg:text-6xl text-4xl w-3/4  text-pretty text-center mb-8">
+          <p
+            className="lg:text-6xl text-4xl w-full  text-pretty text-start mb-8 font-bold"
+            style={{ lineHeight: "1.2" }}
+          >
             {yieldText}
             <span className="text-3xl align-top">*</span>
           </p>
@@ -101,11 +101,9 @@ const FundDetails = (props: FundDetailsProps) => {
             </div>
           </div>
         </div>
-        <div className="text-white flex justify-center items-center">
+        <div className="text-white flex justify-center items-center  mr-52">
           {view === "PriceList" && <PriceList />}
-          {view === "Invest" && (
-            <div className="bg-hero-pattern bg-no-repeat bg-right-bottom flex w-full h-full "></div>
-          )}
+          {view === "AllowList" && <AllowlistWallets />}
         </div>
       </div>
     </div>

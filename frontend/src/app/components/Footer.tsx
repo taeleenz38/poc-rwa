@@ -3,7 +3,7 @@ import { FaXTwitter, FaLinkedin, FaWhatsapp } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <div className="flex w-full justify-between items-center px-80 py-4 text-light bg-black">
+    <div className="flex w-full justify-between items-center px-80 py-4 text-light bg-black ">
       <div className="">Copyright Copiam 2024</div>
       <div className="flex space-x-4">
         <a
