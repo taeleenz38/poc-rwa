@@ -45,8 +45,8 @@ export default function Home() {
         />
 
         <PackageCard
-          heading="A$DC"
-          subHeading="Australian Dollar Digital Coin"
+          heading="AYT"
+          subHeading="Australian Yield Token"
           PRICE="9.048"
           TVL="$836.50M"
           href=""
