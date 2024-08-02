@@ -51,6 +51,7 @@ const Allowlist = () => {
             <MoonbeamIcon className="lg:w-8 lg:h-8" />
           </>
         }
+        view="AllowList"
       />
       <AddToList
         isOpen={isAllowlistOpen}
