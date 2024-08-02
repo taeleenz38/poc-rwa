@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import CloseButton from "../../atoms/Buttons/CloseButton";
-import Submit from "../../atoms/Buttons/Submit";
-import Button from "../../atoms/Buttons/Button";
 import axios from "axios";
+import HelloSign from 'hellosign-embedded';
+import { useState } from "react";
+import Button from "../../atoms/Buttons/Button";
+import CloseButton from "../../atoms/Buttons/CloseButton";
 
 type Props = {
   isOpen: boolean;
@@ -12,6 +12,10 @@ type Props = {
   lastName: string;
   email: string;
 };
+
+const dropBoxSignclient = new HelloSign({
+  clientId: process.env.NEXT_PUBLIC_DROPBOX_SIGN_CLIENT_ID
+});
 
 const VerificationPopup = ({
   isOpen,
@@ -58,7 +62,7 @@ const VerificationPopup = ({
 
     try {
       const response = await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_API + "/contract-sign/send",
+        process.env.NEXT_PUBLIC_BACKEND_API + "/contract-sign-embd/sign",
         requestData,
         {
           headers: {
@@ -67,6 +71,11 @@ const VerificationPopup = ({
         }
       );
       console.log("Sign request sent successfully:", response.data);
+
+      if (response.data.signUrl) {
+        dropBoxSignclient.open(response.data.signUrl, { skipDomainVerification: true });
+      }
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
