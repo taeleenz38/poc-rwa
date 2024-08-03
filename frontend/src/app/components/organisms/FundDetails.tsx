@@ -58,11 +58,11 @@ const FundDetails = (props: FundDetailsProps) => {
               height={50}
               className="rounded-full"
             />
-            <p className="uppercase text-3xl">{fundName}</p>
+            <p className="uppercase text-5xl">{fundName}</p>
           </div>
           <p
             className={`${
-              view === "Invest" ? "mb-12" : "mb-20"
+              view === "Invest" ? "mb-12" : "mb-12"
             } text-sm opacity-80`}
           >
             {fundDescription}

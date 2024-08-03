@@ -29,8 +29,8 @@ const Invest = () => {
         logoSrc="/LOGO.png"
         altText="Fund logo"
         fundName="AYF"
-        fundDescription="Copiam Australian Dollar Yield"
-        yieldText="Stable, high-quality Australian Dollar yield"
+        fundDescription="Copiam Australian Yield Fund"
+        yieldText="Stable, high-quality Australian Yield Fund"
         price="$1.0445"
         tvl="$327.50M"
         Button1Text="Buy AYF"
@@ -42,10 +42,6 @@ const Invest = () => {
         chains={
           <>
             <EthIcon className="lg:w-8 lg:h-8" />
-            <SolanaIcon className="lg:w-8 lg:h-8" />
-            <LiquidIcon className="lg:w-8 lg:h-8" />
-            <BaseIcon className="lg:w-8 lg:h-8" />
-            <MoonbeamIcon className="lg:w-8 lg:h-8" />
           </>
         }
       />

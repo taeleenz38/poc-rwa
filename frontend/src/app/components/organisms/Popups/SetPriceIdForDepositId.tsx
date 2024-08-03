@@ -77,16 +77,13 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
       <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-xl font-semibold">Set Price Id For Deposit Id</h2>
+          <h2 className="text-3xl font-bold">Set Price Id For Deposit Id</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 text-2xl mb-4 font-bold">
+        <div className="text-center px-8 text-xl mb-4 font-medium">
           Please enter the Deposit ID and the Price ID you want to set it for.
         </div>
-        <div className="text-center text-secondary text-opacity-80 mb-6">
-          *Understand that this transaction is not reversible.
-        </div>
-        <div className="w-5/6 text-center mx-auto mb-8">
+        <div className="w-full mx-auto mb-8">
           <InputField
             label="Deposit ID:"
             value={depositId || ""}
@@ -98,12 +95,23 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
             onChange={onPriceChange}
           />
         </div>
-        <div className="w-full flex justify-center">
-          <Submit
-            onClick={handleSetPriceIdForDepositId}
-            label={isPending ? "Confirming..." : "Confirm"}
-            disabled={isPending || isLoading}
-          />
+        <div className="w-full flex justify-between">
+          <div className="w-[49%]">
+            <Submit
+              onClick={onCloseModal}
+              label={"Go Back"}
+              disabled={isPending || isLoading}
+              className="w-full"
+            />
+          </div>
+          <div className="w-[49%]">
+            <Submit
+              onClick={handleSetPriceIdForDepositId}
+              label={isPending ? "Confirming..." : "Confirm"}
+              disabled={isPending || isLoading}
+              className="w-full"
+            />
+          </div>
         </div>
         {txHash && (
           <div className="mt-4 text-white">

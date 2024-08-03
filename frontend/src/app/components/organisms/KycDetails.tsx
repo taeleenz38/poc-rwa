@@ -430,7 +430,7 @@ const KycDetails = (props: KycDetailsProps) => {
           height={75}
         />
         <h1 className="text-3xl text-primary font-bold  text-center pb-3">
-          Investor Onboarding Suite
+          Investor Onboarding
         </h1>
         <div
           className="w-full max-w-2xl bg-while  p-8 rounded-lg "

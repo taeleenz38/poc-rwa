@@ -96,9 +96,6 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         <div className="text-center px-8 text-2xl mb-4 font-bold">
           Please enter the amount of AUDC you wish to deposit in return for AYF.
         </div>
-        <div className="text-center text-secondary text-opacity-80 mb-6">
-          *Understand that crypto payments are not reversible.
-        </div>
         <div className="w-5/6 text-center mx-auto mb-8">
           <InputField
             label="AMOUNT:"

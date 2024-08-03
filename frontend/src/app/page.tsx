@@ -35,30 +35,7 @@ export default function Home() {
           footerText="For Wholesale Investors"
           chains={
             <>
-              <BaseIcon />
               <EthIcon />
-              <SolanaIcon />
-              <MoonbeamIcon />
-              <LiquidIcon />
-            </>
-          }
-        />
-
-        <PackageCard
-          heading="AYT"
-          subHeading="Australian Yield Token"
-          PRICE="9.048"
-          TVL="$836.50M"
-          href=""
-          backgroundImage="url('/background.svg')"
-          footerText="For Wholesale Investors"
-          chains={
-            <>
-              <BaseIcon />
-              <EthIcon />
-              <SolanaIcon />
-              <MoonbeamIcon />
-              <LiquidIcon />
             </>
           }
         />

@@ -57,7 +57,7 @@ export const PackageCard = (props: PackageCardProps) => {
               <div className="bg-light rounded-full py-1.5 px-3 text-black flex justify-center items-center text-base">
                 <p>{TVL} TVL</p>
               </div>
-              <div className="bg-light rounded-full py-1.5 px-3 flex ">
+              <div className="bg-light rounded-full py-1.5 px-3 flex items-center">
                 {chains}
               </div>
               <div className="border-2 rounded-full py-1.5 px-3 bg-transparent text-light text-sm font-medium flex justify-center items-center ">

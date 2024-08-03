@@ -10,7 +10,7 @@ const CloseButton: React.FC<CloseButtonProps> = ({
   className = "",
 }) => {
   return (
-    <button onClick={onClick} className={`text-2xl font-bold ${className}`}>
+    <button onClick={onClick} className={`text-3xl font-bold ${className}`}>
       &times;
     </button>
   );
