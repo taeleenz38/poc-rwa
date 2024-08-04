@@ -35,7 +35,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
   };
 
   const handleAddPrice = async () => {
-    const price = BigNumber.from(addPrice);
+    const price = BigNumber.from(addPrice).mul(BigNumber.from(10).pow(18));
     const timestamp = BigNumber.from(Math.floor(Date.now() / 1000));
     try {
       const tx = await writeContractAsync({
@@ -81,7 +81,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
               onClick={onCloseModal}
               label={"Go Back"}
               disabled={isPending || isLoading}
-              className="w-full"
+              className="w-full bg-[#e6e6e6] text-primary"
             />
           </div>
           <div className="w-[49%]">

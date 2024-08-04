@@ -41,9 +41,9 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
   };
 
   const handleUpdatePrice = async () => {
-    const priceID = BigNumber.from(priceId);
+    const priceID = BigNumber.from(priceId).mul(BigNumber.from(10).pow(18));
 
-    const price = BigNumber.from(updatePrice);
+    const price = BigNumber.from(updatePrice).mul(BigNumber.from(10).pow(18));
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
@@ -93,7 +93,7 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({ isOpen, onClose }) => {
               onClick={onCloseModal}
               label={"Go Back"}
               disabled={isPending || isLoading}
-              className="w-full"
+              className="w-full bg-[#e6e6e6] text-primary"
             />
           </div>
           <div className="w-[49%]">

@@ -11,6 +11,7 @@ import {
   MoonbeamIcon,
   LiquidIcon,
 } from "@/app/components/atoms/Icons";
+import Contact from "../components/molecules/Contact";
 
 const Allowlist = () => {
   const [isAllowlistOpen, setIsAllowlistOpen] = useState(false);
@@ -49,6 +50,7 @@ const Allowlist = () => {
         }
         view={"AllowList"}
       />
+      <Contact />
       <AddToList
         isOpen={isAllowlistOpen}
         onClose={() => setIsAllowlistOpen(false)}

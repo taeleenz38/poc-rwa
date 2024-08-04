@@ -97,16 +97,20 @@ const Portfolio = () => {
         </h3>
 
         <div className="flex mx-80 py-2 items-center justify-center bg-multi-color-gradient gap-20 ">
-          <Balance
-            tokenSymbol="AUDC"
-            balanceData={audcData}
-            isLoading={audcLoading}
-          />
-          <Balance
-            tokenSymbol="AYF"
-            balanceData={ayfData}
-            isLoading={ayfLoading}
-          />
+          <div className="flex justify-between">
+            <Balance
+              tokenSymbol="AUDC"
+              balanceData={audcData}
+              isLoading={audcLoading}
+            />
+          </div>
+          <div className="flex justify-between">
+            <Balance
+              tokenSymbol="AYF"
+              balanceData={ayfData}
+              isLoading={ayfLoading}
+            />
+          </div>
         </div>
 
         <div className="flex justify-between px-80 mt-8 gap-10">
@@ -139,15 +143,21 @@ const Portfolio = () => {
                     <div className="flex flex-col text-xl">
                       <div className="flex justify-between p-2">
                         <div>Deposit - Buy AYF</div>
-                        <div>5,940 <span className="font-semibold">AUDC</span></div>
+                        <div>
+                          5,940 <span className="font-semibold">AUDC</span>
+                        </div>
                       </div>
                       <div className="flex justify-between p-2">
                         <div>Deposit - Buy AYF</div>
-                        <div>1,000 <span className="font-semibold">AUDC</span></div>
+                        <div>
+                          1,000 <span className="font-semibold">AUDC</span>
+                        </div>
                       </div>
                       <div className="flex justify-between p-2">
                         <div>Deposit - Buy AYF</div>
-                        <div>6,000 <span className="font-semibold">AUDC</span></div>
+                        <div>
+                          6,000 <span className="font-semibold">AUDC</span>
+                        </div>
                       </div>
                     </div>
                   ),
@@ -160,7 +170,7 @@ const Portfolio = () => {
             />
           </div>
           <div
-            className="flex flex-col w-1/2 py-8 text-primary  overflow-y-scroll h-fit p-5"
+            className="flex flex-col w-1/2 py-8 text-primary overflow-y-scroll h-fit p-5"
             style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
           >
             <h2 className="flex font-semibold text-2xl mb-4 justify-center items-center">
@@ -170,37 +180,46 @@ const Portfolio = () => {
               <p>Loading claimable tokens...</p>
             ) : (
               <div className="flex flex-col gap-y-4 border border-gray">
-                {claimableTokens.map((token) => (
-                  <div
-                    key={token.depositId}
-                    className="p-4 rounded-lg shadow-md"
-                  >
-                    <p className="mb-2">
-                      <strong>Deposit Amount After Fee:</strong>{" "}
-                      {token.depositAmountAfterFee} AUDC
-                    </p>
-                    <p className="mb-2">
-                      <strong>Fee Amount:</strong> {token.feeAmount} AUDC
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="mb-2">
-                          <strong>Claim Timestamp (UTC):</strong>{" "}
-                          {token.claimTimestamp}
-                        </p>
-                        <p className="mb-2">
-                          <strong>Claimable Amount:</strong>{" "}
-                          {token.claimableAmount || 0} AYF
-                        </p>
+                {claimableTokens.map((token) => {
+                  const isClaimable =
+                    Date.now() / 1000 >= token.claimTimestampFromChain;
+                  return (
+                    <div
+                      key={token.depositId}
+                      className="p-4 rounded-lg shadow-md"
+                    >
+                      <p className="mb-2">
+                        <strong>Deposit Amount After Fee:</strong>{" "}
+                        {token.depositAmountAfterFee} AUDC
+                      </p>
+                      <p className="mb-2">
+                        <strong>Fee Amount:</strong> {token.feeAmount} AUDC
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="mb-2">
+                            <strong>Claim Timestamp (UTC):</strong>{" "}
+                            {token.claimTimestamp}
+                          </p>
+                          <p className="mb-2">
+                            <strong>Claimable Amount:</strong>{" "}
+                            {token.claimableAmount || 0} AYF
+                          </p>
+                        </div>
+                        <Button
+                          text="Claim"
+                          className={`py-2 ${
+                            isClaimable
+                              ? "bg-primary text-light hover:bg-light hover:text-primary"
+                              : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                          }`}
+                          onClick={() => claimMint(token.depositId)}
+                          disabled={!isClaimable}
+                        />
                       </div>
-                      <Button
-                        text="Claim"
-                        className="bg-primary py-2 text-light hover:bg-light hover:text-primary"
-                        onClick={() => claimMint(token.depositId)}
-                      />
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

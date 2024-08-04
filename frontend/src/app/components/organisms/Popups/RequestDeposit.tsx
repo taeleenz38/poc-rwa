@@ -90,25 +90,36 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-xl font-semibold">Buy AYF</h2>
+          <h2 className="text-3xl font-bold">Buy AYF</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 text-2xl mb-4 font-bold">
+        <div className="text-center px-8 text-xl mb-4 font-medium">
           Please enter the amount of AUDC you wish to deposit in return for AYF.
         </div>
-        <div className="w-5/6 text-center mx-auto mb-8">
+        <div className="w-full text-center mx-auto mb-8">
           <InputField
             label="AMOUNT:"
             value={amount || ""}
             onChange={onAmountChange}
           />
         </div>
-        <div className="w-full flex justify-center">
-          <Submit
-            onClick={handleRequestDeposit}
-            label={isPending ? "Confirming..." : "Confirm"}
-            disabled={isPending}
-          />
+        <div className="w-full flex justify-between">
+          <div className="w-[49%]">
+            <Submit
+              onClick={onCloseModal}
+              label={"Go Back"}
+              disabled={isPending || isLoading}
+              className="w-full bg-[#e6e6e6] text-primary"
+            />
+          </div>
+          <div className="w-[49%]">
+            <Submit
+              onClick={handleRequestDeposit}
+              label={isPending ? "Confirming..." : "Confirm"}
+              disabled={isPending}
+              className="w-full"
+            />
+          </div>
         </div>
         {txHash && (
           <div className="mt-4 text-white">

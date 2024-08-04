@@ -44,11 +44,15 @@ const PricingSection = () => {
     fetchDepositRequests();
   }, []);
 
+  const hexToDecimal = (hex: string): number => {
+    return parseInt(hex, 16);
+  };
+
   return (
     <div className="w-3/4 mx-auto text-primary flex justify-between mt-8">
-      <div className="w-[46%] mx-auto text-primary mt-8">
+      <div className="w-[48%] mx-auto text-primary mt-8 shadow-lg p-4 rounded-md">
         <div className="flex justify-between items-center mb-6">
-          <div className="text-xl font-semibold">Incoming Deposit Requests</div>
+          <div className="text-xl font-bold">Incoming Deposit Requests</div>
           <div>
             <Button
               text="Set Claim Timestamp"
@@ -62,11 +66,11 @@ const PricingSection = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-y-2 h-[80vh] overflow-y-scroll">
+        <div className="flex flex-col gap-y-4 max-h-[80vh] overflow-y-scroll">
           {depositRequests.map((request) => (
-            <div key={request.depositId} className="p-4 rounded-lg shadow-md">
-              <h3 className="text-lg font-medium mb-2">
-                Deposit ID: {request.depositId}
+            <div key={request.depositId} className="p-4 rounded-lg shadow-md bg-primary text-light">
+              <h3 className="text-lg font-medium mb-2 text-secondary">
+                Deposit ID: {hexToDecimal(request.depositId)}
               </h3>
               <p>
                 <strong>User:</strong> {request.user}
@@ -91,9 +95,9 @@ const PricingSection = () => {
           ))}
         </div>
       </div>
-      <div className="w-[46%] mx-auto text-primary mt-8">
+      <div className="w-[48%] mx-auto text-primary mt-8 shadow-lg p-4 rounded-md">
         <div className="flex justify-between items-center mb-4">
-          <div className="text-xl font-semibold">
+          <div className="text-xl font-bold">
             Pending Redemption Requests
           </div>
           <Button
