@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import { PricingResponse } from '../dto/PricingResponse';
-import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI,PRICEIDSETFORREDEMPTION_ABI,REDEMPTION_APPROVAL_ABI  } from '../constants';
+import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI,PRICEIDSETFORREDEMPTION_ABI,REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS} from '../constants';
 import { AllowListResponse } from '../dto/AllowListResponse';
 import { AccountStatusResponse } from '../dto/AccountStatusResponse';
 import { MintRequestedResponse } from '../dto/MIntRequestResponse';
@@ -12,6 +12,7 @@ import { RedemptionRequestResponse } from '../dto/RedemptionRequestResponse';
 import { ClaimableList } from '../dto/ClaimableList';
 import { PriceIdForRedemption } from '../dto/PriceIdForRedemption';
 import { ClaimableRedemptionResponse } from '../dto/ClaimableRedemptionResponse';
+import { TransferResponse } from '../dto/TransferResponse';
 
 @Injectable()
 export class AlchemyService {
@@ -39,6 +40,8 @@ export class AlchemyService {
         topics: priceAddedCreatedTopics,
       }
     );
+
+    console.log(priceAddedLogs);
 
     let priceChangedLogs = await alchemy.core.getLogs(
       {
@@ -983,4 +986,67 @@ export class AlchemyService {
     return claimableRedemptionResponse;
   }
 
+  async getTransferEvents(from: string, to: string): Promise<TransferResponse[]> {
+    let transferResponse: TransferResponse[] = [];
+
+    const settings = {
+      apiKey: API_KEY,
+      network: Network.ETH_SEPOLIA,
+    };
+    const alchemy = new Alchemy(settings);
+
+    const transferInterface = new Utils.Interface(TRANSFER_ABI);
+    const transferCreatedTopics = transferInterface.encodeFilterTopics('Transfer', []);
+
+    let transferLogs = await alchemy.core.getLogs({
+      fromBlock: '0x0',
+      toBlock: 'latest',
+      address: AUDC_ADDRESS,
+      topics: transferCreatedTopics,
+    });
+
+    // console.log(transferLogs);
+
+    const transferIface = new ethers.utils.Interface(TRANSFER_ABI);
+
+    transferLogs.forEach((log) => {
+      try {
+        const decodedLog = transferIface.parseLog(log);
+        // console.log(decodedLog);
+        const from = decodedLog.args.from;
+        const to = decodedLog.args.to;
+        const value = ethers.BigNumber.from(decodedLog.args.value).toString();
+        console.log(from);
+        console.log(to);
+        console.log(value);
+        // const priceIdForRedeem: PriceIdForRedemption = {priceId:priceId, redeemId:redeemIdSet};
+        // pricedRedeemptionIdList.push(priceIdForRedeem);
+        // pricedRedeemptionIds.add(redeemIdSet);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    // transferLogs.forEach(log => {
+    //   const fromAddress = ethers.utils.getAddress(log.topics[1]);
+    //   const toAddress = ethers.utils.getAddress(log.topics[2]);
+
+    //   // Ignore mint events (from zero address) and burn events (to zero address)
+    //   if (fromAddress === ethers.constants.AddressZero || toAddress === ethers.constants.AddressZero) {
+    //     return;
+    //   }
+
+    //   const data = ethers.utils.arrayify(log.data);
+    //   const tokens = ethers.utils.formatUnits(ethers.BigNumber.from(data), 18); // Adjust decimals if needed
+
+    //   let transferEvent: TransferResponse = {
+    //     from: fromAddress,
+    //     to: toAddress,
+    //     // tokens: tokens,
+    //   };
+    //   transferResponse.push(transferEvent);
+    // });
+
+    return transferResponse;
+  }
 }
