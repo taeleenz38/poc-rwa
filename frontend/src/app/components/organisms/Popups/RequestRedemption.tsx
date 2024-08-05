@@ -1,9 +1,11 @@
 "use client";
-import { ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
+import abi from "@/artifacts/ABBYManager.json";
+import audcabi from "@/artifacts/AUDC.json";
 import {
   useWriteContract,
   useSignMessage,
@@ -16,47 +18,120 @@ interface RequestRedemptionProps {
   onClose: () => void;
 }
 
-const RequestRedemption: React.FC<RequestRedemptionProps> = ({ isOpen, onClose }) => {
-  const [onchainId, setOnchainId] = useState<string | null>(null);
+const RequestRedemption: React.FC<RequestRedemptionProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [amount, setAmount] = useState<string>("");
+  const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setOnchainId(null);
+    setAmount("");
+    setTxHash(null);
   };
   const onCloseModal = () => {
     onClose();
     resetForm();
   };
 
-  const onOnchainIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOnchainId(e.target.value);
+  const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
   };
 
   const handleRequestRedemption = async () => {
-    return null;
+    try {
+      const approvalAmount = BigNumber.from(amount).mul(
+        BigNumber.from(10).pow(18)
+      );
+      const totalApprovalAmount = approvalAmount
+        .mul(BigNumber.from(105))
+        .div(BigNumber.from(100));
+
+      const tx = await writeContractAsync({
+        abi: audcabi.abi,
+        address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
+        functionName: "approve",
+        args: [
+          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS,
+          totalApprovalAmount,
+        ],
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const depositAmount = BigNumber.from(amount).mul(
+        BigNumber.from(10).pow(18)
+      );
+
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "requestSubscription",
+        args: [depositAmount],
+      });
+
+      setTxHash(tx);
+      console.log("Deposit successfully requested - transaction hash:", tx);
+    } catch (error) {
+      console.error("Error requesting deposit:", error);
+    }
   };
+
+  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
+    hash: txHash as `0x${string}`,
+  });
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg shadow-md shadow-white w-1/4">
+    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Request Deposit</h2>
+          <div></div>
+          <h2 className="text-3xl font-bold">Redeem AYF For AUDC</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <InputField
-          label="ONCHAIN-ID:"
-          value={onchainId || ""}
-          onChange={onOnchainIdChange}
-        />
-        <div className="w-full flex justify-center">
-          <Submit
-            onClick={handleRequestRedemption}
-            label={isPending ? "Confirming..." : "Redeem"}
-            disabled={isPending}
+        <div className="text-center px-8 text-xl mb-4 font-medium">
+          Please enter the amount of AYF you wish to redeem in return for AUDC.
+        </div>
+        <div className="w-full text-center mx-auto mb-8">
+          <InputField
+            label="AMOUNT:"
+            value={amount || ""}
+            onChange={onAmountChange}
           />
         </div>
+        <div className="w-full flex justify-between">
+          <div className="w-[49%]">
+            <Submit
+              onClick={onCloseModal}
+              label={"Go Back"}
+              disabled={isPending || isLoading}
+              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
+            />
+          </div>
+          <div className="w-[49%]">
+            <Submit
+              onClick={handleRequestRedemption}
+              label={isPending ? "Confirming..." : "Confirm"}
+              disabled={isPending}
+              className="w-full"
+            />
+          </div>
+        </div>
+        {txHash && (
+          <div className="mt-4 text-white">
+            {isLoading && <p>Transaction is pending...</p>}
+            {receipt && (
+              <p className="text-white overflow-x-scroll">
+                Transaction successful! Hash: {txHash}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
