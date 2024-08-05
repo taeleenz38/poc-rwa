@@ -1,5 +1,5 @@
 import axios from "axios";
-import HelloSign from 'hellosign-embedded';
+import HelloSign from "hellosign-embedded";
 import { useState } from "react";
 import Button from "../../atoms/Buttons/Button";
 import CloseButton from "../../atoms/Buttons/CloseButton";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const dropBoxSignclient = new HelloSign({
-  clientId: process.env.NEXT_PUBLIC_DROPBOX_SIGN_CLIENT_ID
+  clientId: process.env.NEXT_PUBLIC_DROPBOX_SIGN_CLIENT_ID,
 });
 
 const VerificationPopup = ({
@@ -73,9 +73,10 @@ const VerificationPopup = ({
       console.log("Sign request sent successfully:", response.data);
 
       if (response.data.signUrl) {
-        dropBoxSignclient.open(response.data.signUrl, { skipDomainVerification: true });
+        dropBoxSignclient.open(response.data.signUrl, {
+          skipDomainVerification: true,
+        });
       }
-
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
@@ -111,15 +112,17 @@ const VerificationPopup = ({
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center ">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3 transform scale-0 animate-zoomIn duration-1000">
-        <div className="flex justify-between items-center mb-8 border-b pb-3">
-          <h2 className="text-xl text-white font-bold w-full text-center">
-            Verification Has Been Submitted
+    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-2/5">
+        <div className="flex justify-between items-center mb-8 w-full relative">
+          <h2 className="text-3xl text-white font-bold flex-grow text-center">
+            Verification
           </h2>
-          <CloseButton onClick={onCloseModal} />
+          <div className="absolute right-0">
+            <CloseButton onClick={onCloseModal} />
+          </div>
         </div>
-        <div className="flex flex-col justify-center items-center gap-4">
+        <div className="flex flex-col text-center px-8 text-xl mb-4 font-medium gap-5">
           {/* <span>Please </span> */}
           <span>
             {" "}
@@ -127,26 +130,31 @@ const VerificationPopup = ({
               ? "You have been verified !"
               : status === "Init"
               ? "Verification is being proccessed. Try Again !"
+              : isDocumentSigned
+              ? ""
               : ""}
           </span>
           {status === "Done" ? (
-            <>
+            <div className="w-full flex items-center justify-center">
               <Button
                 text={"Sign Document"}
                 onClick={sendSignRequest}
+                className="!bg-[#e6e6e6] !text-primary hover:!text-secondary w-fit items-center justify-center"
               />
-              <span>
+              {/* <span>
                 {isDocumentSigned
                   ? "Documents have been signed!"
                   : "Waiting for document signing to be signed..."}
-              </span>
-            </>
+              </span> */}
+            </div>
           ) : (
-            <Button
-              text={` ${isLoading ? "Checking Status..." : "Get Verified"}`}
-              onClick={getStatus}
-              className="bg-white text-black"
-            />
+            <div className="w-full flex items-center justify-center">
+              <Button
+                text={` ${isLoading ? "Checking Status..." : "Check Status"}`}
+                onClick={getStatus}
+                className="!bg-[#e6e6e6] !text-primary hover:!text-secondary w-fit items-center"
+              />
+            </div>
           )}
         </div>
       </div>
