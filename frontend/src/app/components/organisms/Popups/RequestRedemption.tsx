@@ -52,7 +52,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
         functionName: "approve",
         args: [
-          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS,
+          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
           totalApprovalAmount,
         ],
       });
@@ -142,12 +142,12 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
           </div>
         </div>
         {txApprovalHash && isApprovalLoading && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white text-center">
             <p>Approval transaction is pending...</p>
           </div>
         )}
         {txRedemptionHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white text-center">
             {isRedemptionLoading && <p>Redemption transaction is pending...</p>}
             {!isRedemptionLoading && (
               <p className="text-white overflow-x-scroll">

@@ -6,7 +6,6 @@ import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
 import audcabi from "@/artifacts/AUDC.json";
-
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
@@ -139,12 +138,12 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
         {txApprovalHash && isApprovalLoading && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white text-center">
             <p>Approval transaction is pending...</p>
           </div>
         )}
         {txDepositHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white text-center">
             {isDepositLoading && <p>Deposit transaction is pending...</p>}
             {!isDepositLoading && (
               <p className="text-white overflow-x-scroll">

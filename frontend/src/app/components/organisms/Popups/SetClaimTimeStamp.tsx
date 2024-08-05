@@ -105,7 +105,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white text-center">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <p className="text-white overflow-x-scroll">

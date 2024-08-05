@@ -114,10 +114,10 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-white text-center">
             {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
-              <p className="text-white overflow-x-scroll">
+            {!isLoading && (
+              <p className="text-white overflow-x-scroll text-center">
                 Transaction successful! Hash: {txHash}
               </p>
             )}
