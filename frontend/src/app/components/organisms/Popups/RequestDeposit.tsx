@@ -7,12 +7,7 @@ import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
 import audcabi from "@/artifacts/AUDC.json";
 
-import {
-  useWriteContract,
-  useSignMessage,
-  useWaitForTransactionReceipt,
-  useReadContract,
-} from "wagmi";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
 interface RequestDepositProps {
@@ -22,13 +17,16 @@ interface RequestDepositProps {
 
 const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   const [amount, setAmount] = useState<string>("");
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
+  const [txDepositHash, setTxDepositHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
     setAmount("");
-    setTxHash(null);
+    setTxDepositHash(null);
+    setTxApprovalHash(null);
   };
+
   const onCloseModal = () => {
     onClose();
     resetForm();
@@ -47,7 +45,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         .mul(BigNumber.from(105))
         .div(BigNumber.from(100));
 
-      const tx = await writeContractAsync({
+      const approvalTx = await writeContractAsync({
         abi: audcabi.abi,
         address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
         functionName: "approve",
@@ -56,32 +54,49 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
           totalApprovalAmount,
         ],
       });
+
+      setTxApprovalHash(approvalTx);
     } catch (error) {
       console.error("Error:", error);
     }
-
-    try {
-      const depositAmount = BigNumber.from(amount).mul(
-        BigNumber.from(10).pow(18)
-      );
-
-      const tx = await writeContractAsync({
-        abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "requestSubscription",
-        args: [depositAmount],
-      });
-
-      setTxHash(tx);
-      console.log("Deposit successfully requested - transaction hash:", tx);
-    } catch (error) {
-      console.error("Error requesting deposit:", error);
-    }
   };
 
-  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
-    hash: txHash as `0x${string}`,
-  });
+  // Wait for the approval transaction to be mined
+  const { data: approvalReceipt, isLoading: isApprovalLoading } =
+    useWaitForTransactionReceipt({
+      hash: txApprovalHash as `0x${string}`,
+    });
+
+  useEffect(() => {
+    if (approvalReceipt) {
+      const requestDepositTransaction = async () => {
+        try {
+          const depositAmount = BigNumber.from(amount).mul(
+            BigNumber.from(10).pow(18)
+          );
+
+          const depositTx = await writeContractAsync({
+            abi: abi.abi,
+            address: process.env
+              .NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+            functionName: "requestSubscription",
+            args: [depositAmount],
+          });
+
+          setTxDepositHash(depositTx);
+        } catch (error) {
+          console.error("Error requesting deposit:", error);
+        }
+      };
+
+      requestDepositTransaction();
+    }
+  }, [amount, writeContractAsync, approvalReceipt]);
+
+  const { data: depositReceipt, isLoading: isDepositLoading } =
+    useWaitForTransactionReceipt({
+      hash: txDepositHash as `0x${string}`,
+    });
 
   if (!isOpen) return null;
 
@@ -108,25 +123,32 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isLoading}
+              disabled={isPending || isApprovalLoading || isDepositLoading}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
           <div className="w-[49%]">
             <Submit
               onClick={handleRequestDeposit}
-              label={isPending ? "Confirming..." : "Confirm"}
-              disabled={isPending}
+              label={
+                isPending || isApprovalLoading || isDepositLoading ? "Confirming..." : "Confirm"
+              }
+              disabled={isPending || isApprovalLoading || isDepositLoading}
               className="w-full"
             />
           </div>
         </div>
-        {txHash && (
+        {txApprovalHash && isApprovalLoading && (
           <div className="mt-4 text-white">
-            {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
+            <p>Approval transaction is pending...</p>
+          </div>
+        )}
+        {txDepositHash && (
+          <div className="mt-4 text-white">
+            {isDepositLoading && <p>Deposit transaction is pending...</p>}
+            {!isDepositLoading && (
               <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {txHash}
+                Transaction successful! Hash: {txDepositHash}
               </p>
             )}
           </div>

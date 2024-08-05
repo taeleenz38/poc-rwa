@@ -5,12 +5,8 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
-import audcabi from "@/artifacts/AUDC.json";
-import {
-  useWriteContract,
-  useSignMessage,
-  useWaitForTransactionReceipt,
-} from "wagmi";
+import ayfabi from "@/artifacts/ABBY.json";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
 interface RequestRedemptionProps {
@@ -23,13 +19,16 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
   onClose,
 }) => {
   const [amount, setAmount] = useState<string>("");
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
+  const [txRedemptionHash, setTxRedemptionHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
     setAmount("");
-    setTxHash(null);
+    setTxRedemptionHash(null);
+    setTxApprovalHash(null);
   };
+
   const onCloseModal = () => {
     onClose();
     resetForm();
@@ -48,41 +47,57 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         .mul(BigNumber.from(105))
         .div(BigNumber.from(100));
 
-      const tx = await writeContractAsync({
-        abi: audcabi.abi,
-        address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
+      const approvalTx = await writeContractAsync({
+        abi: ayfabi.abi,
+        address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
         functionName: "approve",
         args: [
           process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS,
           totalApprovalAmount,
         ],
       });
+
+      setTxApprovalHash(approvalTx);
     } catch (error) {
-      console.error("Error:", error);
-    }
-
-    try {
-      const depositAmount = BigNumber.from(amount).mul(
-        BigNumber.from(10).pow(18)
-      );
-
-      const tx = await writeContractAsync({
-        abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "requestSubscription",
-        args: [depositAmount],
-      });
-
-      setTxHash(tx);
-      console.log("Deposit successfully requested - transaction hash:", tx);
-    } catch (error) {
-      console.error("Error requesting deposit:", error);
+      console.error("Error approving:", error);
     }
   };
 
-  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
-    hash: txHash as `0x${string}`,
-  });
+  const { data: approvalReceipt, isLoading: isApprovalLoading } =
+    useWaitForTransactionReceipt({
+      hash: txApprovalHash as `0x${string}`,
+    });
+
+  useEffect(() => {
+    if (approvalReceipt) {
+      const requestRedemptionTransaction = async () => {
+        try {
+          const redemptionAmount = BigNumber.from(amount).mul(
+            BigNumber.from(10).pow(18)
+          );
+
+          const redemptionTx = await writeContractAsync({
+            abi: abi.abi,
+            address: process.env
+              .NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+            functionName: "requestRedemption",
+            args: [redemptionAmount],
+          });
+
+          setTxRedemptionHash(redemptionTx);
+        } catch (error) {
+          console.error("Error requesting redemption:", error);
+        }
+      };
+
+      requestRedemptionTransaction();
+    }
+  }, [amount, writeContractAsync, approvalReceipt]);
+
+  const { data: redemptionReceipt, isLoading: isRedemptionLoading } =
+    useWaitForTransactionReceipt({
+      hash: txRedemptionHash as `0x${string}`,
+    });
 
   if (!isOpen) return null;
 
@@ -109,25 +124,34 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isLoading}
+              disabled={isPending || isApprovalLoading || isRedemptionLoading}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
           <div className="w-[49%]">
             <Submit
               onClick={handleRequestRedemption}
-              label={isPending ? "Confirming..." : "Confirm"}
-              disabled={isPending}
+              label={
+                isPending || isApprovalLoading || isRedemptionLoading
+                  ? "Confirming..."
+                  : "Confirm"
+              }
+              disabled={isPending || isApprovalLoading || isRedemptionLoading}
               className="w-full"
             />
           </div>
         </div>
-        {txHash && (
+        {txApprovalHash && isApprovalLoading && (
           <div className="mt-4 text-white">
-            {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
+            <p>Approval transaction is pending...</p>
+          </div>
+        )}
+        {txRedemptionHash && (
+          <div className="mt-4 text-white">
+            {isRedemptionLoading && <p>Redemption transaction is pending...</p>}
+            {!isRedemptionLoading && (
               <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {txHash}
+                Transaction successful! Hash: {txRedemptionHash}
               </p>
             )}
           </div>
