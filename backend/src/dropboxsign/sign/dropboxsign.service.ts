@@ -62,7 +62,7 @@ export class DropBoxSignService {
             // Upload a local file
             const file = fs.createReadStream(process.env.SIGN_DOC_FILE);
             const data: DropboxSign.SignatureRequestSendRequest = {
-                title: process.env.SIGN_DOC_NAME,
+                title: `${process.env.SIGN_DOC_NAME} - ${request.firstName} ${request.lastName}`,
                 subject: process.env.SIGN_DOC_EMAIL_SUBJECT,
                 message: process.env.SIGN_DOC_EMAIL_MESSAGE,
                 signers: [signer1],
