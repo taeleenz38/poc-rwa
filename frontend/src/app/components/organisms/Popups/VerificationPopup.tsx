@@ -76,6 +76,10 @@ const VerificationPopup = ({
         dropBoxSignclient.open(response.data.signUrl, {
           skipDomainVerification: true,
         });
+
+        dropBoxSignclient.once("sign", (data) => {
+          onCloseModal();
+        });
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
