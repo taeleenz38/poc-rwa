@@ -109,7 +109,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
               onClick={onCloseModal}
               label={"Go Back"}
               disabled={isPending || isLoading}
-              className="w-full bg-[#e6e6e6] text-primary"
+              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
           <div className="w-[49%]">
