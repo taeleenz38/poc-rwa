@@ -179,7 +179,7 @@ const Portfolio = () => {
             {isFetching ? (
               <p>Loading claimable tokens...</p>
             ) : (
-              <div className="flex flex-col gap-y-4 border border-gray">
+              <div className="flex flex-col gap-y-4">
                 {claimableTokens.map((token) => {
                   const isClaimable =
                     Date.now() / 1000 >= token.claimTimestampFromChain;

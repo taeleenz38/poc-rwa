@@ -69,7 +69,7 @@ const PricingSection = () => {
         <div className="flex flex-col gap-y-4 max-h-[80vh] overflow-y-scroll">
           {depositRequests.map((request) => (
             <div key={request.depositId} className="p-4 rounded-lg shadow-md bg-primary text-light">
-              <h3 className="text-lg font-medium mb-2 text-secondary">
+              <h3 className="text-lg font-bold mb-2 text-secondary">
                 Deposit ID: {hexToDecimal(request.depositId)}
               </h3>
               <p>

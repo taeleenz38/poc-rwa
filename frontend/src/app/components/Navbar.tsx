@@ -17,6 +17,7 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [justLoggedIn, setJustLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (justLoggedIn) {
       if (userRole === "admin") {
         router.push("/admin");
       } else if (userRole === "user") {
@@ -52,8 +53,9 @@ const Navbar = () => {
       } else if (userRole === "guardian") {
         router.push("/allowlist");
       }
+      setJustLoggedIn(false);
     }
-  }, [isLoggedIn, userRole, router]);
+  }, [justLoggedIn, userRole, router]);
 
   const handleSignIn = () => {
     if (username === "ted" && password === "123") {
@@ -62,18 +64,21 @@ const Navbar = () => {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "admin");
       setShowModal(false);
+      setJustLoggedIn(true);
     } else if (username === "john" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("user");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "user");
       setShowModal(false);
+      setJustLoggedIn(true);
     } else if (username === "alice" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("guardian");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "guardian");
       setShowModal(false);
+      setJustLoggedIn(true);
     } else {
       alert("Invalid credentials");
     }
