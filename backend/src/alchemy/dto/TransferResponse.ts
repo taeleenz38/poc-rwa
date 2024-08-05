@@ -1,5 +1,7 @@
 export class TransferResponse {
     from: string;
     to: string;
-    tokens?: boolean;
+    ammount: string;
+    type: string;
+    dateTime: string;
 }

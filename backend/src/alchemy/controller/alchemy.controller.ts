@@ -58,8 +58,8 @@ export class AlchemyController {
     return this.appService.getClaimableDetails();
   }
 
-  @Get("/test")
-  test(): Promise<TransferResponse[]> {
-    return this.appService.getTransferEvents();
+  @Get("/transfer-events")
+  getTransferEvents(): Promise<TransferResponse[]> {
+    return this.appService.getTransferEvents("a","b");
   }
 }

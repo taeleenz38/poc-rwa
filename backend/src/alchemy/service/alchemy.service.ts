@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import { PricingResponse } from '../dto/PricingResponse';
-import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI,PRICEIDSETFORREDEMPTION_ABI,REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS} from '../constants';
+import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI, PRICEIDSETFORREDEMPTION_ABI, REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS } from '../constants';
 import { AllowListResponse } from '../dto/AllowListResponse';
 import { AccountStatusResponse } from '../dto/AccountStatusResponse';
 import { MintRequestedResponse } from '../dto/MIntRequestResponse';
@@ -65,7 +65,7 @@ export class AlchemyService {
     });
 
     priceChangedLogs.forEach(log => {
-  
+
       const changedPriceId = log.topics[1].toString();
 
       const data = ethers.utils.arrayify(log.data);
@@ -194,7 +194,7 @@ export class AlchemyService {
         const user = decodedLog.args.user;
         //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
         const depositId = decodedLog.args.depositId;
-        
+
         const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
         const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
         const feeAmount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt());
@@ -237,8 +237,8 @@ export class AlchemyService {
       try {
         const matchingDeposits = mintCompletedList.filter(item => item === value.depositId);
 
-         // Add matching deposits to mintList
-         if (!matchingDeposits || matchingDeposits.length == 0) {
+        // Add matching deposits to mintList
+        if (!matchingDeposits || matchingDeposits.length == 0) {
           pendingMintRequestResponse.push(value);
         }
 
@@ -263,7 +263,7 @@ export class AlchemyService {
         const decodedLog = priceIdSetForDeposit.parseLog(log);
         const depositIdSet = decodedLog.args.depositIdSet;
         const priceId = decodedLog.args.priceIdSet;
-        const priceIdForDeposit: PriceIdForDeposit = {priceId:priceId, depositId:depositIdSet};
+        const priceIdForDeposit: PriceIdForDeposit = { priceId: priceId, depositId: depositIdSet };
         priceIdForDepositList.push(priceIdForDeposit);
       } catch (error) {
         console.error("Error decoding log:", error);
@@ -319,7 +319,7 @@ export class AlchemyService {
         const user = decodedLog.args.user;
         //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
         const depositId = decodedLog.args.depositId;
-        
+
         const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
         const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
         const feeAmount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt());
@@ -362,8 +362,8 @@ export class AlchemyService {
       try {
         const matchingDeposits = mintCompletedList.filter(item => item === value.depositId);
 
-         // Add matching deposits to mintList
-         if (!matchingDeposits || matchingDeposits.length == 0) {
+        // Add matching deposits to mintList
+        if (!matchingDeposits || matchingDeposits.length == 0) {
           pendingMintRequestResponse.push(value);
         }
 
@@ -388,7 +388,7 @@ export class AlchemyService {
         const decodedLog = priceIdSetForDeposit.parseLog(log);
         const depositIdSet = decodedLog.args.depositIdSet;
         const priceId = decodedLog.args.priceIdSet;
-        const priceIdForDeposit: PriceIdForDeposit = {priceId:priceId, depositId:depositIdSet};
+        const priceIdForDeposit: PriceIdForDeposit = { priceId: priceId, depositId: depositIdSet };
         priceIdForDepositList.push(priceIdForDeposit);
       } catch (error) {
         console.error("Error decoding log:", error);
@@ -549,12 +549,12 @@ export class AlchemyService {
     claimList.forEach((value) => {
       try {
         const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(value.priceId).toString());
-    
+
         // Add matching deposits to mintList
         if (matchingDeposits.length > 0) {
           const depositAmountAfterFeeNumber = parseFloat(value.depositAmountAfterFee);
           const priceNumber = parseFloat(matchingDeposits[0].price);
-    
+
           const claimableAmount: number = depositAmountAfterFeeNumber / priceNumber;
           value.claimableAmount = claimableAmount;
 
@@ -798,7 +798,7 @@ export class AlchemyService {
         const decodedLog = priceIdSetForRedeem.parseLog(log);
         const redeemIdSet = ethers.BigNumber.from(decodedLog.args.redemptionIdSet).toString();
         const priceId = decodedLog.args.priceIdSet;
-        const priceIdForRedeem: PriceIdForRedemption = {priceId:priceId, redeemId:redeemIdSet};
+        const priceIdForRedeem: PriceIdForRedemption = { priceId: priceId, redeemId: redeemIdSet };
         pricedRedeemptionIdList.push(priceIdForRedeem);
         pricedRedeemptionIds.add(redeemIdSet);
       } catch (error) {
@@ -806,22 +806,22 @@ export class AlchemyService {
       }
     });
 
-    const priceList:PricingResponse[] = await this.getPricing(); 
-    
+    const priceList: PricingResponse[] = await this.getPricing();
+
     pendingRedeemptionList.forEach((value) => {
       try {
 
         const reeemItem = pricedRedeemptionIdList.filter(item => item.redeemId === value.redemptionId);
         if (reeemItem.length > 0) {
-        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
-    
-        // Add matching deposits to mintList
-        if (matchingDeposits.length > 0) {
-          const redemptionAmount = parseFloat(value.rwaAmountIn);
-          const price = parseFloat(matchingDeposits[0].price);
-    
-          const redeemAmount: number = redemptionAmount * price;
-          const claimableRedemption: ClaimableRedemptionResponse = {
+          const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
+
+          // Add matching deposits to mintList
+          if (matchingDeposits.length > 0) {
+            const redemptionAmount = parseFloat(value.rwaAmountIn);
+            const price = parseFloat(matchingDeposits[0].price);
+
+            const redeemAmount: number = redemptionAmount * price;
+            const claimableRedemption: ClaimableRedemptionResponse = {
               user: value.user,
               redemptionId: value.redemptionId,
               priceId: value.priceId,
@@ -829,12 +829,12 @@ export class AlchemyService {
               rwaAmountIn: value.rwaAmountIn
             };
             claimableRedemptionResponse.push(claimableRedemption);
+          }
         }
-      }
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    
+
     });
 
     return claimableRedemptionResponse;
@@ -944,7 +944,7 @@ export class AlchemyService {
         const decodedLog = priceIdSetForRedeem.parseLog(log);
         const redeemIdSet = ethers.BigNumber.from(decodedLog.args.redemptionIdSet).toString();
         const priceId = decodedLog.args.priceIdSet;
-        const priceIdForRedeem: PriceIdForRedemption = {priceId:priceId, redeemId:redeemIdSet};
+        const priceIdForRedeem: PriceIdForRedemption = { priceId: priceId, redeemId: redeemIdSet };
         pricedRedeemptionIdList.push(priceIdForRedeem);
         pricedRedeemptionIds.add(redeemIdSet);
       } catch (error) {
@@ -952,22 +952,22 @@ export class AlchemyService {
       }
     });
 
-    const priceList:PricingResponse[] = await this.getPricing(); 
-    
+    const priceList: PricingResponse[] = await this.getPricing();
+
     pendingRedeemptionList.forEach((value) => {
       try {
 
         const reeemItem = pricedRedeemptionIdList.filter(item => item.redeemId === value.redemptionId);
         if (reeemItem.length > 0) {
-        const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
-    
-        // Add matching deposits to mintList
-        if (matchingDeposits.length > 0) {
-          const redemptionAmount = parseFloat(value.rwaAmountIn);
-          const price = parseFloat(matchingDeposits[0].price);
-    
-          const redeemAmount: number = redemptionAmount * price;
-          const claimableRedemption: ClaimableRedemptionResponse = {
+          const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
+
+          // Add matching deposits to mintList
+          if (matchingDeposits.length > 0) {
+            const redemptionAmount = parseFloat(value.rwaAmountIn);
+            const price = parseFloat(matchingDeposits[0].price);
+
+            const redeemAmount: number = redemptionAmount * price;
+            const claimableRedemption: ClaimableRedemptionResponse = {
               user: value.user,
               redemptionId: value.redemptionId,
               priceId: value.priceId,
@@ -975,19 +975,22 @@ export class AlchemyService {
               rwaAmountIn: value.rwaAmountIn
             };
             claimableRedemptionResponse.push(claimableRedemption);
+          }
         }
-      }
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    
+
     });
 
     return claimableRedemptionResponse;
   }
 
   async getTransferEvents(from: string, to: string): Promise<TransferResponse[]> {
-    let transferResponse: TransferResponse[] = [];
+    const USER_ADDRESS = '0x0079D6728F84784BD2Ba27862235DE2430d1A9DC';
+    const ASSET_SENDER_ADDRESS = '0x0686b3a7B9bE2751bB51084a6E0E7DB7f1746eb1';
+    const FEE_RECIPIENT_ADDRESS = '0x942D99f4560422159FC961C40f750189cAE17f86';
+    let transferList: TransferResponse[] = [];
 
     const settings = {
       apiKey: API_KEY,
@@ -1005,48 +1008,49 @@ export class AlchemyService {
       topics: transferCreatedTopics,
     });
 
-    // console.log(transferLogs);
-
     const transferIface = new ethers.utils.Interface(TRANSFER_ABI);
 
-    transferLogs.forEach((log) => {
+    for (const log of transferLogs) {
       try {
         const decodedLog = transferIface.parseLog(log);
-        // console.log(decodedLog);
-        const from = decodedLog.args.from;
-        const to = decodedLog.args.to;
-        const value = ethers.BigNumber.from(decodedLog.args.value).toString();
-        console.log(from);
-        console.log(to);
-        console.log(value);
-        // const priceIdForRedeem: PriceIdForRedemption = {priceId:priceId, redeemId:redeemIdSet};
-        // pricedRedeemptionIdList.push(priceIdForRedeem);
-        // pricedRedeemptionIds.add(redeemIdSet);
+        const from = decodedLog.args.from.toString();
+        const to = decodedLog.args.to.toString();
+        const ammount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.value));
+        console.log('From:', from);
+        console.log('To:', to);
+        console.log('Amount:', ammount);
+  
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+  
+        if (
+          from.toLowerCase() === USER_ADDRESS.toLowerCase() &&
+          (to.toLowerCase() === ASSET_SENDER_ADDRESS.toLowerCase() || to.toLowerCase() === FEE_RECIPIENT_ADDRESS.toLowerCase())
+        ) {
+          transferList.push({
+            from,
+            to,
+            ammount,
+            type: 'WITHDRAWAL',
+            dateTime: date,
+          });
+        }
+  
+        if (from.toLowerCase() === ASSET_SENDER_ADDRESS.toLowerCase() && to.toLowerCase() === USER_ADDRESS.toLowerCase()) {
+          transferList.push({
+            from,
+            to,
+            ammount,
+            type: 'DEPOSIT',
+            dateTime: date,
+          });
+        }
       } catch (error) {
-        console.error("Error decoding log:", error);
+        console.error('Error decoding log:', error);
       }
-    });
+    };
 
-    // transferLogs.forEach(log => {
-    //   const fromAddress = ethers.utils.getAddress(log.topics[1]);
-    //   const toAddress = ethers.utils.getAddress(log.topics[2]);
-
-    //   // Ignore mint events (from zero address) and burn events (to zero address)
-    //   if (fromAddress === ethers.constants.AddressZero || toAddress === ethers.constants.AddressZero) {
-    //     return;
-    //   }
-
-    //   const data = ethers.utils.arrayify(log.data);
-    //   const tokens = ethers.utils.formatUnits(ethers.BigNumber.from(data), 18); // Adjust decimals if needed
-
-    //   let transferEvent: TransferResponse = {
-    //     from: fromAddress,
-    //     to: toAddress,
-    //     // tokens: tokens,
-    //   };
-    //   transferResponse.push(transferEvent);
-    // });
-
-    return transferResponse;
+    return transferList;
   }
 }
