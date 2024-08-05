@@ -2,6 +2,10 @@ export const API_KEY = 'KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe';
 export const PRICING_ADDRESS = '0xdec6f74A04d6594E9CF312eaDDd046a56e1FCa08';
 export const ALLOW_LIST_ADDRESS = '0x421771083e8a602740bc892EF64f301Defb0D03b';
 export const ABBY_MANAGER_ADDRESS = '0x1CA55734102F7c91Fc93d8DcdB2bAA474b259a38';
+export const AUDC_ADDRESS = '0x276D089Ed38644bEE98Ae6B163432b3c3e27D018';
+export const ABBY_ADDRESS = '0xC52E46958946C3B04d3646871c15D817A9f555aE';
+export const ASSET_SENDER_ADDRESS = '0x0686b3a7B9bE2751bB51084a6E0E7DB7f1746eb1';
+export const FEE_RECIPIENT_ADDRESS = '0x942D99f4560422159FC961C40f750189cAE17f86';
 export const PRICE_ADDED_ABI = `[{
     "anonymous": false,
     "inputs": [
@@ -317,3 +321,30 @@ export const PRICEIDSETFORDEPOSIT_ABI = `[    {
       "name": "RedemptionApproved",
       "type": "event"
     }]`;
+
+    export const TRANSFER_ABI = `[{
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    }]`;
+

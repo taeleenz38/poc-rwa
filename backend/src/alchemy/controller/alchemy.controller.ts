@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AlchemyService } from '../service/alchemy.service';
 import { PricingResponse } from '../dto/PricingResponse';
 import { AllowListResponse } from '../dto/AllowListResponse';
@@ -7,6 +7,7 @@ import { MintRequestedResponse } from '../dto/MIntRequestResponse';
 import { ClaimableTimestampResponse } from '../dto/ClaimableTimestampResponse';
 import { RedemptionRequestResponse } from '../dto/RedemptionRequestResponse';
 import { ClaimableList } from '../dto/ClaimableList';
+import { TransferResponse } from '../dto/TransferResponse';
 
 @Controller()
 export class AlchemyController {
@@ -55,5 +56,10 @@ export class AlchemyController {
   @Get("/claimable-details")
   getClaimableDetails(): Promise<ClaimableList[]> {
     return this.appService.getClaimableDetails();
+  }
+
+  @Get("/transaction-history/:user")
+  getTransferEvents(@Param('user') user: string,): Promise<TransferResponse[]> {
+    return this.appService.getTransferEvents(user);
   }
 }
