@@ -60,7 +60,7 @@ export class DropBoxEmbeddedSignService {
         const file = fs.createReadStream(process.env.SIGN_DOC_FILE);
         const data: DropboxSign.SignatureRequestCreateEmbeddedRequest = {
             clientId: process.env.DROPBOX_SIGN_CLIENT_ID,
-            title: process.env.SIGN_DOC_NAME,
+            title: `${process.env.SIGN_DOC_NAME} - ${signRequest.firstName} ${signRequest.lastName}`,
             subject: process.env.SIGN_DOC_EMAIL_SUBJECT,
             message: process.env.SIGN_DOC_EMAIL_MESSAGE,
             signers: [signer1],
