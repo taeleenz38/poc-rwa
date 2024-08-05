@@ -52,6 +52,8 @@ const Navbar = () => {
         router.push("/invest");
       } else if (userRole === "guardian") {
         router.push("/allowlist");
+      } else if (userRole === "assetsender") {
+        router.push("/assetsender");
       }
       setJustLoggedIn(false);
     }
@@ -77,6 +79,13 @@ const Navbar = () => {
       setUserRole("guardian");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "guardian");
+      setShowModal(false);
+      setJustLoggedIn(true);
+    } else if (username === "bob" && password === "123") {
+      setIsLoggedIn(true);
+      setUserRole("assetsender");
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "assetsender");
       setShowModal(false);
       setJustLoggedIn(true);
     } else {
@@ -165,6 +174,16 @@ const Navbar = () => {
                 }`}
               >
                 Allowlist
+              </Link>
+            )}
+            {userRole === "assetsender" && (
+              <Link
+                href="/assetsender"
+                className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  currentPath === "/assetsender" ? "text-secondary" : ""
+                }`}
+              >
+                Asset Sender
               </Link>
             )}
           </>

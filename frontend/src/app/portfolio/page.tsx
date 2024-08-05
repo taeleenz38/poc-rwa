@@ -84,7 +84,7 @@ const Portfolio = () => {
   return (
     <>
       <div className="min-h-screen bg-white flex flex-col pt-24 text-primary">
-        <h1 className="flex px-80 text-4xl font-semibold mb-4 items-center justify-center">
+        <h1 className="flex px-[20vw] text-4xl font-semibold mb-4 items-center justify-center">
           Explore and Manage Your Investment Portfolio
         </h1>
         <h3 className="flex items-center justify-center px-80 ">
