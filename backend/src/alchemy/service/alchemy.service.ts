@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import { PricingResponse } from '../dto/PricingResponse';
-import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI, PRICEIDSETFORREDEMPTION_ABI, REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS } from '../constants';
+import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI, PRICEIDSETFORREDEMPTION_ABI, REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS, ABBY_ADDRESS, ASSET_SENDER_ADDRESS, FEE_RECIPIENT_ADDRESS } from '../constants';
 import { AllowListResponse } from '../dto/AllowListResponse';
 import { AccountStatusResponse } from '../dto/AccountStatusResponse';
 import { MintRequestedResponse } from '../dto/MIntRequestResponse';
@@ -986,10 +986,8 @@ export class AlchemyService {
     return claimableRedemptionResponse;
   }
 
-  async getTransferEvents(from: string, to: string): Promise<TransferResponse[]> {
-    const USER_ADDRESS = '0x0079D6728F84784BD2Ba27862235DE2430d1A9DC';
-    const ASSET_SENDER_ADDRESS = '0x0686b3a7B9bE2751bB51084a6E0E7DB7f1746eb1';
-    const FEE_RECIPIENT_ADDRESS = '0x942D99f4560422159FC961C40f750189cAE17f86';
+  async getTransferEvents(user: string): Promise<TransferResponse[]> {
+
     let transferList: TransferResponse[] = [];
 
     const settings = {
@@ -1002,7 +1000,7 @@ export class AlchemyService {
     const transferCreatedTopics = transferInterface.encodeFilterTopics('Transfer', []);
 
     let transferLogs = await alchemy.core.getLogs({
-      fromBlock: '0x0',
+      fromBlock: 6418358,
       toBlock: 'latest',
       address: AUDC_ADDRESS,
       topics: transferCreatedTopics,
@@ -1016,28 +1014,14 @@ export class AlchemyService {
         const from = decodedLog.args.from.toString();
         const to = decodedLog.args.to.toString();
         const ammount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.value));
-        console.log('From:', from);
-        console.log('To:', to);
-        console.log('Amount:', ammount);
-  
         const block = await alchemy.core.getBlock(log.blockNumber);
         const timestamp = block.timestamp;
         const date = new Date(timestamp * 1000).toISOString();
-  
+
         if (
-          from.toLowerCase() === USER_ADDRESS.toLowerCase() &&
+          from.toLowerCase() === user.toLowerCase() &&
           (to.toLowerCase() === ASSET_SENDER_ADDRESS.toLowerCase() || to.toLowerCase() === FEE_RECIPIENT_ADDRESS.toLowerCase())
         ) {
-          transferList.push({
-            from,
-            to,
-            ammount,
-            type: 'WITHDRAWAL',
-            dateTime: date,
-          });
-        }
-  
-        if (from.toLowerCase() === ASSET_SENDER_ADDRESS.toLowerCase() && to.toLowerCase() === USER_ADDRESS.toLowerCase()) {
           transferList.push({
             from,
             to,
@@ -1046,10 +1030,67 @@ export class AlchemyService {
             dateTime: date,
           });
         }
+
+        if (from.toLowerCase() === ASSET_SENDER_ADDRESS.toLowerCase() && to.toLowerCase() === user.toLowerCase()) {
+          transferList.push({
+            from,
+            to,
+            ammount,
+            type: 'REDEEM',
+            dateTime: date,
+          });
+        }
       } catch (error) {
         console.error('Error decoding log:', error);
       }
     };
+
+    let tokenLogs = await alchemy.core.getLogs({
+      fromBlock: 6418358,
+      toBlock: 'latest',
+      address: ABBY_ADDRESS,
+      topics: transferCreatedTopics,
+    });
+
+    const tokenIface = new ethers.utils.Interface(TRANSFER_ABI);
+
+    for (const log of tokenLogs) {
+      try {
+        const decodedLog = tokenIface.parseLog(log);
+        const from = decodedLog.args.from.toString();
+        const to = decodedLog.args.to.toString();
+        const token = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.value));
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
+        if (
+          from.toLowerCase() === user.toLowerCase() &&
+          to === ethers.constants.AddressZero
+        ) {
+          transferList.push({
+            from,
+            to,
+            token: token,
+            type: 'BURNED',
+            dateTime: date,
+          });
+        }
+
+        if (from === ethers.constants.AddressZero && to.toLowerCase() === user.toLowerCase()) {
+          transferList.push({
+            from,
+            to,
+            token: token,
+            type: 'RECIEVED',
+            dateTime: date,
+          });
+        }
+      } catch (error) {
+        console.error('Error decoding log:', error);
+      }
+    };
+    transferList.sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
 
     return transferList;
   }

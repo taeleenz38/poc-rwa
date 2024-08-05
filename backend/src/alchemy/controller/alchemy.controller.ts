@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AlchemyService } from '../service/alchemy.service';
 import { PricingResponse } from '../dto/PricingResponse';
 import { AllowListResponse } from '../dto/AllowListResponse';
@@ -58,8 +58,8 @@ export class AlchemyController {
     return this.appService.getClaimableDetails();
   }
 
-  @Get("/transfer-events")
-  getTransferEvents(): Promise<TransferResponse[]> {
-    return this.appService.getTransferEvents("a","b");
+  @Get("/transaction-history/:user")
+  getTransferEvents(@Param('user') user: string,): Promise<TransferResponse[]> {
+    return this.appService.getTransferEvents(user);
   }
 }
