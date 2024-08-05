@@ -29,15 +29,21 @@ const AllowlistWallets: React.FC = () => {
   return (
     <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white flex flex-col mt-8 rounded-md bg-hero-pattern bg-no-repeat bg-right-bottom">
       <div className="text-3xl font-semibold mb-6 text-center mt-4">
-        Currently Added Wallets To AYF Allowlist
+        Currently Added Wallets To Allowlist
       </div>
-      <div className="flex flex-col gap-y-2 h-[80vh] overflow-y-scroll border-2 border-gray rounded-md p-4">
+      <div className="flex flex-col gap-y-3 h-[80vh] overflow-y-scroll rounded-md p-4">
         {wallets.map((wallet) => (
-          <div key={wallet.account} className="bg-gray-100 p-4 rounded-md">
-            <div className="font-semibold text-lg">{wallet.account}</div>
-            <div className="text-sm text-gray-500">
-              Status: {wallet.status ? "Active" : "Inactive"}
+          <div
+            key={wallet.account}
+            className="bg-primary text-light p-4 rounded-md flex justify-between items-center"
+          >
+            <div className="flex flex-col">
+              <div className="font-semibold text-lg">{wallet.account}</div>
+              <div className="text-sm text-gray-500">
+                Status: {wallet.status ? "Active" : "Inactive"}
+              </div>
             </div>
+            <div><strong>AYF</strong></div>
           </div>
         ))}
       </div>
