@@ -40,7 +40,7 @@ const Allowlist = () => {
         Button1Text="Add User To Allowlist"
         Button2Text="Add Terms and Set Valid Term Indexes"
         Button1Class="bg-light text-primary hover:bg-primary hover:text-light"
-        Button2Class="bg-secondary text-light hover:bg-primary"
+        Button2Class="bg-secondary text-light hover:bg-primary hidden"
         onButton1Click={handleButton1Click}
         onButton2Click={handleButton2Click}
         chains={

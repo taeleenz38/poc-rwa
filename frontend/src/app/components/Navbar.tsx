@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,6 +17,7 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [justLoggedIn, setJustLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,6 +44,21 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (justLoggedIn) {
+      if (userRole === "admin") {
+        router.push("/admin");
+      } else if (userRole === "user") {
+        router.push("/invest");
+      } else if (userRole === "guardian") {
+        router.push("/allowlist");
+      } else if (userRole === "assetsender") {
+        router.push("/assetsender");
+      }
+      setJustLoggedIn(false);
+    }
+  }, [justLoggedIn, userRole, router]);
+
   const handleSignIn = () => {
     if (username === "ted" && password === "123") {
       setIsLoggedIn(true);
@@ -50,18 +66,28 @@ const Navbar = () => {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "admin");
       setShowModal(false);
+      setJustLoggedIn(true);
     } else if (username === "john" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("user");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "user");
       setShowModal(false);
+      setJustLoggedIn(true);
     } else if (username === "alice" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("guardian");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "guardian");
       setShowModal(false);
+      setJustLoggedIn(true);
+    } else if (username === "bob" && password === "123") {
+      setIsLoggedIn(true);
+      setUserRole("assetsender");
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "assetsender");
+      setShowModal(false);
+      setJustLoggedIn(true);
     } else {
       alert("Invalid credentials");
     }
@@ -148,6 +174,16 @@ const Navbar = () => {
                 }`}
               >
                 Allowlist
+              </Link>
+            )}
+            {userRole === "assetsender" && (
+              <Link
+                href="/assetsender"
+                className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  currentPath === "/assetsender" ? "text-secondary" : ""
+                }`}
+              >
+                Asset Sender
               </Link>
             )}
           </>
