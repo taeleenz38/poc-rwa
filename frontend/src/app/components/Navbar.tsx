@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,6 +42,18 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (userRole === "admin") {
+        router.push("/admin");
+      } else if (userRole === "user") {
+        router.push("/invest");
+      } else if (userRole === "guardian") {
+        router.push("/allowlist");
+      }
+    }
+  }, [isLoggedIn, userRole, router]);
 
   const handleSignIn = () => {
     if (username === "ted" && password === "123") {
