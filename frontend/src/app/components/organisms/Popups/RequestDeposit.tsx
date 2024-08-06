@@ -40,9 +40,6 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       const approvalAmount = BigNumber.from(amount).mul(
         BigNumber.from(10).pow(18)
       );
-      const totalApprovalAmount = approvalAmount
-        .mul(BigNumber.from(105))
-        .div(BigNumber.from(100));
 
       const approvalTx = await writeContractAsync({
         abi: audcabi.abi,
@@ -50,7 +47,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         functionName: "approve",
         args: [
           process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS,
-          totalApprovalAmount,
+          approvalAmount,
         ],
       });
 
