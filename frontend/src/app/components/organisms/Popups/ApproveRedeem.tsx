@@ -1,5 +1,5 @@
 "use client";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
@@ -16,7 +16,9 @@ interface ApproveRedeemProps {
 
 const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
   const [amount, setAmount] = useState<string>("");
+  const [redemptionId, setRedemptionId] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
+  const [txSecondHash, SetTxSecondHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
@@ -31,6 +33,10 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
 
   const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
+  };
+
+  const onRedemptionIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRedemptionId(e.target.value);
   };
 
   const handleApproveRedeem = async () => {
@@ -55,9 +61,43 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  // Wait for the approval transaction to be mined
   const { data: approvalReceipt, isLoading: isApprovalLoading } =
     useWaitForTransactionReceipt({
       hash: txApprovalHash as `0x${string}`,
+    });
+
+  useEffect(() => {
+    if (approvalReceipt) {
+      const approveRedemptionRequest = async () => {
+        try {
+          const redemptionIdFormatted = Number(redemptionId);
+          const redemptionIdHexlified = ethers.utils.hexZeroPad(
+            ethers.utils.hexlify(redemptionIdFormatted),
+            32
+          );
+
+          const tx = await writeContractAsync({
+            abi: abi.abi,
+            address: process.env
+              .NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+            functionName: "approveRedemptionRequest",
+            args: [redemptionIdHexlified],
+          });
+
+          SetTxSecondHash(tx);
+        } catch (error) {
+          console.error("Error requesting deposit:", error);
+        }
+      };
+
+      approveRedemptionRequest();
+    }
+  }, [redemptionId, writeContractAsync, approvalReceipt]);
+
+  const { data: SecondReceipt, isLoading: isSecondLoading } =
+    useWaitForTransactionReceipt({
+      hash: txSecondHash as `0x${string}`,
     });
 
   if (!isOpen) return null;
@@ -72,11 +112,16 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
         </div>
         <div className="text-center px-8 text-xl mb-8 font-medium">
           Please enter the amount of AUDC you wish to approve for the AYF
-          Manager to spend.
+          Manager to spend for a given redemption ID.
         </div>
         <div className="w-full text-center mx-auto mb-8">
           <InputField
-            label="AMOUNT:"
+            label="Redemption ID:"
+            value={redemptionId || ""}
+            onChange={onRedemptionIdChange}
+          />
+          <InputField
+            label="Amount:"
             value={amount || ""}
             onChange={onAmountChange}
           />
@@ -101,13 +146,17 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
             />
           </div>
         </div>
-        {txApprovalHash && (
+        {txApprovalHash && isApprovalLoading && (
           <div className="mt-4 text-white text-center">
-            {isApprovalLoading ? (
-              <p>Approval transaction is pending...</p>
-            ) : (
+            <p>Approval transaction is pending...</p>
+          </div>
+        )}
+        {txSecondHash && (
+          <div className="mt-4 text-white text-center">
+            {isSecondLoading && <p>Redemption transaction is pending...</p>}
+            {!isSecondLoading && (
               <p className="text-white overflow-x-scroll text-center">
-                Transaction successful! Hash: {txApprovalHash}
+                Redemption transaction successful! Hash: {txSecondHash}
               </p>
             )}
           </div>

@@ -89,7 +89,7 @@ const PricingSection = () => {
 
   return (
     <div className="w-11/12 mx-auto text-primary flex justify-between mt-8">
-      <div className="w-[48%] mx-auto text-primary mt-8 shadow-lg p-4 rounded-md">
+      <div className="w-[48%] mx-auto text-primary mt-8 shadow-md shadow-primary p-4 rounded-md">
         <div className="flex justify-between items-center mb-6">
           <div className="text-xl font-bold">Incoming Deposit Requests</div>
           <div>
@@ -134,7 +134,7 @@ const PricingSection = () => {
           ))}
         </div>
       </div>
-      <div className="w-[48%] mx-auto text-primary mt-8 shadow-lg p-4 rounded-md">
+      <div className="w-[48%] mx-auto text-primary mt-8 shadow-md shadow-primary p-4 rounded-md">
         <div className="flex justify-between items-center mb-6">
           <div className="text-xl font-bold">Pending Redemption Requests</div>
           <Button

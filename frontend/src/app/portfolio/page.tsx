@@ -23,6 +23,14 @@ type ClaimableToken = {
   claimableAmount?: number;
 };
 
+type ClaimableAUDCToken = {
+  user: string;
+  redemptionId: string;
+  rwaAmountIn: string;
+  priceId: string;
+  redeemAmount: number;
+};
+
 const Portfolio = () => {
   const { address } = useAccount({
     config,
@@ -42,13 +50,17 @@ const Portfolio = () => {
   });
 
   const [claimableTokens, setClaimableTokens] = useState<ClaimableToken[]>([]);
+  const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
+    ClaimableAUDCToken[]
+  >([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [isFetchingAUDC, setIsFetchingAUDC] = useState(true);
 
   useEffect(() => {
     const fetchClaimableTokens = async () => {
       try {
         const response = await fetch(
-          "https://api.tokenisation.gcp-hub.com.au/claimable-details"
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-details`
         );
         const data = await response.json();
         setClaimableTokens(data);
@@ -60,6 +72,24 @@ const Portfolio = () => {
     };
 
     fetchClaimableTokens();
+  }, []);
+
+  useEffect(() => {
+    const fetchClaimableAUDCTokens = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-redemption-list`
+        );
+        const data = await response.json();
+        setClaimableAUDCTokens(data);
+      } catch (error) {
+        console.error("Error fetching claimable AUDC tokens:", error);
+      } finally {
+        setIsFetchingAUDC(false);
+      }
+    };
+
+    fetchClaimableAUDCTokens();
   }, []);
 
   const claimMint = async (depositId: string) => {
@@ -81,9 +111,28 @@ const Portfolio = () => {
     }
   };
 
+  const claimRedemption = async (redemptionId: string) => {
+    const redemptionIdFormatted = Number(redemptionId);
+    const redemptionIdHexlified = ethers.utils.hexZeroPad(
+      ethers.utils.hexlify(redemptionIdFormatted),
+      32
+    );
+    try {
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "claimRedemption",
+        args: [[redemptionIdHexlified]],
+      });
+      console.log("Claim Redemption Successful! - transaction hash:", tx);
+    } catch (error) {
+      console.error("Error claiming tokens:", error);
+    }
+  };
+
   return (
     <>
-      <div className="min-h-screen bg-white flex flex-col pt-24 text-primary">
+      <div className="min-h-screen bg-white flex flex-col pt-12 text-primary">
         <h1 className="flex px-[20vw] text-4xl font-semibold mb-4 items-center justify-center">
           Explore and Manage Your Investment Portfolio
         </h1>
@@ -169,59 +218,98 @@ const Portfolio = () => {
               ]}
             />
           </div>
-          <div
-            className="flex flex-col w-1/2 py-8 text-primary overflow-y-scroll rounded-md h-fit p-5"
-            style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
-          >
-            <h2 className="flex font-bold text-xl mb-4 justify-center items-center ">
-              Pending AYF Tokens
-            </h2>
-            {isFetching ? (
-              <p>Loading claimable tokens...</p>
-            ) : (
-              <div className="flex flex-col gap-y-4">
-                {claimableTokens.map((token) => {
-                  const isClaimable =
-                    Date.now() / 1000 >= token.claimTimestampFromChain;
-                  return (
-                    <div
-                      key={token.depositId}
-                      className="p-4 rounded-lg shadow-md bg-primary text-light"
-                    >
-                      <p className="mb-2">
-                        <strong>Deposit Amount After Fee:</strong>{" "}
-                        {token.depositAmountAfterFee} AUDC
-                      </p>
-                      <p className="mb-2">
-                        <strong>Fee Amount:</strong> {token.feeAmount} AUDC
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="mb-2">
-                            <strong>Claim Timestamp (UTC):</strong>{" "}
-                            {token.claimTimestamp}
-                          </p>
-                          <p className="mb-2">
-                            <strong>Claimable Amount:</strong>{" "}
-                            {token.claimableAmount || 0} AYF
-                          </p>
+          <div className="flex flex-col gap-y-4 w-1/2">
+            <div
+              className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5"
+              style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
+            >
+              <h2 className="flex font-bold text-xl mb-4 justify-center items-center ">
+                Pending AYF Tokens
+              </h2>
+              {isFetching ? (
+                <p>Loading claimable tokens...</p>
+              ) : (
+                <div className="flex flex-col gap-y-4">
+                  {claimableTokens.map((token) => {
+                    const isClaimable =
+                      Date.now() / 1000 >= token.claimTimestampFromChain;
+                    return (
+                      <div
+                        key={token.depositId}
+                        className="p-4 rounded-lg shadow-md bg-primary text-light"
+                      >
+                        <p className="mb-2">
+                          <strong>Deposit Amount After Fee:</strong>{" "}
+                          {token.depositAmountAfterFee} AUDC
+                        </p>
+                        <p className="mb-2">
+                          <strong>Fee Amount:</strong> {token.feeAmount} AUDC
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="mb-2">
+                              <strong>Claim Timestamp (UTC):</strong>{" "}
+                              {token.claimTimestamp}
+                            </p>
+                            <p className="mb-2">
+                              <strong>Claimable Amount:</strong>{" "}
+                              {token.claimableAmount || 0} AYF
+                            </p>
+                          </div>
+                          <Button
+                            text="Claim"
+                            className={`py-2 ${
+                              isClaimable
+                                ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                                : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                            }`}
+                            onClick={() => claimMint(token.depositId)}
+                            disabled={!isClaimable}
+                          />
                         </div>
-                        <Button
-                          text="Claim"
-                          className={`py-2 ${
-                            isClaimable
-                              ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                              : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                          }`}
-                          onClick={() => claimMint(token.depositId)}
-                          disabled={!isClaimable}
-                        />
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            <div
+              className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5"
+              style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
+            >
+              <h2 className="flex font-bold text-xl mb-4 justify-center items-center ">
+                Claimable AUDC Tokens
+              </h2>
+              {isFetching ? (
+                <p>Loading claimable tokens...</p>
+              ) : (
+                <div className="flex flex-col gap-y-4">
+                  {claimableAUDCTokens.map((token) => {
+                    return (
+                      <div
+                        key={token.redemptionId}
+                        className="p-4 rounded-lg shadow-md bg-primary text-light"
+                      >
+                        <p className="mb-2">
+                          <strong>Redeem Amount:</strong> {token.redeemAmount}
+                          AUDC
+                        </p>
+                        <p className="mb-2">
+                          <strong>Price Id:</strong> {token.priceId}
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <Button
+                            text="Claim"
+                            className={`py-2 ${"text-primary"}`}
+                            onClick={() => claimRedemption(token.redemptionId)}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

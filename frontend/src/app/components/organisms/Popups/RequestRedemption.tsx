@@ -111,7 +111,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         </div>
         <div className="w-full text-center mx-auto mb-8">
           <InputField
-            label="AMOUNT:"
+            label="Amount:"
             value={amount || ""}
             onChange={onAmountChange}
           />
