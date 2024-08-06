@@ -82,7 +82,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
             address: process.env
               .NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
             functionName: "approveRedemptionRequest",
-            args: [redemptionIdHexlified],
+            args: [[redemptionIdHexlified]],
           });
 
           SetTxSecondHash(tx);

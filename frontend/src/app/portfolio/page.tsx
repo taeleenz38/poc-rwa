@@ -290,17 +290,20 @@ const Portfolio = () => {
                         key={token.redemptionId}
                         className="p-4 rounded-lg shadow-md bg-primary text-light"
                       >
-                        <p className="mb-2">
-                          <strong>Redeem Amount:</strong> {token.redeemAmount}
-                          AUDC
-                        </p>
-                        <p className="mb-2">
-                          <strong>Price Id:</strong> {token.priceId}
-                        </p>
                         <div className="flex justify-between items-center">
+                          <div>
+                            <p className="mb-2">
+                              <strong>Redeem Amount:</strong>{" "}
+                              {token.redeemAmount} AUDC
+                            </p>
+                            <p className="mb-2">
+                              <strong>RWA burned:</strong> {token.rwaAmountIn}{" "}
+                              AYF
+                            </p>
+                          </div>
                           <Button
                             text="Claim"
-                            className={`py-2 ${"text-primary"}`}
+                            className={`py-2 ${"bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"}`}
                             onClick={() => claimRedemption(token.redemptionId)}
                           />
                         </div>
