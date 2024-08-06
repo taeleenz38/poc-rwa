@@ -51,7 +51,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     );
     const currentTime = Math.floor(Date.now() / 1000);
     const claimTimestampFormatted = BigNumber.from(
-      currentTime + Number(timeStamp / 60)
+      currentTime + Number(Number(timeStamp) / 60)
     );
     console.log(currentTime, claimTimestampFormatted);
     try {
