@@ -34,7 +34,7 @@ const RedemptionList: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white flex flex-col mt-8 rounded-md bg-hero-pattern bg-no-repeat bg-right-bottom">
+    <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white flex flex-col mt-8 rounded-md bg-no-repeat bg-right-bottom">
       <div className="text-3xl font-semibold mb-6 text-center mt-4">
         Redemption List
       </div>
