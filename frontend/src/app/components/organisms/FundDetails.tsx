@@ -49,7 +49,7 @@ const FundDetails = (props: FundDetailsProps) => {
   return (
     <div className="bg-primary flex justify-center items-center z-10 w-full">
       <div className=" grid grid-cols-2 text-white w-full">
-        <div className="flex flex-col ml-80   justify-center items-start mb-4">
+        <div className="flex flex-col ml-28 justify-center items-start mb-4">
           <div className={`flex justify-start items-center gap-x-2 mb-1 mt-10`}>
             <Image
               src={logoSrc}
@@ -101,7 +101,7 @@ const FundDetails = (props: FundDetailsProps) => {
             </div>
           </div>
         </div>
-        <div className="text-white flex justify-center items-center  mr-52">
+        <div className="text-white flex justify-center items-center mr-28">
           {view === "PriceList" && <PriceList />}
           {view === "AllowList" && <AllowlistWallets />}
         </div>

@@ -43,9 +43,6 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
       const approvalAmount = BigNumber.from(amount).mul(
         BigNumber.from(10).pow(18)
       );
-      const totalApprovalAmount = approvalAmount
-        .mul(BigNumber.from(105))
-        .div(BigNumber.from(100));
 
       const approvalTx = await writeContractAsync({
         abi: ayfabi.abi,
@@ -53,7 +50,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         functionName: "approve",
         args: [
           process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-          totalApprovalAmount,
+          approvalAmount,
         ],
       });
 
@@ -103,7 +100,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-3xl font-bold">Redeem AYF For AUDC</h2>

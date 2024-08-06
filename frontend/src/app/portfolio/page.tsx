@@ -113,7 +113,7 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="flex justify-between px-80 mt-8 gap-10">
+        <div className="flex justify-between px-52 mt-8 gap-10">
           <div
             className="flex flex-col gap-y-4 py-8 w-1/2 h-fit p-5 rounded-md"
             style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
@@ -173,7 +173,7 @@ const Portfolio = () => {
             className="flex flex-col w-1/2 py-8 text-primary overflow-y-scroll rounded-md h-fit p-5"
             style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
           >
-            <h2 className="flex font-semibold text-2xl mb-4 justify-center items-center ">
+            <h2 className="flex font-bold text-xl mb-4 justify-center items-center ">
               Pending AYF Tokens
             </h2>
             {isFetching ? (

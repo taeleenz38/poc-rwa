@@ -22,6 +22,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
   onClose,
 }) => {
   const [depositId, setDepositId] = useState<string>("");
+  const [timeStamp, setTimeStamp] = useState<number>(0);
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
@@ -38,6 +39,10 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     setDepositId(e.target.value);
   };
 
+  const onTimeStampChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTimeStamp(e.target.value ? Number(e.target.value) : 0);
+  };
+
   const handleSetClaimTimestamp = async () => {
     const depositIdFormatted = Number(depositId);
     const depositIdHexlified = ethers.utils.hexZeroPad(
@@ -45,7 +50,9 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
       32
     );
     const currentTime = Math.floor(Date.now() / 1000);
-    const claimTimestampFormatted = BigNumber.from(currentTime + 300);
+    const claimTimestampFormatted = BigNumber.from(
+      currentTime + Number(timeStamp / 60)
+    );
     console.log(currentTime, claimTimestampFormatted);
     try {
       const tx = await writeContractAsync({
@@ -69,7 +76,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/4">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-3xl font-bold">Set Claim Timestamp</h2>
@@ -84,6 +91,11 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
             label="Deposit ID:"
             value={depositId || ""}
             onChange={onDepositIdChange}
+          />
+          <InputField
+            label="Timestamp (minutes):"
+            value={timeStamp || ""}
+            onChange={onTimeStampChange}
           />
         </div>
         <div className="w-full flex justify-between">

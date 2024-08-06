@@ -8,7 +8,7 @@ const Admin = () => {
     <>
       <div className="min-h-screen pt-10">
         <div>
-          <h1 className="text-3xl font-bold w-3/4 mx-auto">
+          <h1 className="text-3xl font-bold text-center">
             Deposit and Redemption Requests
           </h1>
           <PricingSection />
