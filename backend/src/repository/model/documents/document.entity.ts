@@ -72,7 +72,7 @@ export class Document extends BaseEntity {
 
     @Column({
         type: 'varchar',
-        name: 'url',
+        name: 'owner_url',
         nullable: true
     })
     ownerUrl: string;
