@@ -1028,6 +1028,7 @@ export class AlchemyService {
             amount: amount,
             type: 'DEPOSIT',
             dateTime: date,
+            currency: "AUDC",
           });
         }
 
@@ -1038,6 +1039,7 @@ export class AlchemyService {
             amount: amount,
             type: 'REDEEM',
             dateTime: date,
+            currency: "AUDC",
           });
         }
       } catch (error) {
@@ -1074,6 +1076,7 @@ export class AlchemyService {
             amount: token,
             type: 'BURNED',
             dateTime: date,
+            currency: "AYF",
           });
         }
 
@@ -1084,6 +1087,7 @@ export class AlchemyService {
             amount: token,
             type: 'RECIEVED',
             dateTime: date,
+            currency: "AYF",
           });
         }
       } catch (error) {

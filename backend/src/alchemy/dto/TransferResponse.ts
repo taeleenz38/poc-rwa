@@ -4,4 +4,5 @@ export class TransferResponse {
     amount: string;
     type: string;
     dateTime: string;
+    currency: string;
 }
