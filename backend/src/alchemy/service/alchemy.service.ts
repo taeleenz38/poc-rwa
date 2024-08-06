@@ -1013,7 +1013,7 @@ export class AlchemyService {
         const decodedLog = transferIface.parseLog(log);
         const from = decodedLog.args.from.toString();
         const to = decodedLog.args.to.toString();
-        const ammount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.value));
+        const amount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.value));
         const block = await alchemy.core.getBlock(log.blockNumber);
         const timestamp = block.timestamp;
         const date = new Date(timestamp * 1000).toISOString();
@@ -1025,7 +1025,7 @@ export class AlchemyService {
           transferList.push({
             from,
             to,
-            ammount,
+            amount: amount,
             type: 'DEPOSIT',
             dateTime: date,
           });
@@ -1035,7 +1035,7 @@ export class AlchemyService {
           transferList.push({
             from,
             to,
-            ammount,
+            amount: amount,
             type: 'REDEEM',
             dateTime: date,
           });
@@ -1071,7 +1071,7 @@ export class AlchemyService {
           transferList.push({
             from,
             to,
-            token: token,
+            amount: token,
             type: 'BURNED',
             dateTime: date,
           });
@@ -1081,7 +1081,7 @@ export class AlchemyService {
           transferList.push({
             from,
             to,
-            token: token,
+            amount: token,
             type: 'RECIEVED',
             dateTime: date,
           });
