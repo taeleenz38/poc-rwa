@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
+import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
 import SetClaimTimestamp from "../organisms/Popups/SetClaimTimeStamp";
 
 // Define the type for the deposit request
@@ -13,11 +14,24 @@ type DepositRequest = {
   priceId?: string;
 };
 
+type RedemptionRequest = {
+  user: string;
+  redemptionId: string;
+  redeemAmount: number;
+  rwaAmountIn: string;
+};
+
 const PricingSection = () => {
   const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
+  const [Loaded, setLoaded] = useState(false);
+  const [redemptionRequests, setRedemptionRequests] = useState<
+    RedemptionRequest[]
+  >([]);
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
     React.useState(false);
   const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] =
+    React.useState(false);
+  const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
     React.useState(false);
 
   const handleButton1Click = () => {
@@ -26,6 +40,10 @@ const PricingSection = () => {
 
   const handleButton2Click = () => {
     setIsSetPriceIdForDepositIdOpen(true);
+  };
+
+  const handleButton3Click = () => {
+    setIsSetPriceIdForRedemptionIdOpen(true);
   };
 
   useEffect(() => {
@@ -42,6 +60,27 @@ const PricingSection = () => {
     };
 
     fetchDepositRequests();
+  }, []);
+
+  useEffect(() => {
+    const fetchRedemptionRequests = async () => {
+      try {
+        setLoaded(false);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-redemption-request-list`
+        );
+
+        console.log(response, "response");
+        const data = await response.json();
+        setRedemptionRequests(data);
+      } catch (error) {
+        console.error("Error fetching redemptions:", error);
+      } finally {
+        setLoaded(true);
+      }
+    };
+
+    fetchRedemptionRequests();
   }, []);
 
   const hexToDecimal = (hex: string): number => {
@@ -68,7 +107,10 @@ const PricingSection = () => {
         </div>
         <div className="flex flex-col gap-y-4 max-h-[80vh] overflow-y-scroll">
           {depositRequests.map((request) => (
-            <div key={request.depositId} className="p-4 rounded-lg shadow-md bg-primary text-light">
+            <div
+              key={request.depositId}
+              className="p-4 rounded-lg shadow-md bg-primary text-light"
+            >
               <h3 className="text-lg font-bold mb-2 text-secondary">
                 Deposit ID: {hexToDecimal(request.depositId)}
               </h3>
@@ -83,9 +125,6 @@ const PricingSection = () => {
                 <strong>Deposit Amount After Fee:</strong>{" "}
                 {request.depositAmountAfterFee} AUDC
               </p>
-              <p>
-                <strong>Fee Amount:</strong> {request.feeAmount} AUDC
-              </p>
               {request.priceId && (
                 <p>
                   <strong>Price ID:</strong> {request.priceId}
@@ -96,17 +135,36 @@ const PricingSection = () => {
         </div>
       </div>
       <div className="w-[48%] mx-auto text-primary mt-8 shadow-lg p-4 rounded-md">
-        <div className="flex justify-between items-center mb-4">
-          <div className="text-xl font-bold">
-            Pending Redemption Requests
-          </div>
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-xl font-bold">Pending Redemption Requests</div>
           <Button
             text="Set Price ID For Redemption"
             className="bg-primary py-2 text-light hover:bg-light hover:text-primary"
-            onClick={() => console.log("Approve")}
+            onClick={handleButton3Click}
           />
         </div>
-        {/* Add similar card mapping for pending redemption requests if needed */}
+        <div className="flex flex-col gap-y-4 max-h-[80vh] overflow-y-scroll">
+          {redemptionRequests.map((request) => (
+            <div
+              key={request.redemptionId}
+              className="p-4 rounded-lg shadow-md bg-primary text-light"
+            >
+              <h3 className="text-lg font-bold mb-2 text-secondary">
+                Redemption ID: {request.redemptionId}
+              </h3>
+              <p>
+                <strong>User:</strong> {request.user}
+              </p>
+              <p>
+                <strong>Redeem Amount:</strong> {request.redeemAmount} AUDC
+              </p>
+              <p>
+                <strong>AYF Amount In:</strong> {request.rwaAmountIn}
+              </p>
+              <div></div>
+            </div>
+          ))}
+        </div>
       </div>
       <SetClaimTimestamp
         isOpen={isSetClaimTimestampOpen}
@@ -115,6 +173,10 @@ const PricingSection = () => {
       <SetPriceIdForDepositId
         isOpen={isSetPriceIdForDepositIdOpen}
         onClose={() => setIsSetPriceIdForDepositIdOpen(false)}
+      />
+      <SetPriceIdForRedemptionId
+        isOpen={isSetPriceIdForRedemptionIdOpen}
+        onClose={() => setIsSetPriceIdForRedemptionIdOpen(false)}
       />
     </div>
   );
