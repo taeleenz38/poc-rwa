@@ -12,6 +12,7 @@ type DepositRequest = {
   priceId?: string;
 };
 
+
 const DepositRequests = () => {
   const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
@@ -56,19 +57,19 @@ const DepositRequests = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-3">
       {loading ? (
         <div className="text-center">Deposit Requests loading...</div>
       ) : (
         <table className="table w-full">
           <thead>
             <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
-              <th>Deposit ID</th>
-              <th>User</th>
-              <th>Amount Deposited</th>
-              <th>Amount After Fee</th>
-              <th>Price ID</th>
-              <th>Claim Timestamp</th>
+              <th className="w-1/12">ID</th>
+              <th className="w-1/6">User</th>
+              <th className="w-1/6">Amount Deposited</th>
+              <th className="w-1/6">Amount After Fee</th>
+              <th className="w-1/6">Price ID</th>
+              <th className="w-1/4">Claim Timestamp</th>
             </tr>
           </thead>
           <tbody>

@@ -14,8 +14,8 @@ import {
 
 export default function Home() {
   return (
-    <main className="h-screen bg-white px-[290px] text-black">
-      <h1 className="text-5xl font-semibold pt-14 w-3/5">
+    <main className="h-screen bg-white root-container text-black">
+      <h1 className="text-5xl font-semibold w-3/5">
         Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
       </h1>
       <h2 className="text-xl mt-10 w-1/2">
@@ -23,7 +23,7 @@ export default function Home() {
         DeFi with access to the deepest, most efficient institutional FX and
         capital markets in TradFi.
       </h2>
-      <div className="flex p-2 mt-10 gap-11">
+      <div className="flex p-2 mt-4 gap-11">
         <PackageCard
           heading="AYF"
           subHeading="Australian Yield Fund"

@@ -52,14 +52,14 @@ const RedemptionRequests = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-3">
       {loading ? (
         <div className="text-center">Redemption Requests loading...</div>
       ) : (
         <table className="table w-full">
           <thead>
             <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
-              <th>Redemption ID</th>
+              <th>ID</th>
               <th>User</th>
               <th>Redeem Amount</th>
               <th>RWA Burned</th>
