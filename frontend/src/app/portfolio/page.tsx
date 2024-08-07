@@ -1,14 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
 import { config } from "@/config";
-import Balance from "@/app/components/molecules/Balance";
-import Balance2 from "@/app/components/molecules/Balance2";
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
 import { useWriteContract } from "wagmi";
-import Accordion from "../components/organisms/accordion";
+import axios from "axios";
 
 type ClaimableToken = {
   user: string;
@@ -30,19 +28,31 @@ type ClaimableAUDCToken = {
   redeemAmount: number;
 };
 
+type Transaction = {
+  from: string;
+  to: string;
+  currency: string;
+  price: string;
+  stableAmount: string;
+  tokenAmount: string;
+  type: string;
+  status: string;
+  transactionDate: string;
+};
+
 const Portfolio = () => {
   const { address } = useAccount({
     config,
   });
   const { writeContractAsync } = useWriteContract({ config });
 
-  const { data: audcData, isLoading: audcLoading } = useBalance({
+  const { data: audcData } = useBalance({
     address,
     token: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
     config,
   });
 
-  const { data: ayfData, isLoading: ayfLoading } = useBalance({
+  const { data: ayfData } = useBalance({
     address,
     token: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
     config,
@@ -54,7 +64,36 @@ const Portfolio = () => {
   >([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isFetchingAUDC, setIsFetchingAUDC] = useState(true);
+  const [isFetchingTransactions, setIsFetchingTransactions] = useState(true);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [transactionsPerPage] = useState(5);
 
+  const indexOfLastTransaction = currentPage * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = transactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
+
+  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+
+  const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const formatBalance = (balanceData: any): number => {
+    return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
+  };
+
+  const formattedAudcBalance = formatBalance(audcData);
+  const formattedAyfBalance = formatBalance(ayfData);
+
+  const ayfPrice = 1.04;
+  const audcPrice = 1.0;
+
+  const ayfMarketValue = formattedAyfBalance * ayfPrice;
+  const audcMarketValue = formattedAudcBalance * audcPrice;
   useEffect(() => {
     const fetchClaimableTokens = async () => {
       try {
@@ -129,188 +168,258 @@ const Portfolio = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (!address) return;
+
+      setIsFetchingTransactions(true);
+      try {
+        const response = await axios.get(`api/transactionHistory`, {
+          params: { address },
+        });
+        console.log("transaction history:", response.data);
+        setTransactions(response.data);
+      } catch (error) {
+        console.error("Error fetching transactions", error);
+      } finally {
+        setIsFetchingTransactions(false);
+      }
+    };
+    fetchTransactions();
+  }, [address]);
+
   return (
     <>
-      <div className="min-h-screen bg-white flex flex-col pt-12 text-primary">
-        <h1 className="flex px-[20vw] text-4xl font-semibold mb-4 items-center justify-center">
-          Explore and Manage Your Investment Portfolio
+      <div className="min-h-screen w-full flex flex-col text-primary root-container">
+        <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
+          Your portfolio
         </h1>
-        <h3 className="flex items-center justify-center px-80 ">
-          Take control of your portfolio by easily curating and managing your
-          investments.
-        </h3>
-        <h3 className="px-80 flex items-center justify-center mb-12">
-          Keep track of your assets, make informed decisions, and optimize your
-          portfolio&apos;s performance.
-        </h3>
+        <h2 className="flex text-2xl font-normal items-center justify-start mb-4">
+          Track and manage your portfolio
+        </h2>
 
-        <div className="flex mx-80 py-2 items-center justify-center bg-multi-color-gradient gap-20 ">
-          <div className="flex justify-between">
-            <Balance
-              tokenSymbol="AUDC"
-              balanceData={audcData}
-              isLoading={audcLoading}
-            />
-          </div>
-          <div className="flex justify-between">
-            <Balance
-              tokenSymbol="AYF"
-              balanceData={ayfData}
-              isLoading={ayfLoading}
-            />
+        <div className="flex flex-col justify-start py-3 items-start my-4 px-4 bg-[#F5F2F2]">
+          <h2 className="text-3xl font-semibold flex items-center justify-start px-1">
+            Overview
+          </h2>
+          <div className="flex flex-col justify-start py-2 items-start my-4 mx-4">
+            <div className="border-l-4 border-[#C99383] px-3">
+              <div className="flex flex-col gap-y-5">
+                <h3 className="text-xl flex items-center justify-start">
+                  Current portfolio value
+                </h3>
+                <>
+                  <h3 className="text-2xl">
+                    ${(ayfMarketValue + audcMarketValue).toFixed(2)}
+                  </h3>
+                </>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="flex justify-between px-52 mt-8 gap-10">
-          <div
-            className="flex flex-col gap-y-4 py-8 w-1/2 h-fit p-5 rounded-md"
-            style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
-          >
-            <Accordion
-              data={[
-                {
-                  title: "Holdings",
-                  content: (
-                    <>
-                      <Balance2
-                        tokenSymbol="AUDC"
-                        balanceData={audcData}
-                        isLoading={audcLoading}
-                      />
-                      <Balance2
-                        tokenSymbol="AYF"
-                        balanceData={ayfData}
-                        isLoading={ayfLoading}
-                      />
-                    </>
-                  ),
-                },
-                {
-                  title: "Transactions",
-                  content: (
-                    <div className="flex flex-col text-xl">
-                      <div className="flex justify-between p-2">
-                        <div>Deposit - Buy AYF</div>
-                        <div>
-                          5,940 <span className="font-semibold">AUDC</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between p-2">
-                        <div>Deposit - Buy AYF</div>
-                        <div>
-                          1,000 <span className="font-semibold">AUDC</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between p-2">
-                        <div>Deposit - Buy AYF</div>
-                        <div>
-                          6,000 <span className="font-semibold">AUDC</span>
-                        </div>
-                      </div>
-                    </div>
-                  ),
-                },
-                {
-                  title: "Allocation",
-                  content: <h2 className="font-semibold text-xl mb-4">N/A</h2>,
-                },
-              ]}
-            />
-          </div>
-          <div className="flex flex-col gap-y-4 w-1/2">
-            <div
-              className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5"
-              style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
-            >
-              <h2 className="flex font-bold text-xl mb-4 justify-center items-center ">
-                Pending AYF Tokens
+        <div className="border border-gray">
+          <div className="flex flex-col gap-y-4 w-full">
+            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+                Holdings
               </h2>
-              {isFetching ? (
-                <p>Loading claimable tokens...</p>
+              <div className="overflow-x-auto">
+                {isFetching ? (
+                  <p>Loading holdings...</p>
+                ) : (
+                  <table className="table w-full">
+                    <thead className="text-primary bg-[#F5F2F2]">
+                      <tr className="border-none">
+                        <th>Token</th>
+                        <th>Price AUD</th>
+                        <th>Amount</th>
+                        <th>Market Value - AUD</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray">
+                        <td>Copiam Money Market Fund AYF</td>
+                        <td>$1.04</td>
+                        <td>{formattedAyfBalance}</td>
+                        <td>${ayfMarketValue.toFixed(2)}</td>
+                      </tr>
+                      <tr className="border-b border-gray">
+                        <td>Stablecoin AUDC</td>
+                        <td>$1.00</td>
+                        <td>{formattedAudcBalance}</td>
+                        <td>${audcMarketValue.toFixed(2)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+                Transactions
+              </h2>
+              {isFetchingTransactions ? (
+                <p>Loading transactions...</p>
               ) : (
-                <div className="flex flex-col gap-y-4">
-                  {claimableTokens.map((token) => {
-                    const isClaimable =
-                      Date.now() / 1000 >= token.claimTimestampFromChain;
-                    return (
-                      <div
-                        key={token.depositId}
-                        className="p-4 rounded-lg shadow-md bg-primary text-light"
-                      >
-                        <p className="mb-2">
-                          <strong>Deposit Amount After Fee:</strong>{" "}
-                          {token.depositAmountAfterFee} AUDC
-                        </p>
-                        <p className="mb-2">
-                          <strong>Fee Amount:</strong> {token.feeAmount} AUDC
-                        </p>
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="mb-2">
-                              <strong>Claim Timestamp (UTC):</strong>{" "}
-                              {token.claimTimestamp}
-                            </p>
-                            <p className="mb-2">
-                              <strong>Claimable Amount:</strong>{" "}
-                              {token.claimableAmount || 0} AYF
-                            </p>
-                          </div>
-                          <Button
-                            text="Claim"
-                            className={`py-2 ${
-                              isClaimable
-                                ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                                : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                            }`}
-                            onClick={() => claimMint(token.depositId)}
-                            disabled={!isClaimable}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                <>
+                  <div className="overflow-x-auto">
+                    <table className="table w-full">
+                      <thead className="text-primary bg-[#F5F2F2] border-none">
+                        <tr className="border-none">
+                          <th>Token</th>
+                          <th>Status</th>
+                          <th>Type</th>
+                          <th>Date</th>
+                          <th>Token Price AUD</th>
+                          <th>Token Amount</th>
+                          <th>Value AUD</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentTransactions.map((transaction, index) => (
+                          <tr className="border-b border-gray" key={index}>
+                            <td>Copiam Money Market Fund AYF</td>
+                            <td>{transaction.status}</td>
+                            <td>{transaction.type}</td>
+                            <td>{transaction.transactionDate}</td>
+                            <td>{transaction.price}</td>
+                            <td>{transaction.tokenAmount}</td>
+                            <td>{transaction.stableAmount}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="flex justify-between mt-4">
+                    <button
+                      className={`btn ${
+                        currentPage === 1
+                          ? "btn-disabled text-white"
+                          : "text-primary"
+                      }`}
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className={`btn ${
+                        currentPage === totalPages
+                          ? "btn-disabled"
+                          : "text-primary"
+                      }`}
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </>
               )}
             </div>
-            <div
-              className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5"
-              style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
-            >
-              <h2 className="flex font-bold text-xl mb-4 justify-center items-center ">
-                Claimable AUDC Tokens
-              </h2>
-              {isFetching ? (
-                <p>Loading claimable tokens...</p>
-              ) : (
-                <div className="flex flex-col gap-y-4">
-                  {claimableAUDCTokens.map((token) => {
-                    return (
-                      <div
-                        key={token.redemptionId}
-                        className="p-4 rounded-lg shadow-md bg-primary text-light"
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="mb-2">
-                              <strong>Redeem Amount:</strong>{" "}
+          </div>
+
+          <div className="flex flex-col mt-8 gap-4">
+            <div className="flex flex-col gap-y-4 w-full">
+              <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+                <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+                  Pending AYF Tokens
+                </h2>
+                {isFetching ? (
+                  <p>Loading claimable tokens...</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="table w-full">
+                      <thead className="text-primary bg-[#F5F2F2] border-none">
+                        <tr className="border-none">
+                          <th>Deposit Amount After Fee</th>
+                          <th>Fee Amount</th>
+                          <th>Request Date</th>
+                          <th>Claimable Amount</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {claimableTokens.map((token) => {
+                          const isClaimable =
+                            Date.now() / 1000 >= token.claimTimestampFromChain;
+                          return (
+                            <tr
+                              className="border-b border-gray"
+                              key={token.depositId}
+                            >
+                              <td>{token.depositAmountAfterFee} AUDC</td>
+                              <td>{token.feeAmount} AUDC</td>
+                              <td>{token.claimTimestamp}</td>
+                              <td>{token.claimableAmount || 0} AYF</td>
+                              <td>
+                                <Button
+                                  text="Claim"
+                                  className={`py-2 ${
+                                    isClaimable
+                                      ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                                      : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                                  }`}
+                                  onClick={() => claimMint(token.depositId)}
+                                  disabled={!isClaimable}
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+                <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+                  Claimable AUDC Tokens
+                </h2>
+                {isFetchingAUDC ? (
+                  <p>Loading claimable AUDC tokens...</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="table w-full">
+                      <thead className="text-primary bg-[#F5F2F2] border-none">
+                        <tr className="border-none">
+                          <th className="flex-1">Redeem Amount</th>
+                          <th className="flex-1">Claimable Amount</th>
+                          <th className="flex-1">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {claimableAUDCTokens.map((token) => (
+                          <tr
+                            className="border-b border-gray"
+                            key={token.redemptionId}
+                          >
+                            <td className="flex-1">{token.rwaAmountIn} AYF</td>
+                            <td className="flex-1">
                               {token.redeemAmount} AUDC
-                            </p>
-                            <p className="mb-2">
-                              <strong>RWA burned:</strong> {token.rwaAmountIn}{" "}
-                              AYF
-                            </p>
-                          </div>
-                          <Button
-                            text="Claim"
-                            className={`py-2 ${"bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"}`}
-                            onClick={() => claimRedemption(token.redemptionId)}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                            </td>
+                            <td className="flex-1">
+                              <Button
+                                text="Claim"
+                                className={`py-2 ${
+                                  true
+                                    ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                                    : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                                }`}
+                                onClick={() =>
+                                  claimRedemption(token.redemptionId)
+                                }
+                                disabled={false}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
