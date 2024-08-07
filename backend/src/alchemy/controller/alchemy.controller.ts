@@ -7,7 +7,7 @@ import { MintRequestedResponse } from '../dto/MIntRequestResponse';
 import { ClaimableTimestampResponse } from '../dto/ClaimableTimestampResponse';
 import { RedemptionRequestResponse } from '../dto/RedemptionRequestResponse';
 import { ClaimableList } from '../dto/ClaimableList';
-import { TransferResponse } from '../dto/TransferResponse';
+import { TransactionHistoryResponse } from '../dto/TransactionHistoryResponse';
 
 @Controller()
 export class AlchemyController {
@@ -59,7 +59,7 @@ export class AlchemyController {
   }
 
   @Get("/transaction-history/:user")
-  getTransferEvents(@Param('user') user: string,): Promise<TransferResponse[]> {
-    return this.appService.getTransferEvents(user);
+  getTransferEvents(@Param('user') user: string,): Promise<TransactionHistoryResponse[]> {
+    return this.appService.getTransactionHistory(user);
   }
 }
