@@ -14,8 +14,13 @@ export class AlchemyController {
   constructor(private readonly appService: AlchemyService) { }
 
   @Get("/price-list")
-  getPriceList(): Promise<PricingResponse[]> {
-    return this.appService.getPricing();
+  getAllPriceList(): Promise<PricingResponse[]> {
+    return this.appService.getAllPricing();
+  }
+
+  @Get("/transaction-pricing")
+  getPricingForTransaction(): Promise<PricingResponse[]> {
+    return this.appService.getPricingForTransaction();
   }
 
   @Get("/term-index-list")

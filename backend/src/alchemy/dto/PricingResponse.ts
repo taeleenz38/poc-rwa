@@ -1,5 +1,6 @@
 export class PricingResponse {
     priceId: string;
     price: string;
-    formattedPriceId: string;
+    status?: string;
+    date?: string;
 }
