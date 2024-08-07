@@ -19,7 +19,7 @@ import { RedemptionCompletedResponse } from '../dto/RedemptionCompletedResponse'
 
 @Injectable()
 export class AlchemyService {
-  async getPricing(): Promise<PricingResponse[]> {
+  async getAllPricing(): Promise<PricingResponse[]> {
     let pricingResponse: PricingResponse[] = [];
 
     const settings = {
@@ -44,7 +44,90 @@ export class AlchemyService {
       }
     );
 
-    console.log(priceAddedLogs);
+    let priceChangedLogs = await alchemy.core.getLogs(
+      {
+        fromBlock: '0x0',
+        toBlock: 'latest',
+        address: address,
+        topics: priceChangedCreatedTopics,
+      }
+    );
+
+    for (const log of priceAddedLogs) {
+      const decodedLog = priceAddedDaoInterface.parseLog(log);
+      const priceId = decodedLog.args.priceId;
+      const price = decodedLog.args.price;
+
+      const block = await alchemy.core.getBlock(log.blockNumber);
+      const timestamp = block.timestamp;
+      const date = new Date(timestamp * 1000).toISOString();
+
+      let pricing: PricingResponse = {
+        // formattedPriceId: ethers.BigNumber.from(priceId).toString(),
+        priceId: priceId.toString(),
+        price: ethers.utils.formatEther(ethers.BigNumber.from(price).toBigInt()),
+        status: "New Price ID",
+        date: date
+      };
+      pricingResponse.push(pricing);
+    }
+
+    for (const log of priceChangedLogs) {
+      const decodedLog = priceChangedDaoInterface.parseLog(log);
+      const priceId = decodedLog.args.priceId;
+      const price = decodedLog.args.newPrice;
+
+      const block = await alchemy.core.getBlock(log.blockNumber);
+      const timestamp = block.timestamp;
+      const date = new Date(timestamp * 1000).toISOString();
+
+      let pricing: PricingResponse = {
+        // formattedPriceId: ethers.BigNumber.from(priceId).toString(),
+        priceId: priceId.toString(),
+        price: ethers.utils.formatEther(ethers.BigNumber.from(price).toBigInt()),
+        status: "Updated Price ID",
+        date: date
+      };
+      pricingResponse.push(pricing);
+    }
+    // console.log(pricingResponse);
+    pricingResponse.sort((a, b) => {
+      if (a.priceId < b.priceId) return -1;
+      if (a.priceId > b.priceId) return 1;
+  
+      if (a.date && b.date) {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      return 0;
+    });
+
+    return pricingResponse;
+  }
+
+  async getPricingForTransaction(): Promise<PricingResponse[]> {
+    let pricingResponse: PricingResponse[] = [];
+
+    const settings = {
+      apiKey: API_KEY,
+      network: Network.ETH_SEPOLIA
+    };
+    const alchemy = new Alchemy(settings);
+    let address = PRICING_ADDRESS
+
+    const priceAddedDaoInterface = new Utils.Interface(PRICE_ADDED_ABI);
+    const priceAddedCreatedTopics = priceAddedDaoInterface.encodeFilterTopics('PriceAdded', []);
+
+    const priceChangedDaoInterface = new Utils.Interface(PRICE_CHANGED_ABI);
+    const priceChangedCreatedTopics = priceChangedDaoInterface.encodeFilterTopics('PriceUpdated', []);
+
+    let priceAddedLogs = await alchemy.core.getLogs(
+      {
+        fromBlock: '0x0',
+        toBlock: 'latest',
+        address: address,
+        topics: priceAddedCreatedTopics,
+      }
+    );
 
     let priceChangedLogs = await alchemy.core.getLogs(
       {
@@ -55,34 +138,55 @@ export class AlchemyService {
       }
     );
 
-    priceAddedLogs.forEach(log => {
-      const data = ethers.utils.arrayify(log.data);
-      const partLength = Math.ceil(data.length / 2);
-      const part1 = data.slice(0, partLength);
+    for (const log of priceAddedLogs) {
+      const decodedLog = priceAddedDaoInterface.parseLog(log);
+      const priceId = decodedLog.args.priceId;
+      const price = decodedLog.args.price;
+
+      const block = await alchemy.core.getBlock(log.blockNumber);
+      const timestamp = block.timestamp;
+      const date = new Date(timestamp * 1000).toISOString();
+
       let pricing: PricingResponse = {
-        formattedPriceId: ethers.BigNumber.from(log.topics[1]).toString(),
-        priceId: log.topics[1].toString(),
-        price: ethers.utils.formatEther(ethers.BigNumber.from(part1).toBigInt())
+        // formattedPriceId: ethers.BigNumber.from(priceId).toString(),
+        priceId: priceId.toString(),
+        price: ethers.utils.formatEther(ethers.BigNumber.from(price).toBigInt()),
+        status: "New Price ID",
+        date: date
       };
       pricingResponse.push(pricing);
+    }
+
+    for (const log of priceChangedLogs) {
+      const decodedLog = priceChangedDaoInterface.parseLog(log);
+      const priceId = decodedLog.args.priceId;
+      const price = decodedLog.args.newPrice;
+
+      const block = await alchemy.core.getBlock(log.blockNumber);
+      const timestamp = block.timestamp;
+      const date = new Date(timestamp * 1000).toISOString();
+
+      const index = pricingResponse.findIndex(pricing => pricing.priceId === priceId.toString());
+      if (index !== -1) {
+        pricingResponse[index].price = ethers.utils.formatEther(ethers.BigNumber.from(price).toBigInt());
+        pricingResponse[index].date = date;
+        pricingResponse[index].status = "Updated Price ID";
+      }
+    }
+    // console.log(pricingResponse);
+    pricingResponse.sort((a, b) => {
+      if (a.priceId < b.priceId) return -1;
+      if (a.priceId > b.priceId) return 1;
+  
+      if (a.date && b.date) {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      return 0;
     });
 
-    priceChangedLogs.forEach(log => {
-
-      const changedPriceId = log.topics[1].toString();
-
-      const data = ethers.utils.arrayify(log.data);
-      const partLength = Math.ceil(data.length / 4);
-      const part1 = data.slice(partLength * 3);
-      const changedPrice = ethers.utils.formatEther(ethers.BigNumber.from(part1).toBigInt());
-
-      const index = pricingResponse.findIndex(pricing => pricing.priceId === changedPriceId);
-      if (index !== -1) {
-        pricingResponse[index].price = changedPrice;
-      }
-    })
     return pricingResponse;
   }
+
   async getTermIndexList(): Promise<AllowListResponse[]> {
     let allowListResponse: AllowListResponse[] = [];
     const settings = {
@@ -522,7 +626,7 @@ export class AlchemyService {
       }
     });
 
-    const priceList = await this.getPricing();
+    const priceList = await this.getPricingForTransaction();
     const claimableList = await this.getClaimableTimestampList();
     const mintList = await this.getDepositRequestListWithPriceId();
 
@@ -809,7 +913,7 @@ export class AlchemyService {
       }
     });
 
-    const priceList: PricingResponse[] = await this.getPricing();
+    const priceList: PricingResponse[] = await this.getPricingForTransaction();
 
     pendingRedeemptionList.forEach((value) => {
       try {
@@ -955,7 +1059,7 @@ export class AlchemyService {
       }
     });
 
-    const priceList: PricingResponse[] = await this.getPricing();
+    const priceList: PricingResponse[] = await this.getPricingForTransaction();
 
     pendingRedeemptionList.forEach((value) => {
       try {

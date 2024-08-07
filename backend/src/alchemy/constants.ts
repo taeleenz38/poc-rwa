@@ -33,30 +33,30 @@ export const PRICE_ADDED_ABI = `[{
   }]`;
 
 export const PRICE_CHANGED_ABI = `[{
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "stage",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "PriceUpdated",
-    "type": "event"
-  }]`;
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "uint256",
+      "name": "priceId",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "oldPrice",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "newPrice",
+      "type": "uint256"
+    }
+  ],
+  "name": "PriceUpdated",
+  "type": "event"
+}]`;
 
 export const ALLOW_LIST_ABI = `[{
       "anonymous": false,
