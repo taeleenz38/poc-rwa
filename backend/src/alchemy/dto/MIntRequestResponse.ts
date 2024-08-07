@@ -5,4 +5,5 @@ export class MintRequestedResponse {
     depositAmountAfterFee: string;
     feeAmount: string;
     priceId?: string;
+    dateTime?: string;
 }
