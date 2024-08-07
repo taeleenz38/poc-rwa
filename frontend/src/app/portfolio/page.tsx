@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
 import { config } from "@/config";
 import Button from "@/app/components/atoms/Buttons/Button";
@@ -46,13 +46,13 @@ const Portfolio = () => {
   });
   const { writeContractAsync } = useWriteContract({ config });
 
-  const { data: audcData, isLoading: audcLoading } = useBalance({
+  const { data: audcData } = useBalance({
     address,
     token: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
     config,
   });
 
-  const { data: ayfData, isLoading: ayfLoading } = useBalance({
+  const { data: ayfData } = useBalance({
     address,
     token: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
     config,
@@ -335,7 +335,7 @@ const Portfolio = () => {
                         <tr className="border-none">
                           <th>Deposit Amount After Fee</th>
                           <th>Fee Amount</th>
-                          <th>Claim Timestamp (UTC)</th>
+                          <th>Request Date</th>
                           <th>Claimable Amount</th>
                           <th>Actions</th>
                         </tr>
@@ -384,9 +384,9 @@ const Portfolio = () => {
                     <table className="table w-full">
                       <thead className="text-primary bg-[#F5F2F2] border-none">
                         <tr className="border-none">
-                          <th>Redeem Amount</th>
-                          <th>Claimable Amount</th>
-                          <th>Actions</th>
+                          <th className="flex-1">Redeem Amount</th>
+                          <th className="flex-1">Claimable Amount</th>
+                          <th className="flex-1">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -395,9 +395,11 @@ const Portfolio = () => {
                             className="border-b border-gray"
                             key={token.redemptionId}
                           >
-                            <td>{token.rwaAmountIn} AYF</td>
-                            <td>{token.redeemAmount} AUDC</td>
-                            <td>
+                            <td className="flex-1">{token.rwaAmountIn} AYF</td>
+                            <td className="flex-1">
+                              {token.redeemAmount} AUDC
+                            </td>
+                            <td className="flex-1">
                               <Button
                                 text="Claim"
                                 className={`py-2 ${
