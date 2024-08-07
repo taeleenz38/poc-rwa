@@ -29,6 +29,10 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .container {
+    @apply px-28;
+  }
 }
 
 /* Chrome, Edge, and Safari */

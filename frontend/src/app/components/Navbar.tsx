@@ -102,7 +102,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`flex w-full fixed top-0 justify-between z-20 items-center px-28 border-b-2 border-light py-4 transition-all duration-300 ${
+      className={`flex w-full fixed top-0 justify-between z-20 items-center container border-b-2 border-light py-4 transition-all duration-300 ${
         scrolled ? "bg-white" : "bg-primary"
       } ${scrolled ? "text-dark" : "text-light"}`}
     >
