@@ -248,26 +248,49 @@ export class AlchemyService {
 
     const iface = new ethers.utils.Interface(ACCOUNT_STATUS_ABI);
 
-    accountStatusSetLogs.forEach((log) => {
+    for (const log of accountStatusSetLogs) {
       try {
         const decodedLog = iface.parseLog(log);
         const account = decodedLog.args.account;
         const termIndex = decodedLog.args.termIndex.toString();
         const status = decodedLog.args.status;
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
 
-        let allowList: AccountStatusResponse = {
-          account: account,
-          termIndex: termIndex,
-          status: status
-        };
-        accountStatusResponse.push(allowList);
+        // Find if the account already exists in the array
+        const existingEntryIndex = accountStatusResponse.findIndex(entry => entry.account === account);
+
+        if (existingEntryIndex !== -1) {
+          // If the account exists, compare the dates
+          const existingEntry = accountStatusResponse[existingEntryIndex];
+          if (new Date(existingEntry.date).getTime() < new Date(date).getTime()) {
+            // Update the existing entry if the new entry has a more recent date
+            accountStatusResponse[existingEntryIndex] = {
+              account: account,
+              termIndex: termIndex,
+              status: status,
+              date: date
+            };
+          }
+        } else {
+          // If the account does not exist, add it to the array
+          let allowList: AccountStatusResponse = {
+            account: account,
+            termIndex: termIndex,
+            status: status,
+            date: date
+          };
+          accountStatusResponse.push(allowList);
+        }
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
-
+    }
+    accountStatusResponse.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     return accountStatusResponse;
   }
+
 
   async getPendingDepositRequestList(): Promise<MintRequestedResponse[]> {
     let returnMintRequestResponse: MintRequestedResponse[] = [];
