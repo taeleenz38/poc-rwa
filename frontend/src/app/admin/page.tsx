@@ -6,7 +6,7 @@ import Contact from "../components/molecules/Contact";
 const Admin = () => {
   return (
     <>
-      <div className="min-h-screen pt-10">
+      <div className="min-h-screen container">
         <div>
           <h1 className="text-3xl font-semibold text-black">
             Admin Requests

@@ -31,7 +31,7 @@ body {
   }
 
   .container {
-    @apply px-28;
+    @apply px-28 pt-10;
   }
 }
 
