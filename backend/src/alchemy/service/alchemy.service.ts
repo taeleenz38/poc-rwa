@@ -295,9 +295,9 @@ export class AlchemyService {
   async getPendingDepositRequestList(): Promise<MintRequestedResponse[]> {
     let returnMintRequestResponse: MintRequestedResponse[] = [];
     let allMintRequestResponse: MintRequestedResponse[] = [];
-    let pendingMintRequestResponse: MintRequestedResponse[] = [];
     let priceIdForDepositList: PriceIdForDeposit[] = [];
-    let mintCompletedList: string[] = [];
+    let mintCompletedList: MIntCompletedResponse[] = [];
+    let claimableTimestampResponse: ClaimableTimestampResponse[] = [];
 
     const settings = {
       apiKey: API_KEY,
@@ -310,7 +310,7 @@ export class AlchemyService {
     const mintRequestSetTopics = mintRequestInterface.encodeFilterTopics('MintRequested', []);
 
     let mintRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: 6418358,
       toBlock: "latest",
       address: address,
       topics: mintRequestSetTopics,
@@ -318,12 +318,16 @@ export class AlchemyService {
 
     const iface = new ethers.utils.Interface(MINT_REQESTED_ABI);
 
-    mintRequestSetLogs.forEach((log) => {
+    for (const log of mintRequestSetLogs) {
       try {
         const decodedLog = iface.parseLog(log);
         const user = decodedLog.args.user;
         //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
         const depositId = decodedLog.args.depositId;
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
 
         const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
         const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
@@ -335,60 +339,63 @@ export class AlchemyService {
           collateralAmountDeposited: collateralAmountDeposited,
           depositAmountAfterFee: depositAmountAfterFee,
           feeAmount: feeAmount,
+          requestTimestamp: date
         };
         allMintRequestResponse.push(mintRequestList);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
+    }
 
     const mintCompletedAbi = new Utils.Interface(MINT_COMPLETED_ABI);
     const mintCompletedTopic = mintCompletedAbi.encodeFilterTopics('MintCompleted', []);
 
     let mintCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: 6418358,
       toBlock: "latest",
       address: address,
       topics: mintCompletedTopic,
     });
 
     const mintCompleted = new ethers.utils.Interface(MINT_COMPLETED_ABI);
-    mintCompletedlogs.forEach((log) => {
+    for (const log of mintCompletedlogs) {
       try {
         const decodedLog = mintCompleted.parseLog(log);
         const depositId = decodedLog.args.depositId;
-        mintCompletedList.push(depositId);
+        const user = decodedLog.args.user;
+
+        // const block = await alchemy.core.getBlock(log.blockNumber);
+        // const timestamp = block.timestamp;
+        // const date = new Date(timestamp * 1000).toISOString();
+
+          let mintCompletedResponse: MIntCompletedResponse = {
+            user: user,
+            depositId: decodedLog.args.depositId,
+            rwaOwed: decodedLog.args.rwaAmountOut,
+            depositAmountAfterFee: decodedLog.args.collateralAmountDeposited,
+            price: decodedLog.args.price,
+            priceId: decodedLog.args.priceId,
+            // dateTime: date
+          };
+          mintCompletedList.push(mintCompletedResponse);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
-
-    allMintRequestResponse.forEach((value) => {
-      try {
-        const matchingDeposits = mintCompletedList.filter(item => item === value.depositId);
-
-        // Add matching deposits to mintList
-        if (!matchingDeposits || matchingDeposits.length == 0) {
-          pendingMintRequestResponse.push(value);
-        }
-
-      } catch (error) {
-        console.error("Error decoding log:", error);
-      }
-    });
+    }
 
     const priceIdSetFoDeposit = new Utils.Interface(PRICEIDSETFORDEPOSIT_ABI);
     const priceIdSetFoDepositTopics = priceIdSetFoDeposit.encodeFilterTopics('PriceIdSetForDeposit', []);
 
     let priceIdLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: 6418358,
       toBlock: "latest",
       address: address,
       topics: priceIdSetFoDepositTopics,
     });
 
     const priceIdSetForDeposit = new ethers.utils.Interface(PRICEIDSETFORDEPOSIT_ABI);
-    priceIdLogs.forEach((log) => {
+
+    for (const log of priceIdLogs) {
       try {
         const decodedLog = priceIdSetForDeposit.parseLog(log);
         const depositIdSet = decodedLog.args.depositIdSet;
@@ -398,22 +405,84 @@ export class AlchemyService {
       } catch (error) {
         console.error("Error decoding log:", error);
       }
+    }
+
+    const claimableTimestampInterface = new Utils.Interface(CLAIMABLETIMESTAMP_ABI);
+    const claimableTimestampSetTopics = claimableTimestampInterface.encodeFilterTopics('ClaimableTimestampSet', []);
+
+    let claimableTimestampSetLogs = await alchemy.core.getLogs({
+      fromBlock: 6418358,
+      toBlock: "latest",
+      address: address,
+      topics: claimableTimestampSetTopics,
     });
 
-    pendingMintRequestResponse.forEach((value) => {//2
-      try {
-        const priceIdNotMatch = priceIdForDepositList.filter(item => item.depositId === value.depositId);
+    const claimableTimestampIface = new ethers.utils.Interface(CLAIMABLETIMESTAMP_ABI);
 
-        // Add matching deposits to mintList
-        if (!priceIdNotMatch || priceIdNotMatch.length == 0) {
-          // value.priceId = priceIdMatch[0].priceId;
-          returnMintRequestResponse.push(value);
-        }
+    for (const log of claimableTimestampSetLogs) {
+      try {
+        const decodedLog = claimableTimestampIface.parseLog(log);
+        const depositId = decodedLog.args.depositId;
+        const claimTimestampBigInt = ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt();
+        const claimTimestampNumber = Number(claimTimestampBigInt); // Convert to Number
+        const claimTimestampDate = new Date(claimTimestampNumber * 1000); // Convert to milliseconds
+        const claimTimestampFormatted = claimTimestampDate.toISOString(); // Format as ISO string
+
+        let claimableTimestampList: ClaimableTimestampResponse = {
+          depositId: depositId,
+          claimTimestamp: claimTimestampFormatted,
+          claimTimestampFromChain: claimTimestampNumber
+        };
+        claimableTimestampResponse.push(claimableTimestampList);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
+    }
 
+    const allPricing: PricingResponse[] = await this.getPricingForTransaction()
+
+    // console.log(allMintRequestResponse);
+    // console.log(mintCompletedList);
+    // console.log(priceIdForDepositList);
+    // console.log(claimableTimestampResponse);
+    // console.log(allPricing);
+
+    for (const mintRequested of allMintRequestResponse) {
+      try {
+        const mintCompleted = mintCompletedList.find(completed => completed.depositId === mintRequested.depositId);
+        const priceIdAdded = priceIdForDepositList.find(completed => completed.depositId === mintRequested.depositId);
+        const claimableTImeStampAdded = claimableTimestampResponse.find(completed => completed.depositId === mintRequested.depositId);
+
+        let mintRequestList: MintRequestedResponse = {
+          user: mintRequested.user,
+          depositId: mintRequested.depositId,
+          collateralAmountDeposited: mintRequested.collateralAmountDeposited,
+          depositAmountAfterFee: mintRequested.depositAmountAfterFee,
+          feeAmount: mintRequested.feeAmount,
+          status: "Requested",
+          requestTimestamp: mintRequested.requestTimestamp
+        };
+
+        if(mintCompleted){
+          mintRequestList.status = "Completed"
+        } 
+
+        if(priceIdAdded){
+          const pricing = allPricing.find(completed => completed.priceId === ethers.BigNumber.from(priceIdAdded.priceId).toString());
+          mintRequestList.priceId = ethers.BigNumber.from(priceIdAdded.priceId).toString()
+          mintRequestList.price = pricing.price
+        } 
+
+        if(claimableTImeStampAdded){
+          mintRequestList.claimableTimestamp = claimableTImeStampAdded.claimTimestamp
+        } 
+      returnMintRequestResponse.push(mintRequestList);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    }
+
+    returnMintRequestResponse.sort((a, b) => new Date(b.requestTimestamp).getTime() - new Date(a.requestTimestamp).getTime());
     return returnMintRequestResponse;
   }
 
@@ -1279,7 +1348,7 @@ export class AlchemyService {
             collateralAmountDeposited: collateralAmountDeposited,
             depositAmountAfterFee: depositAmountAfterFee,
             feeAmount: feeAmount,
-            dateTime: date
+            requestTimestamp: date
           };
           allMintRequestResponse.push(mintRequestList);
         }
@@ -1338,7 +1407,7 @@ export class AlchemyService {
               status: "COMPLETED",
               price: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.price).toBigInt()),
               // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
-              requestTime: mintRequested.dateTime,
+              requestTime: mintRequested.requestTimestamp,
               mintedTime: mintCompleted.dateTime,
               transactionDate: mintCompleted.dateTime
             };
@@ -1349,8 +1418,8 @@ export class AlchemyService {
               stableAmount: mintRequested.depositAmountAfterFee,
               type: "Invest",
               status: "SUBMITTED",
-              requestTime: mintRequested.dateTime,
-              transactionDate: mintRequested.dateTime
+              requestTime: mintRequested.requestTimestamp,
+              transactionDate: mintRequested.requestTimestamp
             };
             finalTransactionHistoryResponse.push(transactionHistoryResponse);
           }
