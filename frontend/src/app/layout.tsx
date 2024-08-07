@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Noto_Sans } from "next/font/google";
+import { Open_Sans } from "next/font/google"; // Change this line
 import "./globals.css";
 import { cookieToInitialState } from "wagmi";
 import { config } from "@/config";
@@ -8,7 +8,8 @@ import Web3ModalProvider from "@/context";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
-const notoSans = Noto_Sans({ subsets: ["latin"] });
+// Update the font import
+const openSans = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "COPIAM",
@@ -23,7 +24,7 @@ export default function RootLayout({
   const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={notoSans.className}>
+      <body className={openSans.className}>
         <Navbar />
         <div className="pt-[92px]">
           <Web3ModalProvider initialState={initialState}>
