@@ -11,7 +11,6 @@ import {
   MoonbeamIcon,
   LiquidIcon,
 } from "@/app/components/atoms/Icons";
-import Contact from "./components/molecules/Contact";
 
 export default function Home() {
   return (
