@@ -28,10 +28,15 @@ const RedemptionRequests = () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-redemption-request-list`
         );
-
-        console.log(response, "response");
         const data = await response.json();
-        setRedemptionRequests(data);
+
+        const sortedData = data.sort(
+          (a: RedemptionRequest, b: RedemptionRequest) => {
+            return parseInt(b.redemptionId, 16) - parseInt(a.redemptionId, 16);
+          }
+        );
+
+        setRedemptionRequests(sortedData);
       } catch (error) {
         console.error("Error fetching redemptions:", error);
       } finally {

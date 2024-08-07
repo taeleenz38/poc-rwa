@@ -30,14 +30,20 @@ const DepositRequests = () => {
   useEffect(() => {
     const fetchDepositRequests = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-deposit-request-list`
         );
         const data = await response.json();
-        setDepositRequests(data);
-        setLoading(false);
+
+        const sortedData = data.sort((a: DepositRequest, b: DepositRequest) => {
+          return parseInt(b.depositId, 16) - parseInt(a.depositId, 16);
+        });
+
+        setDepositRequests(sortedData);
       } catch (error) {
         console.error("Error fetching deposit requests:", error);
+      } finally {
         setLoading(false);
       }
     };
