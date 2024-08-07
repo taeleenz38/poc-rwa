@@ -13,6 +13,9 @@ import { ClaimableList } from '../dto/ClaimableList';
 import { PriceIdForRedemption } from '../dto/PriceIdForRedemption';
 import { ClaimableRedemptionResponse } from '../dto/ClaimableRedemptionResponse';
 import { TransferResponse } from '../dto/TransferResponse';
+import { MIntCompletedResponse } from '../dto/MIntCompletedResponse';
+import { TransactionHistoryResponse } from '../dto/TransactionHistoryResponse';
+import { RedemptionCompletedResponse } from '../dto/RedemptionCompletedResponse';
 
 @Injectable()
 export class AlchemyService {
@@ -1097,5 +1100,242 @@ export class AlchemyService {
     transferList.sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
 
     return transferList;
+  }
+
+  async getTransactionHistory(userAddress: string): Promise<TransactionHistoryResponse[]> {
+    let allMintRequestResponse: MintRequestedResponse[] = [];
+    let mintCompletedList: MIntCompletedResponse[] = [];
+    let finalTransactionHistoryResponse: TransactionHistoryResponse[] = []
+    let redemptionCompletedList: RedemptionCompletedResponse[] = [];
+    let allRedeemptionList: RedemptionRequestResponse[] = [];
+
+    const settings = {
+      apiKey: API_KEY,
+      network: Network.ETH_SEPOLIA,
+    };
+    const alchemy = new Alchemy(settings);
+    let address = ABBY_MANAGER_ADDRESS;
+
+    const mintRequestInterface = new Utils.Interface(MINT_REQESTED_ABI);
+    const mintRequestSetTopics = mintRequestInterface.encodeFilterTopics('MintRequested', []);
+
+    let mintRequestSetLogs = await alchemy.core.getLogs({
+      fromBlock: 6418358,
+      toBlock: "latest",
+      address: address,
+      topics: mintRequestSetTopics,
+    });
+
+    const iface = new ethers.utils.Interface(MINT_REQESTED_ABI);
+
+    // mintRequestSetLogs.forEach((log) => {
+    for (const log of mintRequestSetLogs) {
+      try {
+        const decodedLog = iface.parseLog(log);
+        const user = decodedLog.args.user;
+       
+        if(user === userAddress) {
+          //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+          const depositId = decodedLog.args.depositId;
+
+          const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
+          const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
+          const feeAmount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt());
+
+          const block = await alchemy.core.getBlock(log.blockNumber);
+          const timestamp = block.timestamp;
+          const date = new Date(timestamp * 1000).toISOString();
+
+          let mintRequestList: MintRequestedResponse = {
+            user: user,
+            depositId: depositId,
+            collateralAmountDeposited: collateralAmountDeposited,
+            depositAmountAfterFee: depositAmountAfterFee,
+            feeAmount: feeAmount,
+            dateTime: date
+          };
+          allMintRequestResponse.push(mintRequestList);
+        }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    }
+
+    const mintCompletedAbi = new Utils.Interface(MINT_COMPLETED_ABI);
+    const mintCompletedTopic = mintCompletedAbi.encodeFilterTopics('MintCompleted', []);
+
+    let mintCompletedlogs = await alchemy.core.getLogs({
+      fromBlock: 6418358,
+      toBlock: "latest",
+      address: address,
+      topics: mintCompletedTopic,
+    });
+
+    const mintCompleted = new ethers.utils.Interface(MINT_COMPLETED_ABI);
+    for (const log of mintCompletedlogs) {
+      try {
+        const decodedLog = mintCompleted.parseLog(log);
+        const depositId = decodedLog.args.depositId;
+        const user = decodedLog.args.user;
+
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
+        if(user === userAddress) {
+          let mintCompletedResponse: MIntCompletedResponse = {
+            user: user,
+            depositId: decodedLog.args.depositId,
+            rwaOwed: decodedLog.args.rwaAmountOut,
+            depositAmountAfterFee: decodedLog.args.collateralAmountDeposited,
+            price: decodedLog.args.price,
+            priceId: decodedLog.args.priceId,
+            dateTime: date
+          };
+          mintCompletedList.push(mintCompletedResponse);
+        }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    }
+
+    allMintRequestResponse.forEach((mintRequested) => {
+      const mintCompleted = mintCompletedList.find(completed => completed.depositId === mintRequested.depositId);
+      try {
+          if(mintCompleted){
+            let transactionHistoryResponse: TransactionHistoryResponse = {
+              id: mintRequested.depositId,
+              stableAmount: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.depositAmountAfterFee).toBigInt()),
+              tokenAmount: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.rwaOwed)),
+              type: "Invest",
+              status: "COMPLETED",
+              price: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.price).toBigInt()),
+              // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
+              requestTime: mintRequested.dateTime,
+              mintedTime: mintCompleted.dateTime,
+              transactionDate: mintCompleted.dateTime
+            };
+            finalTransactionHistoryResponse.push(transactionHistoryResponse);
+          } else {
+            let transactionHistoryResponse: TransactionHistoryResponse = {
+              id: mintRequested.depositId,
+              stableAmount: mintRequested.depositAmountAfterFee,
+              type: "Invest",
+              status: "SUBMITTED",
+              requestTime: mintRequested.dateTime,
+              transactionDate: mintRequested.dateTime
+            };
+            finalTransactionHistoryResponse.push(transactionHistoryResponse);
+          }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+
+    const redemptionRequestedsInterface = new Utils.Interface(REDEMPTION_REQUESTED_ABI);
+    const redemptionRequestedTopics = redemptionRequestedsInterface.encodeFilterTopics('RedemptionRequested', []);
+
+    let redeemRequestSetLogs = await alchemy.core.getLogs({
+      fromBlock: 6418358,
+      toBlock: "latest",
+      address: address,
+      topics: redemptionRequestedTopics,
+    });
+
+    for (const log of redeemRequestSetLogs) {
+      try {
+        const decodedLog = redemptionRequestedsInterface.parseLog(log);
+        const user = decodedLog.args.user;
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
+        if(user === userAddress) {
+          const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
+          const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
+
+          let redemptionRequest: RedemptionRequestResponse = {
+            user: user,
+            redemptionId: redemptionId,
+            rwaAmountIn: rwaAmountIn,
+            dateTime: date
+          };
+          allRedeemptionList.push(redemptionRequest);
+        }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    }
+
+    const redemptionCompletedInterface = new Utils.Interface(REDEMPTION_COMPLETED_ABI);
+    const redemptionCompletedSetTopics = redemptionCompletedInterface.encodeFilterTopics('RedemptionCompleted', []);
+
+    let redeemCompletedlogs = await alchemy.core.getLogs({
+      fromBlock: 6418358,
+      toBlock: "latest",
+      address: address,
+      topics: redemptionCompletedSetTopics,
+    });
+
+    for (const log of redeemCompletedlogs) {
+      try {
+        const decodedLog = redemptionCompletedInterface.parseLog(log);
+        const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
+        const user = decodedLog.args.user;
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
+        if(user === userAddress) {
+          let redemptionCompletedResponse: RedemptionCompletedResponse = {
+            user: user,
+            redemptionId: redemptionId,
+            amountRwaTokenBurned: decodedLog.args.rwaAmountRequested,
+            collateralDuePostFees: decodedLog.args.collateralAmountReturned,
+            price: decodedLog.args.price,
+            dateTime: date
+          };
+          redemptionCompletedList.push(redemptionCompletedResponse);
+        }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    }
+
+    allRedeemptionList.forEach((redemptionRequested) => {
+      const redemptionCompleted = redemptionCompletedList.find(completed => completed.redemptionId === redemptionRequested.redemptionId);
+      console.log(redemptionCompleted);
+      try {
+          if(redemptionCompleted){
+            let transactionHistoryResponse: TransactionHistoryResponse = {
+              id: redemptionRequested.redemptionId,
+              stableAmount: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.collateralDuePostFees).toBigInt()),
+              tokenAmount: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.amountRwaTokenBurned)),
+              type: "Redeem",
+              status: "COMPLETED",
+              price: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.price).toBigInt()),
+              // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
+              requestTime: redemptionRequested.dateTime,
+              mintedTime: redemptionCompleted.dateTime,
+              transactionDate: redemptionCompleted.dateTime
+            };
+            finalTransactionHistoryResponse.push(transactionHistoryResponse);
+          } else {
+            let transactionHistoryResponse: TransactionHistoryResponse = {
+              id: redemptionRequested.redemptionId,
+              tokenAmount: redemptionRequested.rwaAmountIn,
+              type: "Redeem",
+              status: "SUBMITTED",
+              requestTime: redemptionRequested.dateTime,
+              transactionDate: redemptionRequested.dateTime,
+            };
+            finalTransactionHistoryResponse.push(transactionHistoryResponse);
+          }
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    });
+    finalTransactionHistoryResponse.sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
+    return finalTransactionHistoryResponse;
   }
 }
