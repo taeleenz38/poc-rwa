@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { EthIcon } from "../components/atoms/Icons";
-import Contact from "../components/molecules/Contact";
 import FundDetails from "../components/organisms/FundDetails";
 import SetPrice from "../components/organisms/Popups/SetPrice";
 import UpdatePrice from "../components/organisms/Popups/UpdatePrice";
@@ -37,12 +36,7 @@ const AssetSender = () => {
         }
         view={"RedemptionList"}
       />
-
-      <Contact />
-      <Approve
-        isOpen={isApproveOpen}
-        onClose={() => setIsApproveOpen(false)}
-      />
+      <Approve isOpen={isApproveOpen} onClose={() => setIsApproveOpen(false)} />
     </div>
   );
 };

@@ -11,7 +11,6 @@ import {
   BaseIcon,
 } from "@/app/components/atoms/Icons";
 import PriceList from "../components/molecules/PriceList";
-import Contact from "../components/molecules/Contact";
 
 const Pricing = () => {
   const [isSetPriceOpen, setIsSetPriceOpen] = React.useState(false);
@@ -47,7 +46,6 @@ const Pricing = () => {
         }
         view={"PriceList"}
       />
-      <Contact />
       <SetPrice
         isOpen={isSetPriceOpen}
         onClose={() => setIsSetPriceOpen(false)}

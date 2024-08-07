@@ -5,7 +5,6 @@ import { useAccount, useBalance } from "wagmi";
 import { config } from "@/config";
 import Balance from "@/app/components/molecules/Balance";
 import Balance2 from "@/app/components/molecules/Balance2";
-import Contact from "@/app/components/molecules/Contact";
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
 import { useWriteContract } from "wagmi";
@@ -316,7 +315,6 @@ const Portfolio = () => {
           </div>
         </div>
       </div>
-      <Contact />
     </>
   );
 };

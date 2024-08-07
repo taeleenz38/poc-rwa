@@ -3,7 +3,6 @@ import React from "react";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription from "@/app/components/organisms/FundDescription";
-import Contact from "@/app/components/molecules/Contact";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
 import {
@@ -48,7 +47,6 @@ const Invest = () => {
         }
       />
       <FundDescription />
-      <Contact />
       <Buy isOpen={isBuyOpen} onClose={() => setIsBuyOpen(false)} />
       <Redeem isOpen={isRedeemOpen} onClose={() => setIsRedeemOpen(false)} />
     </div>
