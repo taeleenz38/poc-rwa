@@ -31,7 +31,7 @@ body {
   }
 
   .root-container {
-    @apply px-28 pt-10 w-full;
+    @apply px-[7.7rem] pt-10 w-full;
   }
 }
 

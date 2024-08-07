@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
 import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
-import SetClaimTimestamp from "../organisms/Popups/SetClaimTimeStamp";
+import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
 
 // Define the type for the deposit request
 type DepositRequest = {

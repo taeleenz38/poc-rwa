@@ -1,0 +1,109 @@
+import React, { useEffect, useState } from "react";
+import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
+import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
+import Button from "@/app/components/atoms/Buttons/Button";
+
+type DepositRequest = {
+  user: string;
+  depositId: string;
+  collateralAmountDeposited: string;
+  depositAmountAfterFee: string;
+  feeAmount: string;
+  priceId?: string;
+};
+
+const DepositRequests = () => {
+  const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
+  const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
+    useState(false);
+  const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const handleButton1Click = () => {
+    setIsSetClaimTimestampOpen(true);
+  };
+
+  const handleButton2Click = () => {
+    setIsSetPriceIdForDepositIdOpen(true);
+  };
+
+  useEffect(() => {
+    const fetchDepositRequests = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-deposit-request-list`
+        );
+        const data = await response.json();
+        setDepositRequests(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching deposit requests:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchDepositRequests();
+  }, []);
+
+  const hexToDecimal = (hex: string): number => {
+    return parseInt(hex, 16);
+  };
+
+  return (
+    <div className="p-6">
+      {loading ? (
+        <div className="text-center">Deposit Requests loading...</div>
+      ) : (
+        <table className="table w-full">
+          <thead>
+            <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
+              <th>Deposit ID</th>
+              <th>User</th>
+              <th>Amount Deposited</th>
+              <th>Amount After Fee</th>
+              <th>Price ID</th>
+              <th>Claim Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {depositRequests.map((request) => (
+              <tr
+                key={request.depositId}
+                className="border-b-2 border-[#F5F2F2] font-medium"
+              >
+                <td>{hexToDecimal(request.depositId)}</td>
+                <td>{request.user}</td>
+                <td>{request.collateralAmountDeposited} AUDC</td>
+                <td>{request.depositAmountAfterFee} AUDC</td>
+                <td>
+                  <Button
+                    text="Set Price ID"
+                    className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+                    onClick={handleButton2Click}
+                  />
+                </td>
+                <td>
+                  <Button
+                    text="Set Claim Timestamp"
+                    className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+                    onClick={handleButton1Click}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <SetClaimTimestamp
+        isOpen={isSetClaimTimestampOpen}
+        onClose={() => setIsSetClaimTimestampOpen(false)}
+      />
+      <SetPriceIdForDepositId
+        isOpen={isSetPriceIdForDepositIdOpen}
+        onClose={() => setIsSetPriceIdForDepositIdOpen(false)}
+      />
+    </div>
+  );
+};
+
+export default DepositRequests;
