@@ -61,8 +61,17 @@ const RedemptionRequests = () => {
             <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
               <th>ID</th>
               <th>User</th>
-              <th>Redeem Amount</th>
-              <th>RWA Burned</th>
+              <th>
+                Request <br /> Status
+              </th>
+              <th>
+                AYF Redemption
+                <br />
+                Requested
+              </th>
+              <th>
+                Redemption <br /> Amount
+              </th>
               <th>Price ID</th>
             </tr>
           </thead>
@@ -74,8 +83,9 @@ const RedemptionRequests = () => {
               >
                 <td>{hexToDecimal(request.redemptionId)}</td>
                 <td>{request.user}</td>
-                <td>{request.redeemAmount} AUDC</td>
+                <td></td>
                 <td>{request.rwaAmountIn} AYF</td>
+                <td>{request.redeemAmount} AUDC</td>
                 <td>
                   <Button
                     text="Set Price ID"

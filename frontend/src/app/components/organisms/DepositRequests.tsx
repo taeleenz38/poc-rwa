@@ -12,7 +12,6 @@ type DepositRequest = {
   priceId?: string;
 };
 
-
 const DepositRequests = () => {
   const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
@@ -61,45 +60,60 @@ const DepositRequests = () => {
       {loading ? (
         <div className="text-center">Deposit Requests loading...</div>
       ) : (
-        <table className="table w-full">
-          <thead>
-            <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
-              <th className="w-1/12">ID</th>
-              <th className="w-1/6">User</th>
-              <th className="w-1/6">Amount Deposited</th>
-              <th className="w-1/6">Amount After Fee</th>
-              <th className="w-1/6">Price ID</th>
-              <th className="w-1/4">Claim Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {depositRequests.map((request) => (
-              <tr
-                key={request.depositId}
-                className="border-b-2 border-[#F5F2F2] font-medium"
-              >
-                <td>{hexToDecimal(request.depositId)}</td>
-                <td>{request.user}</td>
-                <td>{request.collateralAmountDeposited} AUDC</td>
-                <td>{request.depositAmountAfterFee} AUDC</td>
-                <td>
-                  <Button
-                    text="Set Price ID"
-                    className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-                    onClick={handleButton2Click}
-                  />
-                </td>
-                <td>
-                  <Button
-                    text="Set Claim Timestamp"
-                    className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-                    onClick={handleButton1Click}
-                  />
-                </td>
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            <thead>
+              <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
+                <th className="">ID</th>
+                <th className="">User</th>
+                <th className="">
+                  Request
+                  <br /> Status
+                </th>
+                <th className="">
+                  Amount
+                  <br /> Deposited
+                </th>
+                <th className="">
+                  Amount
+                  <br /> After Fee
+                </th>
+                <th className="">Price ID</th>
+                <th className="">Claim Timestamp</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {depositRequests.map((request) => (
+                <tr
+                  key={request.depositId}
+                  className="border-b-2 border-[#F5F2F2] font-medium"
+                >
+                  <td className="">{hexToDecimal(request.depositId)}</td>
+                  <td className="">{request.user}</td>
+                  <td className=""></td>
+                  <td className="">
+                    {request.collateralAmountDeposited} AUDC
+                  </td>
+                  <td className="">{request.depositAmountAfterFee} AUDC</td>
+                  <td className="">
+                    <Button
+                      text="Set Price ID"
+                      className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
+                      onClick={handleButton2Click}
+                    />
+                  </td>
+                  <td className="">
+                    <Button
+                      text="Set Claim Timestamp"
+                      className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
+                      onClick={handleButton1Click}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       <SetClaimTimestamp
         isOpen={isSetClaimTimestampOpen}
