@@ -102,7 +102,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`flex w-full fixed top-0 justify-between z-20 items-center px-80 border-b-2 border-light py-4 transition-all duration-300 ${
+      className={`flex w-full fixed top-0 justify-between z-20 items-center px-28 border-b-2 border-light py-4 transition-all duration-300 ${
         scrolled ? "bg-white" : "bg-primary"
       } ${scrolled ? "text-dark" : "text-light"}`}
     >
@@ -122,7 +122,7 @@ const Navbar = () => {
               <>
                 <Link
                   href="/invest"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-6 text-xl hover:text-secondary ${
                     currentPath === "/invest" ? "text-secondary" : ""
                   }`}
                 >
@@ -130,7 +130,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   href="/portfolio"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-6 text-xl hover:text-secondary ${
                     currentPath === "/portfolio" ? "text-secondary" : ""
                   }`}
                 >
@@ -138,7 +138,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   href="/about"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-6 text-xl hover:text-secondary ${
                     currentPath === "/about" ? "text-secondary" : ""
                   }`}
                 >
@@ -150,7 +150,7 @@ const Navbar = () => {
               <>
                 <Link
                   href="/admin"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-6 text-xl hover:text-secondary ${
                     currentPath === "/admin" ? "text-secondary" : ""
                   }`}
                 >
@@ -158,7 +158,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   href="/pricing"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-6 text-xl hover:text-secondary ${
                     currentPath === "/pricing" ? "text-secondary" : ""
                   }`}
                 >
@@ -169,7 +169,7 @@ const Navbar = () => {
             {userRole === "guardian" && (
               <Link
                 href="/allowlist"
-                className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                className={`font-semibold mr-6 text-xl hover:text-secondary ${
                   currentPath === "/allowlist" ? "text-secondary" : ""
                 }`}
               >
@@ -179,7 +179,7 @@ const Navbar = () => {
             {userRole === "assetsender" && (
               <Link
                 href="/assetsender"
-                className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                className={`font-semibold mr-6 text-xl hover:text-secondary ${
                   currentPath === "/assetsender" ? "text-secondary" : ""
                 }`}
               >
