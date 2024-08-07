@@ -12,22 +12,23 @@ import {
 } from "wagmi";
 import { config } from "@/config";
 
-interface SetClaimTimestampProps {
+interface SetPriceIdForRedemptionIdProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
+const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [depositId, setDepositId] = useState<string>("");
-  const [timeStamp, setTimeStamp] = useState<number>(0);
+  const [redemptionId, setRedemptionId] = useState<string>("");
+  const [priceId, setPriceId] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setDepositId("");
+    setRedemptionId("");
+    setPriceId("");
   };
 
   const onCloseModal = () => {
@@ -35,36 +36,33 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     resetForm();
   };
 
-  const onDepositIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositId(e.target.value);
+  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceId(e.target.value);
   };
 
-  const onTimeStampChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTimeStamp(e.target.value ? Number(e.target.value) : 0);
+  const onRedemptionIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRedemptionId(e.target.value);
   };
 
-  const handleSetClaimTimestamp = async () => {
-    const depositIdFormatted = Number(depositId);
-    const depositIdHexlified = ethers.utils.hexZeroPad(
-      ethers.utils.hexlify(depositIdFormatted),
+  const handleSetPriceIdForRedemptionId = async () => {
+    const redemptionIdFormatted = Number(redemptionId);
+    const redemptionIdHexlified = ethers.utils.hexZeroPad(
+      ethers.utils.hexlify(redemptionIdFormatted),
       32
     );
-    const currentTime = Math.floor(Date.now() / 1000);
-    const claimTimestampFormatted = BigNumber.from(
-      currentTime + Number(Number(timeStamp) / 60)
-    );
-    console.log(currentTime, claimTimestampFormatted);
+    const price = BigNumber.from(priceId);
+    console.log("Setting priceId for redemptionId:", redemptionIdHexlified, price);
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "setClaimableTimestamp",
-        args: [claimTimestampFormatted, [depositIdHexlified]],
+        functionName: "setPriceIdForRedemptions",
+        args: [[redemptionIdHexlified], [price]],
       });
       setTxHash(tx);
       console.log("Price Id Successfully Set - transaction hash:", tx);
     } catch (error) {
-      console.error("Error setting claimTimestamp:", error);
+      console.error("Error setting priceId:", error);
     }
   };
 
@@ -79,23 +77,22 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
       <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold">Set Claim Timestamp</h2>
+          <h2 className="text-3xl font-bold">Set Price ID For Redemption ID</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">
-          Please enter the Deposit ID for which you want to set a claim
-          timestamp.
+          Please enter the Redemption ID and the Price ID you want to set it for.
         </div>
-        <div className="w-full text-center mx-auto mb-8">
+        <div className="w-full mx-auto mb-8">
           <InputField
-            label="Deposit ID:"
-            value={depositId || ""}
-            onChange={onDepositIdChange}
+            label="Redemption ID:"
+            value={redemptionId || ""}
+            onChange={onRedemptionIdChange}
           />
           <InputField
-            label="Timestamp (minutes):"
-            value={timeStamp || ""}
-            onChange={onTimeStampChange}
+            label="Price ID:"
+            value={priceId || ""}
+            onChange={onPriceChange}
           />
         </div>
         <div className="w-full flex justify-between">
@@ -109,7 +106,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
           </div>
           <div className="w-[49%]">
             <Submit
-              onClick={handleSetClaimTimestamp}
+              onClick={handleSetPriceIdForRedemptionId}
               label={isPending ? "Confirming..." : "Confirm"}
               disabled={isPending || isLoading}
               className="w-full"
@@ -119,8 +116,8 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
         {txHash && (
           <div className="mt-4 text-white text-center">
             {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
-              <p className="text-white overflow-x-scroll">
+            {!isLoading && (
+              <p className="text-white overflow-x-scroll text-center">
                 Transaction successful! Hash: {txHash}
               </p>
             )}
@@ -131,4 +128,4 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
   );
 };
 
-export default SetClaimTimestamp;
+export default SetPriceIdForRedemptionId;

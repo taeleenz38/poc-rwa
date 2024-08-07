@@ -1,8 +1,8 @@
 export class TransferResponse {
     from: string;
     to: string;
-    ammount?: string;
-    token?: string;
+    amount: string;
     type: string;
     dateTime: string;
+    currency: string;
 }

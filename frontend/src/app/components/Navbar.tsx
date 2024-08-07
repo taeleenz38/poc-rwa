@@ -183,7 +183,7 @@ const Navbar = () => {
                   currentPath === "/assetsender" ? "text-secondary" : ""
                 }`}
               >
-                Asset Sender
+                Approve Redemption
               </Link>
             )}
           </>

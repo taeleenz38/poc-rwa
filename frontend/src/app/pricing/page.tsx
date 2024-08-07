@@ -47,7 +47,6 @@ const Pricing = () => {
         }
         view={"PriceList"}
       />
-
       <Contact />
       <SetPrice
         isOpen={isSetPriceOpen}

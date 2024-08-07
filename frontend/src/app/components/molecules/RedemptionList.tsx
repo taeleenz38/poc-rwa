@@ -34,7 +34,7 @@ const RedemptionList: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white flex flex-col mt-8 rounded-md bg-hero-pattern bg-no-repeat bg-right-bottom">
+    <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white flex flex-col mt-8 rounded-md bg-no-repeat bg-right-bottom">
       <div className="text-3xl font-semibold mb-6 text-center mt-4">
         Redemption List
       </div>
@@ -54,15 +54,17 @@ const RedemptionList: React.FC = () => {
         {redemtions.map((item) => (
           <div key={item.user} className="p-4 rounded-lg bg-primary text-light">
             <div>
-              <h3 className="text-lg font-medium mb-2">User: {item.user}</h3>
+              <h3 className="text-lg font-medium mb-2 text-secondary">
+                <strong>Redemption Id: {item.redemptionId}</strong>
+              </h3>
               <p>
-                <strong>Redemption Id:</strong> {item.redemptionId}
+                <strong>User:</strong> {item.user}
               </p>
               <p>
                 <strong>Redeem Amount:</strong> {item.redeemAmount}
               </p>
               <p>
-                <strong>RWA Amount In:</strong> {item.rwaAmountIn}
+                <strong>AYF Amount In:</strong> {item.rwaAmountIn}
               </p>
             </div>
           </div>

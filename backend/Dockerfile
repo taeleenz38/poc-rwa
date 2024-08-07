@@ -3,7 +3,8 @@ FROM node:22.5.1
 # RUN apk update && apk upgrade
 # RUN apk add --no-cache sqlite
 RUN apt-get update && apt-get install -y sqlite3
-
+RUN apt-get install -y libreoffice-common
+RUN apt-get install -y libreoffice-writer
 ARG APP
 ADD . /app/
 
