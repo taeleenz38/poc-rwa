@@ -41,21 +41,21 @@ const AllowlistTab = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchWallets = async () => {
-      try {
-        setIsTableLoading(true);
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/account-status`
-        );
-        setWallets(response.data);
-      } catch (error) {
-        console.error("Error fetching wallets:", error);
-      } finally {
-        setIsTableLoading(false);
-      }
-    };
+  const fetchWallets = async () => {
+    try {
+      setIsTableLoading(true);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/account-status`
+      );
+      setWallets(response.data);
+    } catch (error) {
+      console.error("Error fetching wallets:", error);
+    } finally {
+      setIsTableLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchWallets();
   }, []);
 
