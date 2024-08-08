@@ -86,7 +86,7 @@ async function main() {
     console.log("The value of min deposit is:", minDeposit.toString());
 
     // Encode the requestSubscription function data
-    const requestSubscriptionData = abbyManager.interface.encodeFunctionData("requestSubscription", [parseUnits("6000", 18)]);
+    const requestSubscriptionData = abbyManager.interface.encodeFunctionData("requestSubscription", [parseUnits("1000", 18)]);
 
     const txData: SafeTransactionDataPartial = {
       to: abbyManager.address,
