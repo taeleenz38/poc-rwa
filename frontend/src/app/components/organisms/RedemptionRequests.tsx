@@ -119,9 +119,13 @@ const RedemptionRequests = () => {
                     <td>{request.user}</td>
                     <td>{request.status}</td>
                     <td>{request.rwaAmountIn} AYF</td>
-                    <td>{request.requestedRedeemAmountAfterFee} AUDC</td>
                     <td>
-                    {request.priceId ? (
+                      {request.requestedRedeemAmountAfterFee
+                        ? `${request.requestedRedeemAmountAfterFee} AUDC`
+                        : "Pending Redemption"} 
+                    </td>
+                    <td>
+                      {request.priceId ? (
                         request.priceId
                       ) : (
                         <Button

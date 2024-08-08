@@ -77,7 +77,7 @@ const AllowlistTab = () => {
   return (
     <div>
       <div
-        className={`p-4 border-b-2  border-[#F5F2F2]bg-[#F5F2F2] border-b-[#ba745f] text-[#ba745f] bg-secondary/20 w-fit`}
+        className={`p-4 border-b-2 font-bold  border-[#F5F2F2]bg-[#F5F2F2] border-b-[#ba745f] text-[#ba745f] bg-secondary/20 w-fit`}
       >
         Manage AllowList
       </div>
@@ -104,7 +104,7 @@ const AllowlistTab = () => {
           <table className="table">
             <thead>
               <tr className="text-gray text-lg bg-[#F5F2F2] border-none ">
-                <th className="text-center">ID#</th>
+                <th className="text-center">ID</th>
                 <th className="text-center">User</th>
                 <th className="text-center">Status</th>
                 <th className="text-center">Transaction Date</th>

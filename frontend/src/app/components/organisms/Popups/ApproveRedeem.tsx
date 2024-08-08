@@ -12,14 +12,28 @@ import { config } from "@/config";
 interface ApproveRedeemProps {
   isOpen: boolean;
   onClose: () => void;
+  redemptionId: string;
+  redeemAmount: number;
 }
 
-const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
+const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
+  isOpen,
+  onClose,
+  redemptionId,
+  redeemAmount,
+}) => {
   const [amount, setAmount] = useState<string>("");
-  const [redemptionId, setRedemptionId] = useState<string>("");
+  const [redemptionIdInput, setRedemptionIdInput] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
   const [txSecondHash, SetTxSecondHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
+
+  useEffect(() => {
+    if (redemptionId && redeemAmount) {
+      setRedemptionIdInput(redemptionId);
+      setAmount(redeemAmount.toString());
+    }
+  }, [redemptionId, redeemAmount]);
 
   const resetForm = () => {
     setAmount("");
@@ -36,7 +50,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
   };
 
   const onRedemptionIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRedemptionId(e.target.value);
+    setRedemptionIdInput(e.target.value);
   };
 
   const handleApproveRedeem = async () => {
@@ -61,7 +75,6 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  // Wait for the approval transaction to be mined
   const { data: approvalReceipt, isLoading: isApprovalLoading } =
     useWaitForTransactionReceipt({
       hash: txApprovalHash as `0x${string}`,
@@ -71,7 +84,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
     if (approvalReceipt) {
       const approveRedemptionRequest = async () => {
         try {
-          const redemptionIdFormatted = Number(redemptionId);
+          const redemptionIdFormatted = Number(redemptionIdInput);
           const redemptionIdHexlified = ethers.utils.hexZeroPad(
             ethers.utils.hexlify(redemptionIdFormatted),
             32
@@ -93,7 +106,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
 
       approveRedemptionRequest();
     }
-  }, [redemptionId, writeContractAsync, approvalReceipt]);
+  }, [redemptionIdInput, writeContractAsync, approvalReceipt]);
 
   const { data: SecondReceipt, isLoading: isSecondLoading } =
     useWaitForTransactionReceipt({
@@ -114,53 +127,30 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({ isOpen, onClose }) => {
           Please enter the amount of AUDC you wish to approve for the AYF
           Manager to spend for a given redemption ID.
         </div>
-        <div className="w-full text-center mx-auto mb-8">
+        <div className="mb-4">
           <InputField
             label="Redemption ID:"
-            value={redemptionId || ""}
+            value={redemptionIdInput}
             onChange={onRedemptionIdChange}
+            className="w-full p-2 rounded-md"
           />
+        </div>
+        <div className="mb-8">
           <InputField
             label="Amount:"
-            value={amount || ""}
+            type="number"
+            value={amount}
             onChange={onAmountChange}
+            className="w-full p-2 rounded-md"
           />
         </div>
-        <div className="w-full flex justify-between">
-          <div className="w-[49%]">
-            <Submit
-              onClick={onCloseModal}
-              label={"Go Back"}
-              disabled={isPending || isApprovalLoading}
-              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
-            />
-          </div>
-          <div className="w-[49%]">
-            <Submit
-              onClick={handleApproveRedeem}
-              label={
-                isPending || isApprovalLoading ? "Confirming..." : "Confirm"
-              }
-              disabled={isPending || isApprovalLoading}
-              className="w-full"
-            />
-          </div>
+        <div className="flex justify-center">
+          <Submit
+            label="Approve Redeem"
+            onClick={handleApproveRedeem}
+            disabled={isPending || isApprovalLoading || isSecondLoading}
+          />
         </div>
-        {txApprovalHash && isApprovalLoading && (
-          <div className="mt-4 text-white text-center">
-            <p>Approval transaction is pending...</p>
-          </div>
-        )}
-        {txSecondHash && (
-          <div className="mt-4 text-white text-center">
-            {isSecondLoading && <p>Redemption transaction is pending...</p>}
-            {!isSecondLoading && (
-              <p className="text-white overflow-x-scroll text-center">
-                Redemption transaction successful! Hash: {txSecondHash}
-              </p>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

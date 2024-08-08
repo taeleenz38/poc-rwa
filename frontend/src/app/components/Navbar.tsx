@@ -156,14 +156,14 @@ const Navbar = () => {
                 >
                   Admin
                 </Link>
-                <Link
+                {/* <Link
                   href="/pricing"
                   className={`font-semibold mr-14 text-xl hover:text-secondary ${
                     currentPath === "/pricing" ? "text-secondary" : ""
                   }`}
                 >
                   Pricing
-                </Link>
+                </Link> */}
               </>
             )}
             {userRole === "guardian" && (
@@ -173,7 +173,7 @@ const Navbar = () => {
                   currentPath === "/allowlist" ? "text-secondary" : ""
                 }`}
               >
-                Allowlist
+                Guardian
               </Link>
             )}
             {userRole === "assetsender" && (
@@ -183,7 +183,7 @@ const Navbar = () => {
                   currentPath === "/assetsender" ? "text-secondary" : ""
                 }`}
               >
-                Approve Redemption
+                Asset Sender
               </Link>
             )}
           </>
