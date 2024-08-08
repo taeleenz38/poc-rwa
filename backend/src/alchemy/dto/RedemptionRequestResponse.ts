@@ -3,5 +3,10 @@ export class RedemptionRequestResponse {
     redemptionId: string;
     rwaAmountIn: string;
     priceId?: string;
-    dateTime?: string;
+    requestTimestamp?: string;
+    price?: string;
+    requestedRedeemAmount?: string;
+    requestedRedeemAmountAfterFee?: string;
+    feeAmount?: string;
+    status?: string;
 }

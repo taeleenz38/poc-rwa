@@ -5,4 +5,5 @@ export class RedemptionCompletedResponse {
     collateralDuePostFees: number;
     price: number;
     dateTime?: string;
+    priceId?: string;
 }
