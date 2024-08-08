@@ -5,8 +5,14 @@ import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPric
 type RedemptionRequest = {
   user: string;
   redemptionId: string;
-  redeemAmount: number;
   rwaAmountIn: string;
+  priceId?: string;
+  requestTimestamp?: string;
+  price?: string;
+  requestedRedeemAmount?: string;
+  requestedRedeemAmountAfterFee?: string;
+  feeAmount?: string;
+  status?: string;
 };
 
 const ITEMS_PER_PAGE = 6;
@@ -111,15 +117,19 @@ const RedemptionRequests = () => {
                   >
                     <td>{hexToDecimal(request.redemptionId)}</td>
                     <td>{request.user}</td>
-                    <td></td>
+                    <td>{request.status}</td>
                     <td>{request.rwaAmountIn} AYF</td>
-                    <td>{request.redeemAmount} AUDC</td>
+                    <td>{request.requestedRedeemAmountAfterFee} AUDC</td>
                     <td>
-                      <Button
-                        text="Set Price ID"
-                        className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-                        onClick={handleButtonClick}
-                      />
+                    {request.priceId ? (
+                        request.priceId
+                      ) : (
+                        <Button
+                          text="Set Price ID"
+                          className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
+                          onClick={handleButtonClick}
+                        />
+                      )}
                     </td>
                   </tr>
                 ))}
