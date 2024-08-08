@@ -285,13 +285,13 @@ const Portfolio = () => {
                         <tr className="border-b border-gray">
                           <td>Copiam Money Market Fund AYF</td>
                           <td>${formattedPrice}</td>
-                          <td>{formattedAyfBalance}</td>
+                          <td>{formattedAyfBalance.toFixed(1)}</td>
                           <td>${ayfMarketValue.toFixed(2)}</td>
                         </tr>
                         <tr className="border-b border-gray">
                           <td>Stablecoin AUDC</td>
                           <td>$1.00</td>
-                          <td>{formattedAudcBalance}</td>
+                          <td>{formattedAudcBalance.toFixed(1)}</td>
                           <td>${audcMarketValue.toFixed(2)}</td>
                         </tr>
                       </>
