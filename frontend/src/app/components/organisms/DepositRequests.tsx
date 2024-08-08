@@ -10,6 +10,10 @@ type DepositRequest = {
   depositAmountAfterFee: string;
   feeAmount: string;
   priceId?: string;
+  claimableTimestamp?: string;
+  status?: string;
+  price?: string;
+  requestTimestamp?: string;
 };
 
 const ITEMS_PER_PAGE = 6;
@@ -113,28 +117,36 @@ const DepositRequests = () => {
                 {paginatedRequests.map((request) => (
                   <tr
                     key={request.depositId}
-                    className="border-b-2 border-[#F5F2F2] font-medium"
+                    className="border-b-2 border-[#F5F2F2] font-medium text-md"
                   >
                     <td className="">{hexToDecimal(request.depositId)}</td>
                     <td className="">{request.user}</td>
-                    <td className=""></td>
+                    <td className="">{request.status}</td>
                     <td className="">
                       {request.collateralAmountDeposited} AUDC
                     </td>
                     <td className="">{request.depositAmountAfterFee} AUDC</td>
                     <td className="">
-                      <Button
-                        text="Set Price ID"
-                        className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                        onClick={handleButton2Click}
-                      />
+                      {request.priceId ? (
+                        request.priceId
+                      ) : (
+                        <Button
+                          text="Set Price ID"
+                          className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
+                          onClick={handleButton2Click}
+                        />
+                      )}
                     </td>
                     <td className="">
-                      <Button
-                        text="Set Claim Timestamp"
-                        className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                        onClick={handleButton1Click}
-                      />
+                      {request.claimableTimestamp ? (
+                        request.claimableTimestamp
+                      ) : (
+                        <Button
+                          text="Set Claim Timestamp"
+                          className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
+                          onClick={handleButton1Click}
+                        />
+                      )}
                     </td>
                   </tr>
                 ))}

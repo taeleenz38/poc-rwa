@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import { PricingResponse } from '../dto/PricingResponse';
-import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI, PRICEIDSETFORREDEMPTION_ABI, REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS, ABBY_ADDRESS, ASSET_SENDER_ADDRESS, FEE_RECIPIENT_ADDRESS } from '../constants';
+import { ALLOW_LIST_ABI, ALLOW_LIST_ADDRESS, API_KEY, PRICE_ADDED_ABI, PRICE_CHANGED_ABI, PRICING_ADDRESS, ACCOUNT_STATUS_ABI, ABBY_MANAGER_ADDRESS, MINT_REQESTED_ABI, MINT_COMPLETED_ABI, CLAIMABLETIMESTAMP_ABI, PRICEIDSETFORDEPOSIT_ABI, REDEMPTION_COMPLETED_ABI, REDEMPTION_REQUESTED_ABI, PRICEIDSETFORREDEMPTION_ABI, REDEMPTION_APPROVAL_ABI, TRANSFER_ABI, AUDC_ADDRESS, ABBY_ADDRESS, ASSET_SENDER_ADDRESS, FEE_RECIPIENT_ADDRESS, FROM_BLOCK } from '../constants';
 import { AllowListResponse } from '../dto/AllowListResponse';
 import { AccountStatusResponse } from '../dto/AccountStatusResponse';
 import { MintRequestedResponse } from '../dto/MIntRequestResponse';
@@ -37,7 +37,7 @@ export class AlchemyService {
 
     let priceAddedLogs = await alchemy.core.getLogs(
       {
-        fromBlock: '0x0',
+        fromBlock: FROM_BLOCK,
         toBlock: 'latest',
         address: address,
         topics: priceAddedCreatedTopics,
@@ -46,7 +46,7 @@ export class AlchemyService {
 
     let priceChangedLogs = await alchemy.core.getLogs(
       {
-        fromBlock: '0x0',
+        fromBlock: FROM_BLOCK,
         toBlock: 'latest',
         address: address,
         topics: priceChangedCreatedTopics,
@@ -122,7 +122,7 @@ export class AlchemyService {
 
     let priceAddedLogs = await alchemy.core.getLogs(
       {
-        fromBlock: '0x0',
+        fromBlock: FROM_BLOCK,
         toBlock: 'latest',
         address: address,
         topics: priceAddedCreatedTopics,
@@ -131,7 +131,7 @@ export class AlchemyService {
 
     let priceChangedLogs = await alchemy.core.getLogs(
       {
-        fromBlock: '0x0',
+        fromBlock: FROM_BLOCK,
         toBlock: 'latest',
         address: address,
         topics: priceChangedCreatedTopics,
@@ -200,7 +200,7 @@ export class AlchemyService {
     const allowListSetTopics = allowListDaoInterface.encodeFilterTopics('TermAdded', []);
 
     let allowListSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: allowListSetTopics,
@@ -240,7 +240,7 @@ export class AlchemyService {
     const accountStatusSetTopics = accountStatusInterface.encodeFilterTopics('AccountStatusSetByAdmin', []);
 
     let accountStatusSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: accountStatusSetTopics,
@@ -295,9 +295,9 @@ export class AlchemyService {
   async getPendingDepositRequestList(): Promise<MintRequestedResponse[]> {
     let returnMintRequestResponse: MintRequestedResponse[] = [];
     let allMintRequestResponse: MintRequestedResponse[] = [];
-    let pendingMintRequestResponse: MintRequestedResponse[] = [];
     let priceIdForDepositList: PriceIdForDeposit[] = [];
-    let mintCompletedList: string[] = [];
+    let mintCompletedList: MIntCompletedResponse[] = [];
+    let claimableTimestampResponse: ClaimableTimestampResponse[] = [];
 
     const settings = {
       apiKey: API_KEY,
@@ -310,7 +310,7 @@ export class AlchemyService {
     const mintRequestSetTopics = mintRequestInterface.encodeFilterTopics('MintRequested', []);
 
     let mintRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintRequestSetTopics,
@@ -318,12 +318,16 @@ export class AlchemyService {
 
     const iface = new ethers.utils.Interface(MINT_REQESTED_ABI);
 
-    mintRequestSetLogs.forEach((log) => {
+    for (const log of mintRequestSetLogs) {
       try {
         const decodedLog = iface.parseLog(log);
         const user = decodedLog.args.user;
         //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
         const depositId = decodedLog.args.depositId;
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
 
         const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
         const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
@@ -335,60 +339,63 @@ export class AlchemyService {
           collateralAmountDeposited: collateralAmountDeposited,
           depositAmountAfterFee: depositAmountAfterFee,
           feeAmount: feeAmount,
+          requestTimestamp: date
         };
         allMintRequestResponse.push(mintRequestList);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
+    }
 
     const mintCompletedAbi = new Utils.Interface(MINT_COMPLETED_ABI);
     const mintCompletedTopic = mintCompletedAbi.encodeFilterTopics('MintCompleted', []);
 
     let mintCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintCompletedTopic,
     });
 
     const mintCompleted = new ethers.utils.Interface(MINT_COMPLETED_ABI);
-    mintCompletedlogs.forEach((log) => {
+    for (const log of mintCompletedlogs) {
       try {
         const decodedLog = mintCompleted.parseLog(log);
         const depositId = decodedLog.args.depositId;
-        mintCompletedList.push(depositId);
+        const user = decodedLog.args.user;
+
+        // const block = await alchemy.core.getBlock(log.blockNumber);
+        // const timestamp = block.timestamp;
+        // const date = new Date(timestamp * 1000).toISOString();
+
+          let mintCompletedResponse: MIntCompletedResponse = {
+            user: user,
+            depositId: decodedLog.args.depositId,
+            rwaOwed: decodedLog.args.rwaAmountOut,
+            depositAmountAfterFee: decodedLog.args.collateralAmountDeposited,
+            price: decodedLog.args.price,
+            priceId: decodedLog.args.priceId,
+            // dateTime: date
+          };
+          mintCompletedList.push(mintCompletedResponse);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
-
-    allMintRequestResponse.forEach((value) => {
-      try {
-        const matchingDeposits = mintCompletedList.filter(item => item === value.depositId);
-
-        // Add matching deposits to mintList
-        if (!matchingDeposits || matchingDeposits.length == 0) {
-          pendingMintRequestResponse.push(value);
-        }
-
-      } catch (error) {
-        console.error("Error decoding log:", error);
-      }
-    });
+    }
 
     const priceIdSetFoDeposit = new Utils.Interface(PRICEIDSETFORDEPOSIT_ABI);
     const priceIdSetFoDepositTopics = priceIdSetFoDeposit.encodeFilterTopics('PriceIdSetForDeposit', []);
 
     let priceIdLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: priceIdSetFoDepositTopics,
     });
 
     const priceIdSetForDeposit = new ethers.utils.Interface(PRICEIDSETFORDEPOSIT_ABI);
-    priceIdLogs.forEach((log) => {
+
+    for (const log of priceIdLogs) {
       try {
         const decodedLog = priceIdSetForDeposit.parseLog(log);
         const depositIdSet = decodedLog.args.depositIdSet;
@@ -398,22 +405,84 @@ export class AlchemyService {
       } catch (error) {
         console.error("Error decoding log:", error);
       }
+    }
+
+    const claimableTimestampInterface = new Utils.Interface(CLAIMABLETIMESTAMP_ABI);
+    const claimableTimestampSetTopics = claimableTimestampInterface.encodeFilterTopics('ClaimableTimestampSet', []);
+
+    let claimableTimestampSetLogs = await alchemy.core.getLogs({
+      fromBlock: FROM_BLOCK,
+      toBlock: "latest",
+      address: address,
+      topics: claimableTimestampSetTopics,
     });
 
-    pendingMintRequestResponse.forEach((value) => {//2
-      try {
-        const priceIdNotMatch = priceIdForDepositList.filter(item => item.depositId === value.depositId);
+    const claimableTimestampIface = new ethers.utils.Interface(CLAIMABLETIMESTAMP_ABI);
 
-        // Add matching deposits to mintList
-        if (!priceIdNotMatch || priceIdNotMatch.length == 0) {
-          // value.priceId = priceIdMatch[0].priceId;
-          returnMintRequestResponse.push(value);
-        }
+    for (const log of claimableTimestampSetLogs) {
+      try {
+        const decodedLog = claimableTimestampIface.parseLog(log);
+        const depositId = decodedLog.args.depositId;
+        const claimTimestampBigInt = ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt();
+        const claimTimestampNumber = Number(claimTimestampBigInt); // Convert to Number
+        const claimTimestampDate = new Date(claimTimestampNumber * 1000); // Convert to milliseconds
+        const claimTimestampFormatted = claimTimestampDate.toISOString(); // Format as ISO string
+
+        let claimableTimestampList: ClaimableTimestampResponse = {
+          depositId: depositId,
+          claimTimestamp: claimTimestampFormatted,
+          claimTimestampFromChain: claimTimestampNumber
+        };
+        claimableTimestampResponse.push(claimableTimestampList);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
+    }
 
+    const allPricing: PricingResponse[] = await this.getPricingForTransaction()
+
+    // console.log(allMintRequestResponse);
+    // console.log(mintCompletedList);
+    // console.log(priceIdForDepositList);
+    // console.log(claimableTimestampResponse);
+    // console.log(allPricing);
+
+    for (const mintRequested of allMintRequestResponse) {
+      try {
+        const mintCompleted = mintCompletedList.find(completed => completed.depositId === mintRequested.depositId);
+        const priceIdAdded = priceIdForDepositList.find(completed => completed.depositId === mintRequested.depositId);
+        const claimableTImeStampAdded = claimableTimestampResponse.find(completed => completed.depositId === mintRequested.depositId);
+
+        let mintRequestList: MintRequestedResponse = {
+          user: mintRequested.user,
+          depositId: mintRequested.depositId,
+          collateralAmountDeposited: mintRequested.collateralAmountDeposited,
+          depositAmountAfterFee: mintRequested.depositAmountAfterFee,
+          feeAmount: mintRequested.feeAmount,
+          status: "Requested",
+          requestTimestamp: mintRequested.requestTimestamp
+        };
+
+        if(mintCompleted){
+          mintRequestList.status = "Completed"
+        } 
+
+        if(priceIdAdded){
+          const pricing = allPricing.find(completed => completed.priceId === ethers.BigNumber.from(priceIdAdded.priceId).toString());
+          mintRequestList.priceId = ethers.BigNumber.from(priceIdAdded.priceId).toString()
+          mintRequestList.price = pricing.price
+        } 
+
+        if(claimableTImeStampAdded){
+          mintRequestList.claimableTimestamp = claimableTImeStampAdded.claimTimestamp
+        } 
+      returnMintRequestResponse.push(mintRequestList);
+      } catch (error) {
+        console.error("Error decoding log:", error);
+      }
+    }
+
+    returnMintRequestResponse.sort((a, b) => new Date(b.requestTimestamp).getTime() - new Date(a.requestTimestamp).getTime());
     return returnMintRequestResponse;
   }
 
@@ -435,7 +504,7 @@ export class AlchemyService {
     const mintRequestSetTopics = mintRequestInterface.encodeFilterTopics('MintRequested', []);
 
     let mintRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintRequestSetTopics,
@@ -471,7 +540,7 @@ export class AlchemyService {
     const mintCompletedTopic = mintCompletedAbi.encodeFilterTopics('MintCompleted', []);
 
     let mintCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintCompletedTopic,
@@ -506,7 +575,7 @@ export class AlchemyService {
     const priceIdSetFoDepositTopics = priceIdSetFoDeposit.encodeFilterTopics('PriceIdSetForDeposit', []);
 
     let priceIdLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: priceIdSetFoDepositTopics,
@@ -555,7 +624,7 @@ export class AlchemyService {
     const claimableTimestampSetTopics = claimableTimestampInterface.encodeFilterTopics('ClaimableTimestampSet', []);
 
     let claimableTimestampSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: claimableTimestampSetTopics,
@@ -588,7 +657,7 @@ export class AlchemyService {
     const mintCompltedSetTopics = mintCompltedInterface.encodeFilterTopics('MintCompleted', []);
 
     let mintCompltedSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintCompltedSetTopics,
@@ -625,7 +694,7 @@ export class AlchemyService {
     const priceSetTopics = priceInterface.encodeFilterTopics('PriceIdSetForDeposit', []);
 
     let priceSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: priceSetTopics,
@@ -711,13 +780,11 @@ export class AlchemyService {
     return returnClaimList;
   }
 
-
   async getPendingRedemptionList(): Promise<RedemptionRequestResponse[]> {
-    let approvedRedeemptionIds = new Set();
-    let pricedRedeemptionIds = new Set();
-    let completedRedemptionIds = new Set();
+    let priceIdForRedeemList: PriceIdForRedemption[] = [];
+    let completedRedemptionList: RedemptionCompletedResponse[] = [];
     let allRedeemptionList: RedemptionRequestResponse[] = [];
-    let pendingRedeemptionList: RedemptionRequestResponse[] = [];
+    let retrunRedemptionList: RedemptionRequestResponse[] = [];
 
     const settings = {
       apiKey: API_KEY,
@@ -730,35 +797,40 @@ export class AlchemyService {
     const redemptionRequestedTopics = redemptionRequestedsInterface.encodeFilterTopics('RedemptionRequested', []);
 
     let redeemRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionRequestedTopics,
     });
 
-    redeemRequestSetLogs.forEach((log) => {
+    for (const log of redeemRequestSetLogs) {
       try {
         const decodedLog = redemptionRequestedsInterface.parseLog(log);
         const user = decodedLog.args.user;
         const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
         const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
 
+        const block = await alchemy.core.getBlock(log.blockNumber);
+        const timestamp = block.timestamp;
+        const date = new Date(timestamp * 1000).toISOString();
+
         let redemptionRequest: RedemptionRequestResponse = {
           user: user,
           redemptionId: redemptionId,
           rwaAmountIn: rwaAmountIn,
+          requestTimestamp: date
         };
         allRedeemptionList.push(redemptionRequest);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
+    }
 
     const redemptionCompletedInterface = new Utils.Interface(REDEMPTION_COMPLETED_ABI);
     const redemptionCompletedSetTopics = redemptionCompletedInterface.encodeFilterTopics('RedemptionCompleted', []);
 
     let redeemCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionCompletedSetTopics,
@@ -767,20 +839,28 @@ export class AlchemyService {
     redeemCompletedlogs.forEach((log) => {
       try {
         const decodedLog = redemptionCompletedInterface.parseLog(log);
+        const user = decodedLog.args.user;
         const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-        completedRedemptionIds.add(redemptionId);
+
+        let redemptionCompletedEvent: RedemptionCompletedResponse = {
+          user: user,
+          redemptionId: redemptionId,
+          amountRwaTokenBurned: decodedLog.args.rwaAmountRequested,
+          collateralDuePostFees: decodedLog.args.collateralAmountReturned,
+          price: decodedLog.args.price
+        };
+        completedRedemptionList.push(redemptionCompletedEvent);
+
       } catch (error) {
         console.error("Error decoding log:", error);
       }
     });
 
-    pendingRedeemptionList = allRedeemptionList.filter(request => !completedRedemptionIds.has(request.redemptionId));
-
     const redemptionPricingInterface = new Utils.Interface(PRICEIDSETFORREDEMPTION_ABI);
     const redemptionPricedSetTopics = redemptionPricingInterface.encodeFilterTopics('PriceIdSetForRedemption', []);
 
     let priceIdLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionPricedSetTopics,
@@ -791,37 +871,48 @@ export class AlchemyService {
       try {
         const decodedLog = priceIdSetForRedeem.parseLog(log);
         const redeemIdSet = ethers.BigNumber.from(decodedLog.args.redemptionIdSet).toString();
-        pricedRedeemptionIds.add(redeemIdSet);
+
+        const priceId = decodedLog.args.priceIdSet;
+        const priceIdForRedeem: PriceIdForRedemption = { priceId: priceId, redeemId: redeemIdSet };
+        priceIdForRedeemList.push(priceIdForRedeem);
+        
+        // pricedRedeemptionIds.add(redeemIdSet);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
     });
 
-    pendingRedeemptionList = pendingRedeemptionList.filter(request => !pricedRedeemptionIds.has(request.redemptionId));
+    const allPricing: PricingResponse[] = await this.getPricingForTransaction()
 
-    const redemptionApprovalInterface = new Utils.Interface(REDEMPTION_APPROVAL_ABI);
-    const redeemApprovalTopics = redemptionApprovalInterface.encodeFilterTopics('RedemptionApproved', []);
-
-    let redeemApprovalLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
-      toBlock: "latest",
-      address: address,
-      topics: redeemApprovalTopics,
-    });
-
-    redeemApprovalLogs.forEach((log) => {
+    for (const redeemRequested of allRedeemptionList) {
       try {
-        const decodedLog = redemptionApprovalInterface.parseLog(log);
-        const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-        approvedRedeemptionIds.add(redemptionId);
+        const redeemCompleted = completedRedemptionList.find(completed => completed.redemptionId === redeemRequested.redemptionId);
+        const priceIdAdded = priceIdForRedeemList.find(completed => completed.redeemId === redeemRequested.redemptionId);
+
+        let redeemRequestEvent: RedemptionRequestResponse = {
+          user: redeemRequested.user,
+          redemptionId: redeemRequested.redemptionId,
+          rwaAmountIn: redeemRequested.rwaAmountIn,
+          status: "Requested",
+          requestTimestamp: redeemRequested.requestTimestamp
+        };
+
+        if(redeemCompleted){
+          redeemRequestEvent.status = "Completed"
+          redeemRequestEvent.requestedRedeemAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(redeemCompleted.collateralDuePostFees).toBigInt())
+        } 
+
+        if(priceIdAdded){
+          const pricing = allPricing.find(completed => completed.priceId === ethers.BigNumber.from(priceIdAdded.priceId).toString());
+          redeemRequestEvent.priceId = ethers.BigNumber.from(priceIdAdded.priceId).toString()
+          redeemRequestEvent.price = pricing.price
+        } 
+        retrunRedemptionList.push(redeemRequestEvent);
       } catch (error) {
         console.error("Error decoding log:", error);
       }
-    });
-
-    pendingRedeemptionList = pendingRedeemptionList.filter(request => !approvedRedeemptionIds.has(request.redemptionId));
-
-    return pendingRedeemptionList;
+    }
+    return retrunRedemptionList;
   }
 
   async getPendingApprovalRedemptionList(): Promise<RedemptionRequestResponse[]> {
@@ -844,7 +935,7 @@ export class AlchemyService {
     const redemptionRequestedTopics = redemptionRequestedsInterface.encodeFilterTopics('RedemptionRequested', []);
 
     let redeemRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionRequestedTopics,
@@ -872,7 +963,7 @@ export class AlchemyService {
     const redemptionCompletedSetTopics = redemptionCompletedInterface.encodeFilterTopics('RedemptionCompleted', []);
 
     let redeemCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionCompletedSetTopics,
@@ -894,7 +985,7 @@ export class AlchemyService {
     const redeemApprovalTopics = redemptionApprovalInterface.encodeFilterTopics('RedemptionApproved', []);
 
     let redeemApprovalLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redeemApprovalTopics,
@@ -916,7 +1007,7 @@ export class AlchemyService {
     const redemptionPricedSetTopics = redemptionPricingInterface.encodeFilterTopics('PriceIdSetForRedemption', []);
 
     let priceIdLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionPricedSetTopics,
@@ -990,7 +1081,7 @@ export class AlchemyService {
     const redemptionRequestedTopics = redemptionRequestedsInterface.encodeFilterTopics('RedemptionRequested', []);
 
     let redeemRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionRequestedTopics,
@@ -1018,7 +1109,7 @@ export class AlchemyService {
     const redemptionCompletedSetTopics = redemptionCompletedInterface.encodeFilterTopics('RedemptionCompleted', []);
 
     let redeemCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionCompletedSetTopics,
@@ -1040,7 +1131,7 @@ export class AlchemyService {
     const redeemApprovalTopics = redemptionApprovalInterface.encodeFilterTopics('RedemptionApproved', []);
 
     let redeemApprovalLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redeemApprovalTopics,
@@ -1062,7 +1153,7 @@ export class AlchemyService {
     const redemptionPricedSetTopics = redemptionPricingInterface.encodeFilterTopics('PriceIdSetForRedemption', []);
 
     let priceIdLogs = await alchemy.core.getLogs({
-      fromBlock: "0x0",
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionPricedSetTopics,
@@ -1130,7 +1221,7 @@ export class AlchemyService {
     const transferCreatedTopics = transferInterface.encodeFilterTopics('Transfer', []);
 
     let transferLogs = await alchemy.core.getLogs({
-      fromBlock: 6418358,
+      fromBlock: FROM_BLOCK,
       toBlock: 'latest',
       address: AUDC_ADDRESS,
       topics: transferCreatedTopics,
@@ -1178,7 +1269,7 @@ export class AlchemyService {
     };
 
     let tokenLogs = await alchemy.core.getLogs({
-      fromBlock: 6418358,
+      fromBlock: FROM_BLOCK,
       toBlock: 'latest',
       address: ABBY_ADDRESS,
       topics: transferCreatedTopics,
@@ -1247,7 +1338,7 @@ export class AlchemyService {
     const mintRequestSetTopics = mintRequestInterface.encodeFilterTopics('MintRequested', []);
 
     let mintRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: 6418358,
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintRequestSetTopics,
@@ -1279,7 +1370,7 @@ export class AlchemyService {
             collateralAmountDeposited: collateralAmountDeposited,
             depositAmountAfterFee: depositAmountAfterFee,
             feeAmount: feeAmount,
-            dateTime: date
+            requestTimestamp: date
           };
           allMintRequestResponse.push(mintRequestList);
         }
@@ -1292,7 +1383,7 @@ export class AlchemyService {
     const mintCompletedTopic = mintCompletedAbi.encodeFilterTopics('MintCompleted', []);
 
     let mintCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: 6418358,
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: mintCompletedTopic,
@@ -1338,7 +1429,7 @@ export class AlchemyService {
               status: "COMPLETED",
               price: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.price).toBigInt()),
               // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
-              requestTime: mintRequested.dateTime,
+              requestTime: mintRequested.requestTimestamp,
               mintedTime: mintCompleted.dateTime,
               transactionDate: mintCompleted.dateTime
             };
@@ -1349,8 +1440,8 @@ export class AlchemyService {
               stableAmount: mintRequested.depositAmountAfterFee,
               type: "Invest",
               status: "SUBMITTED",
-              requestTime: mintRequested.dateTime,
-              transactionDate: mintRequested.dateTime
+              requestTime: mintRequested.requestTimestamp,
+              transactionDate: mintRequested.requestTimestamp
             };
             finalTransactionHistoryResponse.push(transactionHistoryResponse);
           }
@@ -1363,7 +1454,7 @@ export class AlchemyService {
     const redemptionRequestedTopics = redemptionRequestedsInterface.encodeFilterTopics('RedemptionRequested', []);
 
     let redeemRequestSetLogs = await alchemy.core.getLogs({
-      fromBlock: 6418358,
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionRequestedTopics,
@@ -1385,7 +1476,7 @@ export class AlchemyService {
             user: user,
             redemptionId: redemptionId,
             rwaAmountIn: rwaAmountIn,
-            dateTime: date
+            requestTimestamp: date
           };
           allRedeemptionList.push(redemptionRequest);
         }
@@ -1398,7 +1489,7 @@ export class AlchemyService {
     const redemptionCompletedSetTopics = redemptionCompletedInterface.encodeFilterTopics('RedemptionCompleted', []);
 
     let redeemCompletedlogs = await alchemy.core.getLogs({
-      fromBlock: 6418358,
+      fromBlock: FROM_BLOCK,
       toBlock: "latest",
       address: address,
       topics: redemptionCompletedSetTopics,
@@ -1442,7 +1533,7 @@ export class AlchemyService {
               status: "COMPLETED",
               price: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.price).toBigInt()),
               // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
-              requestTime: redemptionRequested.dateTime,
+              requestTime: redemptionRequested.requestTimestamp,
               mintedTime: redemptionCompleted.dateTime,
               transactionDate: redemptionCompleted.dateTime
             };
@@ -1453,8 +1544,8 @@ export class AlchemyService {
               tokenAmount: redemptionRequested.rwaAmountIn,
               type: "Redeem",
               status: "SUBMITTED",
-              requestTime: redemptionRequested.dateTime,
-              transactionDate: redemptionRequested.dateTime,
+              requestTime: redemptionRequested.requestTimestamp,
+              transactionDate: redemptionRequested.requestTimestamp,
             };
             finalTransactionHistoryResponse.push(transactionHistoryResponse);
           }

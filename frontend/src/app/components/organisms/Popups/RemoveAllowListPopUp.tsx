@@ -15,15 +15,19 @@ import { config } from "@/config";
 interface AllowlistProps {
   isOpen: boolean;
   onClose: () => void;
+  walletAddress: string;
 }
 
-const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
+  isOpen,
+  onClose,
+  walletAddress,
+}) => {
+  //   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
   const resetForm = () => {
-    setWalletAddress(null);
     setTxHash(null);
   };
   const onCloseModal = () => {
@@ -31,22 +35,21 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
     resetForm();
   };
 
-  const onWalletAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWalletAddress(e.target.value);
-  };
-
-  const handleAllowlist = async () => {
+  const handleAllowlistRemove = async () => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_ALLOWLIST_ADDRESS as `0x${string}`,
         functionName: "setAccountStatus",
-        args: [walletAddress as `0x${string}`, 0, true],
+        args: [walletAddress as `0x${string}`, 0, false],
       });
       setTxHash(tx);
-      console.log("Term successfully added - transaction hash:", tx);
+      console.log(
+        "wallet address successfully removed - transaction hash:",
+        tx
+      );
     } catch (error) {
-      console.error("Error adding term to allowlist:", error);
+      console.error("Error removing  allowlist:", error);
     }
   };
 
@@ -62,18 +65,18 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-3xl text-white font-bold">
-            Add User To Allowlist
+            Remove User From Allowlist
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">
-          Please enter the wallet address of the user and term index you want to add to the allowlist.
+          Please confirm to remove user from allow list
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField
             label="Wallet Address:"
-            value={walletAddress || ""}
-            onChange={onWalletAddressChange}
+            value={walletAddress}
+            onChange={() => {}}
           />
         </div>
         <div className="w-full flex justify-between">
@@ -87,8 +90,8 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
           </div>
           <div className="w-[49%]">
             <Submit
-              onClick={handleAllowlist}
-              label={isPending ? "Confirming..." : "Add User"}
+              onClick={handleAllowlistRemove}
+              label={isPending ? "Confirming..." : "Remove User"}
               disabled={isPending || isLoading}
               className="w-full"
             />
@@ -109,4 +112,4 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default Allowlist;
+export default RemoveAllowListPopUp;
