@@ -49,6 +49,14 @@ export class DropBoxEmbeddedSignService {
         return ret;
     }
 
+    public async getSignUrlForOwner(email: string) {
+        const doc = await this.docService.findDocByEmail(email);
+        const res = await this.generateEmbeddedSignUrls(doc.ownerSignatureId);
+        const ret = new EmbeddedSignDataDto();
+        ret.ownerSignUrl = res;
+        return ret;
+    }
+
 
 
     private async createSignerId(signRequest: SignRequestDto, userDoc: UserDocument): Promise<SignRequestResponse> {
@@ -125,8 +133,8 @@ export class DropBoxEmbeddedSignService {
 
 
     private async generateEmbeddedSignUrls(signatureId: string): Promise<string> {
-        const response = await this.embeddedApi.embeddedSignUrl(signatureId);
         try {
+            const response = await this.embeddedApi.embeddedSignUrl(signatureId);
             const embedded = response.body;
             return Promise.resolve(embedded.embedded.signUrl);
         } catch (error) {
