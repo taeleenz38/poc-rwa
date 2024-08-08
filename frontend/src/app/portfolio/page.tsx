@@ -291,29 +291,20 @@ const Portfolio = () => {
                       </tbody>
                     </table>
                   </div>
-                  <div className="flex justify-between mt-4">
-                    <button
-                      className={`btn ${
-                        currentPage === 1
-                          ? "btn-disabled text-white"
-                          : "text-primary"
-                      }`}
+                  <div className="flex justify-between items-center mt-4">
+                    <Button
                       onClick={() => handlePageChange(currentPage - 1)}
+                      text="Previous"
                       disabled={currentPage === 1}
-                    >
-                      Previous
-                    </button>
-                    <button
-                      className={`btn ${
-                        currentPage === totalPages
-                          ? "btn-disabled"
-                          : "text-primary"
-                      }`}
+                    />
+                    <span>
+                      {currentPage} of {totalPages}
+                    </span>
+                    <Button
                       onClick={() => handlePageChange(currentPage + 1)}
+                      text="Next"
                       disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </button>
+                    />
                   </div>
                 </>
               )}
