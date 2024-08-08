@@ -2,7 +2,7 @@ import React from "react";
 
 const FundDescription = () => {
   return (
-    <div className="flex flex-col md:flex-row w-full mx-auto max-w-screen-xl py-8 md:py-14 px-8 text-gray/70">
+    <div className="flex flex-col md:flex-row w-full mx-auto max-w-screen-xl py-8 md:py-14 px-8 text-black">
       <div className="w-full md:w-1/3">
         <p className="text-base lg:text-2xl font-medium text-center">
           AYF is a tokenised Fund and is designed for investors seeking a
