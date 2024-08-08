@@ -255,9 +255,15 @@ const Portfolio = () => {
                   Current portfolio value
                 </h3>
                 <>
-                  <h3 className="text-2xl">
-                    ${(ayfMarketValue + audcMarketValue).toFixed(2)}
-                  </h3>
+                  {isFetching ? (
+                    <>
+                      <Skeleton height={30} className="w-full" />
+                    </>
+                  ) : (
+                    <h3 className="text-2xl">
+                      ${(ayfMarketValue + audcMarketValue).toFixed(2)}
+                    </h3>
+                  )}
                 </>
               </div>
             </div>
@@ -352,7 +358,7 @@ const Portfolio = () => {
                             <td>
                               <Button
                                 text="Claim"
-                                className={`py-2 ${
+                                className={`py-2 btn-sm items-center flex justify-center ${
                                   isClaimable
                                     ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
                                     : "bg-[#e6e6e6] text-light cursor-not-allowed"
@@ -414,7 +420,7 @@ const Portfolio = () => {
                           <td className="flex-1">
                             <Button
                               text="Claim"
-                              className={`py-2 ${
+                              className={`py-2  btn-sm items-center flex justify-center ${
                                 true
                                   ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
                                   : "bg-[#e6e6e6] text-light cursor-not-allowed"
@@ -492,26 +498,26 @@ const Portfolio = () => {
               {!isFetchingTransactions && totalPages > 1 && (
                 <div className="flex justify-between items-center mt-4">
                   <Button
+                    text="Previous"
                     className={`btn-sm items-center flex justify-center ${
-                      currentPage === 1
-                        ? "bg-[#d9d9d9] cursor-default"
-                        : "btn-ghost"
+                      currentPage !== 1
+                        ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                        : "bg-[#e6e6e6] text-light cursor-not-allowed"
                     }`}
                     onClick={() => handlePageChange(currentPage - 1)}
-                    text="Previous"
                     disabled={currentPage === 1}
                   />
                   <span>
                     {currentPage} of {totalPages}
                   </span>
                   <Button
-                    className={`btn-sm items-center flex justify-center ${
-                      currentPage === totalPages
-                        ? "bg-[#d9d9d9] cursor-default"
-                        : "btn-ghost"
+                    text="Next"
+                    className={`py-2 btn-sm items-center flex justify-center ${
+                      currentPage !== totalPages
+                        ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                        : "bg-[#e6e6e6] text-light cursor-not-allowed"
                     }`}
                     onClick={() => handlePageChange(currentPage + 1)}
-                    text="Next"
                     disabled={currentPage === totalPages}
                   />
                 </div>
