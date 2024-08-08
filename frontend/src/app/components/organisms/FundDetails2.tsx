@@ -4,7 +4,7 @@ import Image from "next/image";
 import Button from "@/app/components/atoms/Buttons/Button";
 import RequestDeposit from "@/app/components/organisms/Popups/RequestDeposit";
 import RequestRedemption from "@/app/components/organisms/Popups/RequestRedemption";
-import Allowlist from "@/app/components/organisms/Popups/Allowlist";
+import Allowlist from "@/app/components/organisms/Popups/AllowlistPopUp";
 import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
 import PriceList from "../molecules/PriceList";
 

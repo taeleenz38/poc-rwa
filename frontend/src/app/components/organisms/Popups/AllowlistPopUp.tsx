@@ -17,7 +17,7 @@ interface AllowlistProps {
   onClose: () => void;
 }
 
-const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
+const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
@@ -67,7 +67,8 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">
-          Please enter the wallet address of the user and term index you want to add to the allowlist.
+          Please enter the wallet address of the user and term index you want to
+          add to the allowlist.
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField
@@ -109,4 +110,4 @@ const Allowlist: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default Allowlist;
+export default AllowlistPopUp;
