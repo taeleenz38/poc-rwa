@@ -50,10 +50,10 @@ const Pricing = () => {
         isOpen={isSetPriceOpen}
         onClose={() => setIsSetPriceOpen(false)}
       />
-      <UpdatePrice
+      {/* <UpdatePrice
         isOpen={isUpdatePriceOpen}
         onClose={() => setIsUpdatePriceOpen(false)}
-      />
+      /> */}
     </div>
   );
 };
