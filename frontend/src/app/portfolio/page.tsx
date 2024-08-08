@@ -7,6 +7,7 @@ import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
 import { useWriteContract } from "wagmi";
 import axios from "axios";
+import BeatLoader from "react-spinners/BeatLoader";
 
 type ClaimableToken = {
   user: string;
@@ -40,6 +41,10 @@ type Transaction = {
   transactionDate: string;
 };
 
+interface Item {
+  date: string;
+}
+
 const Portfolio = () => {
   const { address } = useAccount({
     config,
@@ -68,6 +73,7 @@ const Portfolio = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [transactionsPerPage] = useState(5);
+  const [price, setPrice] = useState<string | null>(null);
 
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
@@ -81,6 +87,7 @@ const Portfolio = () => {
   const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
     setCurrentPage(pageNumber);
   };
+  const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
 
   const formatBalance = (balanceData: any): number => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
@@ -89,11 +96,9 @@ const Portfolio = () => {
   const formattedAudcBalance = formatBalance(audcData);
   const formattedAyfBalance = formatBalance(ayfData);
 
-  const ayfPrice = 1.04;
   const audcPrice = 1.0;
-
-  const ayfMarketValue = formattedAyfBalance * ayfPrice;
   const audcMarketValue = formattedAudcBalance * audcPrice;
+
   useEffect(() => {
     const fetchClaimableTokens = async () => {
       try {
@@ -188,6 +193,38 @@ const Portfolio = () => {
     fetchTransactions();
   }, [address]);
 
+  useEffect(() => {
+    const fetchPriceId = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("price data", data);
+
+        // Find the latest price based on the date
+        const latestPrice = data.sort(
+          (a: Item, b: Item) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+        )[0];
+
+        // Update the state with the latest price
+        setPrice(latestPrice ? latestPrice.price : "N/A");
+      } catch (error) {
+        console.error("Error fetching price ID:", error);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchPriceId();
+  }, []);
+
+  const parsedPrice = price !== null ? parseFloat(price) : 0;
+  const ayfMarketValue = formattedAyfBalance * parsedPrice;
+
   return (
     <>
       <div className="min-h-screen w-full flex flex-col text-primary root-container">
@@ -225,88 +262,121 @@ const Portfolio = () => {
                 Holdings
               </h2>
               <div className="overflow-x-auto">
-                {isFetching ? (
-                  <p>Loading holdings...</p>
-                ) : (
-                  <table className="table w-full">
-                    <thead className="text-primary bg-[#F5F2F2]">
+                <table className="table w-full">
+                  <thead className="text-primary bg-[#F5F2F2]">
+                    <tr className="border-none">
+                      <th>Token</th>
+                      <th>Token Price AUD</th>
+                      <th>Position</th>
+                      <th>Market Value - AUD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isFetching ? (
                       <tr className="border-none">
-                        <th>Token</th>
-                        <th>Price AUD</th>
-                        <th>Amount</th>
-                        <th>Market Value - AUD</th>
+                        <td colSpan={4} className="text-center py-4">
+                          <div className="flex justify-center">
+                            <BeatLoader size={8} />
+                          </div>{" "}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-gray">
-                        <td>Copiam Money Market Fund AYF</td>
-                        <td>$1.04</td>
-                        <td>{formattedAyfBalance}</td>
-                        <td>${ayfMarketValue.toFixed(2)}</td>
-                      </tr>
-                      <tr className="border-b border-gray">
-                        <td>Stablecoin AUDC</td>
-                        <td>$1.00</td>
-                        <td>{formattedAudcBalance}</td>
-                        <td>${audcMarketValue.toFixed(2)}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                )}
+                    ) : (
+                      <>
+                        <tr className="border-b border-gray">
+                          <td>Copiam Money Market Fund AYF</td>
+                          <td>${formattedPrice}</td>
+                          <td>{formattedAyfBalance.toFixed(1)}</td>
+                          <td>${ayfMarketValue.toFixed(2)}</td>
+                        </tr>
+                        <tr className="border-b border-gray">
+                          <td>Stablecoin AUDC</td>
+                          <td>$1.00</td>
+                          <td>{formattedAudcBalance.toFixed(1)}</td>
+                          <td>${audcMarketValue.toFixed(2)}</td>
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 Transactions
               </h2>
-              {isFetchingTransactions ? (
-                <p>Loading transactions...</p>
-              ) : (
-                <>
-                  <div className="overflow-x-auto">
-                    <table className="table w-full">
-                      <thead className="text-primary bg-[#F5F2F2] border-none">
-                        <tr className="border-none">
-                          <th>Token</th>
-                          <th>Status</th>
-                          <th>Type</th>
-                          <th>Date</th>
-                          <th>Token Price AUD</th>
-                          <th>Token Amount</th>
-                          <th>Value AUD</th>
+
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead className="text-primary bg-[#F5F2F2] border-none">
+                    <tr className="border-none">
+                      <th>Token</th>
+                      <th>Status</th>
+                      <th>Type</th>
+                      <th>Date</th>
+                      <th>Token Price AUD</th>
+                      <th>Token Amount</th>
+                      <th>Value AUD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isFetchingTransactions ? (
+                      <tr className="border-none">
+                        <td colSpan={9} className="text-center py-4">
+                          <div className="flex justify-center">
+                            <BeatLoader size={8} />
+                          </div>
+                        </td>
+                      </tr>
+                    ) : currentTransactions.length > 0 ? (
+                      currentTransactions.map((transaction, index) => (
+                        <tr key={index} className="border-b border-gray">
+                          <td>Copiam Money Market Fund AYF</td>
+                          <td>{transaction.status}</td>
+                          <td>{transaction.type}</td>
+                          <td>{transaction.transactionDate}</td>
+                          <td>
+                            {transaction.price
+                              ? `$${parseFloat(transaction.price).toFixed(2)}`
+                              : ""}
+                          </td>{" "}
+                          <td>{transaction.tokenAmount}</td>
+                          <td>
+                            {" "}
+                            ${parseFloat(transaction.stableAmount).toFixed(2)}
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {currentTransactions.map((transaction, index) => (
-                          <tr className="border-b border-gray" key={index}>
-                            <td>Copiam Money Market Fund AYF</td>
-                            <td>{transaction.status}</td>
-                            <td>{transaction.type}</td>
-                            <td>{transaction.transactionDate}</td>
-                            <td>{transaction.price}</td>
-                            <td>{transaction.tokenAmount}</td>
-                            <td>{transaction.stableAmount}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="flex justify-between items-center mt-4">
+                      ))
+                    ) : (
+                      <tr className="border-none">
+                        <td colSpan={9} className="text-center py-4">
+                          No transactions found
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              {currentTransactions.length > 0 ? (
+                <div className="flex justify-between items-center mt-4">
+                  {currentPage > 1 ? (
                     <Button
                       onClick={() => handlePageChange(currentPage - 1)}
                       text="Previous"
-                      disabled={currentPage === 1}
                     />
-                    <span>
-                      {currentPage} of {totalPages}
-                    </span>
-                    <Button
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      text="Next"
-                      disabled={currentPage === totalPages}
-                    />
-                  </div>
-                </>
+                  ) : (
+                    <div className="w-24"></div>
+                  )}
+                  <span>
+                    {currentPage} of {totalPages}
+                  </span>
+                  <Button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    text="Next"
+                    disabled={currentPage === totalPages}
+                  />
+                </div>
+              ) : (
+                ""
               )}
             </div>
           </div>
@@ -317,22 +387,34 @@ const Portfolio = () => {
                 <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                   Pending AYF Tokens
                 </h2>
-                {isFetching ? (
-                  <p>Loading claimable tokens...</p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="table w-full">
-                      <thead className="text-primary bg-[#F5F2F2] border-none">
+                <div className="overflow-x-auto">
+                  <table className="table w-full">
+                    <thead className="text-primary bg-[#F5F2F2] border-none">
+                      <tr className="border-none">
+                        <th>Deposit Amount After Fee</th>
+                        <th>Fee Amount</th>
+                        <th>Request Date</th>
+                        <th>Claimable Amount</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {isFetching ? (
                         <tr className="border-none">
-                          <th>Deposit Amount After Fee</th>
-                          <th>Fee Amount</th>
-                          <th>Request Date</th>
-                          <th>Claimable Amount</th>
-                          <th>Actions</th>
+                          <td colSpan={5} className="py-4">
+                            <div className="flex justify-center">
+                              <BeatLoader size={8} />
+                            </div>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {claimableTokens.map((token) => {
+                      ) : claimableTokens.length === 0 ? (
+                        <tr className="border-none">
+                          <td colSpan={5} className="text-center py-4">
+                            No claimable tokens found
+                          </td>
+                        </tr>
+                      ) : (
+                        claimableTokens.map((token) => {
                           const isClaimable =
                             Date.now() / 1000 >= token.claimTimestampFromChain;
                           return (
@@ -358,30 +440,50 @@ const Portfolio = () => {
                               </td>
                             </tr>
                           );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
               <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
                 <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                   Claimable AUDC Tokens
                 </h2>
-                {isFetchingAUDC ? (
-                  <p>Loading claimable AUDC tokens...</p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="table w-full">
-                      <thead className="text-primary bg-[#F5F2F2] border-none">
-                        <tr className="border-none">
-                          <th className="flex-1">Redeem Amount</th>
-                          <th className="flex-1">Claimable Amount</th>
-                          <th className="flex-1">Actions</th>
+
+                <div className="overflow-x-auto">
+                  <table className="table w-full">
+                    <thead className="text-primary bg-[#F5F2F2] border-none">
+                      <tr className="border-none">
+                        <th className="flex-1">Redeem Amount</th>
+                        <th className="flex-1">Claimable Amount</th>
+                        <th className="flex-1">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {isFetchingAUDC ? (
+                        <tr>
+                          <td
+                            colSpan={3}
+                            className="text-center py-4 border-none"
+                          >
+                            <div className="flex justify-center">
+                              <BeatLoader size={8} />
+                            </div>{" "}
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {claimableAUDCTokens.map((token) => (
+                      ) : claimableAUDCTokens.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={3}
+                            className="text-center py-4 border-none"
+                          >
+                            No redeemable tokens found
+                          </td>
+                        </tr>
+                      ) : (
+                        claimableAUDCTokens.map((token) => (
                           <tr
                             className="border-b border-gray"
                             key={token.redemptionId}
@@ -405,11 +507,11 @@ const Portfolio = () => {
                               />
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
