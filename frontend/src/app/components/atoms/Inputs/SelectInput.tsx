@@ -16,10 +16,15 @@ const SelectField: React.FC<SelectFieldProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`flex items-center w-full mb-5 ${className}`}>
-      <label className="block font-semibold w-48">{label}</label>
+    <div className="relative flex w-1/2 items-center mb-5 border border-gray/70 rounded-md">
+      <label
+        htmlFor={label}
+        className="absolute -top-3 left-2 bg-white px-1 text-sm text-gray/50"
+      >
+        {label}
+      </label>
       <select
-        className="border-1 p-2 rounded-lg bg-gray shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-primary text-primary"
+        className="p-3 block w-full mr-1 text-xs rounded-md  focus:outline-none focus:ring-0 focus:border-blue-500 text-gray/90"
         value={value.toString()}
         onChange={onChange}
       >
