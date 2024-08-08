@@ -7,7 +7,8 @@ import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
 import { useWriteContract } from "wagmi";
 import axios from "axios";
-import BeatLoader from "react-spinners/BeatLoader";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type ClaimableToken = {
   user: string;
@@ -87,6 +88,14 @@ const Portfolio = () => {
   const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
     setCurrentPage(pageNumber);
   };
+
+  const formatDate = (dateString: string | number | Date) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString("en-UK");
+    const formattedTime = date.toLocaleTimeString("en-UK");
+    return `${formattedDate} ${formattedTime}`;
+  };
+
   const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
 
   const formatBalance = (balanceData: any): number => {
@@ -256,7 +265,7 @@ const Portfolio = () => {
         </div>
 
         <div className="border border-gray">
-          <div className="flex flex-col gap-y-4 w-full">
+          <div className="flex flex-col gap-y-4 w-full px-4">
             <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 Holdings
@@ -275,9 +284,7 @@ const Portfolio = () => {
                     {isFetching ? (
                       <tr className="border-none">
                         <td colSpan={4} className="text-center py-4">
-                          <div className="flex justify-center">
-                            <BeatLoader size={8} />
-                          </div>{" "}
+                          <Skeleton height={26} className="w-full" />
                         </td>
                       </tr>
                     ) : (
@@ -295,6 +302,131 @@ const Portfolio = () => {
                           <td>${audcMarketValue.toFixed(2)}</td>
                         </tr>
                       </>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+                Pending AYF Tokens
+              </h2>
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead className="text-primary bg-[#F5F2F2] border-none">
+                    <tr className="border-none">
+                      <th>Deposit Amount After Fee</th>
+                      <th>Fee Amount</th>
+                      <th>Request Date</th>
+                      <th>Claimable Amount</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isFetching ? (
+                      <tr className="border-none">
+                        <td colSpan={5} className="py-4">
+                          <Skeleton height={26} className="w-full" />
+                        </td>
+                      </tr>
+                    ) : claimableTokens.length === 0 ? (
+                      <tr className="border-none">
+                        <td colSpan={5} className="text-center py-4">
+                          No pending requests found
+                        </td>
+                      </tr>
+                    ) : (
+                      claimableTokens.map((token) => {
+                        const isClaimable =
+                          Date.now() / 1000 >= token.claimTimestampFromChain;
+                        return (
+                          <tr
+                            className="border-b border-gray"
+                            key={token.depositId}
+                          >
+                            <td>{token.depositAmountAfterFee} AUDC</td>
+                            <td>{token.feeAmount} AUDC</td>
+                            <td>{formatDate(token.claimTimestamp)}</td>
+                            <td>{token.claimableAmount || 0} AYF</td>
+                            <td>
+                              <Button
+                                text="Claim"
+                                className={`py-2 ${
+                                  isClaimable
+                                    ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                                    : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                                }`}
+                                onClick={() => claimMint(token.depositId)}
+                                disabled={!isClaimable}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+                Claimable AUDC Tokens
+              </h2>
+
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead className="text-primary bg-[#F5F2F2] border-none">
+                    <tr className="border-none">
+                      <th className="flex-1">Redeem Amount</th>
+                      <th className="flex-1">Claimable Amount</th>
+                      <th className="flex-1">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isFetchingAUDC ? (
+                      <tr className="border-none">
+                        <td
+                          colSpan={3}
+                          className="text-center py-4 border-none"
+                        >
+                          <Skeleton height={26} className="w-full" />
+                        </td>
+                      </tr>
+                    ) : claimableAUDCTokens.length === 0 ? (
+                      <tr className="border-none">
+                        <td
+                          colSpan={3}
+                          className="text-center py-4 border-none"
+                        >
+                          No claimable tokens found
+                        </td>
+                      </tr>
+                    ) : (
+                      claimableAUDCTokens.map((token) => (
+                        <tr
+                          className="border-b border-gray"
+                          key={token.redemptionId}
+                        >
+                          <td className="flex-1">{token.rwaAmountIn} AYF</td>
+                          <td className="flex-1">{token.redeemAmount} AUDC</td>
+                          <td className="flex-1">
+                            <Button
+                              text="Claim"
+                              className={`py-2 ${
+                                true
+                                  ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                                  : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                              }`}
+                              onClick={() =>
+                                claimRedemption(token.redemptionId)
+                              }
+                              disabled={false}
+                            />
+                          </td>
+                        </tr>
+                      ))
                     )}
                   </tbody>
                 </table>
@@ -322,9 +454,7 @@ const Portfolio = () => {
                     {isFetchingTransactions ? (
                       <tr className="border-none">
                         <td colSpan={9} className="text-center py-4">
-                          <div className="flex justify-center">
-                            <BeatLoader size={8} />
-                          </div>
+                          <Skeleton height={26} className="w-full" />
                         </td>
                       </tr>
                     ) : currentTransactions.length > 0 ? (
@@ -333,16 +463,19 @@ const Portfolio = () => {
                           <td>Copiam Money Market Fund AYF</td>
                           <td>{transaction.status}</td>
                           <td>{transaction.type}</td>
-                          <td>{transaction.transactionDate}</td>
+                          <td>{formatDate(transaction.transactionDate)}</td>
                           <td>
                             {transaction.price
                               ? `$${parseFloat(transaction.price).toFixed(2)}`
                               : ""}
-                          </td>{" "}
+                          </td>
                           <td>{transaction.tokenAmount}</td>
                           <td>
-                            {" "}
-                            ${parseFloat(transaction.stableAmount).toFixed(2)}
+                            {transaction.stableAmount
+                              ? `$${parseFloat(
+                                  transaction.stableAmount
+                                ).toFixed(2)}`
+                              : ""}
                           </td>
                         </tr>
                       ))
@@ -356,163 +489,33 @@ const Portfolio = () => {
                   </tbody>
                 </table>
               </div>
-              {currentTransactions.length > 0 ? (
+              {!isFetchingTransactions && totalPages > 1 && (
                 <div className="flex justify-between items-center mt-4">
-                  {currentPage > 1 ? (
-                    <Button
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      text="Previous"
-                    />
-                  ) : (
-                    <div className="w-24"></div>
-                  )}
+                  <Button
+                    className={`btn-sm items-center flex justify-center ${
+                      currentPage === 1
+                        ? "bg-[#d9d9d9] cursor-default"
+                        : "btn-ghost"
+                    }`}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    text="Previous"
+                    disabled={currentPage === 1}
+                  />
                   <span>
                     {currentPage} of {totalPages}
                   </span>
                   <Button
+                    className={`btn-sm items-center flex justify-center ${
+                      currentPage === totalPages
+                        ? "bg-[#d9d9d9] cursor-default"
+                        : "btn-ghost"
+                    }`}
                     onClick={() => handlePageChange(currentPage + 1)}
                     text="Next"
                     disabled={currentPage === totalPages}
                   />
                 </div>
-              ) : (
-                ""
               )}
-            </div>
-          </div>
-
-          <div className="flex flex-col mt-8 gap-4">
-            <div className="flex flex-col gap-y-4 w-full">
-              <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
-                <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
-                  Pending AYF Tokens
-                </h2>
-                <div className="overflow-x-auto">
-                  <table className="table w-full">
-                    <thead className="text-primary bg-[#F5F2F2] border-none">
-                      <tr className="border-none">
-                        <th>Deposit Amount After Fee</th>
-                        <th>Fee Amount</th>
-                        <th>Request Date</th>
-                        <th>Claimable Amount</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {isFetching ? (
-                        <tr className="border-none">
-                          <td colSpan={5} className="py-4">
-                            <div className="flex justify-center">
-                              <BeatLoader size={8} />
-                            </div>
-                          </td>
-                        </tr>
-                      ) : claimableTokens.length === 0 ? (
-                        <tr className="border-none">
-                          <td colSpan={5} className="text-center py-4">
-                            No claimable tokens found
-                          </td>
-                        </tr>
-                      ) : (
-                        claimableTokens.map((token) => {
-                          const isClaimable =
-                            Date.now() / 1000 >= token.claimTimestampFromChain;
-                          return (
-                            <tr
-                              className="border-b border-gray"
-                              key={token.depositId}
-                            >
-                              <td>{token.depositAmountAfterFee} AUDC</td>
-                              <td>{token.feeAmount} AUDC</td>
-                              <td>{token.claimTimestamp}</td>
-                              <td>{token.claimableAmount || 0} AYF</td>
-                              <td>
-                                <Button
-                                  text="Claim"
-                                  className={`py-2 ${
-                                    isClaimable
-                                      ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                                      : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                                  }`}
-                                  onClick={() => claimMint(token.depositId)}
-                                  disabled={!isClaimable}
-                                />
-                              </td>
-                            </tr>
-                          );
-                        })
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
-                <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
-                  Claimable AUDC Tokens
-                </h2>
-
-                <div className="overflow-x-auto">
-                  <table className="table w-full">
-                    <thead className="text-primary bg-[#F5F2F2] border-none">
-                      <tr className="border-none">
-                        <th className="flex-1">Redeem Amount</th>
-                        <th className="flex-1">Claimable Amount</th>
-                        <th className="flex-1">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {isFetchingAUDC ? (
-                        <tr>
-                          <td
-                            colSpan={3}
-                            className="text-center py-4 border-none"
-                          >
-                            <div className="flex justify-center">
-                              <BeatLoader size={8} />
-                            </div>{" "}
-                          </td>
-                        </tr>
-                      ) : claimableAUDCTokens.length === 0 ? (
-                        <tr>
-                          <td
-                            colSpan={3}
-                            className="text-center py-4 border-none"
-                          >
-                            No redeemable tokens found
-                          </td>
-                        </tr>
-                      ) : (
-                        claimableAUDCTokens.map((token) => (
-                          <tr
-                            className="border-b border-gray"
-                            key={token.redemptionId}
-                          >
-                            <td className="flex-1">{token.rwaAmountIn} AYF</td>
-                            <td className="flex-1">
-                              {token.redeemAmount} AUDC
-                            </td>
-                            <td className="flex-1">
-                              <Button
-                                text="Claim"
-                                className={`py-2 ${
-                                  true
-                                    ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                                    : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                                }`}
-                                onClick={() =>
-                                  claimRedemption(token.redemptionId)
-                                }
-                                disabled={false}
-                              />
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
           </div>
         </div>
