@@ -1,33 +1,37 @@
 "use client";
 import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
-import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
-import {
-  useWriteContract,
-  useSignMessage,
-  useWaitForTransactionReceipt,
-} from "wagmi";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
 interface SetClaimTimestampProps {
   isOpen: boolean;
   onClose: () => void;
+  depositId?: string;
 }
 
 const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
   isOpen,
   onClose,
+  depositId = "",
 }) => {
-  const [depositId, setDepositId] = useState<string>("");
-  const [timeStamp, setTimeStamp] = useState<number>(0);
+  const [localDepositId, setLocalDepositId] = useState<string>(depositId);
+  const [dateStamp, setDateStamp] = useState<string>("");
+  const [timeStamp, setTimeStamp] = useState<string>(""); // Use string for datetime input
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
 
+  useEffect(() => {
+    setLocalDepositId(depositId);
+  }, [depositId]);
+
   const resetForm = () => {
-    setDepositId("");
+    setLocalDepositId("");
+    setDateStamp("");
+    setTimeStamp("");
   };
 
   const onCloseModal = () => {
@@ -35,25 +39,26 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     resetForm();
   };
 
-  const onDepositIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositId(e.target.value);
+  const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateStamp(e.target.value);
   };
 
-  const onTimeStampChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTimeStamp(e.target.value ? Number(e.target.value) : 0);
+  const onTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTimeStamp(e.target.value);
   };
 
   const handleSetClaimTimestamp = async () => {
-    const depositIdFormatted = Number(depositId);
+    const depositIdFormatted = Number(localDepositId);
     const depositIdHexlified = ethers.utils.hexZeroPad(
       ethers.utils.hexlify(depositIdFormatted),
       32
     );
-    const currentTime = Math.floor(Date.now() / 1000);
-    const claimTimestampFormatted = BigNumber.from(
-      currentTime + Number(Number(timeStamp) / 60)
-    );
-    console.log(currentTime, claimTimestampFormatted);
+
+    const dateTimeString = `${dateStamp}T${timeStamp}`;
+    const dateTime = new Date(dateTimeString).getTime() / 1000;
+    const claimTimestampFormatted = BigNumber.from(dateTime);
+
+    console.log(dateTime, claimTimestampFormatted);
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
@@ -62,7 +67,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
         args: [claimTimestampFormatted, [depositIdHexlified]],
       });
       setTxHash(tx);
-      console.log("Price Id Successfully Set - transaction hash:", tx);
+      console.log("Claim Timestamp Successfully Set - transaction hash:", tx);
     } catch (error) {
       console.error("Error setting claimTimestamp:", error);
     }
@@ -72,30 +77,38 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     hash: txHash as `0x${string}`,
   });
 
+  const hexToDecimal = (hex: string): number => {
+    return parseInt(hex, 16);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-6 rounded-lg text-primary bg-light border-2 border-light shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-3xl font-bold">Set Claim Timestamp</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">
-          Please enter the Deposit ID for which you want to set a claim
-          timestamp.
+          Please select the date and time you want to set the claim timestamp
+          for.
         </div>
-        <div className="w-full text-center mx-auto mb-8">
-          <InputField
-            label="Deposit ID:"
-            value={depositId || ""}
-            onChange={onDepositIdChange}
+        <div className="w-4/5 mx-auto mb-8">
+          <label className="block text-lg mb-2 font-semibold">Date</label>
+          <input
+            type="date"
+            value={dateStamp}
+            onChange={onDateChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded"
           />
-          <InputField
-            label="Timestamp (minutes):"
-            value={timeStamp || ""}
-            onChange={onTimeStampChange}
+          <label className="block text-lg mb-2 mt-4 font-semibold">Time</label>
+          <input
+            type="time"
+            value={timeStamp}
+            onChange={onTimeChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded"
           />
         </div>
         <div className="w-full flex justify-between">
@@ -104,23 +117,23 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
               onClick={onCloseModal}
               label={"Go Back"}
               disabled={isPending || isLoading}
-              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
+              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-light hover:!bg-primary"
             />
           </div>
           <div className="w-[49%]">
             <Submit
               onClick={handleSetClaimTimestamp}
               label={isPending ? "Confirming..." : "Confirm"}
-              disabled={isPending || isLoading}
+              disabled={isPending || isLoading || !dateStamp || !timeStamp}
               className="w-full"
             />
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-white text-center">
+          <div className="mt-4 text-primary text-center">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
-              <p className="text-white overflow-x-scroll">
+              <p className="text-primary overflow-x-scroll">
                 Transaction successful! Hash: {txHash}
               </p>
             )}

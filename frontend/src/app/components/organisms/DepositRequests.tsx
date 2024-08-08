@@ -17,7 +17,6 @@ type DepositRequest = {
 };
 
 const ITEMS_PER_PAGE = 6;
-
 const DepositRequests = () => {
   const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
@@ -25,12 +24,19 @@ const DepositRequests = () => {
   const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [selectedDepositId, setSelectedDepositId] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedPriceId, setSelectedPriceId] = useState<string | undefined>(
+    undefined
+  );
   const handleButton1Click = () => {
     setIsSetClaimTimestampOpen(true);
   };
 
-  const handleButton2Click = () => {
+  const handleButton2Click = (depositId: string, priceId?: string) => {
+    setSelectedDepositId(depositId);
+    setSelectedPriceId(priceId || "");
     setIsSetPriceIdForDepositIdOpen(true);
   };
 
@@ -133,7 +139,12 @@ const DepositRequests = () => {
                         <Button
                           text="Set Price ID"
                           className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={handleButton2Click}
+                          onClick={() =>
+                            handleButton2Click(
+                              request.depositId,
+                              request.priceId
+                            )
+                          }
                         />
                       )}
                     </td>
@@ -165,19 +176,21 @@ const DepositRequests = () => {
             >
               Previous
             </button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                className={`mx-1 px-3 py-1 rounded ${
-                  currentPage === index + 1
-                    ? "bg-primary text-light"
-                    : "bg-light text-primary"
-                }`}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
+            <div>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  className={`mx-1 px-3 py-1 rounded ${
+                    currentPage === index + 1
+                      ? "bg-primary text-light"
+                      : "bg-light text-primary"
+                  }`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
             <button
               className={`mx-1 px-3 py-1 rounded ${
                 currentPage === totalPages
@@ -195,10 +208,12 @@ const DepositRequests = () => {
       <SetClaimTimestamp
         isOpen={isSetClaimTimestampOpen}
         onClose={() => setIsSetClaimTimestampOpen(false)}
+        depositId={selectedDepositId}
       />
       <SetPriceIdForDepositId
         isOpen={isSetPriceIdForDepositIdOpen}
         onClose={() => setIsSetPriceIdForDepositIdOpen(false)}
+        depositId={selectedDepositId}
       />
     </div>
   );

@@ -122,7 +122,7 @@ const RedemptionRequests = () => {
                     <td>
                       {request.requestedRedeemAmountAfterFee
                         ? `${request.requestedRedeemAmountAfterFee} AUDC`
-                        : "Pending Redemption"} 
+                        : "Pending Redemption"}
                     </td>
                     <td>
                       {request.priceId ? (
@@ -152,19 +152,21 @@ const RedemptionRequests = () => {
             >
               Previous
             </button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                className={`mx-1 px-3 py-1 rounded ${
-                  currentPage === index + 1
-                    ? "bg-primary text-light"
-                    : "bg-light text-primary"
-                }`}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
+            <div>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  className={`mx-1 px-3 py-1 rounded ${
+                    currentPage === index + 1
+                      ? "bg-primary text-light"
+                      : "bg-light text-primary"
+                  }`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
             <button
               className={`mx-1 px-3 py-1 rounded ${
                 currentPage === totalPages

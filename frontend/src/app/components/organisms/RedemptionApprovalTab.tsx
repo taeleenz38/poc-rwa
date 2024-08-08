@@ -19,7 +19,7 @@ const RedemptionApprovalTab = () => {
     useState<RedemptionList | null>(null);
 
   const handleRadioChange = (index: number) => {
-    setSelectedRedemption(index === selectedRedemption ? null : wallets[index]);
+    setSelectedRedemption(wallets[index]);
   };
 
   useEffect(() => {
