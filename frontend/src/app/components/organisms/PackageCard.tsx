@@ -72,6 +72,8 @@ export const PackageCard = (props: PackageCardProps) => {
         style={{
           backgroundImage,
           backgroundPosition: "left",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <div className="flex space-x-3">
