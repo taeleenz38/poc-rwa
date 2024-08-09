@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import TextField from "./TextInput";
 
 interface InputWithLabelProps {
   id: string;
@@ -25,21 +26,23 @@ const InputWithLabel: FC<InputWithLabelProps> = ({
   border,
   required = false,
 }) => (
-  <div className={`flex ${widthfull ? "w-full" : "w-2/3"} items-center mb-5 `}>
-    <label htmlFor={id} className="w-48 font-semibold">
-      {label}:
+  <div className="relative flex w-1/2 items-center mb-5 border border-gray/70 rounded-md">
+    <label
+      htmlFor={id}
+      className="absolute -top-3 left-2 bg-white px-1 text-sm text-gray/50"
+    >
+      {name}
     </label>
     <input
       type={type}
       id={id}
       name={name}
-      className={`mt-1 block w-full px-3 py-2 border font-semibold bg-gray border-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary ${
-        border && "border border-black"
-      }`}
-      placeholder={placeholder}
+      className="p-3 block w-full px-2 text-xs rounded-md  focus:outline-none focus:ring-0 focus:border-blue-500 text-gray/90"
+      // placeholder={placeholder}
       value={value}
       onChange={onChange}
-      required
+      required={required} // Uncomment if required
+      // disabled={disabled}
     />
   </div>
 );

@@ -8,23 +8,14 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  nextStep: () => void;
 };
 
 const dropBoxSignclient = new HelloSign({
   clientId: process.env.NEXT_PUBLIC_DROPBOX_SIGN_CLIENT_ID,
 });
 
-const VerificationPopup = ({
-  isOpen,
-  onClose,
-  id,
-  firstName,
-  lastName,
-  email,
-}: Props) => {
+const VerificationPopup = ({ isOpen, onClose, id, nextStep }: Props) => {
   const [status, setStatus] = useState<"Submitted" | "Init" | "Done">(
     "Submitted"
   );
@@ -53,46 +44,6 @@ const VerificationPopup = ({
     }
   };
 
-  const sendSignRequest = async () => {
-    const requestData = {
-      firstName,
-      lastName,
-      email,
-    };
-
-    try {
-      const response = await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_API + "/contract-sign-embd/sign",
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Sign request sent successfully:", response.data);
-
-      if (response.data.signUrl) {
-        dropBoxSignclient.open(response.data.signUrl, {
-          skipDomainVerification: true,
-        });
-
-        dropBoxSignclient.once("sign", (data) => {
-          onCloseModal();
-        });
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Error sending sign request:",
-          error.response?.data || error.message
-        );
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
-
   const getDocumentStatus = async (email: string) => {
     try {
       const documentStatusUrl = `${process.env.NEXT_PUBLIC_BACKEND_API}/contract-sign/status?email=${email}`;
@@ -112,21 +63,20 @@ const VerificationPopup = ({
 
   const onCloseModal = () => {
     onClose();
+    nextStep();
   };
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-2/5">
-        <div className="flex justify-between items-center mb-8 w-full relative">
-          <h2 className="text-3xl text-white font-bold flex-grow text-center">
-            Verification
+    <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center ">
+      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3 transform scale-0 animate-zoomIn duration-1000">
+        <div className="flex justify-between items-center mb-8 border-b pb-3">
+          <h2 className="text-xl text-white font-bold w-full text-center">
+            Verification Has Been Submitted
           </h2>
-          <div className="absolute right-0">
-            <CloseButton onClick={onCloseModal} />
-          </div>
+          <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="flex flex-col text-center px-8 text-xl mb-4 font-medium gap-5">
+        <div className="flex flex-col justify-center items-center gap-4">
           {/* <span>Please </span> */}
           <span>
             {" "}
@@ -134,31 +84,23 @@ const VerificationPopup = ({
               ? "You have been verified !"
               : status === "Init"
               ? "Verification is being proccessed. Try Again !"
-              : isDocumentSigned
-              ? ""
               : ""}
           </span>
           {status === "Done" ? (
-            <div className="w-full flex items-center justify-center">
+            <>
               <Button
-                text={"Sign Document"}
-                onClick={sendSignRequest}
-                className="!bg-[#e6e6e6] !text-primary hover:!text-secondary w-fit items-center justify-center"
+                text={"Done"}
+                onClick={() => {
+                  onCloseModal();
+                }}
               />
-              {/* <span>
-                {isDocumentSigned
-                  ? "Documents have been signed!"
-                  : "Waiting for document signing to be signed..."}
-              </span> */}
-            </div>
+            </>
           ) : (
-            <div className="w-full flex items-center justify-center">
-              <Button
-                text={` ${isLoading ? "Checking Status..." : "Check Status"}`}
-                onClick={getStatus}
-                className="!bg-[#e6e6e6] !text-primary hover:!text-secondary w-fit items-center"
-              />
-            </div>
+            <Button
+              text={` ${isLoading ? "Checking Status..." : "Get Verified"}`}
+              onClick={getStatus}
+              className="bg-white text-black"
+            />
           )}
         </div>
       </div>
