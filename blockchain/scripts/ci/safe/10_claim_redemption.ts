@@ -24,7 +24,7 @@ async function main() {
   console.log("allowlist==>", allowlist.address);
   console.log("abby==>", abby.address);
 
-  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(2), 32);
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
 
   // Current gas price (in wei)
   let gasPrice = await ethers.provider.getGasPrice();
