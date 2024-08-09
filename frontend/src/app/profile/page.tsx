@@ -12,7 +12,7 @@ interface UserDetails {
   idNumber: string;
   idExpiry: string;
   country: string;
-  birthDate: string;
+  birthdate: string;
   walletAddress: string;
 }
 
@@ -116,7 +116,7 @@ const Page = () => {
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold">Date of Birth</div>
-                    <div>{userDetails?.birthDate}</div>
+                    <div>{userDetails?.birthdate}</div>
                   </div>
                 </div>
               )}
@@ -194,7 +194,7 @@ const Page = () => {
 
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                       <div className="font-semibold">Date of Birth</div>
-                      <div className="">{userDetails?.birthDate}</div>
+                      <div className="">{userDetails?.birthdate}</div>
                     </div>
                   </div>
                 )}
