@@ -27,8 +27,6 @@ export class DropBoxEmbeddedSignService {
 
     public async signEmbedded(signRequest: SignRequestDto): Promise<EmbeddedSignDataDto> {
 
-        this.generatePDFToSign(signRequest)
-
         const doc = await this.docService.findDocByEmail(signRequest.email);
         if (process.env.SIGN_DOC_FILE_TEST_MODE === 'false' && doc.status === DocumentStatus.SIGN_COMPLETED) {
             throw new NotAcceptableException('The requested document has already been signed!');

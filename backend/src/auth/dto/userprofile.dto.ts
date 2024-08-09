@@ -7,4 +7,16 @@ export class UserProfileDto {
     firstName: string;
 
     lastName: string;
+
+    walletAddress: string;
+
+    country: string;
+
+    birthdate: Date;
+
+    idDocument: string;
+
+    idNumber: string;
+
+    idExpiry: Date;
 }
