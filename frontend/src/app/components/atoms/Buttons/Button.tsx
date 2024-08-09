@@ -12,7 +12,6 @@ const Button: React.FC<ButtonProps> = ({
   text,
   className,
   onClick,
-
   disabled,
 }) => {
   return (

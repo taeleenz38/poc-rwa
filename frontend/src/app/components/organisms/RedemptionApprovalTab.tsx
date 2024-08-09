@@ -33,7 +33,7 @@ const RedemptionApprovalTab = () => {
       } catch (error) {
         console.error("Error fetching wallets:", error);
       } finally {
-        setIsLoading(false);
+        setIsLoading(true);
       }
     };
 
@@ -65,8 +65,18 @@ const RedemptionApprovalTab = () => {
           <Button
             text={"Approve Redemption Request"}
             onClick={() => setApproveRedeem(true)}
-            className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+            className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
+              !selectedRedemption && "bg-white text-primary cursor-not-allowed"
+            }`}
             disabled={!selectedRedemption}
+          />
+          <Button
+            text={"Reject Redemption Request"}
+            onClick={() => ""}
+            className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
+              true && "bg-white text-primary cursor-not-allowed"
+            }`}
+            disabled={true}
           />
         </div>
 

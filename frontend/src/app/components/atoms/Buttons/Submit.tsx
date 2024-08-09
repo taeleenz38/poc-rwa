@@ -15,9 +15,9 @@ const Submit: React.FC<SubmitProps> = ({
 }) => {
   return (
     <button
-      className={`p-2 w-44 duration-200 font-semibold rounded-md ${
+      className={`p-2 w-44 duration-200 font-semibold rounded-md shadow-md ${
         disabled
-          ? "bg-gray text-white cursor-not-allowed"
+          ? "bg-white text-primary cursor-not-allowed"
           : "bg-primary text-light hover:border-primary hover:text-secondary"
       } ${className}`}
       onClick={onClick}

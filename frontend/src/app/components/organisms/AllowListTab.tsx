@@ -95,7 +95,7 @@ const AllowlistTab = () => {
               selectedAllowListIndex === null
                 ? `bg-gray/20 text-primary`
                 : "bg-primary text-light hover:bg-light hover:text-primary"
-            }  py-2  rounded-md`}
+            }  py-2 rounded-md`}
             disabled={selectedAllowListIndex === null}
           />
         </div>
