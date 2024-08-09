@@ -29,7 +29,8 @@ const RedemptionRequests = () => {
     useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (redemptionId: string) => {
+    setSelectedRedemptionId(redemptionId);
     setIsSetPriceIdForRedemptionIdOpen(true);
   };
 
@@ -134,7 +135,9 @@ const RedemptionRequests = () => {
                         <Button
                           text="Set Price ID"
                           className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={handleButtonClick}
+                          onClick={() =>
+                            handleButtonClick(request.redemptionId)
+                          }
                         />
                       )}
                     </td>

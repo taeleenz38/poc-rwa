@@ -43,7 +43,8 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
         );
-        setPrices(response.data.slice(0, 4));
+        const lastFourPrices = response.data.reverse().slice(0, 4);
+        setPrices(lastFourPrices);
       } catch (error) {
         console.error("Error fetching prices:", error);
       }
@@ -51,7 +52,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
 
     fetchPrices();
   }, []);
-
+  
   const resetForm = () => {
     setSelectedPriceId(null);
   };
@@ -109,7 +110,9 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold text-primary">Set Price ID For Deposit ID</h2>
+          <h2 className="text-3xl font-bold text-primary">
+            Set Price ID For Deposit ID
+          </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">

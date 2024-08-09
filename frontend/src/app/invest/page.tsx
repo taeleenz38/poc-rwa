@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import FundDetails from "@/app/components/organisms/FundDetails";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription from "@/app/components/organisms/FundDescription";
@@ -13,7 +15,13 @@ import {
   LiquidIcon,
 } from "@/app/components/atoms/Icons";
 
+interface Item {
+  date: string;
+}
+
 const Invest = () => {
+  const [isFetching, setIsFetching] = useState(true);
+  const [price, setPrice] = useState<string | null>(null);
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);
   const [isRedeemOpen, setIsRedeemOpen] = React.useState(false);
   const handleButton1Click = () => {
@@ -24,6 +32,37 @@ const Invest = () => {
     setIsRedeemOpen(true);
   };
 
+  useEffect(() => {
+    const fetchPriceId = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("price data", data);
+
+        // Find the latest price based on the date
+        const latestPrice = data.sort(
+          (a: Item, b: Item) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+        )[0];
+
+        // Update the state with the latest price
+        setPrice(latestPrice ? latestPrice.price : "N/A");
+      } catch (error) {
+        console.error("Error fetching price ID:", error);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchPriceId();
+  }, []);
+
+  const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
+
   return (
     <div>
       <FundDetails2
@@ -32,7 +71,7 @@ const Invest = () => {
         fundName="AYF"
         fundDescription="Copiam Australian Yield Fund"
         yieldText="Stable, high-quality Australian Yield Fund"
-        price="$1.0445"
+        price={formattedPrice}
         tvl="$327.50M"
         Button1Text="Buy AYF"
         Button2Text="Redeem"
