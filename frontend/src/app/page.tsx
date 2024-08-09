@@ -79,35 +79,38 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const calculateTVL = () => {
-      if (totalSupply && price) {
-        try {
-          let totalSupplyNormal;
-          // Handle BigInt case
-          if (typeof totalSupply === "bigint") {
-            const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
-            totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
-          } else if (BigNumber.isBigNumber(totalSupply)) {
-            totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-          } else {
-            console.error("Invalid totalSupply format:", totalSupply);
-            return;
+    try {
+      const calculateTVL = () => {
+        if (totalSupply && price) {
+          try {
+            let totalSupplyNormal;
+            if (typeof totalSupply === "bigint") {
+              const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
+              totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
+            } else if (BigNumber.isBigNumber(totalSupply)) {
+              totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
+            } else {
+              console.error("Invalid totalSupply format:", totalSupply);
+              return;
+            }
+
+            const tvlValue = (
+              parseFloat(totalSupplyNormal) * parseFloat(price)
+            ).toFixed(2);
+
+            setTvl(tvlValue);
+            console.log("Total Supply:", totalSupply);
+            console.log("Price:", price);
+          } catch (error) {
+            console.error("Error calculating TVL:", error);
           }
-
-          const tvlValue = (
-            parseFloat(totalSupplyNormal) * parseFloat(price)
-          ).toFixed(2);
-
-          setTvl(tvlValue);
-          console.log("Total Supply:", totalSupply);
-          console.log("Price:", price);
-        } catch (error) {
-          console.error("Error calculating TVL:", error);
         }
-      }
-    };
+      };
 
-    calculateTVL();
+      calculateTVL();
+    } catch (error) {
+      console.error("Error in useEffect:", error);
+    }
   }, [totalSupply, price]);
 
   return (
