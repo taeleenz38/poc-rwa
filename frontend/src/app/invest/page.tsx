@@ -1,23 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { config } from "@/config";
-import FundDetails from "@/app/components/organisms/FundDetails";
+import abi from "@/artifacts/ABBY.json";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription from "@/app/components/organisms/FundDescription";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
-import {
-  BaseIcon,
-  EthIcon,
-  SolanaIcon,
-  MoonbeamIcon,
-  LiquidIcon,
-} from "@/app/components/atoms/Icons";
+import { EthIcon } from "@/app/components/atoms/Icons";
+import { BigNumber, ethers } from "ethers";
 
 interface Item {
   date: string;
+  price: string;
 }
 
 const Invest = () => {
@@ -28,6 +23,8 @@ const Invest = () => {
   const [price, setPrice] = useState<string | null>(null);
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);
   const [isRedeemOpen, setIsRedeemOpen] = React.useState(false);
+  const [tvl, setTvl] = useState<string>("0");
+
   const handleButton1Click = () => {
     setIsBuyOpen(true);
   };
@@ -55,7 +52,7 @@ const Invest = () => {
         )[0];
 
         // Update the state with the latest price
-        setPrice(latestPrice ? latestPrice.price : "Loading Price...");
+        setPrice(latestPrice ? latestPrice.price : "0");
       } catch (error) {
         console.error("Error fetching price ID:", error);
       } finally {
@@ -65,7 +62,40 @@ const Invest = () => {
     fetchPriceId();
   }, []);
 
-  const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
+  const formattedPrice = price ? parseFloat(price).toFixed(2) : "0";
+
+  const { data: totalSupply } = useReadContract({
+    abi: abi.abi,
+    address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    functionName: "totalSupply",
+  });
+
+  useEffect(() => {
+    const calculateTVL = () => {
+      if (totalSupply && price) {
+        try {
+          // Ensure totalSupply is a BigNumber
+          if (BigNumber.isBigNumber(totalSupply)) {
+            // Convert totalSupply from BigNumber to a normal number
+            const totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
+
+            // Calculate TVL
+            const tvlValue = (
+              parseFloat(totalSupplyNormal) * parseFloat(price)
+            ).toFixed(2);
+
+            setTvl(tvlValue);
+          } else {
+            console.error("Invalid totalSupply format");
+          }
+        } catch (error) {
+          console.error("Error calculating TVL:", error);
+        }
+      }
+    };
+
+    calculateTVL();
+  }, [totalSupply, price]);
 
   return (
     <div>
@@ -76,7 +106,7 @@ const Invest = () => {
         fundDescription="Copiam Australian Yield Fund"
         yieldText="Stable, high-quality Australian Yield Fund"
         price={formattedPrice}
-        tvl="$327.50M"
+        tvl={tvl}
         Button1Text="Buy AYF"
         Button2Text="Redeem"
         Button1Class="bg-white text-primary hover:bg-primary hover:text-light"

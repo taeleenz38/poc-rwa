@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useAccount, useReadContract } from "wagmi";
+import abi from "@/artifacts/ABBY.json";
+import { config } from "@/config";
 import axios from "axios";
-
 import { IoArrowForwardSharp } from "react-icons/io5";
+import { BigNumber, ethers } from "ethers";
 
 interface Item {
   date: string;
@@ -22,6 +25,7 @@ type PackageCardProps = {
 
 export const PackageCard = (props: PackageCardProps) => {
   const [isFetching, setIsFetching] = useState(true);
+  const [tvl, setTvl] = useState<string>("0");
   const [price, setPrice] = useState<string | null>(null);
   const {
     href,
@@ -67,6 +71,39 @@ export const PackageCard = (props: PackageCardProps) => {
     ? parseFloat(price).toFixed(2)
     : "Loading Price...";
 
+  const { data: totalSupply } = useReadContract({
+    abi: abi.abi,
+    address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    functionName: "totalSupply",
+  });
+
+  useEffect(() => {
+    const calculateTVL = () => {
+      if (totalSupply && price) {
+        try {
+          // Ensure totalSupply is a BigNumber
+          if (BigNumber.isBigNumber(totalSupply)) {
+            // Convert totalSupply from BigNumber to a normal number
+            const totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
+
+            // Calculate TVL
+            const tvlValue = (
+              parseFloat(totalSupplyNormal) * parseFloat(price)
+            ).toFixed(2);
+
+            setTvl(tvlValue);
+          } else {
+            console.error("Invalid totalSupply format");
+          }
+        } catch (error) {
+          console.error("Error calculating TVL:", error);
+        }
+      }
+    };
+
+    calculateTVL();
+  }, [totalSupply, price]);
+
   return (
     <Link href={href}>
       <div
@@ -98,7 +135,7 @@ export const PackageCard = (props: PackageCardProps) => {
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">
               <div className="bg-light rounded-full py-1.5 px-3 text-black flex justify-center items-center text-base">
-                <p>{TVL} TVL</p>
+                <p>{tvl} TVL</p>
               </div>
               <div className="bg-light rounded-full py-1.5 px-3 flex items-center">
                 {chains}
