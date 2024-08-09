@@ -30,7 +30,9 @@ const DepositRequests = () => {
   const [selectedPriceId, setSelectedPriceId] = useState<string | undefined>(
     undefined
   );
-  const handleButton1Click = () => {
+
+  const handleButton1Click = (depositId: string) => {
+    setSelectedDepositId(depositId);
     setIsSetClaimTimestampOpen(true);
   };
 
@@ -155,7 +157,7 @@ const DepositRequests = () => {
                         <Button
                           text="Set Claim Timestamp"
                           className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={handleButton1Click}
+                          onClick={() => handleButton1Click(request.depositId)}
                         />
                       )}
                     </td>

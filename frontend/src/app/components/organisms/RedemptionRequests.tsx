@@ -22,6 +22,9 @@ const RedemptionRequests = () => {
   const [redemptionRequests, setRedemptionRequests] = useState<
     RedemptionRequest[]
   >([]);
+  const [selectedRedemptionId, setSelectedRedemptionId] = useState<
+    string | undefined
+  >(undefined);
   const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
     useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -184,6 +187,7 @@ const RedemptionRequests = () => {
       <SetPriceIdForRedemptionId
         isOpen={isSetPriceIdForRedemptionIdOpen}
         onClose={() => setIsSetPriceIdForRedemptionIdOpen(false)}
+        redemptionId={selectedRedemptionId}
       />
     </div>
   );
