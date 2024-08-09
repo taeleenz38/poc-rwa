@@ -46,17 +46,21 @@ interface Item {
   date: string;
 }
 
+const formatNumber = (value: number, options?: Intl.NumberFormatOptions) => {
+  return new Intl.NumberFormat("en-US", options).format(value);
+};
+
 const Portfolio = () => {
   const { address } = useAccount({
     config,
   });
   const { writeContractAsync } = useWriteContract({ config });
 
-  const { data: audcData } = useBalance({
-    address,
-    token: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
-    config,
-  });
+  // const { data: audcData } = useBalance({
+  //   address,
+  //   token: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
+  //   config,
+  // });
 
   const { data: ayfData } = useBalance({
     address,
@@ -96,17 +100,18 @@ const Portfolio = () => {
     return `${formattedDate} ${formattedTime}`;
   };
 
-  const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
+  // const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
+  const formattedPrice = price ? parseFloat(price) : 0;
 
   const formatBalance = (balanceData: any): number => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
   };
 
-  const formattedAudcBalance = formatBalance(audcData);
+  // const formattedAudcBalance = formatBalance(audcData);
   const formattedAyfBalance = formatBalance(ayfData);
 
-  const audcPrice = 1.0;
-  const audcMarketValue = formattedAudcBalance * audcPrice;
+  // const audcPrice = 1.0;
+  // const audcMarketValue = formattedAudcBalance * audcPrice;
 
   useEffect(() => {
     const fetchClaimableTokens = async () => {
@@ -157,7 +162,6 @@ const Portfolio = () => {
         functionName: "claimMint",
         args: [[depositIdHexlified]],
       });
-      console.log("Claim Mint Successful! - transaction hash:", tx);
     } catch (error) {
       console.error("Error claiming tokens:", error);
     }
@@ -176,7 +180,6 @@ const Portfolio = () => {
         functionName: "claimRedemption",
         args: [[redemptionIdHexlified]],
       });
-      console.log("Claim Redemption Successful! - transaction hash:", tx);
     } catch (error) {
       console.error("Error claiming tokens:", error);
     }
@@ -191,7 +194,6 @@ const Portfolio = () => {
         const response = await axios.get(`api/transactionHistory`, {
           params: { address },
         });
-        console.log("transaction history:", response.data);
         setTransactions(response.data);
       } catch (error) {
         console.error("Error fetching transactions", error);
@@ -212,15 +214,12 @@ const Portfolio = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("price data", data);
 
-        // Find the latest price based on the date
         const latestPrice = data.sort(
           (a: Item, b: Item) =>
             new Date(b.date).getTime() - new Date(a.date).getTime()
         )[0];
 
-        // Update the state with the latest price
         setPrice(latestPrice ? latestPrice.price : "N/A");
       } catch (error) {
         console.error("Error fetching price ID:", error);
@@ -240,7 +239,7 @@ const Portfolio = () => {
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your portfolio
         </h1>
-        <h2 className="flex text-2xl font-normal items-center justify-start mb-4">
+        <h2 className="flex text-2xl font-normal items-center justify-start mb-2">
           Track and manage your portfolio
         </h2>
 
@@ -261,7 +260,11 @@ const Portfolio = () => {
                     </>
                   ) : (
                     <h3 className="text-2xl">
-                      ${(ayfMarketValue + audcMarketValue).toFixed(2)}
+                      {/* ${(ayfMarketValue + audcMarketValue).toFixed(2)} */}
+                      {formatNumber(formattedPrice * formattedAyfBalance, {
+                        style: "currency",
+                        currency: "AUD",
+                      })}
                     </h3>
                   )}
                 </>
@@ -296,17 +299,17 @@ const Portfolio = () => {
                     ) : (
                       <>
                         <tr className="border-b border-gray">
-                          <td>Copiam Money Market Fund AYF</td>
+                          <td>Copiam Australian Yield Fund</td>
                           <td>${formattedPrice}</td>
-                          <td>{formattedAyfBalance.toFixed(1)}</td>
-                          <td>${ayfMarketValue.toFixed(2)}</td>
+                          <td>{formatNumber(formattedAyfBalance)}</td>
+                          <td>${formatNumber(ayfMarketValue)}</td>
                         </tr>
-                        <tr className="border-b border-gray">
+                        {/* <tr className="border-b border-gray">
                           <td>Stablecoin AUDC</td>
                           <td>$1.00</td>
                           <td>{formattedAudcBalance.toFixed(1)}</td>
                           <td>${audcMarketValue.toFixed(2)}</td>
-                        </tr>
+                        </tr> */}
                       </>
                     )}
                   </tbody>
@@ -323,7 +326,7 @@ const Portfolio = () => {
                   <thead className="text-primary bg-[#F5F2F2] border-none">
                     <tr className="border-none">
                       <th>Deposit Amount After Fee</th>
-                      <th>Fee Amount</th>
+                      {/* <th>Fee Amount</th> */}
                       <th>Request Date</th>
                       <th>Claimable Amount</th>
                       <th>Actions</th>
@@ -352,7 +355,7 @@ const Portfolio = () => {
                             key={token.depositId}
                           >
                             <td>{token.depositAmountAfterFee} AUDC</td>
-                            <td>{token.feeAmount} AUDC</td>
+                            {/* <td>{token.feeAmount} AUDC</td> */}
                             <td>{formatDate(token.claimTimestamp)}</td>
                             <td>{token.claimableAmount || 0} AYF</td>
                             <td>
@@ -415,8 +418,18 @@ const Portfolio = () => {
                           className="border-b border-gray"
                           key={token.redemptionId}
                         >
-                          <td className="flex-1">{token.rwaAmountIn} AYF</td>
-                          <td className="flex-1">{token.redeemAmount} AUDC</td>
+                          <td className="flex-1">
+                            {formatNumber(
+                              token.rwaAmountIn as unknown as number
+                            )}{" "}
+                            AYF
+                          </td>
+                          <td className="flex-1">
+                            {formatNumber(
+                              token.redeemAmount as unknown as number
+                            )}{" "}
+                            AUDC
+                          </td>
                           <td className="flex-1">
                             <Button
                               text="Claim"
@@ -466,21 +479,31 @@ const Portfolio = () => {
                     ) : currentTransactions.length > 0 ? (
                       currentTransactions.map((transaction, index) => (
                         <tr key={index} className="border-b border-gray">
-                          <td>Copiam Money Market Fund AYF</td>
+                          <td>Copiam Australian Yield Fund</td>
                           <td>{transaction.status}</td>
                           <td>{transaction.type}</td>
                           <td>{formatDate(transaction.transactionDate)}</td>
                           <td>
                             {transaction.price
-                              ? `$${parseFloat(transaction.price).toFixed(2)}`
+                              ? `$${formatNumber(
+                                  transaction.price as unknown as number
+                                )}`
                               : ""}
                           </td>
-                          <td>{transaction.tokenAmount}</td>
+                          <td>
+                            {transaction.tokenAmount
+                              ? `${formatNumber(
+                                  parseFloat(transaction.tokenAmount).toFixed(
+                                    2
+                                  ) as unknown as number
+                                )}`
+                              : ""}
+                          </td>
                           <td>
                             {transaction.stableAmount
-                              ? `$${parseFloat(
-                                  transaction.stableAmount
-                                ).toFixed(2)}`
+                              ? `$${formatNumber(
+                                  transaction.stableAmount as unknown as number
+                                )}`
                               : ""}
                           </td>
                         </tr>

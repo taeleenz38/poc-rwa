@@ -60,6 +60,7 @@ const Navbar = () => {
   }, [justLoggedIn, userRole, router]);
 
   const handleSignIn = () => {
+    localStorage.setItem("username", username);
     if (username === "ted" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("admin");
@@ -143,6 +144,14 @@ const Navbar = () => {
                   }`}
                 >
                   About
+                </Link>
+                <Link
+                  href="/profile"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/profile" ? "text-secondary" : ""
+                  }`}
+                >
+                  Profile
                 </Link>
               </>
             )}
