@@ -63,7 +63,9 @@ export const PackageCard = (props: PackageCardProps) => {
     fetchPriceId();
   }, []);
 
-  const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
+  const formattedPrice = price
+    ? parseFloat(price).toFixed(2)
+    : "Loading Price...";
 
   return (
     <Link href={href}>
