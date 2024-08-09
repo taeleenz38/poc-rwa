@@ -18,7 +18,7 @@ export default function Home() {
       <h1 className="text-5xl font-semibold w-3/5">
         Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
       </h1>
-      <h2 className="text-xl mt-10 w-1/2 ">
+      <h2 className="text-xl mt-10 w-1/2  ">
         Copiam is bridging the next generation of financial infrastructure in
         DeFi with access to the deepest, most efficient institutional FX and
         capital markets in TradFi.
@@ -30,7 +30,7 @@ export default function Home() {
           PRICE="1.048"
           TVL="$327.50M"
           href="/invest"
-          backgroundImage="url('/background.svg')"
+          backgroundImage="url('/Graphic1.png')"
           footerText="For Wholesale Investors"
           chains={
             <>

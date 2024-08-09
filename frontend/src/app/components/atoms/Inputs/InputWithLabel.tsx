@@ -31,7 +31,7 @@ const InputWithLabel: FC<InputWithLabelProps> = ({
       htmlFor={id}
       className="absolute -top-3 left-2 bg-white px-1 text-sm text-gray/50"
     >
-      {name}
+      {label}
     </label>
     <input
       type={type}
