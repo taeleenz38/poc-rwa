@@ -37,35 +37,6 @@ export default function Home() {
     setIsRedeemOpen(true);
   };
 
-  // useEffect(() => {
-  //   const fetchPriceId = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       const data = await response.json();
-  //       console.log("price data", data);
-
-  //       // Find the latest price based on the date
-  //       const latestPrice = data.sort(
-  //         (a: Item, b: Item) =>
-  //           new Date(b.date).getTime() - new Date(a.date).getTime()
-  //       )[0];
-
-  //       // Update the state with the latest price
-  //       setPrice(latestPrice ? latestPrice.price : "0");
-  //     } catch (error) {
-  //       console.error("Error fetching price ID:", error);
-  //     } finally {
-  //       setIsFetching(false);
-  //     }
-  //   };
-  //   fetchPriceId();
-  // }, []);
-
   const { data: totalSupply } = useReadContract({
     abi: abi.abi,
     address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
@@ -75,6 +46,8 @@ export default function Home() {
   const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
     return BigNumber.from(bigIntValue.toString());
   };
+
+  console.log("Total Supply:", totalSupply);
 
   useEffect(() => {
     const fetchPriceAndCalculateTVL = async () => {
@@ -128,43 +101,10 @@ export default function Home() {
     };
 
     fetchPriceAndCalculateTVL();
-  }, [totalSupply]); // Only re-run when totalSupply changes
+  }, [totalSupply]);
 
   const formattedPrice = price ? parseFloat(price).toFixed(2) : "...";
-  // useEffect(() => {
-  //   try {
-  //     const calculateTVL = () => {
-  //       if (totalSupply && price) {
-  //         try {
-  //           let totalSupplyNormal;
-  //           if (typeof totalSupply === "bigint") {
-  //             const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
-  //             totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
-  //           } else if (BigNumber.isBigNumber(totalSupply)) {
-  //             totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-  //           } else {
-  //             console.error("Invalid totalSupply format:", totalSupply);
-  //             return;
-  //           }
 
-  //           const tvlValue = (
-  //             parseFloat(totalSupplyNormal) * parseFloat(price)
-  //           ).toFixed(2);
-
-  //           setTvl(tvlValue);
-  //           console.log("Total Supply:", totalSupply);
-  //           console.log("Price:", price);
-  //         } catch (error) {
-  //           console.error("Error calculating TVL:", error);
-  //         }
-  //       }
-  //     };
-
-  //     calculateTVL();
-  //   } catch (error) {
-  //     console.error("Error in useEffect:", error);
-  //   }
-  // }, [totalSupply, price]);
 
   return (
     <main className="h-screen bg-white root-container text-black">
