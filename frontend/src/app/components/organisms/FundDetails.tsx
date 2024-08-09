@@ -90,11 +90,11 @@ const FundDetails = (props: FundDetailsProps) => {
           <div className="flex justify-between items-center pt-7 gap-x-8 gap-y-2">
             <div className="flex-col justify-start font-normal items-center text-light">
               <p className="opacity-70">Price</p>
-              <h4 className="text-xl">{price}</h4>
+              <h4 className="text-xl">${price}</h4>
             </div>
             <div className="flex-col justify-start items-center ">
               <p className="opacity-70">TVL</p>
-              <p className="text-xl">{tvl}</p>
+              <p className="text-xl">${tvl}</p>
             </div>
             <div className="flex-col justify-start items-center ">
               <p className="opacity-70">Available on</p>

@@ -51,7 +51,7 @@ const Invest = () => {
         )[0];
 
         // Update the state with the latest price
-        setPrice(latestPrice ? latestPrice.price : "N/A");
+        setPrice(latestPrice ? latestPrice.price : "Loading Price...");
       } catch (error) {
         console.error("Error fetching price ID:", error);
       } finally {
