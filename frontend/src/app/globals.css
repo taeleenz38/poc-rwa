@@ -65,6 +65,9 @@ body {
   .root-container {
     @apply px-[7.7rem] py-16 w-full;
   }
+  .borderColor {
+    @apply border-[#aaaaaa];
+  }
 }
 
 /* Chrome, Edge, and Safari */
