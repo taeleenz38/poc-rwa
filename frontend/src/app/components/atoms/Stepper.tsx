@@ -11,16 +11,17 @@ const Stepper: React.FC<StepperProps> = ({
   totalSteps,
   stepLabels,
 }) => {
+  console.log(stepLabels);
   return (
-    <div className="flex flex-col justify-center">
-      {Array.from({ length: totalSteps }, (_, index) => (
-        <div key={index} className="flex mb-6 items-center">
+    <div className="flex flex-col justify-center ">
+      {Array.from({ length: 4 }, (_, index) => (
+        <div key={index} className="flex mb-2 items-center">
           <div
             className={`w-10 h-10 rounded-full border  border-secondary  outline-2 outline-white ${
-              (currentStep >= 4 && index <= 1) ||
-              (currentStep >= 5 && index <= 2) ||
-              (currentStep >= 6 && index <= 3) ||
-              (currentStep < 4 && index === 0)
+              (currentStep >= 5 && index <= 1) ||
+              (currentStep >= 6 && index <= 2) ||
+              (currentStep >= 7 && index <= 3) ||
+              (currentStep < 5 && index === 0)
                 ? "bg-primary/70"
                 : "bg-white"
             }`}
