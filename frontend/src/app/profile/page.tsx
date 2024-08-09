@@ -1,40 +1,73 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { useAccount } from "wagmi";
-import { config } from "@/config";
 import axios from "axios";
-// import Skeleton from "react-loading-skeleton";
-// import "react-loading-skeleton/dist/skeleton.css";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+interface UserDetails {
+  firstName: string;
+  lastName: string;
+  email: string;
+  idDocument: string;
+  idNumber: string;
+  idExpiry: string;
+  country: string;
+  birthDate: string;
+  walletAddress: string;
+}
+
+interface UserDocument {
+  downloadUrl: string;
+}
 
 const Page = () => {
-  const [profileData, setProfileData] = useState(null);
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  const [userDocument, setUserDocument] = useState<UserDocument | null>(null);
   const [isFetching, setIsFetching] = useState(true);
-  const [error, setError] = useState("");
-  const { address } = useAccount({ config });
   const [username, setUsername] = useState("");
+
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
+    const user = localStorage.getItem("username");
+    if (user) {
+      setUsername(user);
     }
   }, []);
 
   useEffect(() => {
     if (username) {
-      const fetchProfileData = async () => {
+      const fetchUserDetails = async () => {
         try {
           const response = await axios.get(
             `https://api.tokenisation.gcp-hub.com.au/auth/profile?email=${username}`
           );
-          setProfileData(response.data);
+          console.log(response.data, "Profile data");
+          setUserDetails(response.data);
           setIsFetching(false);
         } catch (err) {
-          setError("Failed to fetch profile data");
+          console.error("Failed to fetch profile data");
           setIsFetching(false);
         }
       };
-      fetchProfileData();
+      fetchUserDetails();
+    }
+  }, [username]);
+
+  useEffect(() => {
+    if (username) {
+      const fetchDocument = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.tokenisation.gcp-hub.com.au/contract-sign/download/link?email=${username}`
+          );
+          console.log(response.data, "Document data");
+          setUserDocument(response.data);
+          setIsFetching(false);
+        } catch (err) {
+          console.error("Failed to fetch document");
+          setIsFetching(false);
+        }
+      };
+      fetchDocument();
     }
   }, [username]);
 
@@ -49,55 +82,48 @@ const Page = () => {
         </h2>
 
         <div className="flex flex-row gap-x-16 mb-12">
-          <div className="flex flex-col w-1/2 text-primary h-fit py-5 px-6 border border-gray">
+          <div className="flex flex-col w-1/2 text-primary h-fit py-5 px-6 border borderColor">
             <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
               Account Details
             </h2>
             <div className="overflow-x-auto">
               <div className="bg-[#F5F2F2] text-primary py-4 font-bold"></div>
-              {/* {isFetching ? ( */}
-              {/* <div className="text-center py-4">
-          <Skeleton height={26} className="w-full" />
-        </div> */}
-              {/* ) : ( */}
-              {/* Key section */}
-              <div className="text-primary p-3 mb-4">
-                {/* Keys and values */}
-                <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                  <div className="font-semibold">First Name</div>
-                  <div>Ted</div>
+              {isFetching ? (
+                <div className="text-center py-4">
+                  <Skeleton height={26} className="w-full" />
                 </div>
+              ) : (
+                <div className="text-primary p-3 mb-4">
+                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                    <div className="font-semibold">First Name</div>
+                    <div>{userDetails?.firstName}</div>
+                  </div>
 
-                <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                  <div className="font-semibold">Last Name</div>
-                  <div>Hansen</div>
-                </div>
+                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                    <div className="font-semibold">Last Name</div>
+                    <div>{userDetails?.lastName}</div>
+                  </div>
 
-                <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                  <div className="font-semibold">Email</div>
-                  <div>Ted.Hansen@gmail.com</div>
-                </div>
+                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                    <div className="font-semibold">Email</div>
+                    <div>{userDetails?.email}</div>
+                  </div>
 
-                <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                  <div className="font-semibold">Country</div>
-                  <div>Australia</div>
-                </div>
+                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                    <div className="font-semibold">Country</div>
+                    <div>{userDetails?.country}</div>
+                  </div>
 
-                <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                  <div className="font-semibold">Date of Birth</div>
-                  <div>01/01/2000</div>
+                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                    <div className="font-semibold">Date of Birth</div>
+                    <div>{userDetails?.birthDate}</div>
+                  </div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                  <div className="font-semibold">Submitted ID for KYC</div>
-                  <div>Driver license -18208489</div>
-                </div>
-              </div>
-              {/* )} */}
+              )}
             </div>
           </div>
           <div className="w-1/2 flex flex-col">
-            <div className="flex flex-col justify-start py-3 items-start mb-4 px-4 border border-gray">
+            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor">
               <h2 className="text-2xl font-semibold flex items-center justify-start px-1">
                 Overview
               </h2>
@@ -105,20 +131,14 @@ const Page = () => {
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <>
-                      {/* {isFetching ? ( */}
-                      {/* <>
-                      <Skeleton height={30} className="w-full" />
-                    </>
-                  ) : ( */}
                       <h3 className="text-lg">User Status - Active </h3>
                       <h3 className="text-lg">KYC Status - Complete </h3>
-                      {/* )} */}
                     </>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border border-gray">
+            <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
               <h2 className="text-2xl font-semibold flex items-center justify-start px-1">
                 Notes
               </h2>
@@ -126,7 +146,6 @@ const Page = () => {
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div>
-                      <h3 className="text-lg">&nbsp;</h3>
                       <h3 className="text-lg">&nbsp;</h3>
                       <h3 className="text-lg">&nbsp;</h3>
                     </div>
@@ -137,7 +156,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="flex flex-row gap-x-16 border border-gray">
+        <div className="flex flex-row gap-x-16 border borderColor">
           <div className="flex flex-col gap-y-4 w-1/2">
             <div className="flex flex-col w-full py-8 text-primary h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
@@ -147,32 +166,38 @@ const Page = () => {
                 <div className="bg-[#F5F2F2] text-primary py-2 px-3 font-bold">
                   <h3>Submitted for KYC</h3>
                 </div>
-                <div className="text-primary p-3 mb-4">
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                    <div className="font-semibold">ID Document</div>
-                    <div className="">Driver License</div>
+                {isFetching ? (
+                  <div className="text-center py-4">
+                    <Skeleton height={26} className="w-full" />
                   </div>
+                ) : (
+                  <div className="text-primary p-3 mb-4">
+                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                      <div className="font-semibold">ID Document</div>
+                      <div className="">{userDetails?.idDocument}</div>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                    <div className="font-semibold">ID Number</div>
-                    <div className="">18208489</div>
-                  </div>
+                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                      <div className="font-semibold">ID Number</div>
+                      <div className="">{userDetails?.idNumber}</div>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                    <div className="font-semibold">Expiry</div>
-                    <div className="">10/6/2028</div>
-                  </div>
+                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                      <div className="font-semibold">ID Expiry</div>
+                      <div className="">{userDetails?.idExpiry}</div>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                    <div className="font-semibold">Country</div>
-                    <div className="">Australia</div>
-                  </div>
+                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                      <div className="font-semibold">Country</div>
+                      <div className="">{userDetails?.country}</div>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b border-gray-300">
-                    <div className="font-semibold">Date of Birth</div>
-                    <div className="">01/01/2000</div>
+                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
+                      <div className="font-semibold">Date of Birth</div>
+                      <div className="">{userDetails?.birthDate}</div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -184,19 +209,25 @@ const Page = () => {
                 <div className="bg-[#F5F2F2] text-primary py-2 px-3 font-bold">
                   <h3>Signed Documents</h3>
                 </div>
-                <div className="text-primary p-3 mb-4">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b border-gray py-2">
-                    <div className="font-semibold px-0.5">Agreement</div>
-                    <a
-                      href="https://sumsub.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#007BFF] hover:text-[#0056b3]"
-                    >
-                      https://sumsub.com/{" "}
-                    </a>
+                {isFetching ? (
+                  <div className="text-center py-4">
+                    <Skeleton height={26} className="w-full" />
                   </div>
-                </div>
+                ) : (
+                  <div className="text-primary p-3 mb-4">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b borderColor py-2">
+                      <div className="font-semibold px-0.5">Agreement</div>
+                      <a
+                        href={userDocument?.downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-md text-[#007BFF] hover:text-[#0056b3]"
+                      >
+                        View Signed Document
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

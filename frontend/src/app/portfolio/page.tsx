@@ -56,12 +56,6 @@ const Portfolio = () => {
   });
   const { writeContractAsync } = useWriteContract({ config });
 
-  // const { data: audcData } = useBalance({
-  //   address,
-  //   token: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
-  //   config,
-  // });
-
   const { data: ayfData } = useBalance({
     address,
     token: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
@@ -100,18 +94,13 @@ const Portfolio = () => {
     return `${formattedDate} ${formattedTime}`;
   };
 
-  // const formattedPrice = price ? parseFloat(price).toFixed(2) : "N/A";
   const formattedPrice = price ? parseFloat(price) : 0;
 
   const formatBalance = (balanceData: any): number => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
   };
 
-  // const formattedAudcBalance = formatBalance(audcData);
   const formattedAyfBalance = formatBalance(ayfData);
-
-  // const audcPrice = 1.0;
-  // const audcMarketValue = formattedAudcBalance * audcPrice;
 
   useEffect(() => {
     const fetchClaimableTokens = async () => {
@@ -260,7 +249,6 @@ const Portfolio = () => {
                     </>
                   ) : (
                     <h3 className="text-2xl">
-                      {/* ${(ayfMarketValue + audcMarketValue).toFixed(2)} */}
                       {formatNumber(formattedPrice * formattedAyfBalance, {
                         style: "currency",
                         currency: "AUD",
@@ -273,7 +261,7 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="border border-gray">
+        <div className="border borderColor">
           <div className="flex flex-col gap-y-4 w-full px-4">
             <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
@@ -298,18 +286,12 @@ const Portfolio = () => {
                       </tr>
                     ) : (
                       <>
-                        <tr className="border-b border-gray">
+                        <tr className="border-b borderColor">
                           <td>Copiam Australian Yield Fund</td>
                           <td>${formattedPrice}</td>
                           <td>{formatNumber(formattedAyfBalance)}</td>
                           <td>${formatNumber(ayfMarketValue)}</td>
                         </tr>
-                        {/* <tr className="border-b border-gray">
-                          <td>Stablecoin AUDC</td>
-                          <td>$1.00</td>
-                          <td>{formattedAudcBalance.toFixed(1)}</td>
-                          <td>${audcMarketValue.toFixed(2)}</td>
-                        </tr> */}
                       </>
                     )}
                   </tbody>
@@ -326,7 +308,6 @@ const Portfolio = () => {
                   <thead className="text-primary bg-[#F5F2F2] border-none">
                     <tr className="border-none">
                       <th>Deposit Amount After Fee</th>
-                      {/* <th>Fee Amount</th> */}
                       <th>Request Date</th>
                       <th>Claimable Amount</th>
                       <th>Actions</th>
@@ -351,11 +332,10 @@ const Portfolio = () => {
                           Date.now() / 1000 >= token.claimTimestampFromChain;
                         return (
                           <tr
-                            className="border-b border-gray"
+                            className="border-b borderColor"
                             key={token.depositId}
                           >
                             <td>{token.depositAmountAfterFee} AUDC</td>
-                            {/* <td>{token.feeAmount} AUDC</td> */}
                             <td>{formatDate(token.claimTimestamp)}</td>
                             <td>{token.claimableAmount || 0} AYF</td>
                             <td>
@@ -415,7 +395,7 @@ const Portfolio = () => {
                     ) : (
                       claimableAUDCTokens.map((token) => (
                         <tr
-                          className="border-b border-gray"
+                          className="border-b borderColor"
                           key={token.redemptionId}
                         >
                           <td className="flex-1">
@@ -478,7 +458,7 @@ const Portfolio = () => {
                       </tr>
                     ) : currentTransactions.length > 0 ? (
                       currentTransactions.map((transaction, index) => (
-                        <tr key={index} className="border-b border-gray">
+                        <tr key={index} className="border-b borderColor">
                           <td>Copiam Australian Yield Fund</td>
                           <td>{transaction.status}</td>
                           <td>{transaction.type}</td>
