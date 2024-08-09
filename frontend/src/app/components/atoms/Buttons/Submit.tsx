@@ -17,7 +17,7 @@ const Submit: React.FC<SubmitProps> = ({
     <button
       className={`p-2 w-44 duration-200 font-semibold rounded-md ${
         disabled
-          ? "bg-gray-400 text-gray-200 cursor-not-allowed border-gray-400"
+          ? "bg-gray text-white cursor-not-allowed"
           : "bg-primary text-light hover:border-primary hover:text-secondary"
       } ${className}`}
       onClick={onClick}

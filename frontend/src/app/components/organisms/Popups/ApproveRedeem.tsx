@@ -117,10 +117,12 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold">Approve Redemption</h2>
+          <h2 className="text-3xl font-bold text-primary">
+            Approve Redemption
+          </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-8 font-medium">
@@ -144,12 +146,23 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
             className="w-full p-2 rounded-md"
           />
         </div>
-        <div className="flex justify-center">
-          <Submit
-            label="Approve Redeem"
-            onClick={handleApproveRedeem}
-            disabled={isPending || isApprovalLoading || isSecondLoading}
-          />
+        <div className="w-full flex justify-between">
+          <div className="w-[49%]">
+            <Submit
+              onClick={onCloseModal}
+              label={"Go Back"}
+              disabled={isPending || isApprovalLoading || isSecondLoading}
+              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
+            />
+          </div>
+          <div className="w-[49%]">
+            <Submit
+              label="Approve Redeem"
+              onClick={handleApproveRedeem}
+              disabled={isPending || isApprovalLoading || isSecondLoading}
+              className="w-full"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -45,10 +45,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         abi: audcabi.abi,
         address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
         functionName: "approve",
-        args: [
-          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS,
-          approvalAmount,
-        ],
+        args: [process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS, approvalAmount],
       });
 
       setTxApprovalHash(approvalTx);
@@ -98,7 +95,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-6 rounded-lg text-gray bg-white border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-3xl font-bold text-primary">Buy AYF</h2>
@@ -127,7 +124,9 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
             <Submit
               onClick={handleRequestDeposit}
               label={
-                isPending || isApprovalLoading || isDepositLoading ? "Confirming..." : "Confirm"
+                isPending || isApprovalLoading || isDepositLoading
+                  ? "Confirming..."
+                  : "Confirm"
               }
               disabled={isPending || isApprovalLoading || isDepositLoading}
               className="w-full"
