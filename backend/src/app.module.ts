@@ -22,7 +22,7 @@ import { KycVerifcationService } from './verification/verification.service';
     port: parseInt(process.env.DATABASE_PORT),
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
-    database: 'rwa',
+    database: 'poc-rwa',
     synchronize: true,
     logging: false,
     entities: [User, Document],
