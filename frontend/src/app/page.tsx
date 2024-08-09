@@ -99,6 +99,8 @@ export default function Home() {
           ).toFixed(2);
 
           setTvl(tvlValue);
+          console.log("Total Supply:", totalSupply);
+          console.log("Price:", price);
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }
