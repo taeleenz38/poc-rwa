@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useAccount, useBalance } from "wagmi";
+import { config } from "@/config";
 import FundDetails from "@/app/components/organisms/FundDetails";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription from "@/app/components/organisms/FundDescription";
@@ -20,6 +21,9 @@ interface Item {
 }
 
 const Invest = () => {
+  const { address } = useAccount({
+    config,
+  });
   const [isFetching, setIsFetching] = useState(true);
   const [price, setPrice] = useState<string | null>(null);
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);

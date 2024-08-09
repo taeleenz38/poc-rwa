@@ -16,7 +16,7 @@ const Balance2: React.FC<Balance2Props> = ({
   isLoading,
 }) => {
   const formattedBalance = balanceData?.formatted
-    ? parseFloat(balanceData.formatted).toFixed(1)
+    ? parseFloat(balanceData.formatted).toFixed(2)
     : "0.0";
 
   return (

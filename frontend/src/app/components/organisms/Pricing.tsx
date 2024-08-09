@@ -36,8 +36,15 @@ const Pricing = () => {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
         );
-        setPrices(response.data);
-        console.log(response.data, "price");
+
+        const sortedPrices = response.data.sort(
+          (a: PricingResponse, b: PricingResponse) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          }
+        );
+
+        setPrices(sortedPrices);
+        console.log(sortedPrices, "sorted prices");
       } catch (error) {
         console.error("Error fetching wallets:", error);
       } finally {
@@ -78,8 +85,8 @@ const Pricing = () => {
       <div className="overflow-x-auto pt-4">
         <table className="table">
           <thead>
-            <tr className="text-gray text-lg bg-[#F5F2F2] border-none ">
-              <th className="text-center">ID#</th>
+            <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
+              <th className="text-center">ID</th>
               <th className="text-center">Price</th>
               <th className="text-center">Status</th>
               <th className="text-center">Transaction Date</th>
@@ -103,7 +110,7 @@ const Pricing = () => {
                   key={index}
                 >
                   <td className="text-center">{price.priceId}</td>
-                  <td className="text-center">{price.price}</td>
+                  <td className="text-center">${price.price}</td>
                   <td className="text-center">{price.status}</td>
                   <td className="text-center">{price.date}</td>
                   <td className="text-center">

@@ -1,5 +1,5 @@
 "use client";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
@@ -44,15 +44,22 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
   };
 
   const handleUpdatePrice = async () => {
-    const priceID = BigNumber.from(priceId).mul(BigNumber.from(10).pow(18));
+    const priceID = Number(priceId);
+    const priceIDHexlified = ethers.utils.hexZeroPad(
+      ethers.utils.hexlify(priceID),
+      32
+    );
 
     const price = BigNumber.from(updatePrice).mul(BigNumber.from(10).pow(18));
+
+    console.log("priceID", priceID.toString());
+    console.log("price", price.toString());
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_PRICER_ADDRESS as `0x${string}`,
         functionName: "updatePrice",
-        args: [priceID, price],
+        args: [priceIDHexlified, price],
       });
       setTxHash(tx);
       console.log("Price successfully updated - transaction hash:", tx);
@@ -69,21 +76,16 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-8 rounded-lg text-light bg-primary border-2 border-light shadow-md shadow-white w-1/3">
+      <div className="p-8 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold">Update Price</h2>
+          <h2 className="text-3xl font-bold text-primary">Update Price</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">
           Please enter Price and Price ID for which you want to update.
         </div>
         <div className="w-full mx-auto mb-8">
-          <InputField
-            label="Price ID:"
-            value={priceId}
-            onChange={onPriceIdChange}
-          />{" "}
           <InputField
             label="Price:"
             value={updatePrice || ""}
@@ -109,10 +111,10 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-primary text-center">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
-              <p className="text-white overflow-x-scroll">
+              <p className="text-primary overflow-x-scroll">
                 Transaction successful! Hash: {txHash}
               </p>
             )}
