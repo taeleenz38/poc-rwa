@@ -51,6 +51,12 @@ export class AuthService {
         res.email = user.email;
         res.firstName = user.firstName;
         res.lastName = user.lastName;
+        res.birthdate = user.birthdate;
+        res.idDocument = user.idDocument;
+        res.idNumber = user.idNumber;
+        res.idExpiry = user.idExpiry;
+        res.walletAddress = user.walletAddress;
+        res.country = user.country;
         return res;
     }
 

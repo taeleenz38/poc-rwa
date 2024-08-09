@@ -22,7 +22,7 @@ export class UserDocumentRepoService {
     public async saveUserAndCreateDoc(request: SignRequestDto): Promise<UserDocument> {
         const user = await this.userRepo.findOneBy({ email: request.email });
 
-        var signer;
+        var signer: User;
         if (user) {
             signer = user;
         } else {
@@ -32,6 +32,13 @@ export class UserDocumentRepoService {
         signer.email = request.email;
         signer.firstName = request.firstName;
         signer.lastName = request.lastName;
+        signer.country = request.country;
+        signer.birthdate = request.birthdate;
+        signer.idDocument = request.idDocument;
+        signer.idNumber = request.idNumber;
+        signer.idExpiry = request.idExpiry;
+        signer.walletAddress = request.walletAddress;
+
         const savedUser = await this.userRepo.save(signer);
 
         const doc = this.documentRepo.create();

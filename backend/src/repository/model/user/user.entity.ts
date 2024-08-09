@@ -34,6 +34,49 @@ export class User extends BaseEntity {
     })
     password: string;
 
+
+    @Column({
+        type: 'varchar',
+        name: 'country',
+        nullable: true
+    })
+    country: string;
+
+    @Column({
+        type: 'date',
+        name: 'birthdate',
+        nullable: true
+    })
+    birthdate: Date;
+
+    @Column({
+        type: 'varchar',
+        name: 'id_number',
+        nullable: true
+    })
+    idNumber: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'id_document',
+        nullable: true
+    })
+    idDocument: string;
+
+    @Column({
+        type: 'date',
+        name: 'id_expiry',
+        nullable: true
+    })
+    idExpiry: Date;
+
+    @Column({
+        type: 'varchar',
+        name: 'wallet_address',
+        nullable: true
+    })
+    walletAddress: string;
+
     @OneToMany(() => Document, (document) => document.user)
     documents: Promise<Document[]>;
 
