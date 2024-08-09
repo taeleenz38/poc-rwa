@@ -27,6 +27,13 @@ export class User extends BaseEntity {
     })
     email: string;
 
+    @Column({
+        type: 'varchar',
+        name: 'password',
+        nullable: true
+    })
+    password: string;
+
     @OneToMany(() => Document, (document) => document.user)
     documents: Promise<Document[]>;
 
