@@ -61,28 +61,28 @@ const Navbar = () => {
 
   const handleSignIn = () => {
     localStorage.setItem("username", username);
-    if (username === "ted" && password === "123") {
+    if (username === "tedhansen@copiam.io" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("admin");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "admin");
       setShowModal(false);
       setJustLoggedIn(true);
-    } else if (username === "john" && password === "123") {
+    } else if (username === "johndoe@copiam.io" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("user");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "user");
       setShowModal(false);
       setJustLoggedIn(true);
-    } else if (username === "alice" && password === "123") {
+    } else if (username === "alicesherman@copiam.io" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("guardian");
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", "guardian");
       setShowModal(false);
       setJustLoggedIn(true);
-    } else if (username === "bob" && password === "123") {
+    } else if (username === "bobross@copiam.io" && password === "123") {
       setIsLoggedIn(true);
       setUserRole("assetsender");
       localStorage.setItem("isLoggedIn", "true");

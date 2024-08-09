@@ -10,6 +10,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import VerificationPopup from "./Popups/VerificationPopup";
 import HelloSign from "hellosign-embedded";
+import { useRouter } from "next/navigation";
 
 type KycDetailsProps = {
   logoSrc: string;
@@ -39,7 +40,7 @@ const KycDetails = (props: KycDetailsProps) => {
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backtFile, setBackFile] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const totalSteps = 6;
+  const totalSteps = 8;
   const stepLabels = [
     "Verify your identity",
     "Add your wallet",
@@ -55,6 +56,11 @@ const KycDetails = (props: KycDetailsProps) => {
   const [status, setStatus] = useState<"Submitted" | "Init" | "Done">(
     "Submitted"
   );
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+
+  const router = useRouter();
 
   const dropBoxSignclient = new HelloSign({
     clientId: process.env.NEXT_PUBLIC_DROPBOX_SIGN_CLIENT_ID,
@@ -212,15 +218,12 @@ const KycDetails = (props: KycDetailsProps) => {
           const id = response.data.id;
           setApplicationId((prev) => id);
 
-          console.log(id, "id");
           // Now, upload the document with the ID
           const documentUrl =
             process.env.NEXT_PUBLIC_BACKEND_API +
             "/kyc/applicants/" +
             id +
             "/documents";
-
-          console.log(documentUrl, "documentUrl");
 
           // Prepare the form data object
           const formDataFront = new FormData();
@@ -292,6 +295,39 @@ const KycDetails = (props: KycDetailsProps) => {
     }
   };
 
+  const submitCredntail = async () => {
+    try {
+      setIsLoading(true);
+      setPasswordError(false);
+      if (password !== confirmPassword) {
+        setPasswordError(true);
+      } else {
+        const url = process.env.NEXT_PUBLIC_BACKEND_API + "/auth/credential";
+
+        const res = await axios.patch(
+          url,
+          {
+            email,
+            password,
+          }
+          // {
+          //   headers: {
+          //     "Content-Type": "multipart/form-data",
+          //   },
+          // }
+        );
+
+        if (res.status === 200) {
+          nextStep();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const documentOptions = [
     { label: "Driver's License", value: "drivers_license" },
   ];
@@ -299,9 +335,9 @@ const KycDetails = (props: KycDetailsProps) => {
   const countryOptions = [{ label: "Australia", value: "AUS" }];
 
   return (
-    <div className="flex justify-between items-center min-h-screen ">
-      <div className="flex flex-col items-center justify-center w-1/2 bg-[#F5F2F2] min-h-screen p-4">
-        <div className="flex flex-col w-full h-full justify-center items-center">
+    <div className="flex justify-between items-center h-full min-h-screen ">
+      <div className="flex flex-col h-full items-center justify-center w-1/2 bg-[#F5F2F2] min-h-screen p-4 ">
+        <div className="flex flex-col w-full h-full justify-start items-center ">
           <Image
             src={logoSrc}
             alt={altText}
@@ -328,18 +364,20 @@ const KycDetails = (props: KycDetailsProps) => {
         >
           <h1 className="text-base text-gray font-semibold  text-center pb-9">
             {currentStep === 1
-              ? "* Please provide your personal information"
+              ? "Please provide your personal information"
               : currentStep === 2
-              ? "* Upload the necessary document details"
+              ? "Upload the necessary document details"
               : currentStep === 3
-              ? "* Submit the required documents, ensuring all information is up-to-date"
+              ? "Submit the required documents, ensuring all information is up-to-date"
               : currentStep === 4
-              ? "* Verification Has Been Submitted"
+              ? "Verification Has Been Submitted"
               : currentStep === 5
-              ? "* Please provide your wallet address"
+              ? "Please provide your wallet address"
               : currentStep === 6
-              ? "* Please sign the document"
-              : "* Provide user credentials"}
+              ? "Please sign the document"
+              : currentStep === 7
+              ? "Provide user credentials"
+              : "User onboarding completed !"}
           </h1>
 
           {currentStep === 1 && (
@@ -518,10 +556,10 @@ const KycDetails = (props: KycDetailsProps) => {
                     : "Sign Document"
                 }`}
                 className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md  ${
-                  docSignedProgress && "bg-white text-primary"
-                }`}
+                  docSignedProgress && "bg-white text-primary hover:bg-white"
+                } ${docSigned && "hidden"}`}
                 onClick={sendSignRequest}
-                disabled={docSignedProgress}
+                disabled={docSignedProgress && docSigned}
               />
 
               {docSigned && (
@@ -551,8 +589,8 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="password"
                 label="Password"
                 placeholder="Password"
-                value={walletAddress}
-                onChange={handleChange(setWalletAddress)}
+                value={password}
+                onChange={handleChange(setPassword)}
                 widthfull={true}
                 required={true}
               />
@@ -562,10 +600,34 @@ const KycDetails = (props: KycDetailsProps) => {
                 type="password"
                 label="Confirm Password"
                 placeholder="Confirm Password"
-                value={walletAddress}
-                onChange={() => {}}
+                value={confirmPassword}
+                onChange={handleChange(setConfirmPassword)}
                 widthfull={true}
                 required={true}
+              />
+              {passwordError && (
+                <span className="text-base font-semibold text-red text-pretty mt-7">
+                  Passwords do not match.
+                </span>
+              )}
+              <Button
+                text={` ${isLoading ? "Submitting..." : "Submit"}`}
+                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
+                  isLoading && "bg-white text-primary hover:bg-white"
+                }`}
+                onClick={submitCredntail}
+              />
+            </div>
+          )}
+
+          {currentStep === 8 && (
+            <div className="flex flex-col rounded-md justify-center items-center ">
+              <Button
+                text="Proceed to Home Page "
+                className={`bg-primary py-2  text-light hover:bg-light hover:text-primary rounded-md `}
+                onClick={() => {
+                  router.push("/");
+                }}
               />
             </div>
           )}
@@ -582,13 +644,15 @@ const KycDetails = (props: KycDetailsProps) => {
               </span>
             )}
             <div className="flex justify-between w-full mt-4">
-              {currentStep > 1 && currentStep !== 6 && (
+              {currentStep > 1 && currentStep !== 6 && currentStep !== 7 && (
                 <Button
                   text="Previous"
                   className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                    currentStep === 4 && status !== "Done" && "hidden"
-                  } ${
-                    currentStep == 3 && isLoading && "bg-white text-primary"
+                    currentStep === 4 && "hidden"
+                  } ${currentStep === 8 && "hidden"} ${
+                    currentStep == 3 &&
+                    isLoading &&
+                    "bg-white text-primary hover:bg-white"
                   }`}
                   onClick={prevStep}
                   disabled={
@@ -598,21 +662,30 @@ const KycDetails = (props: KycDetailsProps) => {
                 />
               )}
               <div className="flex-1 flex justify-end">
-                {currentStep < totalSteps && currentStep !== 3 ? (
+                {currentStep < totalSteps &&
+                currentStep !== 3 &&
+                currentStep !== 7 ? (
                   <Button
                     text="Next"
                     className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
                       currentStep === 4 && status !== "Done" && "hidden"
+                    } ${
+                      currentStep === 6 &&
+                      !docSigned &&
+                      "bg-white text-primary hover:bg-white"
                     }`}
                     onClick={nextStep}
-                    disabled={currentStep === 4 && status !== "Done"}
+                    disabled={
+                      (currentStep === 4 && status !== "Done") ||
+                      (currentStep === 6 && !docSigned)
+                    }
                   />
                 ) : (
                   currentStep === 3 && (
                     <Button
                       text={`${isLoading ? "Submitting..." : "Submit"}`}
                       className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                        isLoading && "bg-white text-primary"
+                        isLoading && "bg-white text-primary hover:bg-white"
                       }`}
                       onClick={handleSubmit}
                       disabled={isLoading}
