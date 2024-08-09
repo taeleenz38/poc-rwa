@@ -27,7 +27,6 @@ const Page = () => {
           const response = await axios.get(
             `https://api.tokenisation.gcp-hub.com.au/auth/profile?email=${username}`
           );
-          console.log(response, "profile details");
           setProfileData(response.data);
           setIsFetching(false);
         } catch (err) {
@@ -189,12 +188,12 @@ const Page = () => {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b border-gray py-2">
                     <div className="font-semibold px-0.5">Agreement</div>
                     <a
-                      href="https://google.com"
+                      href="https://sumsub.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#007BFF] hover:text-[#0056b3]"
                     >
-                      https://google.com
+                      https://sumsub.com/{" "}
                     </a>
                   </div>
                 </div>
