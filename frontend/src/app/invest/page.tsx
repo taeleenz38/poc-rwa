@@ -15,6 +15,15 @@ interface Item {
   price: string;
 }
 
+const formatNumberWithCommas = (number: number | string): string => {
+  const num = typeof number === "string" ? parseFloat(number) : number;
+  // Format number with commas and ensure two decimal places
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
 const Invest = () => {
   const { address } = useAccount({
     config,
@@ -61,7 +70,9 @@ const Invest = () => {
     fetchPriceId();
   }, []);
 
-  const formattedPrice = price ? parseFloat(price).toFixed(2) : "...";
+  const formattedPrice = price
+    ? formatNumberWithCommas(parseFloat(price))
+    : "...";
 
   const { data: totalSupply } = useReadContract({
     abi: abi.abi,
@@ -93,7 +104,7 @@ const Invest = () => {
             parseFloat(totalSupplyNormal) * parseFloat(price)
           ).toFixed(2);
 
-          setTvl(tvlValue);
+          setTvl(formatNumberWithCommas(tvlValue));
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }
