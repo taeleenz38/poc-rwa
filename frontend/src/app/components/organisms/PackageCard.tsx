@@ -38,72 +38,6 @@ export const PackageCard = (props: PackageCardProps) => {
     chains,
   } = props;
 
-  useEffect(() => {
-    const fetchPriceId = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("price data", data);
-
-        // Find the latest price based on the date
-        const latestPrice = data.sort(
-          (a: Item, b: Item) =>
-            new Date(b.date).getTime() - new Date(a.date).getTime()
-        )[0];
-
-        // Update the state with the latest price
-        setPrice(latestPrice ? latestPrice.price : "Loading Price...");
-      } catch (error) {
-        console.error("Error fetching price ID:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchPriceId();
-  }, []);
-
-  const formattedPrice = price
-    ? parseFloat(price).toFixed(2)
-    : "Loading Price...";
-
-  const { data: totalSupply } = useReadContract({
-    abi: abi.abi,
-    address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
-    functionName: "totalSupply",
-  });
-
-  useEffect(() => {
-    const calculateTVL = () => {
-      if (totalSupply && price) {
-        try {
-          // Ensure totalSupply is a BigNumber
-          if (BigNumber.isBigNumber(totalSupply)) {
-            // Convert totalSupply from BigNumber to a normal number
-            const totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-
-            // Calculate TVL
-            const tvlValue = (
-              parseFloat(totalSupplyNormal) * parseFloat(price)
-            ).toFixed(2);
-
-            setTvl(tvlValue);
-          } else {
-            console.error("Invalid totalSupply format");
-          }
-        } catch (error) {
-          console.error("Error calculating TVL:", error);
-        }
-      }
-    };
-
-    calculateTVL();
-  }, [totalSupply, price]);
-
   return (
     <Link href={href}>
       <div
@@ -130,12 +64,12 @@ export const PackageCard = (props: PackageCardProps) => {
         </div>
         <div className="flex flex-col space-y-4">
           <div>
-            <h1 className=" font-medium text-4xl">${formattedPrice}</h1>
+            <h1 className=" font-medium text-4xl">${PRICE}</h1>
           </div>
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">
               <div className="bg-light rounded-full py-1.5 px-3 text-black flex justify-center items-center text-base">
-                <p>{tvl} TVL</p>
+                <p>${TVL} TVL</p>
               </div>
               <div className="bg-light rounded-full py-1.5 px-3 flex items-center">
                 {chains}

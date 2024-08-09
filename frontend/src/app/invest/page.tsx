@@ -23,8 +23,7 @@ const Invest = () => {
   const [price, setPrice] = useState<string | null>(null);
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);
   const [isRedeemOpen, setIsRedeemOpen] = React.useState(false);
-  const [tvl, setTvl] = useState<string>("0");
-
+  const [tvl, setTvl] = useState<string>("...");
   const handleButton1Click = () => {
     setIsBuyOpen(true);
   };
@@ -52,7 +51,7 @@ const Invest = () => {
         )[0];
 
         // Update the state with the latest price
-        setPrice(latestPrice ? latestPrice.price : "0");
+        setPrice(latestPrice ? latestPrice.price : "...");
       } catch (error) {
         console.error("Error fetching price ID:", error);
       } finally {
@@ -62,7 +61,7 @@ const Invest = () => {
     fetchPriceId();
   }, []);
 
-  const formattedPrice = price ? parseFloat(price).toFixed(2) : "0";
+  const formattedPrice = price ? parseFloat(price).toFixed(2) : "...";
 
   const { data: totalSupply } = useReadContract({
     abi: abi.abi,
@@ -70,24 +69,31 @@ const Invest = () => {
     functionName: "totalSupply",
   });
 
+  const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
+    return BigNumber.from(bigIntValue.toString());
+  };
+
   useEffect(() => {
     const calculateTVL = () => {
       if (totalSupply && price) {
         try {
-          // Ensure totalSupply is a BigNumber
-          if (BigNumber.isBigNumber(totalSupply)) {
-            // Convert totalSupply from BigNumber to a normal number
-            const totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-
-            // Calculate TVL
-            const tvlValue = (
-              parseFloat(totalSupplyNormal) * parseFloat(price)
-            ).toFixed(2);
-
-            setTvl(tvlValue);
+          let totalSupplyNormal;
+          // Handle BigInt case
+          if (typeof totalSupply === "bigint") {
+            const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
+            totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
+          } else if (BigNumber.isBigNumber(totalSupply)) {
+            totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
           } else {
-            console.error("Invalid totalSupply format");
+            console.error("Invalid totalSupply format:", totalSupply);
+            return;
           }
+
+          const tvlValue = (
+            parseFloat(totalSupplyNormal) * parseFloat(price)
+          ).toFixed(2);
+
+          setTvl(tvlValue);
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }
