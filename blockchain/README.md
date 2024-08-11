@@ -11,9 +11,9 @@ npx hardhat run .\test-deploy\abby\sepolia-safe\1_deploy_token.ts --network sepo
 
 Output: 
 ```
-deployed A$DC address: 0xAe2E85cfc8378416Ce9Da64Cbb6C473066595508
+deployed AUDC address: 0xAe2E85cfc8378416Ce9Da64Cbb6C473066595508
 ```
-Edit ```test-deploy\mainnet_constants.ts```, set the ```A$DC address as``` the ```USDC_MAINNET``` address.
+Edit ```test-deploy\mainnet_constants.ts```, set the ```AUDC address as``` the ```USDC_MAINNET``` address.
 
 ## Deploy Allowlist:
 
@@ -52,9 +52,10 @@ npx hardhat run .\scripts\ci\safe\util\1_allow_listing_all.ts --network sepolia-
 
 ```
 ## Add price and update price:
+```
 npx hardhat run .\scripts\ci\safe\util\3_add_pricing.ts --network sepolia-safe
 npx hardhat run .\scripts\ci\safe\util\3.1_update_pricing.ts --network sepolia-safe
-```
+
 ```
 ## Deposit flow:
 ```
