@@ -9,6 +9,7 @@ import { useWriteContract } from "wagmi";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useRouter } from "next/navigation";
 
 type ClaimableToken = {
   user: string;
@@ -51,6 +52,8 @@ const formatNumber = (value: number, options?: Intl.NumberFormatOptions) => {
 };
 
 const Portfolio = () => {
+  const router = useRouter();
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
   const { address } = useAccount({
     config,
   });
@@ -101,6 +104,16 @@ const Portfolio = () => {
   };
 
   const formattedAyfBalance = formatBalance(ayfData);
+
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.push("/");
+  //   }
+  // }, [isLoggedIn, router]);
+
+  // if (!isLoggedIn) {
+  //   return null;
+  // }
 
   useEffect(() => {
     const fetchClaimableTokens = async () => {
@@ -361,7 +374,7 @@ const Portfolio = () => {
 
             <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
-                Claimable AUDC Tokens
+                AUDC Redemption
               </h2>
 
               <div className="overflow-x-auto">
