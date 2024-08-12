@@ -760,12 +760,7 @@ export class AlchemyService {
           const priceNumber = parseFloat(matchingDeposits[0].price);
 
           const claimableAmount: number = depositAmountAfterFeeNumber / priceNumber;
-          const rawAmount = ethers.utils.formatEther(ethers.BigNumber.from(claimableAmount));
-          const scaledAmountStr = scaleAndRoundToTwoDecimals(rawAmount);
-          const scaledAmountNum = Number(scaledAmountStr);
-          value.claimableAmount = scaledAmountNum;
-
-
+          value.claimableAmount = claimableAmount;
 
           if (matchingDeposits.length > 0) {
             const claimableItem: ClaimableList = {
@@ -1198,15 +1193,12 @@ export class AlchemyService {
             const price = parseFloat(matchingDeposits[0].price);
 
             const redeemAmount: number = redemptionAmount * price;
-            const rawAmount = ethers.utils.formatEther(ethers.BigNumber.from(redeemAmount));
-            const scaledAmountStr = scaleAndRoundToTwoDecimals(rawAmount);
-            const scaledAmountNum = Number(scaledAmountStr);
             
             const claimableRedemption: ClaimableRedemptionResponse = {
               user: value.user,
               redemptionId: value.redemptionId,
               priceId: value.priceId,
-              redeemAmount: scaledAmountNum,
+              redeemAmount: redeemAmount,
               rwaAmountIn: value.rwaAmountIn
             };
             claimableRedemptionResponse.push(claimableRedemption);
