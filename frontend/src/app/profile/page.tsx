@@ -165,9 +165,9 @@ const Page = () => {
               )}
             </div>
           </div>
-          <div className="w-1/2 flex flex-col">
-            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor">
-              <h2 className="text-2xl font-semibold flex items-center justify-start px-1">
+          <div className="w-1/2 flex flex-col gap-y-5">
+            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor mb-0.5">
+              <h2 className="text-xl font-semibold flex items-center justify-start px-1">
                 Overview
               </h2>
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
@@ -210,7 +210,7 @@ const Page = () => {
               </div>
             </div>
             <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
-              <h2 className="text-2xl font-semibold flex items-center justify-start px-1">
+              <h2 className="text-xl font-semibold flex items-center justify-start px-1">
                 Notes
               </h2>
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
