@@ -25,9 +25,9 @@ const Footer = () => {
           <Link href="/about">Website</Link>
         </div>
         <div className="flex flex-col gap-y-6 text-xl text-light text-opacity-80">
-          <div>+61 (0)452 597 949</div>
+          <div>+61 452 597 949</div>
           <div>123 address st</div>
-          <div>peter@copiam.io</div>
+          <div>contact@copiam.io</div>
           <div>www.copiam.io</div>
         </div>
         <div className="bg-light px-28 py-4 hover:cursor-pointer text-primary">
