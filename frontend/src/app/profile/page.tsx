@@ -40,12 +40,12 @@ const Page = () => {
   //   return null;
   // }
 
-  // useEffect(() => {
-  //   const user = localStorage.getItem("username");
-  //   if (user) {
-  //     setUsername(user);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const user = localStorage.getItem("username");
+    if (user) {
+      setUsername(user);
+    }
+  }, []);
 
   useEffect(() => {
     if (username) {
@@ -106,7 +106,9 @@ const Page = () => {
                 <div className="text-center py-4">
                   <Skeleton height={26} className="w-full" />
                 </div>
-              ) : userDetails ? (
+              ) : !userDetails ? (
+                <p className="text-center py-4">No account details found.</p>
+              ) : (
                 <div className="text-primary p-3 mb-4">
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold">First Name</div>
@@ -133,8 +135,6 @@ const Page = () => {
                     <div>{userDetails?.birthdate}</div>
                   </div>
                 </div>
-              ) : (
-                <p className="text-center py-4">No account details found.</p>
               )}
             </div>
           </div>
@@ -186,7 +186,9 @@ const Page = () => {
                   <div className="text-center py-4">
                     <Skeleton height={26} className="w-full" />
                   </div>
-                ) : userDetails ? (
+                ) : !userDetails ? (
+                  <p className="text-center py-4">No document details found.</p>
+                ) : (
                   <div className="text-primary p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                       <div className="font-semibold">ID Document</div>
@@ -213,8 +215,6 @@ const Page = () => {
                       <div className="">{userDetails?.birthdate}</div>
                     </div>
                   </div>
-                ) : (
-                  <p className="text-center py-4">No document details found.</p>
                 )}
               </div>
             </div>
@@ -231,7 +231,9 @@ const Page = () => {
                   <div className="text-center py-4">
                     <Skeleton height={26} className="w-full" />
                   </div>
-                ) : userDocument ? (
+                ) : !userDocument ? (
+                  <p className="text-center py-4">No signed documents found.</p>
+                ) : (
                   <div className="text-primary p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b borderColor py-2">
                       <div className="font-semibold px-0.5">Agreement</div>
@@ -245,8 +247,6 @@ const Page = () => {
                       </a>
                     </div>
                   </div>
-                ) : (
-                  <p className="text-center py-4">No signed documents found.</p>
                 )}
               </div>
             </div>
