@@ -97,9 +97,14 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
           <div className="mt-4 text-white">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
-              <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {txHash}
-              </p>
+              <a
+                href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-primary"
+              >
+                {txHash}
+              </a>
             )}
           </div>
         )}

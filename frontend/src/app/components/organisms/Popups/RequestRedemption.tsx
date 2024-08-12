@@ -103,7 +103,9 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold text-primary">Redeem AYF For AUDC</h2>
+          <h2 className="text-3xl font-bold text-primary">
+            Redeem AYF For AUDC
+          </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 text-xl mb-4 font-medium">
@@ -139,17 +141,22 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
           </div>
         </div>
         {txApprovalHash && isApprovalLoading && (
-          <div className="mt-4 text-white text-center">
+          <div className="mt-4 text-primary text-center">
             <p>Approval transaction is pending...</p>
           </div>
         )}
         {txRedemptionHash && (
-          <div className="mt-4 text-white text-center">
+          <div className="mt-4 text-primary text-center">
             {isRedemptionLoading && <p>Redemption transaction is pending...</p>}
             {!isRedemptionLoading && (
-              <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {txRedemptionHash}
-              </p>
+              <a
+                href={`https://sepolia.etherscan.io/tx/${txRedemptionHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-primary overflow-x-scroll"
+              >
+                {txRedemptionHash}
+              </a>
             )}
           </div>
         )}
