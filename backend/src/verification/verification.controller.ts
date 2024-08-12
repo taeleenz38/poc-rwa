@@ -5,7 +5,7 @@ import { DocumentDto } from '../dto/request/document.dto';
 import { ApplicantResponse, ReviewResponse } from '../dto/response/response.dto';
 
 @Controller('kyc')
-export class AppController {
+export class VerificationController {
   constructor(private readonly appService: KycVerifcationService) { }
 
   @Post('applicant')

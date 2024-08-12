@@ -9,12 +9,11 @@ import { DropBoxSignEmbeddedModule } from './dropboxsign/embedded/dropboxsign.em
 import { DropBoxSignModule } from './dropboxsign/sign/dropboxsign.module';
 import { Document } from './repository/model/documents/document.entity';
 import { User } from './repository/model/user/user.entity';
-import { AppController } from './verification/verification.controller';
-import { KycVerifcationService } from './verification/verification.service';
+import { VerificationModule } from './verification/verification.module';
 
 
 @Module({
-  imports: [HttpModule, DropBoxSignModule, DropBoxSignEmbeddedModule, AuthModule, ConfigModule.forRoot({
+  imports: [DropBoxSignModule, DropBoxSignEmbeddedModule, VerificationModule, AuthModule, ConfigModule.forRoot({
     envFilePath: 'config/.env',
   }), TypeOrmModule.forRoot({
     type: 'postgres',
@@ -27,7 +26,7 @@ import { KycVerifcationService } from './verification/verification.service';
     logging: false,
     entities: [User, Document],
   }),],
-  controllers: [AppController, AlchemyController],
-  providers: [KycVerifcationService, AlchemyService],
+  controllers: [AlchemyController],
+  providers: [AlchemyService],
 })
 export class AppModule {}
