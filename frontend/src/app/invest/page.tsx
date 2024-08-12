@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { config } from "@/config";
-import abi from "@/artifacts/ABBY.json";
+import ayfabi from "@/artifacts/ABBY.json";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription from "@/app/components/organisms/FundDescription";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
@@ -73,7 +73,7 @@ const Invest = () => {
     : "...";
 
   const { data: totalSupply } = useReadContract({
-    abi: abi.abi,
+    abi: ayfabi.abi,
     address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
     functionName: "totalSupply",
   });
