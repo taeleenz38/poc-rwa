@@ -4,6 +4,9 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useRouter } from "next/navigation";
+import Button from "../components/atoms/Buttons/Button";
+import Image from "next/image";
+import { BiRefresh } from "react-icons/bi";
 
 interface UserDetails {
   firstName: string;
@@ -28,7 +31,11 @@ const Page = () => {
   const [userDocument, setUserDocument] = useState<UserDocument | null>(null);
   const [isFetching, setIsFetching] = useState(true);
   const [isFetchingDocuments, setIsFetchingDocuments] = useState(true);
+  const [isFetchingStatus, setIsFetchingStatus] = useState(false);
   const [username, setUsername] = useState("");
+  const [userStatus, setUserStatus] = useState<"Active" | "Inactive">(
+    "Inactive"
+  );
 
   // useEffect(() => {
   //   if (!isLoggedIn) {
@@ -40,47 +47,67 @@ const Page = () => {
   //   return null;
   // }
 
+  const fetchUserStatus = async (user: string) => {
+    try {
+      setIsFetchingStatus(true);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/auth/status?email=${user}`
+      );
+      if (response.status === 200 || 201) {
+        if (response.data.isActive === true) {
+          setUserStatus("Active");
+        } else {
+          setUserStatus("Inactive");
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch status ", err);
+      localStorage.set("UserStatus", "Inactive");
+      setUserStatus("Inactive");
+    } finally {
+      setIsFetchingStatus(false);
+    }
+  };
+
   useEffect(() => {
     const user = localStorage.getItem("username");
     if (user) {
       setUsername(user);
+      fetchUserStatus(user);
     }
   }, []);
 
-  useEffect(() => {
-    if (username) {
-      const fetchUserDetails = async () => {
-        try {
-          const response = await axios.get(
-            `https://api.tokenisation.gcp-hub.com.au/auth/profile?email=${username}`
-          );
-          console.log(response.data, "Profile data");
-          setUserDetails(response.data);
-          setIsFetching(false);
-        } catch (err) {
-          console.error("Failed to fetch profile data");
-          setIsFetching(false);
-        }
-      };
-      fetchUserDetails();
+  const fetchDocument = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/contract-sign/download/link?email=${username}`
+      );
+      console.log(response.data, "Document data");
+      setUserDocument(response.data);
+      setIsFetchingDocuments(false);
+    } catch (err) {
+      console.error("Failed to fetch document");
+      setIsFetchingDocuments(false);
     }
-  }, [username]);
+  };
+
+  const fetchUserDetails = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/auth/profile?email=${username}`
+      );
+      console.log(response.data, "Profile data");
+      setUserDetails(response.data);
+      setIsFetching(false);
+    } catch (err) {
+      console.error("Failed to fetch profile data");
+      setIsFetching(false);
+    }
+  };
 
   useEffect(() => {
     if (username) {
-      const fetchDocument = async () => {
-        try {
-          const response = await axios.get(
-            `https://api.tokenisation.gcp-hub.com.au/contract-sign/download/link?email=${username}`
-          );
-          console.log(response.data, "Document data");
-          setUserDocument(response.data);
-          setIsFetchingDocuments(false);
-        } catch (err) {
-          console.error("Failed to fetch document");
-          setIsFetchingDocuments(false);
-        }
-      };
+      fetchUserDetails();
       fetchDocument();
     }
   }, [username]);
@@ -146,10 +173,38 @@ const Page = () => {
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
-                    <>
-                      <h3 className="text-lg">User Status - Active </h3>
-                      <h3 className="text-lg">KYC Status - Complete </h3>
-                    </>
+                    <div className="flex flex-col gap-2 w-full">
+                      {/* <div className="flex  w-full items-center justify-center">
+
+                        <div
+                          className=" flex  border border-gray rounded-md hover:cursor-pointer hover:bg-gray/20"
+                          onClick={() => {
+                            fetchUserStatus(username);
+                          }}
+                        >
+                          <BiRefresh size={25} />
+                        </div>
+                      </div> */}
+
+                      <h3 className="text-lg  ">
+                        User Status -{" "}
+                        {isFetchingStatus ? (
+                          <Skeleton height={26} className="w-full]" />
+                        ) : (
+                          userStatus
+                        )}{" "}
+                      </h3>
+                      <h3 className="text-lg ">
+                        KYC Status -{" "}
+                        {isFetchingStatus ? (
+                          <Skeleton height={26} className="w-full" />
+                        ) : userStatus === "Active" ? (
+                          "Completed"
+                        ) : (
+                          "Pending"
+                        )}{" "}
+                      </h3>
+                    </div>
                   </div>
                 </div>
               </div>

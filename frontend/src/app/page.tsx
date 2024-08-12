@@ -29,6 +29,7 @@ export default function Home() {
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);
   const [isRedeemOpen, setIsRedeemOpen] = React.useState(false);
   const [tvl, setTvl] = useState<string>("...");
+  const [userStatus, setUserStatus] = useState<boolean>(false);
 
   const handleButton1Click = () => {
     setIsBuyOpen(true);
