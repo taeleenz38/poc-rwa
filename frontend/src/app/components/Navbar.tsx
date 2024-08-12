@@ -99,7 +99,6 @@ const Navbar = () => {
     setUserRole("");
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userRole");
-    router.push("/");
   };
 
   return (

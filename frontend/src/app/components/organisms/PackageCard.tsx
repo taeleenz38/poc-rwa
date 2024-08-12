@@ -25,7 +25,7 @@ type PackageCardProps = {
 
 export const PackageCard = (props: PackageCardProps) => {
   const [isFetching, setIsFetching] = useState(true);
-  const [tvl, setTvl] = useState<string>("0");
+  const [tvl, setTvl] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
   const {
     href,

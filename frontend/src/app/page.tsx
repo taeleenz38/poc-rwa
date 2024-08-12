@@ -49,66 +49,68 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const fetchPriceAndCalculateTVL = async () => {
-      if (totalSupply) {
-        try {
-          // Fetch the latest price
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const data = await response.json();
-          console.log("Price data:", data);
-
-          if (Array.isArray(data) && data.length > 0) {
-            const latestPrice = data.sort(
-              (a: Item, b: Item) =>
-                new Date(b.date).getTime() - new Date(a.date).getTime()
-            )[0];
-
-            const fetchedPrice = latestPrice ? latestPrice.price : "0";
-            setPrice(fetchedPrice);
-
-            if (fetchedPrice) {
-              let totalSupplyNormal;
-
-              if (typeof totalSupply === "bigint") {
-                const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
-                totalSupplyNormal = ethers.utils.formatUnits(
-                  bigNumberSupply,
-                  18
-                );
-              } else if (BigNumber.isBigNumber(totalSupply)) {
-                totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-              } else {
-                console.error("Invalid totalSupply format:", totalSupply);
-                return;
-              }
-
-              const tvlValue = (
-                parseFloat(totalSupplyNormal) * parseFloat(fetchedPrice)
-              ).toFixed(2);
-
-              setTvl(formatNumberWithCommas(tvlValue));
-              console.log("Total Supply:", totalSupplyNormal); // Print formatted total supply
-              console.log("Price:", fetchedPrice);
-            }
-          } else {
-            console.error("Price list data is empty or not an array.");
-          }
-        } catch (error) {
-          console.error("Error in fetchPriceAndCalculateTVL:", error);
-        } finally {
-          setIsFetching(false);
+    const fetchLatestPrice = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      } else {
-        console.log("Total Supply is not yet available.");
+        const data = await response.json();
+        console.log("Price data:", data);
+
+        if (Array.isArray(data) && data.length > 0) {
+          const latestPrice = data.sort(
+            (a: Item, b: Item) =>
+              new Date(b.date).getTime() - new Date(a.date).getTime()
+          )[0];
+
+          const fetchedPrice = latestPrice ? latestPrice.price : "0";
+          setPrice(fetchedPrice);
+        } else {
+          console.error("Price list data is empty or not an array.");
+        }
+      } catch (error) {
+        console.error("Error fetching the latest price:", error);
       }
     };
 
-    fetchPriceAndCalculateTVL();
+    fetchLatestPrice();
+  }, []);
+
+  useEffect(() => {
+    if (totalSupply && price) {
+      const calculateTVL = () => {
+        try {
+          let totalSupplyNormal;
+
+          if (typeof totalSupply === "bigint") {
+            const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
+            totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
+          } else if (BigNumber.isBigNumber(totalSupply)) {
+            totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
+          } else {
+            console.error("Invalid totalSupply format:", totalSupply);
+            return;
+          }
+
+          const tvlValue = (
+            parseFloat(totalSupplyNormal) * parseFloat(price)
+          ).toFixed(2);
+
+          setTvl(formatNumberWithCommas(tvlValue));
+          console.log("Total Supply:", totalSupplyNormal);
+          console.log("Price:", price);
+        } catch (error) {
+          console.error("Error in calculating TVL:", error);
+        } finally {
+          setIsFetching(false);
+        }
+      };
+
+      calculateTVL();
+    }
   }, [totalSupply, price]);
 
   const formattedPrice = price
