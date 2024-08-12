@@ -46,23 +46,26 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
   console.log(priceId);
 
   const handleUpdatePrice = async () => {
-    const priceID = Number(priceId);
-    const priceIDHexlified = ethers.utils.hexZeroPad(
-      ethers.utils.hexlify(priceID),
-      32
-    );
-
-    const price = BigNumber.from(updatePrice).mul(BigNumber.from(10).pow(18));
-
-    console.log("priceID", priceID.toString());
-    console.log("price", price.toString());
     try {
+      const priceID = Number(priceId);
+      const priceIDHexlified = ethers.utils.hexZeroPad(
+        ethers.utils.hexlify(priceID),
+        32
+      );
+
+      const parsedPrice = parseFloat(updatePrice);
+      const price = ethers.utils.parseUnits(parsedPrice.toString(), 18);
+
+      console.log("priceID", priceID.toString());
+      console.log("price", price.toString());
+
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_PRICER_ADDRESS as `0x${string}`,
         functionName: "updatePrice",
         args: [priceIDHexlified, price],
       });
+
       setTxHash(tx);
       console.log("Price successfully updated - transaction hash:", tx);
     } catch (error) {
