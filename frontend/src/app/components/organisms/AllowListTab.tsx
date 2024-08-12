@@ -104,7 +104,7 @@ const AllowlistTab = () => {
           <table className="table">
             <thead>
               <tr className="text-gray text-lg bg-[#F5F2F2] border-none ">
-                <th className="text-center">ID</th>
+                <th className="text-center">Term Index</th>
                 <th className="text-center">User</th>
                 <th className="text-center">Status</th>
                 <th className="text-center">Transaction Date</th>
