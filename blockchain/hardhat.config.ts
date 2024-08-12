@@ -19,6 +19,9 @@ const assetSender = process.env.ASSET_SENDER_PK_1!; //0x9F93Eab82877B46bADf70Bb8
 const instantMintAdmin = process.env.INSTANT_MINT_ADMIN!; //0x0b8799749c6c13F4aCc3A92ADb8084fF1a97F1a1 - 5
 const feeReceipent = process.env.FEE_RECEIPIENT!; //0x7C07198427A078D5a12c36CfF8afCBa5fe3b0907 - 6
 const stableCoinUser = process.env.STABLE_COIN_USER_PK_1!; //0xb4F6942EFE7e953390b6BB1616205516CE9e0123 - 7
+const guardian2 = process.env.GUARDIAN_PK_2!; //0x1E40767ddA91a06ee3e80E3d28BEB28CcF2F2565 - 1
+const managerAdmin2 = process.env.MANAGER_ADMIN_PK_2!; //0xB433CDEbaf52E83F6aF8ec318b09b48519DD8519 - 2
+const assetSender2 = process.env.ASSET_SENDER_PK_2!; //0x9F93Eab82877B46bADf70Bb88Ad370Bb5d6BFA1D - 4
 
 //asset receipent - 0xBbCBbd4b0dfEFdd5eeed2e5b07e305b0A7Bc6bF9
 
@@ -76,7 +79,7 @@ const config: HardhatUserConfig = {
     },
     sepoliaSafe: {
       url: 'https://eth-sepolia.g.alchemy.com/v2/KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe',
-      accounts: [deployer, guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
+      accounts: [deployer, guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser, guardian2, managerAdmin2, assetSender2],
       gasPrice: 10000000000,
     }
   },
