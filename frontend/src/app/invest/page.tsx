@@ -117,11 +117,11 @@ const Invest = () => {
       if (price) {
         try {
           const provider = new ethers.providers.JsonRpcProvider(
-            "https://mainnet.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
+            "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
           );
           const contractAddress = process.env
             .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
-          const abi = ["function totalSupply() view returns (uint256)"];
+          const abi = ayfabi.abi;
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
           const supply = await contract.totalSupply();

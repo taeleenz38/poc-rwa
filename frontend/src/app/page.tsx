@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
-import abi from "@/artifacts/ABBY.json";
+import ayfabi from "@/artifacts/ABBY.json";
 import { config } from "@/config";
 import { BigNumber, ethers } from "ethers";
 import { PackageCard } from "./components/organisms/PackageCard";
@@ -39,7 +39,7 @@ export default function Home() {
   };
 
   const { data: totalSupply } = useReadContract({
-    abi: abi.abi,
+    abi: ayfabi.abi,
     address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
     functionName: "totalSupply",
   });
@@ -84,11 +84,11 @@ export default function Home() {
       if (price) {
         try {
           const provider = new ethers.providers.JsonRpcProvider(
-            "https://mainnet.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
+            "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
           );
           const contractAddress = process.env
             .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
-          const abi = ["function totalSupply() view returns (uint256)"];
+          const abi = ayfabi.abi;
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
           const supply = await contract.totalSupply();
