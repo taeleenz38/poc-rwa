@@ -13,6 +13,7 @@
     "@types/hellosign-embedded": "^2.0.6",
     "@web3modal/wagmi": "^4.0.9",
     "axios": "^1.7.2",
+    "encoding": "^0.1.13",
     "ethers": "5.7",
     "hellosign-embedded": "^2.12.2",
     "next": "14.2.5",
