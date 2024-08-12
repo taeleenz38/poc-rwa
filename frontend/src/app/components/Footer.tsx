@@ -18,11 +18,11 @@ const Footer = () => {
         </div>
         <div className="flex flex-col gap-y-6 text-xl text-light">
           <Link href="/" className="font-bold">
-            Home
+            Phone
           </Link>
-          <Link href="/about">About</Link>
-          <Link href="/about">Our Offering</Link>
-          <Link href="/about">Contact</Link>
+          <Link href="/about">Address</Link>
+          <Link href="/about">Email</Link>
+          <Link href="/about">Website</Link>
         </div>
         <div className="flex flex-col gap-y-6 text-xl text-light text-opacity-80">
           <div>+61 (0)452 597 949</div>
