@@ -6,6 +6,7 @@ interface SelectFieldProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: { label: string; value: string | number }[];
   className?: string;
+  error?: string;
 }
 
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -14,6 +15,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   onChange,
   options,
   className = "",
+  error,
 }) => {
   return (
     <div className="relative flex w-1/2 items-center mb-5 border border-gray/70 rounded-md">
@@ -34,6 +36,11 @@ const SelectField: React.FC<SelectFieldProps> = ({
           </option>
         ))}
       </select>
+      {error && (
+        <span className="absolute left-0 mt-16 text-xs error-text">
+          {error}
+        </span>
+      )}
     </div>
   );
 };

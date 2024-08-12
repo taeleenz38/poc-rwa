@@ -4,12 +4,14 @@ interface FileUploadProps {
   label: string;
   onChange: (file: File | null) => void;
   className?: string;
+  error?: string;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
   label,
   onChange,
   className = "",
+  error,
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
 
@@ -20,7 +22,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <div className={`flex flex-col items-start ${className}`}>
+    <div className={`flex flex-col items-start mb-6 ${className}`}>
       <label className="block font-bold mb-2 text-gray/70">{label}</label>
       <input
         type="file"

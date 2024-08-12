@@ -12,6 +12,7 @@ interface InputWithLabelProps {
   widthfull?: boolean;
   border?: boolean;
   required?: boolean;
+  error?: string;
 }
 
 const InputWithLabel: FC<InputWithLabelProps> = ({
@@ -25,6 +26,7 @@ const InputWithLabel: FC<InputWithLabelProps> = ({
   widthfull,
   border,
   required = false,
+  error,
 }) => (
   <div className="relative flex w-1/2 items-center mb-5 border border-gray/70 rounded-md">
     <label
@@ -44,6 +46,9 @@ const InputWithLabel: FC<InputWithLabelProps> = ({
       required={required} // Uncomment if required
       // disabled={disabled}
     />
+    {error && (
+      <span className="absolute left-0 mt-16 text-xs error-text">{error}</span>
+    )}
   </div>
 );
 
