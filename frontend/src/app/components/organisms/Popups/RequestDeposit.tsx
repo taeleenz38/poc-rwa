@@ -168,10 +168,10 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
           </div>
         )}
         {txDepositHash && (
-          <div className="mt-4 text-white text-center">
+          <div className="mt-4 text-primary text-center">
             {isDepositLoading && <p>Deposit transaction is pending...</p>}
-            {!isDepositLoading && (
-              <p className="text-white overflow-x-scroll">
+            {!isDepositLoading || depositReceipt && (
+              <p className="text-primary overflow-x-scroll">
                 Transaction successful! Hash: {txDepositHash}
               </p>
             )}

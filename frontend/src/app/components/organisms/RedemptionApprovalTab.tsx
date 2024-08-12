@@ -33,7 +33,7 @@ const RedemptionApprovalTab = () => {
       } catch (error) {
         console.error("Error fetching wallets:", error);
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     };
 

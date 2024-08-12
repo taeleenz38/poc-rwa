@@ -55,8 +55,10 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
 
   const handleApproveRedeem = async () => {
     try {
-      const approvalAmount = BigNumber.from(amount).mul(
-        BigNumber.from(10).pow(18)
+      const parsedAmount = parseFloat(amount);
+      const approvalAmount = ethers.utils.parseUnits(
+        parsedAmount.toString(),
+        18
       );
 
       const approvalTx = await writeContractAsync({
