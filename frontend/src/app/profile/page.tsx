@@ -22,8 +22,8 @@ interface UserDocument {
 }
 
 const Page = () => {
-  const router = useRouter();
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  // const router = useRouter();
+  // const isLoggedIn = localStorage.getItem("isLoggedIn");
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [userDocument, setUserDocument] = useState<UserDocument | null>(null);
   const [isFetching, setIsFetching] = useState(true);
