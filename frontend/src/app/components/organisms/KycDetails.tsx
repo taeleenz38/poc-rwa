@@ -143,6 +143,14 @@ const KycDetails = (props: KycDetailsProps) => {
       lastName,
       email,
       walletAddress,
+      birthdate: dob,
+      country: country === "AUS" ? "Australia" : country,
+      // idDocument:  TO DO --------------------------------
+      //   idDocType === "drivers_license" ? "Driver's Licence" : idDocType,
+      idDocument: "Driver's Licence",
+      idNumber: number,
+      idExpiry: validUntil,
+      verificationId: applicationid,
     };
 
     try {
@@ -179,25 +187,6 @@ const KycDetails = (props: KycDetailsProps) => {
       }
     } finally {
       setDocSignedProgress(false);
-    }
-  };
-
-  const getStatus = async () => {
-    try {
-      setIsLoading(true);
-      const statusUrl =
-        process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + applicationid;
-
-      const response = await axios.get(statusUrl);
-      if (response.data.reviewStatus === "completed") {
-        setStatus("Done");
-      } else {
-        setStatus("Init");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

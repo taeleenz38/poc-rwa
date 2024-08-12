@@ -9,6 +9,7 @@ import Button from "./atoms/Buttons/Button";
 import CloseButton from "./atoms/Buttons/CloseButton";
 import axios from "axios";
 import { MdAlternateEmail } from "react-icons/md";
+import { Router } from "next/router";
 
 const Navbar = () => {
   const { address } = useAccount({ config });
@@ -20,11 +21,13 @@ const Navbar = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
+  const [userState, setUserState] = useState<string | null>("Inactive");
   const router = useRouter();
 
   useEffect(() => {
     const storedLoggedIn = localStorage.getItem("isLoggedIn");
     const storedUserRole = localStorage.getItem("userRole");
+    const email = localStorage.getItem("username");
 
     if (storedLoggedIn && storedUserRole) {
       setIsLoggedIn(true);
@@ -73,6 +76,27 @@ const Navbar = () => {
     }
   }, [justLoggedIn, userRole, router]);
 
+  const fetchUserStatus = async (user: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/auth/status?email=${user}`
+      );
+      if (response.status === 200 || 201) {
+        if (response.data.isActive === true) {
+          localStorage.setItem("UserStatus", "Active");
+          setUserState("Active");
+        } else {
+          localStorage.setItem("UserStatus", "Inactive");
+          setUserState("Inactive");
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch status ", err);
+      localStorage.set("UserStatus", "Inactive");
+      setUserState("Inactive");
+    }
+  };
+
   const handleSignIn = async () => {
     try {
       localStorage.setItem("username", email);
@@ -114,6 +138,7 @@ const Navbar = () => {
         } else {
           setIsLoggedIn(true);
           setUserRole("user");
+          fetchUserStatus(email);
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userRole", "user");
           setShowModal(false);
@@ -131,6 +156,8 @@ const Navbar = () => {
   const handleSignOut = () => {
     setIsLoggedIn(false);
     setUserRole("");
+    router.push("/");
+    // localStorage.clear();
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userRole");
   };
@@ -163,14 +190,16 @@ const Navbar = () => {
                 >
                   Invest
                 </Link>
-                <Link
-                  href="/portfolio"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                    currentPath === "/portfolio" ? "text-secondary" : ""
-                  }`}
-                >
-                  Portfolio
-                </Link>
+                {userState === "Active" && (
+                  <Link
+                    href="/portfolio"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/portfolio" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Portfolio
+                  </Link>
+                )}
                 <Link
                   href="/about"
                   className={`font-semibold mr-14 text-xl hover:text-secondary ${

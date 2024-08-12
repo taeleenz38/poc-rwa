@@ -29,7 +29,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
         onChange={onChange}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} selected>
             {option.label}
           </option>
         ))}

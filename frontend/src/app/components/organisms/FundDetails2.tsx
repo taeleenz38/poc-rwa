@@ -23,6 +23,7 @@ type FundDetails2Props = {
   Button2Class: string;
   onButton1Click: () => void;
   onButton2Click: () => void;
+  userStatus: "Active" | "Inactive";
 };
 
 const FundDetails2 = (props: FundDetails2Props) => {
@@ -41,6 +42,7 @@ const FundDetails2 = (props: FundDetails2Props) => {
     Button2Class,
     onButton1Click,
     onButton2Click,
+    userStatus,
   } = props;
 
   return (
@@ -49,7 +51,7 @@ const FundDetails2 = (props: FundDetails2Props) => {
       style={{
         backgroundImage: "url('/Graphic1.png')",
         backgroundSize: "cover", // Ensures the image covers the container
-        backgroundPosition: "center", 
+        backgroundPosition: "center",
         backgroundRepeat: "no-repeat", // No repeating background
         backgroundAttachment: "fixed", // Keeps the background fixed
         width: "100%", // Ensure full width
@@ -77,11 +79,13 @@ const FundDetails2 = (props: FundDetails2Props) => {
               text={Button1Text}
               className={Button1Class}
               onClick={onButton1Click}
+              disabled={userStatus === "Inactive"}
             />
             <Button
               text={Button2Text}
               className={Button2Class}
               onClick={onButton2Click}
+              disabled={userStatus === "Inactive"}
             />
           </div>
           <div className="flex items-center pt-14 gap-x-8 gap-y-2">
