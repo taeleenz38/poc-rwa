@@ -27,6 +27,18 @@ const Navbar = () => {
     if (storedLoggedIn && storedUserRole) {
       setIsLoggedIn(true);
       setUserRole(storedUserRole);
+    } else {
+      // Redirect to home and show modal if not logged in
+      const restrictedPaths = [
+        "/admin",
+        "/invest",
+        "/allowlist",
+        "/assetsender",
+      ];
+      if (restrictedPaths.includes(currentPath) && !isLoggedIn) {
+        router.push("/");
+        setShowModal(true);
+      }
     }
 
     const handleScroll = () => {
@@ -42,7 +54,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [currentPath, isLoggedIn, router]);
 
   useEffect(() => {
     if (justLoggedIn) {
@@ -228,20 +240,26 @@ const Navbar = () => {
               <CloseButton onClick={() => setShowModal(false)} />
             </div>
             <div className="flex flex-col items-center">
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mb-4 p-2 border rounded w-96"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mb-4 p-2 border rounded w-96"
-              />
+              <div className="flex justify-between items-center mb-4">
+                <label className="mr-3 w-20">Username</label>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="p-2 border rounded w-96"
+                />
+              </div>
+              <div className="flex items-center">
+                <label className="mr-3 w-20">Password</label>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mb-4 p-2 border rounded w-96"
+                />
+              </div>
               <Button
                 text={"Sign In"}
                 className="bg-primary rounded-lg w-32 hover:bg-white hover:text-primary text-white py-2 px-4"
