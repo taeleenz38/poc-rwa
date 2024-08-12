@@ -116,7 +116,6 @@ const Invest = () => {
     const calculateTVL = async () => {
       if (price) {
         try {
-          // Connect to Ethereum network using Infura provider
           const provider = new ethers.providers.JsonRpcProvider(
             "https://mainnet.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
           );
@@ -125,11 +124,9 @@ const Invest = () => {
           const abi = ["function totalSupply() view returns (uint256)"];
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
-          // Fetch total supply from the contract
           const supply = await contract.totalSupply();
           const formattedSupply = ethers.utils.formatUnits(supply, 18);
 
-          // Calculate TVL
           const tvlValue = (
             parseFloat(formattedSupply) * parseFloat(price)
           ).toFixed(2);
