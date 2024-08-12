@@ -22,8 +22,8 @@ async function main() {
   const safeSdk = await Safe.create({ ethAdapter, safeAddress: managerAdminSafe });
   console.log("Gnosis Safe setup complete.");
 
-  const mintFee = 500; // Example: 5%
-  const redemptionFee = 300; // Example: 3%
+  const mintFee = 20; // Example: 5%
+  const redemptionFee = 20; // Example: 3%
 
   try {
     // Encode the setMintFee function data
