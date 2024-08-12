@@ -262,24 +262,24 @@ const Navbar = () => {
               <CloseButton onClick={() => setShowModal(false)} />
             </div>
             <div className="flex flex-col items-center">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center mb-4">
                 <label className="mr-3 w-20">Username</label>
                 <input
                   type="text"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mb-4 p-2 border rounded w-96"
+                  className="p-2 border rounded w-96"
                 />
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center mb-4">
                 <label className="mr-3 w-20">Password</label>
                 <input
                   type="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mb-4 p-2 border rounded w-96"
+                  className="p-2 border rounded w-96"
                 />
               </div>
               <Button
