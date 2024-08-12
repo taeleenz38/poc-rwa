@@ -77,6 +77,21 @@ export class User extends BaseEntity {
     })
     walletAddress: string;
 
+    @Column({
+        type: 'boolean',
+        name: 'is_active',
+        nullable: false,
+        default: false
+    })
+    isActive: boolean;
+
+    @Column({
+        type: 'varchar',
+        name: 'verification_id',
+        nullable: true
+    })
+    verificationId: string;
+
     @OneToMany(() => Document, (document) => document.user)
     documents: Promise<Document[]>;
 
