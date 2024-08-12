@@ -18,10 +18,10 @@ const Stepper: React.FC<StepperProps> = ({
         <div key={index} className="flex mb-2 items-center">
           <div
             className={`w-10 h-10 rounded-full border  border-secondary  outline-2 outline-white ${
-              (currentStep >= 5 && index <= 1) ||
-              (currentStep >= 6 && index <= 2) ||
-              (currentStep >= 7 && index <= 3) ||
-              (currentStep < 5 && index === 0)
+              (currentStep >= 4 && index <= 1) ||
+              (currentStep >= 5 && index <= 2) ||
+              (currentStep >= 6 && index <= 3) ||
+              (currentStep < 4 && index === 0)
                 ? "bg-primary/70"
                 : "bg-white"
             }`}
