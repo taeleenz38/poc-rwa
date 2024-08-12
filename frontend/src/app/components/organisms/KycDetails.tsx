@@ -40,7 +40,7 @@ const KycDetails = (props: KycDetailsProps) => {
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backtFile, setBackFile] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const totalSteps = 8;
+  const totalSteps = 7;
   const stepLabels = [
     "Verify your identity",
     "Add your wallet",
@@ -370,12 +370,10 @@ const KycDetails = (props: KycDetailsProps) => {
               : currentStep === 3
               ? "Submit the required documents, ensuring all information is up-to-date"
               : currentStep === 4
-              ? "Verification Has Been Submitted"
-              : currentStep === 5
               ? "Please provide your wallet address"
-              : currentStep === 6
+              : currentStep === 5
               ? "Please sign the document"
-              : currentStep === 7
+              : currentStep === 6
               ? "Provide user credentials"
               : "User onboarding completed !"}
           </h1>
@@ -512,26 +510,6 @@ const KycDetails = (props: KycDetailsProps) => {
           )}
 
           {currentStep === 4 && (
-            <div className="flex flex-col justify-center items-center gap-4">
-              {/* <span>Please </span> */}
-              <span>
-                {status === "Done"
-                  ? "You have been verified !"
-                  : status === "Init"
-                  ? "Verification is being proccessed. Try Again !"
-                  : ""}
-              </span>
-              {status !== "Done" && (
-                <Button
-                  text={` ${isLoading ? "Checking Status..." : "Get Verified"}`}
-                  onClick={getStatus}
-                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md `}
-                />
-              )}
-            </div>
-          )}
-
-          {currentStep === 5 && (
             <div className="flex flex-col rounded-md justify-center items-center ">
               <InputWithLabel
                 id="Wallet Address"
@@ -547,7 +525,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
 
-          {currentStep === 6 && (
+          {currentStep === 5 && (
             <div className="flex flex-col rounded-md justify-center items-center ">
               <Button
                 text={`${
@@ -570,7 +548,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
 
-          {currentStep === 7 && (
+          {currentStep === 6 && (
             <div className="flex flex-col rounded-md justify-center items-center ">
               <InputWithLabel
                 id="email"
@@ -620,7 +598,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
 
-          {currentStep === 8 && (
+          {currentStep === 7 && (
             <div className="flex flex-col rounded-md justify-center items-center ">
               <Button
                 text="Proceed to Home Page "
@@ -644,41 +622,33 @@ const KycDetails = (props: KycDetailsProps) => {
               </span>
             )}
             <div className="flex justify-between w-full mt-4">
-              {currentStep > 1 && currentStep !== 6 && currentStep !== 7 && (
+              {currentStep > 1 && currentStep !== 5 && currentStep !== 6 && (
                 <Button
                   text="Previous"
-                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                    currentStep === 4 && "hidden"
-                  } ${currentStep === 8 && "hidden"} ${
+                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md  ${
+                    currentStep === 7 && "hidden"
+                  } ${
                     currentStep == 3 &&
                     isLoading &&
                     "bg-white text-primary hover:bg-white"
                   }`}
                   onClick={prevStep}
-                  disabled={
-                    (currentStep === 4 && status !== "Done") ||
-                    (currentStep == 3 && isLoading)
-                  }
+                  disabled={currentStep == 3 && isLoading}
                 />
               )}
               <div className="flex-1 flex justify-end">
                 {currentStep < totalSteps &&
                 currentStep !== 3 &&
-                currentStep !== 7 ? (
+                currentStep !== 6 ? (
                   <Button
                     text="Next"
-                    className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                      currentStep === 4 && status !== "Done" && "hidden"
-                    } ${
-                      currentStep === 6 &&
+                    className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md  ${
+                      currentStep === 5 &&
                       !docSigned &&
                       "bg-white text-primary hover:bg-white"
                     }`}
                     onClick={nextStep}
-                    disabled={
-                      (currentStep === 4 && status !== "Done") ||
-                      (currentStep === 6 && !docSigned)
-                    }
+                    disabled={currentStep === 6 && !docSigned}
                   />
                 ) : (
                   currentStep === 3 && (
