@@ -68,6 +68,9 @@ body {
   .borderColor {
     @apply border-[#aaaaaa];
   }
+  .error-text {
+    @apply text-[#f87171];
+  }
 }
 
 /* Chrome, Edge, and Safari */

@@ -59,6 +59,9 @@ const KycDetails = (props: KycDetailsProps) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
 
   const router = useRouter();
 
@@ -78,14 +81,112 @@ const KycDetails = (props: KycDetailsProps) => {
       setter(e.target.value);
     };
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateWalletAddress = (address: string) => {
+    const walletRegex = /^0x[a-fA-F0-9]{40}$/;
+    return walletRegex.test(address);
+  };
+
+  const validateStep1 = () => {
+    const errors: { [key: string]: string } = {};
+    if (!firstName.trim()) errors.firstName = "First name is required";
+    if (!lastName.trim()) errors.lastName = "Last name is required";
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!validateEmail(email)) {
+      errors.email = "Invalid email format";
+    }
+    if (!dob.trim()) errors.dob = "Date of Birth is required";
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const errors: { [key: string]: string } = {};
+    if (!issuedDate.trim()) errors.issuedDate = "Issued date is required";
+    if (!validUntil.trim()) errors.validUntil = "Valid until date is required";
+    if (!number.trim()) errors.number = "Document number is required";
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const errors: { [key: string]: string } = {};
+    if (!frontFile) errors.frontFile = "Front file is required";
+    if (!backtFile) errors.backFile = "Back file is required";
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep4 = () => {
+    const errors: { [key: string]: string } = {};
+    if (!walletAddress.trim()) {
+      errors.walletAddress = "Wallet address is required";
+    } else if (!validateWalletAddress(walletAddress)) {
+      errors.walletAddress = "Invalid Ethereum wallet address";
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const isFormValid = () => {
+    switch (currentStep) {
+      case 1:
+        return validateStep1();
+      case 2:
+        return validateStep2();
+      case 3:
+        return validateStep3();
+      case 4:
+        return validateStep4();
+      default:
+        return true;
+    }
+  };
+
+  // const isFormValid = () => {
+  //   console.log(
+  //     country.trim() !== "",
+  //     firstName.trim() !== "",
+  //     lastName.trim() !== "",
+  //     issuedDate.trim() !== "",
+  //     validUntil.trim() !== "",
+  //     number.trim() !== "",
+  //     dob.trim() !== "",
+  //     frontFile !== null,
+  //     backtFile !== null
+  //   );
+  //   return (
+  //     country.trim() !== "" &&
+  //     firstName.trim() !== "" &&
+  //     lastName.trim() !== "" &&
+  //     issuedDate.trim() !== "" &&
+  //     validUntil.trim() !== "" &&
+  //     number.trim() !== "" &&
+  //     dob.trim() !== "" &&
+  //     frontFile !== null &&
+  //     backtFile !== null
+  //   );
+  // };
+
   const nextStep = () => {
-    setCurrentStep((prevStep) => {
-      const newStep = prevStep + 1;
-      if (newStep <= totalSteps) {
-        return newStep;
-      }
-      return prevStep; // or handle exceeding steps if necessary
-    });
+    if (isFormValid()) {
+      setCurrentStep((prevStep) => {
+        const newStep = prevStep + 1;
+        if (newStep <= totalSteps) {
+          return newStep;
+        }
+        return prevStep; // or handle exceeding steps if necessary
+      });
+    }
   };
 
   const prevStep = () => {
@@ -110,31 +211,6 @@ const KycDetails = (props: KycDetailsProps) => {
     setPlaceOfBirth("");
     setFrontFile(null);
     setBackFile(null);
-  };
-
-  const isFormValid = () => {
-    console.log(
-      country.trim() !== "",
-      firstName.trim() !== "",
-      lastName.trim() !== "",
-      issuedDate.trim() !== "",
-      validUntil.trim() !== "",
-      number.trim() !== "",
-      dob.trim() !== "",
-      frontFile !== null,
-      backtFile !== null
-    );
-    return (
-      country.trim() !== "" &&
-      firstName.trim() !== "" &&
-      lastName.trim() !== "" &&
-      issuedDate.trim() !== "" &&
-      validUntil.trim() !== "" &&
-      number.trim() !== "" &&
-      dob.trim() !== "" &&
-      frontFile !== null &&
-      backtFile !== null
-    );
   };
 
   const sendSignRequest = async () => {
@@ -368,7 +444,7 @@ const KycDetails = (props: KycDetailsProps) => {
           </h1>
 
           {currentStep === 1 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
+            <div className="flex flex-col rounded-md justify-center items-center gap-y-5 ">
               <InputWithLabel
                 id="firstName"
                 name="firstName"
@@ -379,6 +455,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setFirstName)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.firstName}
               />
               <InputWithLabel
                 id="lastName"
@@ -390,6 +467,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setLastName)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.lastName}
               />
               <InputWithLabel
                 id="email"
@@ -401,6 +479,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setEmail)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.email}
               />
 
               <SelectField
@@ -432,11 +511,12 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setDob)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.dob}
               />
             </div>
           )}
           {currentStep === 2 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
+            <div className="flex flex-col rounded-md justify-center items-center gap-y-5">
               <InputWithLabel
                 id="issuedDate"
                 name="issuedDate"
@@ -447,6 +527,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setIssuedDate)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.issuedDate}
               />
               <InputWithLabel
                 id="validUntil"
@@ -458,6 +539,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setValidUntil)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.validUntil}
               />
               <SelectField
                 label="Document Type:"
@@ -476,6 +558,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setNumber)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.number}
               />
             </div>
           )}
@@ -487,6 +570,7 @@ const KycDetails = (props: KycDetailsProps) => {
                   setFrontFile(file as File);
                 }}
                 className="mb-8"
+                error={validationErrors.frontFile}
               />
               <FileUpload
                 label="Upload Back of Driver's License"
@@ -494,6 +578,7 @@ const KycDetails = (props: KycDetailsProps) => {
                   setBackFile(file as File);
                 }}
                 className="mb-4"
+                error={validationErrors.backFile}
               />
             </div>
           )}
@@ -510,6 +595,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setWalletAddress)}
                 widthfull={true}
                 required={true}
+                error={validationErrors.walletAddress}
               />
             </div>
           )}
@@ -573,8 +659,8 @@ const KycDetails = (props: KycDetailsProps) => {
                 required={true}
               />
               {passwordError && (
-                <span className="text-base font-semibold text-red text-pretty mt-7">
-                  Passwords do not match.
+                <span className="text-xs font-semibold error-text text-pretty mb-4">
+                  Passwords do not match
                 </span>
               )}
               <Button
@@ -600,13 +686,13 @@ const KycDetails = (props: KycDetailsProps) => {
           )}
           <div className="flex flex-col justify-center items-center gap-6">
             {!validateForm && (
-              <span className="text-base font-semibold text-orange text-pretty mt-7">
+              <span className="text-base font-semibold error-text text-pretty mt-7">
                 {" "}
                 Please Ensure all fields are filled out correctly and try again
               </span>
             )}
             {error && (
-              <span className="text-base font-semibold text-red text-pretty mt-7">
+              <span className="text-base font-semibold error-text text-pretty mt-7">
                 {error}
               </span>
             )}
