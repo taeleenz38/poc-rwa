@@ -44,15 +44,16 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
           `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
         );
 
-        const reversedPrices = response.data.reverse();
+        const sortedPrices = response.data.sort((a: any, b: any) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
 
-        const uniquePrices = reversedPrices.filter(
+        const uniquePrices = sortedPrices.filter(
           (price: any, index: any, self: any) =>
             index === self.findIndex((p: any) => p.priceId === price.priceId)
         );
 
         const lastFourPrices = uniquePrices.slice(0, 4);
-
         setPrices(lastFourPrices);
       } catch (error) {
         console.error("Error fetching prices:", error);
