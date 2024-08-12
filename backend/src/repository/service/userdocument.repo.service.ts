@@ -38,6 +38,7 @@ export class UserDocumentRepoService {
         signer.idNumber = request.idNumber;
         signer.idExpiry = request.idExpiry;
         signer.walletAddress = request.walletAddress;
+        signer.verificationId = request.verificationId;
 
         const savedUser = await this.userRepo.save(signer);
 

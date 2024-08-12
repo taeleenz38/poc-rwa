@@ -8,7 +8,7 @@ import Stepper from "@/app/components/atoms/Stepper";
 import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
-import VerificationPopup from "./Popups/VerificationPopup";
+// import VerificationPopup from "./Popups/VerificationPopup";
 import HelloSign from "hellosign-embedded";
 import { useRouter } from "next/navigation";
 

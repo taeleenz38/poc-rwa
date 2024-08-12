@@ -52,8 +52,8 @@ const formatNumber = (value: number, options?: Intl.NumberFormatOptions) => {
 };
 
 const Portfolio = () => {
-  const router = useRouter();
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  // const router = useRouter();
+  // const isLoggedIn = localStorage.getItem("isLoggedIn");
   const { address } = useAccount({
     config,
   });

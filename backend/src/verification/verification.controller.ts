@@ -1,11 +1,11 @@
-import { Controller, Post, Param, Body, UseInterceptors, UploadedFile, Get } from '@nestjs/common';
-import { KycVerifcationService } from './verification.service';
+import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentDto } from '../dto/request/document.dto';
 import { ApplicantResponse, ReviewResponse } from '../dto/response/response.dto';
+import { KycVerifcationService } from './verification.service';
 
 @Controller('kyc')
-export class AppController {
+export class KycController {
   constructor(private readonly appService: KycVerifcationService) { }
 
   @Post('applicant')

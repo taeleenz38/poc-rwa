@@ -221,9 +221,10 @@ const Navbar = () => {
       )}
       {showModal && (
         <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center ">
-          <div className="bg-white p-8 rounded transform scale-0 animate-zoomIn duration-1000">
+          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-xl">Sign In</h2>
+              <div></div>
+              <h2 className="text-3xl font-bold text-primary ">Sign In</h2>
               <CloseButton onClick={() => setShowModal(false)} />
             </div>
             <div className="flex flex-col items-center">

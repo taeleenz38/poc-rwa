@@ -23,4 +23,6 @@ export class SignRequestDto {
 
     idExpiry: Date;
 
+    verificationId: string;
+
 }
