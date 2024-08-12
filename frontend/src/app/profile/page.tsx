@@ -30,22 +30,22 @@ const Page = () => {
   const [isFetchingDocuments, setIsFetchingDocuments] = useState(true);
   const [username, setUsername] = useState("");
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/");
-    }
-  }, [isLoggedIn, router]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.push("/");
+  //   }
+  // }, [isLoggedIn, router]);
 
-  if (!isLoggedIn) {
-    return null;
-  }
+  // if (!isLoggedIn) {
+  //   return null;
+  // }
 
-  useEffect(() => {
-    const user = localStorage.getItem("username");
-    if (user) {
-      setUsername(user);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = localStorage.getItem("username");
+  //   if (user) {
+  //     setUsername(user);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (username) {

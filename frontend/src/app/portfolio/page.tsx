@@ -105,15 +105,15 @@ const Portfolio = () => {
 
   const formattedAyfBalance = formatBalance(ayfData);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/");
-    }
-  }, [isLoggedIn, router]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.push("/");
+  //   }
+  // }, [isLoggedIn, router]);
 
-  if (!isLoggedIn) {
-    return null;
-  }
+  // if (!isLoggedIn) {
+  //   return null;
+  // }
 
   useEffect(() => {
     const fetchClaimableTokens = async () => {
