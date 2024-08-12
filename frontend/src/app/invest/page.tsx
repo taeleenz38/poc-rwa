@@ -9,6 +9,7 @@ import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
 import { EthIcon } from "@/app/components/atoms/Icons";
 import { BigNumber, ethers } from "ethers";
+import axios from "axios";
 
 interface Item {
   date: string;
@@ -33,6 +34,11 @@ const Invest = () => {
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);
   const [isRedeemOpen, setIsRedeemOpen] = React.useState(false);
   const [tvl, setTvl] = useState<string>("...");
+  const [userStatus, setUserStatus] = useState<"Active" | "Inactive">(
+    "Inactive"
+  );
+  const email = localStorage.getItem("username");
+
   const handleButton1Click = () => {
     setIsBuyOpen(true);
   };
@@ -41,31 +47,51 @@ const Invest = () => {
     setIsRedeemOpen(true);
   };
 
-  useEffect(() => {
-    const fetchPriceId = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+  const fetchUserStatus = async (user: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/auth/status?email=${user}`
+      );
+      if (response.status === 200 || 201) {
+        if (response.data.isActive === true) {
+          setUserStatus("Active");
+        } else {
+          setUserStatus("Inactive");
         }
-        const data = await response.json();
-        console.log("price data", data);
-
-        const latestPrice = data.sort(
-          (a: Item, b: Item) =>
-            new Date(b.date).getTime() - new Date(a.date).getTime()
-        )[0];
-
-        setPrice(latestPrice ? latestPrice.price : "...");
-      } catch (error) {
-        console.error("Error fetching price ID:", error);
-      } finally {
-        setIsFetching(false);
       }
-    };
+    } catch (err) {
+      console.error("Failed to fetch status ", err);
+
+      setUserStatus("Inactive");
+    }
+  };
+  const fetchPriceId = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("price data", data);
+
+      const latestPrice = data.sort(
+        (a: Item, b: Item) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+      )[0];
+
+      setPrice(latestPrice ? latestPrice.price : "...");
+    } catch (error) {
+      console.error("Error fetching price ID:", error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  useEffect(() => {
     fetchPriceId();
+    fetchUserStatus(email as string);
   }, []);
 
   const formattedPrice = price
@@ -152,10 +178,16 @@ const Invest = () => {
         tvl={tvl}
         Button1Text="Buy AYF"
         Button2Text="Redeem"
-        Button1Class="bg-white text-primary hover:bg-primary hover:text-light"
-        Button2Class="bg-secondary text-light hover:bg-primary"
+        Button1Class={`bg-white text-primary hover:bg-primary hover:text-light ${
+          userStatus === "Inactive" &&
+          "bg-white text-primary/60 hover:bg-white hover:text-primary/60"
+        }`}
+        Button2Class={`bg-secondary text-light hover:bg-primary ${
+          userStatus === "Inactive" && "bg-white text-primary/60 hover:bg-white"
+        }`}
         onButton1Click={handleButton1Click}
         onButton2Click={handleButton2Click}
+        userStatus={userStatus}
         chains={
           <>
             <EthIcon className="lg:w-8 lg:h-8" />
