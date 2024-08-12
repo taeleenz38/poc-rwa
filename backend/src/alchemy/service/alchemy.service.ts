@@ -1074,6 +1074,7 @@ export class AlchemyService {
             const price = parseFloat(matchingDeposits[0].price);
 
             const redeemAmount: number = redemptionAmount * price;
+            
             const claimableRedemption: ClaimableRedemptionResponse = {
               user: value.user,
               redemptionId: value.redemptionId,

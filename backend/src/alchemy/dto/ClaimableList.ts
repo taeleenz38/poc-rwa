@@ -4,8 +4,8 @@ export class ClaimableList {
     collateralAmountDeposited: string;
     depositAmountAfterFee: string;
     feeAmount: string;
-    claimTimestamp: string;
-    claimTimestampFromChain: number;
+    claimTimestamp?: string;
+    claimTimestampFromChain?: number;
     priceId: string;
     claimableAmount?: number
 }
