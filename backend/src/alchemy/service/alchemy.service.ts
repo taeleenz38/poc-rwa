@@ -59,8 +59,8 @@ export class AlchemyService {
       const price = decodedLog.args.price;
 
       const block = await alchemy.core.getBlock(log.blockNumber);
-      const timestamp = block.timestamp;
-      const date = new Date(timestamp * 1000).toISOString();
+      const timestamp = block.timestamp * 1000; // Convert to milliseconds
+      const date = formatDate(timestamp);
 
       let pricing: PricingResponse = {
         // formattedPriceId: ethers.BigNumber.from(priceId).toString(),
@@ -78,8 +78,9 @@ export class AlchemyService {
       const price = decodedLog.args.newPrice;
 
       const block = await alchemy.core.getBlock(log.blockNumber);
-      const timestamp = block.timestamp;
-      const date = new Date(timestamp * 1000).toISOString();
+      const timestamp = block.timestamp * 1000; // Convert to milliseconds
+      const date = formatDate(timestamp);
+      // const date = new Date(timestamp * 1000).toISOString();
 
       let pricing: PricingResponse = {
         // formattedPriceId: ethers.BigNumber.from(priceId).toString(),
@@ -144,8 +145,8 @@ export class AlchemyService {
       const price = decodedLog.args.price;
 
       const block = await alchemy.core.getBlock(log.blockNumber);
-      const timestamp = block.timestamp;
-      const date = new Date(timestamp * 1000).toISOString();
+      const timestamp = block.timestamp * 1000; // Convert to milliseconds
+      const date = formatDate(timestamp);
 
       let pricing: PricingResponse = {
         // formattedPriceId: ethers.BigNumber.from(priceId).toString(),
@@ -163,8 +164,8 @@ export class AlchemyService {
       const price = decodedLog.args.newPrice;
 
       const block = await alchemy.core.getBlock(log.blockNumber);
-      const timestamp = block.timestamp;
-      const date = new Date(timestamp * 1000).toISOString();
+      const timestamp = block.timestamp * 1000; // Convert to milliseconds
+      const date = formatDate(timestamp);
 
       const index = pricingResponse.findIndex(pricing => pricing.priceId === priceId.toString());
       if (index !== -1) {
@@ -254,9 +255,10 @@ export class AlchemyService {
         const account = decodedLog.args.account;
         const termIndex = decodedLog.args.termIndex.toString();
         const status = decodedLog.args.status;
+
         const block = await alchemy.core.getBlock(log.blockNumber);
-        const timestamp = block.timestamp;
-        const date = new Date(timestamp * 1000).toISOString();
+        const timestamp = block.timestamp * 1000; // Convert to milliseconds
+        const date = formatDate(timestamp);
 
         // Find if the account already exists in the array
         const existingEntryIndex = accountStatusResponse.findIndex(entry => entry.account === account);
@@ -325,13 +327,16 @@ export class AlchemyService {
         //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
         const depositId = decodedLog.args.depositId;
         const block = await alchemy.core.getBlock(log.blockNumber);
-        const timestamp = block.timestamp;
-        const date = new Date(timestamp * 1000).toISOString();
+        const timestamp = block.timestamp * 1000; // Convert to milliseconds
+        const date = formatDate(timestamp);
 
-
-        const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
-        const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
-        const feeAmount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt());
+        const collateralAmountDeposited = scaleAndRoundToTwoDecimals(
+            ethers.utils.formatEther(
+              ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt()
+            )
+          );
+        const depositAmountAfterFee = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt()));
+        const feeAmount = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt()));
 
         let mintRequestList: MintRequestedResponse = {
           user: user,
@@ -426,8 +431,8 @@ export class AlchemyService {
         const claimTimestampBigInt = ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt();
         const claimTimestampNumber = Number(claimTimestampBigInt); // Convert to Number
         const claimTimestampDate = new Date(claimTimestampNumber * 1000); // Convert to milliseconds
-        const claimTimestampFormatted = claimTimestampDate.toISOString(); // Format as ISO string
-
+        const claimTimestampFormatted = formatDate(claimTimestampDate); // Format as ISO string
+        
         let claimableTimestampList: ClaimableTimestampResponse = {
           depositId: depositId,
           claimTimestamp: claimTimestampFormatted,
@@ -469,8 +474,8 @@ export class AlchemyService {
 
         if(priceIdAdded){
           const pricing = allPricing.find(completed => completed.priceId === ethers.BigNumber.from(priceIdAdded.priceId).toString());
-          mintRequestList.priceId = ethers.BigNumber.from(priceIdAdded.priceId).toString()
-          mintRequestList.price = pricing.price
+          mintRequestList.priceId = ethers.BigNumber.from(priceIdAdded.priceId).toString();
+          mintRequestList.price = scaleAndRoundToTwoDecimals(pricing.price)
         } 
 
         if(claimableTImeStampAdded){
@@ -639,7 +644,7 @@ export class AlchemyService {
         const claimTimestampBigInt = ethers.BigNumber.from(decodedLog.args.claimTimestamp).toBigInt();
         const claimTimestampNumber = Number(claimTimestampBigInt); // Convert to Number
         const claimTimestampDate = new Date(claimTimestampNumber * 1000); // Convert to milliseconds
-        const claimTimestampFormatted = claimTimestampDate.toISOString(); // Format as ISO string
+        const claimTimestampFormatted = formatDate(claimTimestampDate); // Format as ISO string       
 
         let claimableTimestampList: ClaimableTimestampResponse = {
           depositId: depositId,
@@ -731,9 +736,9 @@ export class AlchemyService {
           const claimableItem: ClaimableList = {
             user: value.user,
             depositId: value.depositId,
-            collateralAmountDeposited: value.collateralAmountDeposited,
-            depositAmountAfterFee: value.depositAmountAfterFee,
-            feeAmount: value.feeAmount,
+            collateralAmountDeposited: scaleAndRoundToTwoDecimals(value.collateralAmountDeposited),
+            depositAmountAfterFee: scaleAndRoundToTwoDecimals(value.depositAmountAfterFee),
+            feeAmount: scaleAndRoundToTwoDecimals(value.feeAmount),
             claimTimestamp: matchingDeposits[0].claimTimestamp,
             claimTimestampFromChain: matchingDeposits[0].claimTimestampFromChain,
             priceId: value.priceId
@@ -755,15 +760,20 @@ export class AlchemyService {
           const priceNumber = parseFloat(matchingDeposits[0].price);
 
           const claimableAmount: number = depositAmountAfterFeeNumber / priceNumber;
-          value.claimableAmount = claimableAmount;
+          const rawAmount = ethers.utils.formatEther(ethers.BigNumber.from(claimableAmount));
+          const scaledAmountStr = scaleAndRoundToTwoDecimals(rawAmount);
+          const scaledAmountNum = Number(scaledAmountStr);
+          value.claimableAmount = scaledAmountNum;
+
+
 
           if (matchingDeposits.length > 0) {
             const claimableItem: ClaimableList = {
               user: value.user,
               depositId: value.depositId,
-              collateralAmountDeposited: value.collateralAmountDeposited,
-              depositAmountAfterFee: value.depositAmountAfterFee,
-              feeAmount: value.feeAmount,
+              collateralAmountDeposited: scaleAndRoundToTwoDecimals(value.collateralAmountDeposited),
+              depositAmountAfterFee: scaleAndRoundToTwoDecimals(value.depositAmountAfterFee),
+              feeAmount: scaleAndRoundToTwoDecimals(value.feeAmount),
               claimTimestamp: value.claimTimestamp,
               claimTimestampFromChain: value.claimTimestampFromChain,
               priceId: value.priceId,
@@ -808,11 +818,11 @@ export class AlchemyService {
         const decodedLog = redemptionRequestedsInterface.parseLog(log);
         const user = decodedLog.args.user;
         const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-        const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
+        const rwaAmountIn = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt()));
 
         const block = await alchemy.core.getBlock(log.blockNumber);
-        const timestamp = block.timestamp;
-        const date = new Date(timestamp * 1000).toISOString();
+        const timestamp = block.timestamp * 1000; // Convert to milliseconds
+        const date = formatDate(timestamp);
 
         let redemptionRequest: RedemptionRequestResponse = {
           user: user,
@@ -899,13 +909,13 @@ export class AlchemyService {
 
         if(redeemCompleted){
           redeemRequestEvent.status = "Completed"
-          redeemRequestEvent.requestedRedeemAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(redeemCompleted.collateralDuePostFees).toBigInt())
+          redeemRequestEvent.requestedRedeemAmountAfterFee = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(redeemCompleted.collateralDuePostFees).toBigInt()))
         } 
 
         if(priceIdAdded){
           const pricing = allPricing.find(completed => completed.priceId === ethers.BigNumber.from(priceIdAdded.priceId).toString());
           redeemRequestEvent.priceId = ethers.BigNumber.from(priceIdAdded.priceId).toString()
-          redeemRequestEvent.price = pricing.price
+          redeemRequestEvent.price = scaleAndRoundToTwoDecimals(pricing.price)
         } 
         retrunRedemptionList.push(redeemRequestEvent);
       } catch (error) {
@@ -946,7 +956,7 @@ export class AlchemyService {
         const decodedLog = redemptionRequestedsInterface.parseLog(log);
         const user = decodedLog.args.user;
         const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-        const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
+        const rwaAmountIn = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt()));
 
         let redemptionRequest: RedemptionRequestResponse = {
           user: user,
@@ -1092,7 +1102,7 @@ export class AlchemyService {
         const decodedLog = redemptionRequestedsInterface.parseLog(log);
         const user = decodedLog.args.user;
         const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-        const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
+        const rwaAmountIn = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt()));
 
         let redemptionRequest: RedemptionRequestResponse = {
           user: user,
@@ -1188,11 +1198,15 @@ export class AlchemyService {
             const price = parseFloat(matchingDeposits[0].price);
 
             const redeemAmount: number = redemptionAmount * price;
+            const rawAmount = ethers.utils.formatEther(ethers.BigNumber.from(redeemAmount));
+            const scaledAmountStr = scaleAndRoundToTwoDecimals(rawAmount);
+            const scaledAmountNum = Number(scaledAmountStr);
+            
             const claimableRedemption: ClaimableRedemptionResponse = {
               user: value.user,
               redemptionId: value.redemptionId,
               priceId: value.priceId,
-              redeemAmount: redeemAmount,
+              redeemAmount: scaledAmountNum,
               rwaAmountIn: value.rwaAmountIn
             };
             claimableRedemptionResponse.push(claimableRedemption);
@@ -1356,13 +1370,13 @@ export class AlchemyService {
           //This has a padding const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
           const depositId = decodedLog.args.depositId;
 
-          const collateralAmountDeposited = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt());
-          const depositAmountAfterFee = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt());
-          const feeAmount = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt());
+          const collateralAmountDeposited = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.collateralAmountDeposited).toBigInt()));
+          const depositAmountAfterFee = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.depositAmountAfterFee).toBigInt()));
+          const feeAmount = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.feeAmount).toBigInt()));
 
           const block = await alchemy.core.getBlock(log.blockNumber);
-          const timestamp = block.timestamp;
-          const date = new Date(timestamp * 1000).toISOString();
+          const timestamp = block.timestamp * 1000; // Convert to milliseconds
+          const date = formatDate(timestamp);
 
           let mintRequestList: MintRequestedResponse = {
             user: user,
@@ -1397,8 +1411,8 @@ export class AlchemyService {
         const user = decodedLog.args.user;
 
         const block = await alchemy.core.getBlock(log.blockNumber);
-        const timestamp = block.timestamp;
-        const date = new Date(timestamp * 1000).toISOString();
+        const timestamp = block.timestamp * 1000; // Convert to milliseconds
+        const date = formatDate(timestamp);
 
         if(user === userAddress) {
           let mintCompletedResponse: MIntCompletedResponse = {
@@ -1423,11 +1437,11 @@ export class AlchemyService {
           if(mintCompleted){
             let transactionHistoryResponse: TransactionHistoryResponse = {
               id: mintRequested.depositId,
-              stableAmount: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.depositAmountAfterFee).toBigInt()),
-              tokenAmount: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.rwaOwed)),
+              stableAmount: scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.depositAmountAfterFee).toBigInt())),
+              tokenAmount: scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.rwaOwed))),
               type: "Invest",
               status: "COMPLETED",
-              price: ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.price).toBigInt()),
+              price: scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(mintCompleted.price).toBigInt())),
               // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
               requestTime: mintRequested.requestTimestamp,
               mintedTime: mintCompleted.dateTime,
@@ -1437,7 +1451,7 @@ export class AlchemyService {
           } else {
             let transactionHistoryResponse: TransactionHistoryResponse = {
               id: mintRequested.depositId,
-              stableAmount: mintRequested.depositAmountAfterFee,
+              stableAmount: scaleAndRoundToTwoDecimals(mintRequested.depositAmountAfterFee),
               type: "Invest",
               status: "SUBMITTED",
               requestTime: mintRequested.requestTimestamp,
@@ -1465,12 +1479,12 @@ export class AlchemyService {
         const decodedLog = redemptionRequestedsInterface.parseLog(log);
         const user = decodedLog.args.user;
         const block = await alchemy.core.getBlock(log.blockNumber);
-        const timestamp = block.timestamp;
-        const date = new Date(timestamp * 1000).toISOString();
+        const timestamp = block.timestamp * 1000; // Convert to milliseconds
+        const date = formatDate(timestamp);
 
         if(user === userAddress) {
           const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
-          const rwaAmountIn = ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt());
+          const rwaAmountIn = scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(decodedLog.args.rwaAmountIn).toBigInt()));
 
           let redemptionRequest: RedemptionRequestResponse = {
             user: user,
@@ -1500,9 +1514,10 @@ export class AlchemyService {
         const decodedLog = redemptionCompletedInterface.parseLog(log);
         const redemptionId = ethers.BigNumber.from(decodedLog.args.redemptionId).toString();
         const user = decodedLog.args.user;
+        
         const block = await alchemy.core.getBlock(log.blockNumber);
-        const timestamp = block.timestamp;
-        const date = new Date(timestamp * 1000).toISOString();
+        const timestamp = block.timestamp * 1000; // Convert to milliseconds
+        const date = formatDate(timestamp);
 
         if(user === userAddress) {
           let redemptionCompletedResponse: RedemptionCompletedResponse = {
@@ -1527,11 +1542,11 @@ export class AlchemyService {
           if(redemptionCompleted){
             let transactionHistoryResponse: TransactionHistoryResponse = {
               id: redemptionRequested.redemptionId,
-              stableAmount: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.collateralDuePostFees).toBigInt()),
-              tokenAmount: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.amountRwaTokenBurned)),
+              stableAmount: scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.collateralDuePostFees).toBigInt())),
+              tokenAmount: scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.amountRwaTokenBurned))),
               type: "Redeem",
               status: "COMPLETED",
-              price: ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.price).toBigInt()),
+              price: scaleAndRoundToTwoDecimals(ethers.utils.formatEther(ethers.BigNumber.from(redemptionCompleted.price).toBigInt())),
               // priceId: ethers.BigNumber.from(mintCompleted.priceId).toString(),
               requestTime: redemptionRequested.requestTimestamp,
               mintedTime: redemptionCompleted.dateTime,
@@ -1541,7 +1556,7 @@ export class AlchemyService {
           } else {
             let transactionHistoryResponse: TransactionHistoryResponse = {
               id: redemptionRequested.redemptionId,
-              tokenAmount: redemptionRequested.rwaAmountIn,
+              tokenAmount: scaleAndRoundToTwoDecimals(redemptionRequested.rwaAmountIn),
               type: "Redeem",
               status: "SUBMITTED",
               requestTime: redemptionRequested.requestTimestamp,
@@ -1556,4 +1571,15 @@ export class AlchemyService {
     finalTransactionHistoryResponse.sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
     return finalTransactionHistoryResponse;
   }
+}
+
+const formatDate = (dateString: string | number | Date) => {
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString("en-UK", { timeZone: "Australia/Melbourne" });
+  const formattedTime = date.toLocaleTimeString("en-UK", { timeZone: "Australia/Melbourne" });
+  return `${formattedDate} ${formattedTime}`;
+};
+
+function scaleAndRoundToTwoDecimals(rawAmount: string): string {
+  return (Math.round(parseFloat(rawAmount) * 100) / 100).toFixed(2);
 }
