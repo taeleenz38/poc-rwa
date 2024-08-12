@@ -9,8 +9,6 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
 import VerificationPopup from "./Popups/VerificationPopup";
-import HelloSign from "hellosign-embedded";
-import { useRouter } from "next/navigation";
 
 type KycDetailsProps = {
   logoSrc: string;
@@ -23,11 +21,10 @@ type KycDetailsProps = {
 const KycDetails = (props: KycDetailsProps) => {
   const { logoSrc, altText, fundName, fundDescription, yieldText } = props;
   const [idDocType, setIdDocType] = useState("ID_CARD");
-  const [country, setCountry] = useState("AUS");
+  const [country, setCountry] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [walletAddress, setWalletAddress] = useState("");
   const [issuedDate, setIssuedDate] = useState("");
   const [validUntil, setValidUntil] = useState("");
   const [number, setNumber] = useState("");
@@ -40,31 +37,12 @@ const KycDetails = (props: KycDetailsProps) => {
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backtFile, setBackFile] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const totalSteps = 8;
-  const stepLabels = [
-    "Verify your identity",
-    "Add your wallet",
-    "Sign documents",
-    "User credentials",
-  ];
+  const totalSteps = 3;
+  const stepLabels = ["Personal Info", "Document Info", "Upload Document"];
   const [isLoading, setIsLoading] = useState(false);
   const [applicationid, setApplicationId] = useState();
   const [validateForm, setValidateForm] = useState(true);
   const [error, setError] = useState("");
-  const [docSigned, setDocSigned] = useState(false);
-  const [docSignedProgress, setDocSignedProgress] = useState(false);
-  const [status, setStatus] = useState<"Submitted" | "Init" | "Done">(
-    "Submitted"
-  );
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-
-  const router = useRouter();
-
-  const dropBoxSignclient = new HelloSign({
-    clientId: process.env.NEXT_PUBLIC_DROPBOX_SIGN_CLIENT_ID,
-  });
 
   const handleChange =
     (setter: React.Dispatch<React.SetStateAction<string>>) =>
@@ -98,32 +76,7 @@ const KycDetails = (props: KycDetailsProps) => {
     });
   };
 
-  const clearFields = () => {
-    setFrontFile(null);
-    setBackFile(null);
-    setFirstName("");
-    setLastName("");
-    setIssuedDate("");
-    setValidUntil("");
-    setNumber("");
-    setDob("");
-    setPlaceOfBirth("");
-    setFrontFile(null);
-    setBackFile(null);
-  };
-
   const isFormValid = () => {
-    console.log(
-      country.trim() !== "",
-      firstName.trim() !== "",
-      lastName.trim() !== "",
-      issuedDate.trim() !== "",
-      validUntil.trim() !== "",
-      number.trim() !== "",
-      dob.trim() !== "",
-      frontFile !== null,
-      backtFile !== null
-    );
     return (
       country.trim() !== "" &&
       firstName.trim() !== "" &&
@@ -137,70 +90,6 @@ const KycDetails = (props: KycDetailsProps) => {
     );
   };
 
-  const sendSignRequest = async () => {
-    const requestData = {
-      firstName,
-      lastName,
-      email,
-      walletAddress,
-    };
-
-    try {
-      setDocSigned(false);
-      setDocSignedProgress(true);
-      const response = await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_API + "/contract-sign-embd/sign",
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Sign request sent successfully:", response.data);
-
-      if (response.data.signUrl) {
-        dropBoxSignclient.open(response.data.signUrl, {
-          skipDomainVerification: true,
-        });
-      }
-
-      dropBoxSignclient.once("sign", (data) => {
-        setDocSigned(true);
-      });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Error sending sign request:",
-          error.response?.data || error.message
-        );
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    } finally {
-      setDocSignedProgress(false);
-    }
-  };
-
-  const getStatus = async () => {
-    try {
-      setIsLoading(true);
-      const statusUrl =
-        process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + applicationid;
-
-      const response = await axios.get(statusUrl);
-      if (response.data.reviewStatus === "completed") {
-        setStatus("Done");
-      } else {
-        setStatus("Init");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -208,7 +97,7 @@ const KycDetails = (props: KycDetailsProps) => {
 
       if (isFormValid()) {
         setValidateForm(true);
-        if (currentStep === 3) {
+        if (currentStep === totalSteps) {
           console.log("Submitting form...");
 
           // First, create the applicant to get the ID
@@ -216,7 +105,7 @@ const KycDetails = (props: KycDetailsProps) => {
             process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/applicant";
           const response = await axios.post(applicantUrl);
           const id = response.data.id;
-          setApplicationId((prev) => id);
+          setApplicationId(id);
 
           // Now, upload the document with the ID
           const documentUrl =
@@ -224,6 +113,8 @@ const KycDetails = (props: KycDetailsProps) => {
             "/kyc/applicants/" +
             id +
             "/documents";
+
+          console.log(documentUrl, "documentUrl");
 
           // Prepare the form data object
           const formDataFront = new FormData();
@@ -277,13 +168,26 @@ const KycDetails = (props: KycDetailsProps) => {
           console.log("Back file response:", resBack);
 
           if (resfront.status === 201 && resBack.status === 201) {
-            // const statusURL =
-            //   process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + id;
-            // const status = await axios.get(statusURL);
-            // console.log(status, "status");
-            nextStep();
+            setIsModalOpen(true);
+            setFrontFile(null);
+            setBackFile(null);
+            // setFirstName("");
+            // setLastName("");
+            setIssuedDate("");
+            setValidUntil("");
+            setNumber("");
+            setDob("");
+            setPlaceOfBirth("");
+            setFrontFile(null);
+            setBackFile(null);
+
+            const statusURL =
+              process.env.NEXT_PUBLIC_BACKEND_API + "/kyc/status/" + id;
+            const status = await axios.get(statusURL);
+            console.log(status, "status");
           }
         }
+        setCurrentStep(1);
       } else {
         setValidateForm(false);
       }
@@ -295,49 +199,211 @@ const KycDetails = (props: KycDetailsProps) => {
     }
   };
 
-  const submitCredntail = async () => {
-    try {
-      setIsLoading(true);
-      setPasswordError(false);
-      if (password !== confirmPassword) {
-        setPasswordError(true);
-      } else {
-        const url = process.env.NEXT_PUBLIC_BACKEND_API + "/auth/credential";
-
-        const res = await axios.patch(
-          url,
-          {
-            email,
-            password,
-          }
-          // {
-          //   headers: {
-          //     "Content-Type": "multipart/form-data",
-          //   },
-          // }
-        );
-
-        if (res.status === 200) {
-          nextStep();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const documentOptions = [
     { label: "Driver's License", value: "drivers_license" },
   ];
 
-  const countryOptions = [{ label: "Australia", value: "AUS" }];
+  const countryOptions = [
+    { label: "Afghanistan", value: "AFG" },
+    { label: "Albania", value: "ALB" },
+    { label: "Algeria", value: "DZA" },
+    { label: "Andorra", value: "AND" },
+    { label: "Angola", value: "AGO" },
+    { label: "Antigua and Barbuda", value: "ATG" },
+    { label: "Argentina", value: "ARG" },
+    { label: "Armenia", value: "ARM" },
+    { label: "Australia", value: "AUS" },
+    { label: "Austria", value: "AUT" },
+    { label: "Azerbaijan", value: "AZE" },
+    { label: "Bahamas", value: "BHS" },
+    { label: "Bahrain", value: "BHR" },
+    { label: "Bangladesh", value: "BGD" },
+    { label: "Barbados", value: "BRB" },
+    { label: "Belarus", value: "BLR" },
+    { label: "Belgium", value: "BEL" },
+    { label: "Belize", value: "BLZ" },
+    { label: "Benin", value: "BEN" },
+    { label: "Bhutan", value: "BTN" },
+    { label: "Bolivia", value: "BOL" },
+    { label: "Bosnia and Herzegovina", value: "BIH" },
+    { label: "Botswana", value: "BWA" },
+    { label: "Brazil", value: "BRA" },
+    { label: "Brunei", value: "BRN" },
+    { label: "Bulgaria", value: "BGR" },
+    { label: "Burkina Faso", value: "BFA" },
+    { label: "Burundi", value: "BDI" },
+    { label: "Cabo Verde", value: "CPV" },
+    { label: "Cambodia", value: "KHM" },
+    { label: "Cameroon", value: "CMR" },
+    { label: "Canada", value: "CAN" },
+    { label: "Central African Republic", value: "CAF" },
+    { label: "Chad", value: "TCD" },
+    { label: "Chile", value: "CHL" },
+    { label: "China", value: "CHN" },
+    { label: "Colombia", value: "COL" },
+    { label: "Comoros", value: "COM" },
+    { label: "Congo (Congo-Brazzaville)", value: "COG" },
+    { label: "Costa Rica", value: "CRI" },
+    { label: "Croatia", value: "HRV" },
+    { label: "Cuba", value: "CUB" },
+    { label: "Cyprus", value: "CYP" },
+    { label: "Czech Republic", value: "CZE" },
+    { label: "Democratic Republic of the Congo", value: "COD" },
+    { label: "Denmark", value: "DNK" },
+    { label: "Djibouti", value: "DJI" },
+    { label: "Dominica", value: "DMA" },
+    { label: "Dominican Republic", value: "DOM" },
+    { label: "Ecuador", value: "ECU" },
+    { label: "Egypt", value: "EGY" },
+    { label: "El Salvador", value: "SLV" },
+    { label: "Equatorial Guinea", value: "GNQ" },
+    { label: "Eritrea", value: "ERI" },
+    { label: "Estonia", value: "EST" },
+    { label: "Eswatini", value: "SWZ" },
+    { label: "Ethiopia", value: "ETH" },
+    { label: "Fiji", value: "FJI" },
+    { label: "Finland", value: "FIN" },
+    { label: "France", value: "FRA" },
+    { label: "Gabon", value: "GAB" },
+    { label: "Gambia", value: "GMB" },
+    { label: "Georgia", value: "GEO" },
+    { label: "Germany", value: "DEU" },
+    { label: "Ghana", value: "GHA" },
+    { label: "Greece", value: "GRC" },
+    { label: "Grenada", value: "GRD" },
+    { label: "Guatemala", value: "GTM" },
+    { label: "Guinea", value: "GIN" },
+    { label: "Guinea-Bissau", value: "GNB" },
+    { label: "Guyana", value: "GUY" },
+    { label: "Haiti", value: "HTI" },
+    { label: "Honduras", value: "HND" },
+    { label: "Hungary", value: "HUN" },
+    { label: "Iceland", value: "ISL" },
+    { label: "India", value: "IND" },
+    { label: "Indonesia", value: "IDN" },
+    { label: "Iran", value: "IRN" },
+    { label: "Iraq", value: "IRQ" },
+    { label: "Ireland", value: "IRL" },
+    { label: "Israel", value: "ISR" },
+    { label: "Italy", value: "ITA" },
+    { label: "Jamaica", value: "JAM" },
+    { label: "Japan", value: "JPN" },
+    { label: "Jordan", value: "JOR" },
+    { label: "Kazakhstan", value: "KAZ" },
+    { label: "Kenya", value: "KEN" },
+    { label: "Kiribati", value: "KIR" },
+    { label: "Kuwait", value: "KWT" },
+    { label: "Kyrgyzstan", value: "KGZ" },
+    { label: "Laos", value: "LAO" },
+    { label: "Latvia", value: "LVA" },
+    { label: "Lebanon", value: "LBN" },
+    { label: "Lesotho", value: "LSO" },
+    { label: "Liberia", value: "LBR" },
+    { label: "Libya", value: "LBY" },
+    { label: "Liechtenstein", value: "LIE" },
+    { label: "Lithuania", value: "LTU" },
+    { label: "Luxembourg", value: "LUX" },
+    { label: "Madagascar", value: "MDG" },
+    { label: "Malawi", value: "MWI" },
+    { label: "Malaysia", value: "MYS" },
+    { label: "Maldives", value: "MDV" },
+    { label: "Mali", value: "MLI" },
+    { label: "Malta", value: "MLT" },
+    { label: "Marshall Islands", value: "MHL" },
+    { label: "Mauritania", value: "MRT" },
+    { label: "Mauritius", value: "MUS" },
+    { label: "Mexico", value: "MEX" },
+    { label: "Micronesia", value: "FSM" },
+    { label: "Moldova", value: "MDA" },
+    { label: "Monaco", value: "MCO" },
+    { label: "Mongolia", value: "MNG" },
+    { label: "Montenegro", value: "MNE" },
+    { label: "Morocco", value: "MAR" },
+    { label: "Mozambique", value: "MOZ" },
+    { label: "Myanmar", value: "MMR" },
+    { label: "Namibia", value: "NAM" },
+    { label: "Nauru", value: "NRU" },
+    { label: "Nepal", value: "NPL" },
+    { label: "Netherlands", value: "NLD" },
+    { label: "New Zealand", value: "NZL" },
+    { label: "Nicaragua", value: "NIC" },
+    { label: "Niger", value: "NER" },
+    { label: "Nigeria", value: "NGA" },
+    { label: "North Korea", value: "PRK" },
+    { label: "North Macedonia", value: "MKD" },
+    { label: "Norway", value: "NOR" },
+    { label: "Oman", value: "OMN" },
+    { label: "Pakistan", value: "PAK" },
+    { label: "Palau", value: "PLW" },
+    { label: "Panama", value: "PAN" },
+    { label: "Papua New Guinea", value: "PNG" },
+    { label: "Paraguay", value: "PRY" },
+    { label: "Peru", value: "PER" },
+    { label: "Philippines", value: "PHL" },
+    { label: "Poland", value: "POL" },
+    { label: "Portugal", value: "PRT" },
+    { label: "Qatar", value: "QAT" },
+    { label: "Romania", value: "ROU" },
+    { label: "Russia", value: "RUS" },
+    { label: "Rwanda", value: "RWA" },
+    { label: "Saint Kitts and Nevis", value: "KNA" },
+    { label: "Saint Lucia", value: "LCA" },
+    { label: "Saint Vincent and the Grenadines", value: "VCT" },
+    { label: "Samoa", value: "WSM" },
+    { label: "San Marino", value: "SMR" },
+    { label: "Sao Tome and Principe", value: "STP" },
+    { label: "Saudi Arabia", value: "SAU" },
+    { label: "Senegal", value: "SEN" },
+    { label: "Serbia", value: "SRB" },
+    { label: "Seychelles", value: "SYC" },
+    { label: "Sierra Leone", value: "SLE" },
+    { label: "Singapore", value: "SGP" },
+    { label: "Slovakia", value: "SVK" },
+    { label: "Slovenia", value: "SVN" },
+    { label: "Solomon Islands", value: "SLB" },
+    { label: "Somalia", value: "SOM" },
+    { label: "South Africa", value: "ZAF" },
+    { label: "South Korea", value: "KOR" },
+    { label: "South Sudan", value: "SSD" },
+    { label: "Spain", value: "ESP" },
+    { label: "Sri Lanka", value: "LKA" },
+    { label: "Sudan", value: "SDN" },
+    { label: "Suriname", value: "SUR" },
+    { label: "Sweden", value: "SWE" },
+    { label: "Switzerland", value: "CHE" },
+    { label: "Syria", value: "SYR" },
+    { label: "Taiwan", value: "TWN" },
+    { label: "Tajikistan", value: "TJK" },
+    { label: "Tanzania", value: "TZA" },
+    { label: "Thailand", value: "THA" },
+    { label: "Timor-Leste", value: "TLS" },
+    { label: "Togo", value: "TGO" },
+    { label: "Tonga", value: "TON" },
+    { label: "Trinidad and Tobago", value: "TTO" },
+    { label: "Tunisia", value: "TUN" },
+    { label: "Turkey", value: "TUR" },
+    { label: "Turkmenistan", value: "TKM" },
+    { label: "Tuvalu", value: "TUV" },
+    { label: "Uganda", value: "UGA" },
+    { label: "Ukraine", value: "UKR" },
+    { label: "United Arab Emirates", value: "ARE" },
+    { label: "United Kingdom", value: "GBR" },
+    { label: "United States of America", value: "USA" },
+    { label: "Uruguay", value: "URY" },
+    { label: "Uzbekistan", value: "UZB" },
+    { label: "Vanuatu", value: "VUT" },
+    { label: "Vatican City", value: "VAT" },
+    { label: "Venezuela", value: "VEN" },
+    { label: "Vietnam", value: "VNM" },
+    { label: "Yemen", value: "YEM" },
+    { label: "Zambia", value: "ZMB" },
+    { label: "Zimbabwe", value: "ZWE" },
+  ];
 
   return (
-    <div className="flex justify-between items-center h-full min-h-screen ">
-      <div className="flex flex-col h-full items-center justify-center w-1/2 bg-[#F5F2F2] min-h-screen p-4 ">
-        <div className="flex flex-col w-full h-full justify-start items-center ">
+    <div className="flex justify-between items-center min-h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-center w-1/2 bg-primary min-h-screen p-4">
+        <div className="text-center">
           <Image
             src={logoSrc}
             alt={altText}
@@ -345,43 +411,41 @@ const KycDetails = (props: KycDetailsProps) => {
             width={75}
             height={75}
           />
-          <p className="text-4xl font-semibold mt-4 text-primary ">
-            Onboard to Copiam AYF
-          </p>
-          <div className="mt-8 ">
+          <p className="text-4xl font-medium mt-4 text-light">Onboard to AYF</p>
+          <div className="mt-8">
             <Stepper
               currentStep={currentStep}
-              totalSteps={3}
+              totalSteps={totalSteps}
               stepLabels={stepLabels}
             />
           </div>
         </div>
       </div>
       <div className="min-h-screen flex flex-col justify-center items-center w-1/2 p-8 gap-4">
+        <Image
+          src={logoSrc}
+          alt={altText}
+          className="rounded-full"
+          width={75}
+          height={75}
+        />
+        <h1 className="text-3xl text-primary font-bold  text-center pb-3">
+          Investor Onboarding
+        </h1>
         <div
           className="w-full max-w-2xl bg-while  p-8 rounded-lg "
           style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
         >
-          <h1 className="text-base text-gray font-semibold  text-center pb-9">
+          <h1 className="text-base text-primary font-semibold  text-center pb-9">
             {currentStep === 1
-              ? "Please provide your personal information"
+              ? "*Please provide your personal information, including your name, country, and date of birth"
               : currentStep === 2
-              ? "Upload the necessary document details"
-              : currentStep === 3
-              ? "Submit the required documents, ensuring all information is up-to-date"
-              : currentStep === 4
-              ? "Verification Has Been Submitted"
-              : currentStep === 5
-              ? "Please provide your wallet address"
-              : currentStep === 6
-              ? "Please sign the document"
-              : currentStep === 7
-              ? "Provide user credentials"
-              : "User onboarding completed !"}
+              ? "*Upload the necessary document details, such as identification dates and document number"
+              : "*Submit the required documents, ensuring all information is accurate and up-to-date"}
           </h1>
 
           {currentStep === 1 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
+            <div className="flex flex-col p-4 border border-gray rounded-md">
               <InputWithLabel
                 id="firstName"
                 name="firstName"
@@ -424,7 +488,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 className="mb-4"
               />
 
-              {/* <InputWithLabel
+              <InputWithLabel
                 id="placeOfBirth"
                 name="placeOfBirth"
                 type="text"
@@ -434,7 +498,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 onChange={handleChange(setPlaceOfBirth)}
                 widthfull={true}
                 required={true}
-              /> */}
+              />
               <InputWithLabel
                 id="dob"
                 name="dob"
@@ -449,7 +513,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
           {currentStep === 2 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
+            <div className="flex flex-col p-4 border border-gray rounded-md">
               <InputWithLabel
                 id="issuedDate"
                 name="issuedDate"
@@ -493,7 +557,7 @@ const KycDetails = (props: KycDetailsProps) => {
             </div>
           )}
           {currentStep === 3 && (
-            <div className="flex flex-col rounded-md justify-center items-center p-2 border border-gray/20 ">
+            <div className="flex flex-col p-2  border-2 border-gray rounded-md">
               <FileUpload
                 label="Upload Front of Driver's License"
                 onChange={(file) => {
@@ -510,127 +574,6 @@ const KycDetails = (props: KycDetailsProps) => {
               />
             </div>
           )}
-
-          {currentStep === 4 && (
-            <div className="flex flex-col justify-center items-center gap-4">
-              {/* <span>Please </span> */}
-              <span>
-                {status === "Done"
-                  ? "You have been verified !"
-                  : status === "Init"
-                  ? "Verification is being proccessed. Try Again !"
-                  : ""}
-              </span>
-              {status !== "Done" && (
-                <Button
-                  text={` ${isLoading ? "Checking Status..." : "Get Verified"}`}
-                  onClick={getStatus}
-                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md `}
-                />
-              )}
-            </div>
-          )}
-
-          {currentStep === 5 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
-              <InputWithLabel
-                id="Wallet Address"
-                name="Wallet Address"
-                type="text"
-                label="Wallet Address"
-                placeholder="Wallet Address"
-                value={walletAddress}
-                onChange={handleChange(setWalletAddress)}
-                widthfull={true}
-                required={true}
-              />
-            </div>
-          )}
-
-          {currentStep === 6 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
-              <Button
-                text={`${
-                  docSignedProgress
-                    ? "Preparing the document.."
-                    : "Sign Document"
-                }`}
-                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md  ${
-                  docSignedProgress && "bg-white text-primary hover:bg-white"
-                } ${docSigned && "hidden"}`}
-                onClick={sendSignRequest}
-                disabled={docSignedProgress && docSigned}
-              />
-
-              {docSigned && (
-                <span className="text-base font-semibold text-green text-pretty mt-7">
-                  Sign Up Succesfully Completed !
-                </span>
-              )}
-            </div>
-          )}
-
-          {currentStep === 7 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
-              <InputWithLabel
-                id="email"
-                name="Email Address"
-                type="text"
-                label="Email Address"
-                placeholder="Email Address"
-                value={email}
-                onChange={() => {}}
-                widthfull={true}
-                required={true}
-              />
-              <InputWithLabel
-                id="Password"
-                name="Password"
-                type="password"
-                label="Password"
-                placeholder="Password"
-                value={password}
-                onChange={handleChange(setPassword)}
-                widthfull={true}
-                required={true}
-              />
-              <InputWithLabel
-                id="ConfirmPassword"
-                name="ConfirmPassword"
-                type="password"
-                label="Confirm Password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={handleChange(setConfirmPassword)}
-                widthfull={true}
-                required={true}
-              />
-              {passwordError && (
-                <span className="text-base font-semibold text-red text-pretty mt-7">
-                  Passwords do not match.
-                </span>
-              )}
-              <Button
-                text={` ${isLoading ? "Submitting..." : "Submit"}`}
-                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                  isLoading && "bg-white text-primary hover:bg-white"
-                }`}
-                onClick={submitCredntail}
-              />
-            </div>
-          )}
-
-          {currentStep === 8 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
-              <Button
-                text="Proceed to Home Page "
-                className={`bg-primary py-2  text-light hover:bg-light hover:text-primary rounded-md `}
-                onClick={() => {
-                  router.push("/");
-                }}
-              />
-            </div>
-          )}
           <div className="flex flex-col justify-center items-center gap-6">
             {!validateForm && (
               <span className="text-base font-semibold text-orange text-pretty mt-7">
@@ -644,48 +587,26 @@ const KycDetails = (props: KycDetailsProps) => {
               </span>
             )}
             <div className="flex justify-between w-full mt-4">
-              {currentStep > 1 && currentStep !== 6 && currentStep !== 7 && (
+              {currentStep > 1 && (
                 <Button
                   text="Previous"
-                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                    currentStep === 4 && "hidden"
-                  } ${currentStep === 8 && "hidden"} ${
-                    currentStep == 3 &&
-                    isLoading &&
-                    "bg-white text-primary hover:bg-white"
-                  }`}
+                  className="hover:bg-primary text-primary hover:text-white w-44 py-2"
                   onClick={prevStep}
-                  disabled={
-                    (currentStep === 4 && status !== "Done") ||
-                    (currentStep == 3 && isLoading)
-                  }
                 />
               )}
               <div className="flex-1 flex justify-end">
-                {currentStep < totalSteps &&
-                currentStep !== 3 &&
-                currentStep !== 7 ? (
+                {currentStep < totalSteps ? (
                   <Button
                     text="Next"
-                    className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                      currentStep === 4 && status !== "Done" && "hidden"
-                    } ${
-                      currentStep === 6 &&
-                      !docSigned &&
-                      "bg-white text-primary hover:bg-white"
-                    }`}
+                    className="hover:bg-primary text-primary hover:text-white w-44 py-2"
                     onClick={nextStep}
-                    disabled={
-                      (currentStep === 4 && status !== "Done") ||
-                      (currentStep === 6 && !docSigned)
-                    }
                   />
                 ) : (
-                  currentStep === 3 && (
+                  currentStep === totalSteps && (
                     <Button
                       text={`${isLoading ? "Submitting..." : "Submit"}`}
-                      className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                        isLoading && "bg-white text-primary hover:bg-white"
+                      className={`hover:bg-primary text-primary hover:text-white w-44 py-2 ${
+                        isLoading && "bg-primary text-white"
                       }`}
                       onClick={handleSubmit}
                       disabled={isLoading}
@@ -697,6 +618,15 @@ const KycDetails = (props: KycDetailsProps) => {
           </div>
         </div>
       </div>
+
+      <VerificationPopup
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        id={applicationid as unknown as string}
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
+      />
     </div>
   );
 };
