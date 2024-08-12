@@ -29,6 +29,8 @@ const Navbar = () => {
     const storedUserRole = localStorage.getItem("userRole");
     const email = localStorage.getItem("username");
 
+    if (email) fetchUserStatus(email);
+
     if (storedLoggedIn && storedUserRole) {
       setIsLoggedIn(true);
       setUserRole(storedUserRole);
@@ -92,7 +94,7 @@ const Navbar = () => {
       }
     } catch (err) {
       console.error("Failed to fetch status ", err);
-      localStorage.set("UserStatus", "Inactive");
+
       setUserState("Inactive");
     }
   };
@@ -190,7 +192,7 @@ const Navbar = () => {
                 >
                   Invest
                 </Link>
-                {userState === "Active" && (
+                {userState === "Active" && userState !== null && (
                   <Link
                     href="/portfolio"
                     className={`font-semibold mr-14 text-xl hover:text-secondary ${
