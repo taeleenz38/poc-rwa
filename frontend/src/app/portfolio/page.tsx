@@ -350,7 +350,9 @@ const Portfolio = () => {
                           >
                             <td>{token.depositAmountAfterFee} AUDC</td>
                             <td>{formatDate(token.claimTimestamp)}</td>
-                            <td>{token.claimableAmount || 0} AYF</td>
+                            <td>
+                              {(token.claimableAmount || 0).toFixed(3)} AYF
+                            </td>
                             <td>
                               <Button
                                 text="Claim"

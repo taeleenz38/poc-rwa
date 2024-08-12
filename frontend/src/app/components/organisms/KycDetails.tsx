@@ -437,7 +437,7 @@ const KycDetails = (props: KycDetailsProps) => {
               : currentStep === 4
               ? "Please provide your wallet address"
               : currentStep === 5
-              ? "Please sign the document"
+              ? "Agreement Signature"
               : currentStep === 6
               ? "Provide user credentials"
               : "User onboarding completed !"}
@@ -617,7 +617,7 @@ const KycDetails = (props: KycDetailsProps) => {
 
               {docSigned && (
                 <span className="text-base font-semibold text-green text-pretty mt-7">
-                  Sign Up Succesfully Completed !
+                  Document Signing Succesfully Completed !
                 </span>
               )}
             </div>

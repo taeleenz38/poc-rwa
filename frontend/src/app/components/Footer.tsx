@@ -6,7 +6,7 @@ import { FaXTwitter, FaLinkedin, FaWhatsapp } from "react-icons/fa6";
 const Footer = () => {
   return (
     <>
-      <div className="bg-primary px-48 py-24 flex justify-between items-center">
+      <div className="bg-primary px-28 py-24 flex justify-between items-center">
         <div>
           <Image
             src="/LOGO-DARK.png"
