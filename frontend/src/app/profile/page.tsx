@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useRouter } from "next/navigation";
 
 interface UserDetails {
   firstName: string;
@@ -21,10 +22,23 @@ interface UserDocument {
 }
 
 const Page = () => {
+  const router = useRouter();
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [userDocument, setUserDocument] = useState<UserDocument | null>(null);
   const [isFetching, setIsFetching] = useState(true);
+  const [isFetchingDocuments, setIsFetchingDocuments] = useState(true);
   const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn, router]);
+
+  if (!isLoggedIn) {
+    return null;
+  }
 
   useEffect(() => {
     const user = localStorage.getItem("username");
@@ -61,10 +75,10 @@ const Page = () => {
           );
           console.log(response.data, "Document data");
           setUserDocument(response.data);
-          setIsFetching(false);
+          setIsFetchingDocuments(false);
         } catch (err) {
           console.error("Failed to fetch document");
-          setIsFetching(false);
+          setIsFetchingDocuments(false);
         }
       };
       fetchDocument();
@@ -92,7 +106,7 @@ const Page = () => {
                 <div className="text-center py-4">
                   <Skeleton height={26} className="w-full" />
                 </div>
-              ) : (
+              ) : userDetails ? (
                 <div className="text-primary p-3 mb-4">
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold">First Name</div>
@@ -119,6 +133,8 @@ const Page = () => {
                     <div>{userDetails?.birthdate}</div>
                   </div>
                 </div>
+              ) : (
+                <p className="text-center py-4">No account details found.</p>
               )}
             </div>
           </div>
@@ -170,7 +186,7 @@ const Page = () => {
                   <div className="text-center py-4">
                     <Skeleton height={26} className="w-full" />
                   </div>
-                ) : (
+                ) : userDetails ? (
                   <div className="text-primary p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                       <div className="font-semibold">ID Document</div>
@@ -197,6 +213,8 @@ const Page = () => {
                       <div className="">{userDetails?.birthdate}</div>
                     </div>
                   </div>
+                ) : (
+                  <p className="text-center py-4">No document details found.</p>
                 )}
               </div>
             </div>
@@ -209,11 +227,11 @@ const Page = () => {
                 <div className="bg-[#F5F2F2] text-primary py-2 px-3 font-bold">
                   <h3>Signed Documents</h3>
                 </div>
-                {isFetching ? (
+                {isFetchingDocuments ? (
                   <div className="text-center py-4">
                     <Skeleton height={26} className="w-full" />
                   </div>
-                ) : (
+                ) : userDocument ? (
                   <div className="text-primary p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b borderColor py-2">
                       <div className="font-semibold px-0.5">Agreement</div>
@@ -227,6 +245,8 @@ const Page = () => {
                       </a>
                     </div>
                   </div>
+                ) : (
+                  <p className="text-center py-4">No signed documents found.</p>
                 )}
               </div>
             </div>
