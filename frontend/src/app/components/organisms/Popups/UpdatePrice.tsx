@@ -43,6 +43,8 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
     setUpdatePrice(e.target.value);
   };
 
+  console.log(priceId);
+
   const handleUpdatePrice = async () => {
     const priceID = Number(priceId);
     const priceIDHexlified = ethers.utils.hexZeroPad(

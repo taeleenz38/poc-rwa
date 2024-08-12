@@ -16,21 +16,21 @@ const Pricing = () => {
   const [prices, setPrices] = useState<PricingResponse[]>([]);
   const [isTableLoading, setIsTableLoading] = useState(false);
   const [addPriceOprn, setAddPriceOpen] = useState(false);
-  const [UpdatePriceOprn, setUpdatePriceOpen] = useState(false);
-  const [selectedPriceIndex, setSelectedPriceIndex] = useState<number | null>(
-    null
-  );
+  const [updatePriceOprn, setUpdatePriceOpen] = useState(false);
+  const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
 
-  const handleRadioChange = (index: number) => {
-    if (index === selectedPriceIndex) {
-      //setSelectedPriceIndex(null);
+  const handleRadioChange = (priceId: string) => {
+    if (priceId === selectedPriceId) {
+      setSelectedPriceId(null);
     } else {
-      setSelectedPriceIndex(index);
+      setSelectedPriceId(priceId);
     }
   };
 
+  console.log(selectedPriceId);
+
   useEffect(() => {
-    const fetchWallets = async () => {
+    const fetchPrices = async () => {
       try {
         setIsTableLoading(true);
         const response = await axios.get(
@@ -44,15 +44,14 @@ const Pricing = () => {
         );
 
         setPrices(sortedPrices);
-        console.log(sortedPrices, "sorted prices");
       } catch (error) {
-        console.error("Error fetching wallets:", error);
+        console.error("Error fetching prices:", error);
       } finally {
         setIsTableLoading(false);
       }
     };
 
-    fetchWallets();
+    fetchPrices();
   }, []);
 
   if (isTableLoading) {
@@ -75,11 +74,11 @@ const Pricing = () => {
           text={"Update Existing Price ID"}
           onClick={() => setUpdatePriceOpen(true)}
           className={`${
-            selectedPriceIndex === null
+            selectedPriceId === null
               ? `bg-gray/20 text-primary`
               : "bg-primary text-light hover:bg-light hover:text-primary"
-          }  py-2  rounded-md`}
-          disabled={selectedPriceIndex === null}
+          } py-2 rounded-md`}
+          disabled={selectedPriceId === null}
         />
       </div>
       <div className="overflow-x-auto pt-4">
@@ -97,17 +96,17 @@ const Pricing = () => {
             {!isTableLoading && prices.length === 0 ? (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={5}
                   className="py-10 font-medium text-gray text-center"
                 >
-                  No prices has been listed yet
+                  No prices have been listed yet
                 </td>
               </tr>
             ) : (
-              prices.map((price: PricingResponse, index) => (
+              prices.map((price: PricingResponse) => (
                 <tr
                   className="border-b-2 border-[#F5F2F2] font-medium text-gray"
-                  key={index}
+                  key={price.priceId}
                 >
                   <td className="text-center">{price.priceId}</td>
                   <td className="text-center">${price.price}</td>
@@ -119,8 +118,8 @@ const Pricing = () => {
                         type="radio"
                         name="priceSelection"
                         className="custom-checkbox"
-                        checked={selectedPriceIndex === index}
-                        onChange={() => handleRadioChange(index)}
+                        checked={selectedPriceId === price.priceId}
+                        onChange={() => handleRadioChange(price.priceId)}
                       />
                     </div>
                   </td>
@@ -135,9 +134,9 @@ const Pricing = () => {
           onClose={() => setAddPriceOpen(false)}
         />
         <UpdatePrice
-          isOpen={UpdatePriceOprn}
+          isOpen={updatePriceOprn}
           onClose={() => setUpdatePriceOpen(false)}
-          priceId={prices[selectedPriceIndex as number]?.priceId}
+          priceId={selectedPriceId || ""}
         />
       </div>
     </div>
