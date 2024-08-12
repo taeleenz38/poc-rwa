@@ -53,13 +53,11 @@ const Invest = () => {
         const data = await response.json();
         console.log("price data", data);
 
-        // Find the latest price based on the date
         const latestPrice = data.sort(
           (a: Item, b: Item) =>
             new Date(b.date).getTime() - new Date(a.date).getTime()
         )[0];
 
-        // Update the state with the latest price
         setPrice(latestPrice ? latestPrice.price : "...");
       } catch (error) {
         console.error("Error fetching price ID:", error);
@@ -80,30 +78,61 @@ const Invest = () => {
     functionName: "totalSupply",
   });
 
-  const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
-    return BigNumber.from(bigIntValue.toString());
-  };
+  // const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
+  //   return BigNumber.from(bigIntValue.toString());
+  // };
+
+  // useEffect(() => {
+  //   const calculateTVL = () => {
+  //     if (totalSupply && price) {
+  //       try {
+  //         let totalSupplyNormal;
+  //         // Handle BigInt case
+  //         if (typeof totalSupply === "bigint") {
+  //           const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
+  //           totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
+  //         } else if (BigNumber.isBigNumber(totalSupply)) {
+  //           totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
+  //         } else {
+  //           console.error("Invalid totalSupply format:", totalSupply);
+  //           return;
+  //         }
+
+  //         const tvlValue = (
+  //           parseFloat(totalSupplyNormal) * parseFloat(price)
+  //         ).toFixed(2);
+
+  //         setTvl(formatNumberWithCommas(tvlValue));
+  //       } catch (error) {
+  //         console.error("Error calculating TVL:", error);
+  //       }
+  //     }
+  //   };
+
+  //   calculateTVL();
+  // }, [totalSupply, price]);
 
   useEffect(() => {
-    const calculateTVL = () => {
-      if (totalSupply && price) {
+    const calculateTVL = async () => {
+      if (price) {
         try {
-          let totalSupplyNormal;
-          // Handle BigInt case
-          if (typeof totalSupply === "bigint") {
-            const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
-            totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
-          } else if (BigNumber.isBigNumber(totalSupply)) {
-            totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-          } else {
-            console.error("Invalid totalSupply format:", totalSupply);
-            return;
-          }
+          // Connect to Ethereum network using Infura provider
+          const provider = new ethers.providers.JsonRpcProvider(
+            "https://mainnet.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
+          );
+          const contractAddress = process.env
+            .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+          const abi = ["function totalSupply() view returns (uint256)"];
+          const contract = new ethers.Contract(contractAddress, abi, provider);
 
+          // Fetch total supply from the contract
+          const supply = await contract.totalSupply();
+          const formattedSupply = ethers.utils.formatUnits(supply, 18);
+
+          // Calculate TVL
           const tvlValue = (
-            parseFloat(totalSupplyNormal) * parseFloat(price)
+            parseFloat(formattedSupply) * parseFloat(price)
           ).toFixed(2);
-
           setTvl(formatNumberWithCommas(tvlValue));
         } catch (error) {
           console.error("Error calculating TVL:", error);
@@ -112,7 +141,7 @@ const Invest = () => {
     };
 
     calculateTVL();
-  }, [totalSupply, price]);
+  }, [price]);
 
   return (
     <div className="w-screen">

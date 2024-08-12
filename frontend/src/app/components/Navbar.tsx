@@ -33,7 +33,7 @@ const Navbar = () => {
       // Redirect to home and show modal if not logged in
       const restrictedPaths = [
         "/admin",
-        "/invest",
+        // "/invest",
         "/allowlist",
         "/assetsender",
       ];
