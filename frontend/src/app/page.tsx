@@ -44,9 +44,9 @@ export default function Home() {
     functionName: "totalSupply",
   });
 
-  const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
-    return BigNumber.from(bigIntValue.toString());
-  };
+  // const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
+  //   return BigNumber.from(bigIntValue.toString());
+  // };
 
   useEffect(() => {
     const fetchLatestPrice = async () => {
@@ -80,38 +80,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (totalSupply && price) {
-      const calculateTVL = () => {
+    const calculateTVL = async () => {
+      if (price) {
         try {
-          let totalSupplyNormal;
+          const provider = new ethers.providers.JsonRpcProvider(
+            "https://mainnet.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
+          );
+          const contractAddress = process.env
+            .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+          const abi = ["function totalSupply() view returns (uint256)"];
+          const contract = new ethers.Contract(contractAddress, abi, provider);
 
-          if (typeof totalSupply === "bigint") {
-            const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
-            totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
-          } else if (BigNumber.isBigNumber(totalSupply)) {
-            totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-          } else {
-            console.error("Invalid totalSupply format:", totalSupply);
-            return;
-          }
+          const supply = await contract.totalSupply();
+          const formattedSupply = ethers.utils.formatUnits(supply, 18);
 
           const tvlValue = (
-            parseFloat(totalSupplyNormal) * parseFloat(price)
+            parseFloat(formattedSupply) * parseFloat(price)
           ).toFixed(2);
-
           setTvl(formatNumberWithCommas(tvlValue));
-          console.log("Total Supply:", totalSupplyNormal);
-          console.log("Price:", price);
         } catch (error) {
-          console.error("Error in calculating TVL:", error);
-        } finally {
-          setIsFetching(false);
+          console.error("Error calculating TVL:", error);
         }
-      };
+      }
+    };
 
-      calculateTVL();
-    }
-  }, [totalSupply, price]);
+    calculateTVL();
+  }, [price]);
 
   const formattedPrice = price
     ? formatNumberWithCommas(parseFloat(price))
