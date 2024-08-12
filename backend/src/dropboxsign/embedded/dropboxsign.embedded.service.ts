@@ -96,7 +96,7 @@ export class DropBoxEmbeddedSignService {
 
             const body = response.body;
             if (body.signatureRequest && body.signatureRequest.signatures) {
-
+                doc.xid = body.signatureRequest.signatureRequestId;
                 const signerRes: SignRequestResponse = {} as SignRequestResponse;
                 // TODO: Implementation for multiple singatures
                 for (let index = 0; index < body.signatureRequest.signatures.length; index++) {
