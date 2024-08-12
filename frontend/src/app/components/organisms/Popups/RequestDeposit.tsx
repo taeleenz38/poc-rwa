@@ -18,12 +18,19 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   const [amount, setAmount] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
   const [txDepositHash, setTxDepositHash] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [validAmount, setValidAmount] = useState<boolean>(true); // New state for validation
   const { writeContractAsync, isPending } = useWriteContract({ config });
+
+  const MIN_AMOUNT = 1000;
+  const MAX_AMOUNT = 150000;
 
   const resetForm = () => {
     setAmount("");
     setTxDepositHash(null);
     setTxApprovalHash(null);
+    setError(null);
+    setValidAmount(true); // Reset validation state
   };
 
   const onCloseModal = () => {
@@ -33,9 +40,25 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
 
   const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
+
+    // Validate amount on change
+    const numericAmount = parseFloat(e.target.value);
+    if (
+      isNaN(numericAmount) ||
+      numericAmount < MIN_AMOUNT ||
+      numericAmount > MAX_AMOUNT
+    ) {
+      setError(`Amount must be between ${MIN_AMOUNT} and ${MAX_AMOUNT}.`);
+      setValidAmount(false);
+    } else {
+      setError(null);
+      setValidAmount(true);
+    }
   };
 
   const handleRequestDeposit = async () => {
+    if (!validAmount) return; // Prevent submission if amount is invalid
+
     try {
       const approvalAmount = BigNumber.from(amount).mul(
         BigNumber.from(10).pow(18)
@@ -104,12 +127,13 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         <div className="text-center px-8 text-xl mb-4 font-medium">
           Please enter the amount of AUDC you wish to deposit in return for AYF.
         </div>
-        <div className="w-full text-center mx-auto mb-8">
+        <div className="w-full text-center mx-auto mb-4">
           <InputField
             label="Amount:"
             value={amount || ""}
             onChange={onAmountChange}
           />
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
         <div className="w-full flex justify-between">
           <div className="w-[49%]">
@@ -128,7 +152,12 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
                   ? "Confirming..."
                   : "Confirm"
               }
-              disabled={isPending || isApprovalLoading || isDepositLoading}
+              disabled={
+                isPending ||
+                isApprovalLoading ||
+                isDepositLoading ||
+                !validAmount
+              }
               className="w-full"
             />
           </div>
