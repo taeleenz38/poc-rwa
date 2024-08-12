@@ -7,6 +7,8 @@ import { config } from "@/config";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "./atoms/Buttons/Button";
 import CloseButton from "./atoms/Buttons/CloseButton";
+import axios from "axios";
+import { MdAlternateEmail } from "react-icons/md";
 
 const Navbar = () => {
   const { address } = useAccount({ config });
@@ -15,7 +17,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const router = useRouter();
@@ -59,37 +61,57 @@ const Navbar = () => {
     }
   }, [justLoggedIn, userRole, router]);
 
-  const handleSignIn = () => {
-    localStorage.setItem("username", username);
-    if (username === "tedhansen@copiam.io" && password === "123") {
-      setIsLoggedIn(true);
-      setUserRole("admin");
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userRole", "admin");
-      setShowModal(false);
-      setJustLoggedIn(true);
-    } else if (username === "johndoe@copiam.io" && password === "123") {
-      setIsLoggedIn(true);
-      setUserRole("user");
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userRole", "user");
-      setShowModal(false);
-      setJustLoggedIn(true);
-    } else if (username === "alicesherman@copiam.io" && password === "123") {
-      setIsLoggedIn(true);
-      setUserRole("guardian");
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userRole", "guardian");
-      setShowModal(false);
-      setJustLoggedIn(true);
-    } else if (username === "bobross@copiam.io" && password === "123") {
-      setIsLoggedIn(true);
-      setUserRole("assetsender");
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userRole", "assetsender");
-      setShowModal(false);
-      setJustLoggedIn(true);
-    } else {
+  const handleSignIn = async () => {
+    try {
+      localStorage.setItem("username", email);
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_BACKEND_API + "/auth/signin",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201 || 200) {
+        if (email === "tedhansen@copiam.io") {
+          setIsLoggedIn(true);
+          setUserRole("admin");
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userRole", "admin");
+          setShowModal(false);
+          setJustLoggedIn(true);
+        } else if (email === "alicesherman@copiam.io") {
+          setIsLoggedIn(true);
+          setUserRole("guardian");
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userRole", "guardian");
+          setShowModal(false);
+          setJustLoggedIn(true);
+        } else if (email === "bobross@copiam.io") {
+          setIsLoggedIn(true);
+          setUserRole("assetsender");
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userRole", "assetsender");
+          setShowModal(false);
+          setJustLoggedIn(true);
+        } else {
+          setIsLoggedIn(true);
+          setUserRole("user");
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userRole", "user");
+          setShowModal(false);
+          setJustLoggedIn(true);
+        }
+      } else {
+        alert("Invalid credentials");
+      }
+    } catch (error) {
+      console.log(error);
       alert("Invalid credentials");
     }
   };
@@ -230,9 +252,9 @@ const Navbar = () => {
             <div className="flex flex-col items-center">
               <input
                 type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mb-4 p-2 border rounded w-96"
               />
               <input
