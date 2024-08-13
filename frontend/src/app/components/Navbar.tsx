@@ -449,6 +449,7 @@ const Navbar = () => {
         <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-6 lg:px-8">
           <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-full max-w-md mx-auto">
             <div className="flex justify-between items-center mb-8">
+              <div></div>
               <h2 className="text-2xl sm:text-3xl font-bold text-primary">
                 Sign In
               </h2>
@@ -461,7 +462,7 @@ const Navbar = () => {
               />
             </div>
             <div className="flex flex-col items-center space-y-4">
-              <div className="w-full">
+              <div className="w-full px-8">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Username
                 </label>
@@ -473,7 +474,7 @@ const Navbar = () => {
                   className="p-2 border rounded w-full"
                 />
               </div>
-              <div className="w-full">
+              <div className="w-full px-8">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Password
                 </label>
@@ -485,11 +486,13 @@ const Navbar = () => {
                   className="p-2 border rounded w-full"
                 />
               </div>
-              <Button
-                text={"Sign In"}
-                className="bg-primary rounded-lg w-full sm:w-32 hover:bg-white hover:text-primary text-white py-2 px-4"
-                onClick={handleSignIn}
-              />
+              <div className="w-full px-8">
+                <Button
+                  text={"Sign In"}
+                  className="bg-primary rounded-lg w-full mt-4 mb-2 hover:bg-white hover:text-primary text-white py-2 px-4"
+                  onClick={handleSignIn}
+                />
+              </div>
             </div>
           </div>
         </div>
