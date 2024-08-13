@@ -175,9 +175,9 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
                 href={`https://sepolia.etherscan.io/tx/${txDepositHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-primary overflow-x-scroll"
+                className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-                {txDepositHash}
+                view transaction
               </a>
             )}
           </div>
