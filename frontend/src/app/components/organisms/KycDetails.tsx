@@ -400,9 +400,9 @@ const KycDetails = (props: KycDetailsProps) => {
   const countryOptions = [{ label: "Australia", value: "AUS" }];
 
   return (
-    <div className="flex justify-between items-center h-full min-h-screen ">
-      <div className="flex flex-col h-full items-center justify-center w-1/2 bg-[#F5F2F2] min-h-screen p-4 ">
-        <div className="flex flex-col w-full h-full justify-start items-center ">
+    <div className="flex flex-col md:flex-row justify-evenly md:justify-between items-center h-full min-h-screen">
+      <div className="flex flex-col h-full items-center justify-center w-full md:w-1/2 md:bg-[#F5F2F2] md:min-h-screen md:p-4 ">
+        <div className="flex flex-col w-full h-full justify-start items-center">
           <Image
             src={logoSrc}
             alt={altText}
@@ -410,10 +410,10 @@ const KycDetails = (props: KycDetailsProps) => {
             width={75}
             height={75}
           />
-          <p className="text-4xl font-semibold mt-4 text-primary ">
+          <p className="text-4xl font-semibold mt-4 text-primary text-center md:text-left">
             Onboard to Copiam AYF
           </p>
-          <div className="mt-8 ">
+          <div className="mt-8 hidden md:block">
             <Stepper
               currentStep={currentStep}
               totalSteps={3}
@@ -422,12 +422,12 @@ const KycDetails = (props: KycDetailsProps) => {
           </div>
         </div>
       </div>
-      <div className="min-h-screen flex flex-col justify-center items-center w-1/2 p-8 gap-4">
+      <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-8 gap-4">
         <div
-          className="w-full max-w-2xl bg-while  p-8 rounded-lg "
+          className="w-full max-w-2xl bg-while p-8 rounded-lg "
           style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
         >
-          <h1 className="text-base text-gray font-semibold  text-center pb-9">
+          <h1 className="text-base text-gray font-semibold text-center pb-9">
             {currentStep === 1
               ? "Please provide your personal information"
               : currentStep === 2
