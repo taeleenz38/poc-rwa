@@ -116,7 +116,7 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-primary text-center">
+          <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <a

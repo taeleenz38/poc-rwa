@@ -146,7 +146,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
           </div>
         )}
         {txRedemptionHash && (
-          <div className="mt-4 text-primary text-center">
+          <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isRedemptionLoading && <p>Redemption transaction is pending...</p>}
             {!isRedemptionLoading && (
               <a
