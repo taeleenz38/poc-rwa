@@ -123,7 +123,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
               onClick={onCloseModal}
               label={"Go Back"}
               disabled={isPending || isLoading}
-              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-light hover:!bg-primary"
+              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
           <div className="w-[49%]">
