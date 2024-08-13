@@ -113,16 +113,16 @@ export default function Home() {
     : "...";
 
   return (
-    <main className="h-screen bg-white root-container text-black">
-      <h1 className="text-5xl font-semibold w-3/5">
+    <main className="min-h-screen bg-white root-container text-black">
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold w-full sm:w-4/5 lg:w-3/5">
         Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
       </h1>
-      <h2 className="text-xl mt-8 w-1/2">
+      <h2 className="text-lg sm:text-xl mt-4 sm:mt-6 lg:mt-8 w-full sm:w-3/4 lg:w-1/2">
         Copiam is bridging the next generation of financial infrastructure in
         DeFi with access to the deepest, most efficient institutional FX and
         capital markets in TradFi.
       </h2>
-      <div className="flex p-2 mt-4 gap-11">
+      <div className="flex flex-col sm:flex-row p-2 mt-4 gap-4 sm:gap-6 lg:gap-11">
         <PackageCard
           heading="AYF"
           subHeading="Australian Yield Fund"
@@ -131,11 +131,7 @@ export default function Home() {
           href="/invest"
           backgroundImage="url('/Graphic1.png')"
           footerText="For Wholesale Investors"
-          chains={
-            <>
-              <EthIcon />
-            </>
-          }
+          chains={<EthIcon />}
         />
       </div>
     </main>

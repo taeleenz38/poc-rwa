@@ -18,9 +18,7 @@ const Footer = () => {
         </div>
         <div className="flex flex-row gap-y-4 sm:gap-y-6 gap-x-16 lg:gap-x-52 text-lg sm:text-xl text-light">
           <div className="flex flex-col gap-y-4 sm:gap-y-6 text-lg sm:text-xl text-light">
-            <Link href="/" className="font-bold">
-              Phone
-            </Link>
+            <Link href="/">Phone</Link>
             <Link href="/about">Address</Link>
             <Link href="/about">Email</Link>
             <Link href="/about">Website</Link>
