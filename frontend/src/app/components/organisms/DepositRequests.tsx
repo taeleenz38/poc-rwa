@@ -102,7 +102,7 @@ const DepositRequests = () => {
           <div className="overflow-x-auto">
             <table className="table w-full">
               <thead>
-                <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
+                <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
                   <th className="">ID</th>
                   <th className="">User</th>
                   <th className="">
@@ -125,7 +125,7 @@ const DepositRequests = () => {
                 {paginatedRequests.map((request) => (
                   <tr
                     key={request.depositId}
-                    className="border-b-2 border-[#F5F2F2] font-medium text-md"
+                    className="border-b-2 border-[#F5F2F2]  text-sm"
                   >
                     <td className="">{hexToDecimal(request.depositId)}</td>
                     <td className="">{request.user}</td>
