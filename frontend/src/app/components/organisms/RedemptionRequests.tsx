@@ -96,7 +96,7 @@ const RedemptionRequests = () => {
           <div className="overflow-x-auto">
             <table className="table w-full">
               <thead>
-                <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
+                <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
                   <th>ID</th>
                   <th>User</th>
                   <th>
@@ -117,7 +117,7 @@ const RedemptionRequests = () => {
                 {paginatedRequests.map((request) => (
                   <tr
                     key={request.redemptionId}
-                    className="border-b-2 border-[#F5F2F2] font-medium"
+                    className="border-b-2 border-[#F5F2F2] text-sm"
                   >
                     <td>{hexToDecimal(request.redemptionId)}</td>
                     <td>{request.user}</td>

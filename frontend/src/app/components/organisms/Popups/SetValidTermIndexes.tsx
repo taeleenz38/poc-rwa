@@ -70,7 +70,7 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
     <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center">
       <div className="p-6 rounded-lg shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold">Set Valid Term Indexes</h2>
+          <h2 className="text-2xl font-bold">Set Valid Term Indexes</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <InputField

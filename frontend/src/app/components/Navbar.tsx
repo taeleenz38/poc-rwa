@@ -10,6 +10,7 @@ import CloseButton from "./atoms/Buttons/CloseButton";
 import axios from "axios";
 import { MdAlternateEmail } from "react-icons/md";
 import { Router } from "next/router";
+import InputWithLabel from "./atoms/Inputs/InputWithLabel";
 
 const Navbar = () => {
   const { address } = useAccount({ config });
@@ -90,10 +91,8 @@ const Navbar = () => {
       );
       if (response.status === 200 || 201) {
         if (response.data.isActive === true) {
-          localStorage.setItem("UserStatus", "Active");
           setUserState("Active");
         } else {
-          localStorage.setItem("UserStatus", "Inactive");
           setUserState("Inactive");
         }
       }
