@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { config } from "@/config";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "./atoms/Buttons/Button";
@@ -12,6 +12,7 @@ import { MdAlternateEmail } from "react-icons/md";
 import { Router } from "next/router";
 
 const Navbar = () => {
+  const { disconnect } = useDisconnect({ config });
   const { address } = useAccount({ config });
   const currentPath = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -158,6 +159,7 @@ const Navbar = () => {
   const handleSignOut = () => {
     setIsLoggedIn(false);
     setUserRole("");
+    disconnect();
     router.push("/");
     // localStorage.clear();
     localStorage.removeItem("isLoggedIn");
