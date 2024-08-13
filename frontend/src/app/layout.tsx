@@ -25,13 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={openSans.className}>
-        <Navbar />
-        <div className="pt-[92px] text-primary">
-          <Web3ModalProvider initialState={initialState}>
-            {children}
-          </Web3ModalProvider>
-        </div>
-        <Footer />
+        <Web3ModalProvider initialState={initialState}>
+          <Navbar />
+          <div className="pt-[92px] text-primary">{children}</div>
+          <Footer />
+        </Web3ModalProvider>
       </body>
     </html>
   );

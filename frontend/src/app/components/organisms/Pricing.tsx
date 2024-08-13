@@ -84,7 +84,7 @@ const Pricing = () => {
       <div className="overflow-x-auto pt-4">
         <table className="table">
           <thead>
-            <tr className="text-gray text-lg bg-[#F5F2F2] border-none">
+            <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
               <th className="text-center">ID</th>
               <th className="text-center">Price</th>
               <th className="text-center">Status</th>
@@ -105,7 +105,7 @@ const Pricing = () => {
             ) : (
               prices.map((price: PricingResponse) => (
                 <tr
-                  className="border-b-2 border-[#F5F2F2] font-medium text-gray"
+                  className="border-b-2 border-[#F5F2F2] text-sm text-gray"
                   key={price.priceId}
                 >
                   <td className="text-center">{price.priceId}</td>

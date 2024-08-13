@@ -62,10 +62,10 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
       <div className="p-8 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold text-primary">Add Price</h2>
+          <h2 className="text-2xl font-bold text-primary">Add Price</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 text-xl mb-4 font-medium">
+        <div className="text-center px-8 l mb-4 ">
           Please enter the desired price for AYF (Australian Yield Fund).
         </div>
         <div className="w-full mx-auto mb-8">
@@ -94,14 +94,14 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-white">
+          <div className="mt-4 text-primary overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-primary"
+                className="underline text-primary overflow-x-scroll"
               >
                 {txHash}
               </a>

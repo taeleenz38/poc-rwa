@@ -64,12 +64,12 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl text-primary font-bold">
+          <h2 className="text-2xl font-bold text-primary ">
             Remove User From Allowlist
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 text-xl mb-4 font-medium">
+        <div className="text-center px-8 mb-4 ">
           Please confirm to remove user from allow list
         </div>
         <div className="w-full mx-auto mb-8">
@@ -98,7 +98,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-primary text-center">
+          <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <a

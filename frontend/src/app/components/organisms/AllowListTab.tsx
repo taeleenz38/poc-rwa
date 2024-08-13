@@ -103,7 +103,7 @@ const AllowlistTab = () => {
         <div className="overflow-x-auto pt-4">
           <table className="table">
             <thead>
-              <tr className="text-gray text-lg bg-[#F5F2F2] border-none ">
+              <tr className="text-gray text-sm bg-[#F5F2F2] border-none ">
                 <th className="text-center">Term Index</th>
                 <th className="text-center">User</th>
                 <th className="text-center">Status</th>
@@ -117,18 +117,18 @@ const AllowlistTab = () => {
                   className="border-b-2 border-[#F5F2F2] font-medium text-gray"
                   key={index}
                 >
-                  <td className="text-center">{wallet.termIndex}</td>
-                  <td className="text-center">{wallet.account}</td>
-                  <td className="text-center">
+                  <td className="text-center text-sm">{wallet.termIndex}</td>
+                  <td className="text-center text-sm">{wallet.account}</td>
+                  <td className="text-center text-sm">
                     {wallet.status === true ? "Active" : "Paused"}
                   </td>
-                  <td className="text-center">{wallet.date}</td>
-                  <td className="text-center">
+                  <td className="text-center text-sm">{wallet.date}</td>
+                  <td className="text-center text-sm">
                     <div className="flex justify-center items-center ">
                       <input
                         type="radio"
                         name="AllowListSelection"
-                        className="custom-checkbox"
+                        className="custom-checkbox text-sm"
                         checked={selectedAllowListIndex === index}
                         onChange={() => handleRadioChange(index)}
                       />

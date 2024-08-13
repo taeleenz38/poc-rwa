@@ -91,10 +91,8 @@ const Navbar = () => {
       );
       if (response.status === 200 || 201) {
         if (response.data.isActive === true) {
-          localStorage.setItem("UserStatus", "Active");
           setUserState("Active");
         } else {
-          localStorage.setItem("UserStatus", "Inactive");
           setUserState("Inactive");
         }
       }

@@ -61,12 +61,12 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl text-primary font-bold">
+          <h2 className="text-2xl text-primary font-bold">
             Add User To Allowlist
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 text-xl mb-4 font-medium">
+        <div className="text-center px-8  mb-4 ">
           Please enter the wallet address of the user and term index you want to
           add to the allowlist.
         </div>
@@ -96,17 +96,17 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-primary text-center">
+          <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <a
-              href={`https://sepolia.etherscan.io/tx/${txHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-primary overflow-x-scroll"
-            >
-              {txHash}
-            </a>
+                href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-primary overflow-x-scroll"
+              >
+                {txHash}
+              </a>
             )}
           </div>
         )}
