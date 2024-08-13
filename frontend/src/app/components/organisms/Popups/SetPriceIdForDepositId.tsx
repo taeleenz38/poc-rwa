@@ -43,11 +43,11 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
           `${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-pricing`
         );
 
-        // const sortedPrices = response.data.sort(
-        //   (a: PricingResponse, b: PricingResponse) => {
-        //     return new Date(b.date).getTime() - new Date(a.date).getTime();
-        //   }
-        // );
+        const sortedPrices = response.data.sort(
+          (a: PricingResponse, b: PricingResponse) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          }
+        );
 
         const uniquePrices = response.data.filter(
           (price: any, index: any, self: any) =>
