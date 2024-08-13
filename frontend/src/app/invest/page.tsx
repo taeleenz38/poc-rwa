@@ -167,7 +167,7 @@ const Invest = () => {
   }, [price]);
 
   return (
-    <div className="root-container">
+    <div className="">
       <FundDetails2
         logoSrc="/LOGO.png"
         altText="Fund logo"
