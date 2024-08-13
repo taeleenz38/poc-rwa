@@ -175,7 +175,7 @@ const Page = () => {
               <h2 className="text-xl font-bold flex items-center justify-start px-1">
                 Overview
               </h2>
-              <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
+              <div className="flex flex-col justify-start items-start my-4 mx-2">
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div className="flex flex-col gap-2 w-full">

@@ -93,13 +93,9 @@ export class AlchemyService {
     }
     // console.log(pricingResponse);
     pricingResponse.sort((a, b) => {
-      if (a.priceId < b.priceId) return -1;
-      if (a.priceId > b.priceId) return 1;
-  
-      if (a.date && b.date) {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }
-      return 0;
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateB.getTime() - dateA.getTime(); // Latest first
     });
 
     return pricingResponse;
@@ -176,13 +172,9 @@ export class AlchemyService {
     }
     // console.log(pricingResponse);
     pricingResponse.sort((a, b) => {
-      if (a.priceId < b.priceId) return -1;
-      if (a.priceId > b.priceId) return 1;
-  
-      if (a.date && b.date) {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }
-      return 0;
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateB.getTime() - dateA.getTime(); // Latest first
     });
 
     return pricingResponse;
@@ -1574,4 +1566,10 @@ const formatDate = (dateString: string | number | Date) => {
 
 function scaleAndRoundToTwoDecimals(rawAmount: string): string {
   return (Math.round(parseFloat(rawAmount) * 100) / 100).toFixed(2);
+}
+
+function parseDate(dateString: string): Date {
+  const [day, month, yearAndTime] = dateString.split('/');
+  const [year, time] = yearAndTime.split(' ');
+  return new Date(`${year}-${month}-${day}T${time}`);
 }

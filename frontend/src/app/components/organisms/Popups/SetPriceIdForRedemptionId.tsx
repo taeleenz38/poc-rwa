@@ -1,12 +1,12 @@
 "use client";
-import axios from "axios";
-import { useState, useEffect } from "react";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
+import axios from "axios";
 import { BigNumber, ethers } from "ethers";
+import { useEffect, useState } from "react";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 interface SetPriceIdForRedemptionIdProps {
   isOpen: boolean;
@@ -41,14 +41,14 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
     const fetchPrices = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-pricing`
         );
 
-        const sortedPrices = response.data.sort((a: any, b: any) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
+        // const sortedPrices = response.data.sort((a: any, b: any) => {
+        //   return new Date(b.date).getTime() - new Date(a.date).getTime();
+        // });
 
-        const uniquePrices = sortedPrices.filter(
+        const uniquePrices = response.data.filter(
           (price: any, index: any, self: any) =>
             index === self.findIndex((p: any) => p.priceId === price.priceId)
         );
@@ -175,9 +175,9 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-primary overflow-x-scroll"
+                className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-                {txHash}
+                view transaction
               </a>
             )}
           </div>
