@@ -159,13 +159,30 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
           </div>
           <div className="w-[49%]">
             <Submit
-              label="Approve Redeem"
+              label={isPending ? "Approving..." : "Approve Redeem"}
               onClick={handleApproveRedeem}
               disabled={isPending || isApprovalLoading || isSecondLoading}
               className="w-full"
             />
           </div>
         </div>
+        {txSecondHash && (
+          <div className="mt-4 text-primary text-center overflow-x-scroll">
+            {isSecondLoading && (
+              <p>Redemption approval transaction is pending...</p>
+            )}
+            {SecondReceipt && (
+              <a
+                href={`https://sepolia.etherscan.io/tx/${txSecondHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline overflow-x-scroll text-sm text-[#0000BF]"
+              >
+                Completed: View Transaction
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

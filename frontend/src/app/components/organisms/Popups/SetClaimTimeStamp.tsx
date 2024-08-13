@@ -145,7 +145,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-                view transaction
+               Completed: View Transaction
               </a>
             )}
           </div>

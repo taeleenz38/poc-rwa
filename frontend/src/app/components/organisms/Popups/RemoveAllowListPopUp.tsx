@@ -107,7 +107,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-                view transaction
+              Completed: View Transaction
               </a>
             )}
           </div>

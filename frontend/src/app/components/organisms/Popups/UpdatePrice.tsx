@@ -125,7 +125,7 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-                {txHash}
+                Completed: View Transaction
               </a>
             )}
           </div>
