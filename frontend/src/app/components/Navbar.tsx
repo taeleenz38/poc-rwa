@@ -10,6 +10,7 @@ import CloseButton from "./atoms/Buttons/CloseButton";
 import axios from "axios";
 import { MdAlternateEmail } from "react-icons/md";
 import { Router } from "next/router";
+import NavButtons from "./atoms/Buttons/NavButtons";
 
 const Navbar = () => {
   const { address } = useAccount({ config });
@@ -169,6 +170,15 @@ const Navbar = () => {
     localStorage.removeItem("userRole");
   };
 
+  const closeSidebar = () => {
+    const drawerToggle = document.getElementById(
+      "my-drawer"
+    ) as HTMLInputElement;
+    if (drawerToggle && drawerToggle.checked) {
+      drawerToggle.checked = false;
+    }
+  };
+
   return (
     <div
       className={`drawer flex w-full fixed top-0 justify-between z-20 items-center lg:px-28 px-8 border-b-2 border-light py-4 transition-all duration-300 ${
@@ -178,7 +188,7 @@ const Navbar = () => {
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex items-center justify-between">
         <div className="flex items-center">
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <label
               htmlFor="my-drawer"
               className={`bg-none drawer-button items-center text-2xl lg:hidden cursor-pointer
@@ -186,6 +196,16 @@ const Navbar = () => {
             >
               ☰
             </label>
+          ) : (
+            <Link href="/">
+              <Image
+                src={scrolled ? "/LOGO-LIGHT.png" : "/LOGO-DARK.png"}
+                alt="logo"
+                width={100}
+                height={100}
+                className="mr-16 lg:hidden"
+              />
+            </Link>
           )}
 
           <Link href="/">
@@ -288,20 +308,20 @@ const Navbar = () => {
                 <w3m-button />
               </>
             ) : (
-              <div className="">
-                <Button
+              <>
+                <NavButtons
                   text={"Sign In"}
-                  className="border-0 hover:bg-secondary py-1 px-3"
+                  className="border-0 hover:bg-secondary py-1 px-2 lg:py-2 lg:px-4"
                   onClick={() => setShowModal(true)}
                 />
                 <Link href="/kyc">
-                  <Button
+                  <NavButtons
                     text={"Sign Up"}
-                    className="bg-white hover:bg-primary text-primary hover:text-white py-1 px-3"
+                    className="bg-white hover:bg-primary text-primary hover:text-white py-1 px-2 lg:py-2 lg:px-4"
                     onClick={() => {}}
                   />
                 </Link>
-              </div>
+              </>
             )}
           </div>
         </div>
@@ -321,6 +341,7 @@ const Navbar = () => {
                   <li className={isActiveSide("/invest")}>
                     <Link
                       href="/invest"
+                      onClick={closeSidebar}
                       className={`font-semibold mr-14 text-xl hover:text-secondary ${
                         currentPath === "/invest" ? "text-secondary" : ""
                       }`}
@@ -332,6 +353,7 @@ const Navbar = () => {
                     <li className={isActiveSide("/portfolio")}>
                       <Link
                         href="/portfolio"
+                        onClick={closeSidebar}
                         className={`font-semibold mr-14 text-xl hover:text-secondary ${
                           currentPath === "/portfolio" ? "text-secondary" : ""
                         }`}
@@ -343,6 +365,7 @@ const Navbar = () => {
                   <li className={isActiveSide("/about")}>
                     <Link
                       href="/about"
+                      onClick={closeSidebar}
                       className={`font-semibold mr-14 text-xl hover:text-secondary ${
                         currentPath === "/about" ? "text-secondary" : ""
                       }`}
@@ -353,6 +376,7 @@ const Navbar = () => {
                   <li className={isActiveSide("/profile")}>
                     <Link
                       href="/profile"
+                      onClick={closeSidebar}
                       className={`font-semibold mr-14 text-xl hover:text-secondary ${
                         currentPath === "/profile" ? "text-secondary" : ""
                       }`}
@@ -366,6 +390,7 @@ const Navbar = () => {
                 <li className={isActiveSide("/admin")}>
                   <Link
                     href="/admin"
+                    onClick={closeSidebar}
                     className={`font-semibold mr-14 text-xl hover:text-secondary ${
                       currentPath === "/admin" ? "text-secondary" : ""
                     }`}
@@ -378,6 +403,7 @@ const Navbar = () => {
                 <li className={isActiveSide("/allowlist")}>
                   <Link
                     href="/allowlist"
+                    onClick={closeSidebar}
                     className={`font-semibold mr-14 text-xl hover:text-secondary ${
                       currentPath === "/allowlist" ? "text-secondary" : ""
                     }`}
@@ -390,6 +416,7 @@ const Navbar = () => {
                 <li className={isActiveSide("/assetsender")}>
                   <Link
                     href="/assetsender"
+                    onClick={closeSidebar}
                     className={`font-semibold mr-14 text-xl hover:text-secondary ${
                       currentPath === "/assetsender" ? "text-secondary" : ""
                     }`}
@@ -400,14 +427,17 @@ const Navbar = () => {
               )}
             </>
           )}
-          <div className="flex gap-2">
+          <div className="flex">
             {isLoggedIn && (
               <>
                 <div className="">
                   <Button
                     text={"Sign Out"}
-                    className="font-semibold mr-14 text-xl hover:text-secondary"
-                    onClick={handleSignOut}
+                    className="font-semibold text-xl hover:text-secondary"
+                    onClick={() => {
+                      handleSignOut();
+                      closeSidebar();
+                    }}
                   />
                 </div>
               </>
@@ -424,7 +454,7 @@ const Navbar = () => {
               <CloseButton onClick={() => setShowModal(false)} />
             </div>
             <div className="flex flex-col items-center">
-              <div className="flex items-center mb-4">
+              <div className="lg:flex items-center mb-4">
                 <label className="mr-3 w-20">Username</label>
                 <input
                   type="text"
@@ -434,7 +464,7 @@ const Navbar = () => {
                   className="p-2 border rounded w-full lg:w-96"
                 />
               </div>
-              <div className="flex items-center mb-4">
+              <div className="lg:flex items-center mb-4">
                 <label className="mr-3 w-20">Password</label>
                 <input
                   type="password"

@@ -78,7 +78,7 @@ export const PackageCard = (props: PackageCardProps) => {
                 <p className="line-clamp-1">{footerText}</p>
               </div>
             </div>
-            <div className="border-2 w-10 h-10 rounded-full ml-28 flex justify-center items-center ">
+            <div className="border-2 w-10 h-10 rounded-full ml-1 lg:ml-28 flex justify-center items-center ">
               <IoArrowForwardSharp />
             </div>
           </div>
