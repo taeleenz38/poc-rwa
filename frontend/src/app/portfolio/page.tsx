@@ -349,7 +349,7 @@ const Portfolio = () => {
                             key={token.depositId}
                           >
                             <td>{token.depositAmountAfterFee} AUDC</td>
-                            <td>{formatDate(token.claimTimestamp)}</td>
+                            <td>{token.claimTimestamp}</td>
                             <td>
                               {(token.claimableAmount || 0).toFixed(3)} AYF
                             </td>
@@ -477,7 +477,7 @@ const Portfolio = () => {
                           <td>Copiam Australian Yield Fund</td>
                           <td>{transaction.status}</td>
                           <td>{transaction.type}</td>
-                          <td>{formatDate(transaction.transactionDate)}</td>
+                          <td>{transaction.transactionDate}</td>
                           <td>
                             {transaction.price
                               ? `$${formatNumber(
