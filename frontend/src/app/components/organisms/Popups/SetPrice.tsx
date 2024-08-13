@@ -1,5 +1,5 @@
 "use client";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
@@ -35,7 +35,8 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
   };
 
   const handleAddPrice = async () => {
-    const price = BigNumber.from(addPrice).mul(BigNumber.from(10).pow(18));
+    const parsedPrice = parseFloat(addPrice);
+    const price = ethers.utils.parseUnits(parsedPrice.toString(), 18);
     const timestamp = BigNumber.from(Math.floor(Date.now() / 1000));
     try {
       const tx = await writeContractAsync({
