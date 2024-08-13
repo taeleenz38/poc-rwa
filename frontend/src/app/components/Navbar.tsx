@@ -192,7 +192,7 @@ const Navbar = () => {
             <label
               htmlFor="my-drawer"
               className={`bg-none drawer-button items-center text-2xl lg:hidden cursor-pointer
-            ${scrolled ? "text-dark" : "text-light"}`}
+            ${scrolled ? "text-primary" : "text-light"}`}
             >
               ☰
             </label>
@@ -446,39 +446,53 @@ const Navbar = () => {
         </ul>
       </div>
       {showModal && (
-        <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-full lg:w-1/3 mx-6">
+        <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-6 lg:px-8">
+          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-full max-w-md mx-auto">
             <div className="flex justify-between items-center mb-8">
               <div></div>
-              <h2 className="text-3xl font-bold text-primary ">Sign In</h2>
-              <CloseButton onClick={() => setShowModal(false)} />
+              <h2 className="text-2xl sm:text-3xl font-bold text-primary">
+                Sign In
+              </h2>
+              <CloseButton
+                onClick={() => {
+                  setShowModal(false);
+                  setEmail("");
+                  setPassword("");
+                }}
+              />
             </div>
-            <div className="flex flex-col items-center">
-              <div className="lg:flex items-center mb-4">
-                <label className="mr-3 w-20">Username</label>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-full px-8">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
                 <input
                   type="text"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="p-2 border rounded w-full lg:w-96"
+                  className="p-2 border rounded w-full"
                 />
               </div>
-              <div className="lg:flex items-center mb-4">
-                <label className="mr-3 w-20">Password</label>
+              <div className="w-full px-8">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
                 <input
                   type="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="p-2 border rounded w-full lg:w-96"
+                  className="p-2 border rounded w-full"
                 />
               </div>
-              <Button
-                text={"Sign In"}
-                className="bg-primary rounded-lg w-32 hover:bg-white hover:text-primary text-white py-2 px-4"
-                onClick={handleSignIn}
-              />
+              <div className="w-full px-8">
+                <Button
+                  text={"Sign In"}
+                  className="bg-primary rounded-lg w-full mt-4 mb-2 hover:bg-white hover:text-primary text-white py-2 px-4"
+                  onClick={handleSignIn}
+                />
+              </div>
             </div>
           </div>
         </div>
