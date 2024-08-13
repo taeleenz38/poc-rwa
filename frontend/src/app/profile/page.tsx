@@ -220,14 +220,14 @@ const Page = () => {
             </div>
             <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
               <h2 className="text-xl font-bold flex items-center justify-start px-1">
-                Notes
+                Wallet Address
               </h2>
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div>
-                      <h3 className="text-lg text-primary">
-                        Wallet Address - {account?.address}
+                      <h3 className="text-sm text-primary">
+                        {userDetails?.walletAddress}
                       </h3>
                     </div>
                   </div>
