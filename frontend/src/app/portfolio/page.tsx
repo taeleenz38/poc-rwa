@@ -1,15 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { useAccount, useBalance } from "wagmi";
-import { config } from "@/config";
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
-import { useWriteContract } from "wagmi";
+import { config } from "@/config";
 import axios from "axios";
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useRouter } from "next/navigation";
+import { useAccount, useBalance, useWriteContract } from "wagmi";
 
 type ClaimableToken = {
   user: string;
@@ -193,9 +191,7 @@ const Portfolio = () => {
 
       setIsFetchingTransactions(true);
       try {
-        const response = await axios.get(`api/transactionHistory`, {
-          params: { address },
-        });
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-history/${address}`);
         setTransactions(response.data);
       } catch (error) {
         console.error("Error fetching transactions", error);
