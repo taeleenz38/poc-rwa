@@ -95,7 +95,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
         {txHash && (
-          <div className="mt-4 text-primary overflow-x-scroll">
+          <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
               <a
