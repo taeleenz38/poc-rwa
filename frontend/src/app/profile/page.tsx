@@ -165,12 +165,12 @@ const Page = () => {
               )}
             </div>
           </div>
-          <div className="w-1/2 flex flex-col gap-y-5">
-            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor mb-0.5">
+          <div className="w-1/2 flex flex-col gap-y-1">
+            <div className="flex flex-col justify-start py-5 items-start px-4 border borderColor mb-0.5">
               <h2 className="text-xl font-semibold flex items-center justify-start px-1">
                 Overview
               </h2>
-              <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
+              <div className="flex flex-col justify-start items-start my-4 mx-2">
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div className="flex flex-col gap-2 w-full">
@@ -187,29 +187,29 @@ const Page = () => {
                       </div> */}
 
                       <h3 className="text-lg  ">
-                        User Status -{" "}
+                        User Status -
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full]" />
                         ) : (
                           userStatus
-                        )}{" "}
+                        )}
                       </h3>
                       <h3 className="text-lg ">
-                        KYC Status -{" "}
+                        KYC Status -
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full" />
                         ) : userStatus === "Active" ? (
                           "Completed"
                         ) : (
                           "Pending"
-                        )}{" "}
+                        )}
                       </h3>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
+            <div className="flex flex-col justify-end py-5 items-start my-4 px-4 border borderColor">
               <h2 className="text-xl font-semibold flex items-center justify-start px-1">
                 Notes
               </h2>

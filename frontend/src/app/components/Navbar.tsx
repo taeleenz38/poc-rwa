@@ -22,7 +22,12 @@ const Navbar = () => {
   const [password, setPassword] = useState("");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [userState, setUserState] = useState<string | null>("Inactive");
+  const pathname = usePathname();
   const router = useRouter();
+
+  const isActiveSide = (path: string) => {
+    return pathname === path ? "text-[#FF10F0] ghost-btn" : "text-white";
+  };
 
   useEffect(() => {
     const storedLoggedIn = localStorage.getItem("isLoggedIn");
@@ -166,127 +171,253 @@ const Navbar = () => {
 
   return (
     <div
-      className={`flex w-full fixed top-0 justify-between z-20 items-center px-28 border-b-2 border-light py-4 transition-all duration-300 ${
+      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center lg:px-28 px-8 border-b-2 border-light py-4 transition-all duration-300 ${
         scrolled ? "bg-white" : "bg-primary"
       } ${scrolled ? "text-dark" : "text-light"}`}
     >
-      <div className="flex items-center">
-        <Link href="/">
-          <Image
-            src={scrolled ? "/LOGO-LIGHT.png" : "/LOGO-DARK.png"}
-            alt="logo"
-            width={150}
-            height={150}
-            className="mr-16"
-          />
-        </Link>
-        {!scrolled && isLoggedIn && (
-          <>
-            {userRole === "user" && (
-              <>
-                <Link
-                  href="/invest"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                    currentPath === "/invest" ? "text-secondary" : ""
-                  }`}
-                >
-                  Invest
-                </Link>
-                {userState === "Active" && userState !== null && (
+      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content flex items-center justify-between">
+        <div className="flex items-center">
+          {isLoggedIn && (
+            <label
+              htmlFor="my-drawer"
+              className={`bg-none drawer-button items-center text-2xl lg:hidden cursor-pointer
+            ${scrolled ? "text-dark" : "text-light"}`}
+            >
+              ☰
+            </label>
+          )}
+
+          <Link href="/">
+            <Image
+              src={scrolled ? "/LOGO-LIGHT.png" : "/LOGO-DARK.png"}
+              alt="logo"
+              width={150}
+              height={150}
+              className="mr-16 hidden lg:block"
+            />
+          </Link>
+          {!scrolled && isLoggedIn && (
+            <ul className="hidden lg:block">
+              {userRole === "user" && (
+                <>
                   <Link
-                    href="/portfolio"
+                    href="/invest"
                     className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                      currentPath === "/portfolio" ? "text-secondary" : ""
+                      currentPath === "/invest" ? "text-secondary" : ""
                     }`}
                   >
-                    Portfolio
+                    Invest
                   </Link>
-                )}
+                  {userState === "Active" && userState !== null && (
+                    <Link
+                      href="/portfolio"
+                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                        currentPath === "/portfolio" ? "text-secondary" : ""
+                      }`}
+                    >
+                      Portfolio
+                    </Link>
+                  )}
+                  <Link
+                    href="/about"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/about" ? "text-secondary" : ""
+                    }`}
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/profile" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Profile
+                  </Link>
+                </>
+              )}
+              {userRole === "admin" && (
+                <>
+                  <Link
+                    href="/admin"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/admin" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                </>
+              )}
+              {userRole === "guardian" && (
                 <Link
-                  href="/about"
+                  href="/allowlist"
                   className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                    currentPath === "/about" ? "text-secondary" : ""
+                    currentPath === "/allowlist" ? "text-secondary" : ""
                   }`}
                 >
-                  About
+                  Guardian
                 </Link>
+              )}
+              {userRole === "assetsender" && (
                 <Link
-                  href="/profile"
+                  href="/assetsender"
                   className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                    currentPath === "/profile" ? "text-secondary" : ""
+                    currentPath === "/assetsender" ? "text-secondary" : ""
                   }`}
                 >
-                  Profile
+                  Asset Sender
                 </Link>
-              </>
-            )}
-            {userRole === "admin" && (
-              <>
-                <Link
-                  href="/admin"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                    currentPath === "/admin" ? "text-secondary" : ""
-                  }`}
-                >
-                  Admin
-                </Link>
-              </>
-            )}
-            {userRole === "guardian" && (
-              <Link
-                href="/allowlist"
-                className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                  currentPath === "/allowlist" ? "text-secondary" : ""
-                }`}
-              >
-                Guardian
-              </Link>
-            )}
-            {userRole === "assetsender" && (
-              <Link
-                href="/assetsender"
-                className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                  currentPath === "/assetsender" ? "text-secondary" : ""
-                }`}
-              >
-                Asset Sender
-              </Link>
-            )}
-          </>
-        )}
-      </div>
-      {!scrolled && (
-        <div className="flex gap-2">
-          {isLoggedIn ? (
-            <>
-              <Button
-                text={"Sign Out"}
-                className="border-0 hover:bg-secondary py-1 px-3"
-                onClick={handleSignOut}
-              />
-              <w3m-button />
-            </>
-          ) : (
-            <>
-              <Button
-                text={"Sign In"}
-                className="border-0 hover:bg-secondary py-1 px-3"
-                onClick={() => setShowModal(true)}
-              />
-              <Link href="/kyc">
-                <Button
-                  text={"Sign Up"}
-                  className="bg-white hover:bg-primary text-primary hover:text-white py-1 px-3"
-                  onClick={() => {}}
-                />
-              </Link>
-            </>
+              )}
+            </ul>
           )}
         </div>
+      </div>
+      {!scrolled && (
+        <div className="drawer-content">
+          <div className="flex gap-2">
+            {isLoggedIn ? (
+              <>
+                <div className="hidden lg:block">
+                  <Button
+                    text={"Sign Out"}
+                    className="border-0 hover:bg-secondary py-1 px-3"
+                    onClick={handleSignOut}
+                  />
+                </div>
+                <w3m-button />
+              </>
+            ) : (
+              <div className="">
+                <Button
+                  text={"Sign In"}
+                  className="border-0 hover:bg-secondary py-1 px-3"
+                  onClick={() => setShowModal(true)}
+                />
+                <Link href="/kyc">
+                  <Button
+                    text={"Sign Up"}
+                    className="bg-white hover:bg-primary text-primary hover:text-white py-1 px-3"
+                    onClick={() => {}}
+                  />
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
       )}
+
+      <div className="drawer-side">
+        <label
+          htmlFor="my-drawer"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
+        <ul className="menu bg-primary text-base-content pt-16 min-h-full w-2/3 p-4">
+          {isLoggedIn && (
+            <>
+              {userRole === "user" && (
+                <>
+                  <li className={isActiveSide("/invest")}>
+                    <Link
+                      href="/invest"
+                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                        currentPath === "/invest" ? "text-secondary" : ""
+                      }`}
+                    >
+                      Invest
+                    </Link>
+                  </li>
+                  {userState === "Active" && userState !== null && (
+                    <li className={isActiveSide("/portfolio")}>
+                      <Link
+                        href="/portfolio"
+                        className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                          currentPath === "/portfolio" ? "text-secondary" : ""
+                        }`}
+                      >
+                        Portfolio
+                      </Link>
+                    </li>
+                  )}
+                  <li className={isActiveSide("/about")}>
+                    <Link
+                      href="/about"
+                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                        currentPath === "/about" ? "text-secondary" : ""
+                      }`}
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li className={isActiveSide("/profile")}>
+                    <Link
+                      href="/profile"
+                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                        currentPath === "/profile" ? "text-secondary" : ""
+                      }`}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              )}
+              {userRole === "admin" && (
+                <li className={isActiveSide("/admin")}>
+                  <Link
+                    href="/admin"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/admin" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                </li>
+              )}
+              {userRole === "guardian" && (
+                <li className={isActiveSide("/allowlist")}>
+                  <Link
+                    href="/allowlist"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/allowlist" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Guardian
+                  </Link>
+                </li>
+              )}
+              {userRole === "assetsender" && (
+                <li className={isActiveSide("/assetsender")}>
+                  <Link
+                    href="/assetsender"
+                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      currentPath === "/assetsender" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Asset Sender
+                  </Link>
+                </li>
+              )}
+            </>
+          )}
+          <div className="flex gap-2">
+            {isLoggedIn && (
+              <>
+                <div className="">
+                  <Button
+                    text={"Sign Out"}
+                    className="font-semibold mr-14 text-xl hover:text-secondary"
+                    onClick={handleSignOut}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </ul>
+      </div>
       {showModal && (
-        <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center ">
-          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
+        <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-full lg:w-1/3 mx-6">
             <div className="flex justify-between items-center mb-8">
               <div></div>
               <h2 className="text-3xl font-bold text-primary ">Sign In</h2>
@@ -300,7 +431,7 @@ const Navbar = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="p-2 border rounded w-96"
+                  className="p-2 border rounded w-full lg:w-96"
                 />
               </div>
               <div className="flex items-center mb-4">
@@ -310,7 +441,7 @@ const Navbar = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="p-2 border rounded w-96"
+                  className="p-2 border rounded w-full lg:w-96"
                 />
               </div>
               <Button
