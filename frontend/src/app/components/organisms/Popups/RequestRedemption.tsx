@@ -153,9 +153,9 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
                 href={`https://sepolia.etherscan.io/tx/${txRedemptionHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-primary overflow-x-scroll"
+                className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-                {txRedemptionHash}
+                view transaction
               </a>
             )}
           </div>

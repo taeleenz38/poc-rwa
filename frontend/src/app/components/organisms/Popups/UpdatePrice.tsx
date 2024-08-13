@@ -123,7 +123,7 @@ const UpdatePrice: React.FC<UpdatePriceProps> = ({
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-primary overflow-x-scroll"
+                className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
                 {txHash}
               </a>
