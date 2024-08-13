@@ -123,7 +123,7 @@ const Page = () => {
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your Profile
         </h1>
-        <h2 className="flex text-2xl font-normal items-center justify-start mb-4">
+        <h2 className="flex text-xl font-normal items-center justify-start mb-4">
           Track and manage your information
         </h2>
 
@@ -143,36 +143,36 @@ const Page = () => {
               ) : (
                 <div className="text-primary p-3 mb-4">
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold">First Name</div>
-                    <div>{userDetails?.firstName}</div>
+                    <div className="font-semibold text-sm">First Name</div>
+                    <div className="text-sm">{userDetails?.firstName}</div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold">Last Name</div>
-                    <div>{userDetails?.lastName}</div>
+                    <div className="font-semibold text-sm">Last Name</div>
+                    <div className="text-sm">{userDetails?.lastName}</div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold">Email</div>
-                    <div>{userDetails?.email}</div>
+                    <div className="font-semibold text-sm">Email</div>
+                    <div className="text-sm">{userDetails?.email}</div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold">Country</div>
-                    <div>{userDetails?.country}</div>
+                    <div className="font-semibold text-sm">Country</div>
+                    <div className="text-sm">{userDetails?.country}</div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold">Date of Birth</div>
-                    <div>{userDetails?.birthdate}</div>
+                    <div className="font-semibold text-sm">Date of Birth</div>
+                    <div className="text-sm">{userDetails?.birthdate}</div>
                   </div>
                 </div>
               )}
             </div>
           </div>
-          <div className="w-1/2 flex flex-col gap-y-5">
-            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor mb-0.5">
-              <h2 className="text-xl font-semibold flex items-center justify-start px-1">
+          <div className="w-1/2 flex flex-col">
+            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor">
+              <h2 className="text-xl font-bold flex items-center justify-start px-1">
                 Overview
               </h2>
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
@@ -191,22 +191,26 @@ const Page = () => {
                         </div>
                       </div> */}
 
-                      <h3 className="text-lg  ">
-                        User Status -{" "}
+                      <h3>
+                        <span className="text-sm font-semibold">
+                          User Status -{" "}
+                        </span>
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full]" />
                         ) : (
-                          userStatus
+                          <span className="text-sm">{userStatus}</span>
                         )}{" "}
                       </h3>
-                      <h3 className="text-lg ">
-                        KYC Status -{" "}
+                      <h3>
+                        <span className="text-sm font-semibold">
+                          KYC Status -{" "}
+                        </span>
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full" />
                         ) : userStatus === "Active" ? (
-                          "Completed"
+                          <span className="text-sm">Completed</span>
                         ) : (
-                          "Pending"
+                          <span className="text-sm">Pending</span>
                         )}{" "}
                       </h3>
                     </div>
@@ -215,7 +219,7 @@ const Page = () => {
               </div>
             </div>
             <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
-              <h2 className="text-xl font-semibold flex items-center justify-start px-1">
+              <h2 className="text-xl font-bold flex items-center justify-start px-1">
                 Notes
               </h2>
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
@@ -253,28 +257,28 @@ const Page = () => {
                 ) : (
                   <div className="text-primary p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold">ID Document</div>
-                      <div className="">{userDetails?.idDocument}</div>
+                      <div className="font-semibold text-sm">ID Document</div>
+                      <div className="text-sm">{userDetails?.idDocument}</div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold">ID Number</div>
-                      <div className="">{userDetails?.idNumber}</div>
+                      <div className="font-semibold text-sm">ID Number</div>
+                      <div className="text-sm">{userDetails?.idNumber}</div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold">ID Expiry</div>
-                      <div className="">{userDetails?.idExpiry}</div>
+                      <div className="font-semibold text-sm">ID Expiry</div>
+                      <div className="text-sm">{userDetails?.idExpiry}</div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold">Country</div>
-                      <div className="">{userDetails?.country}</div>
+                      <div className="font-semibold text-sm">Country</div>
+                      <div className="text-sm">{userDetails?.country}</div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold">Date of Birth</div>
-                      <div className="">{userDetails?.birthdate}</div>
+                      <div className="font-semibold text-sm">Date of Birth</div>
+                      <div className="text-sm">{userDetails?.birthdate}</div>
                     </div>
                   </div>
                 )}
@@ -294,16 +298,20 @@ const Page = () => {
                     <Skeleton height={26} className="w-full" />
                   </div>
                 ) : !userDocument ? (
-                  <p className="text-center py-4">No signed documents found.</p>
+                  <p className="text-center py-4 text-sm">
+                    No signed documents found.
+                  </p>
                 ) : (
                   <div className="text-primary p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b borderColor py-2">
-                      <div className="font-semibold px-0.5">Agreement</div>
+                      <div className="font-semibold px-0.5 text-sm">
+                        Agreement
+                      </div>
                       <a
                         href={userDocument?.downloadUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-md text-[#007BFF] hover:text-[#0056b3]"
+                        className="text-md text-[#007BFF] hover:text-[#0056b3] text-sm"
                       >
                         View Signed Document
                       </a>

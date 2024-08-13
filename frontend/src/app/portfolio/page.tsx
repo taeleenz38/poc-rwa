@@ -241,7 +241,7 @@ const Portfolio = () => {
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your portfolio
         </h1>
-        <h2 className="flex text-2xl font-normal items-center justify-start mb-2">
+        <h2 className="flex text-xl font-normal items-center justify-start mb-2">
           Track and manage your portfolio
         </h2>
 

@@ -10,6 +10,7 @@ import CloseButton from "./atoms/Buttons/CloseButton";
 import axios from "axios";
 import { MdAlternateEmail } from "react-icons/md";
 import { Router } from "next/router";
+import InputWithLabel from "./atoms/Inputs/InputWithLabel";
 
 const Navbar = () => {
   const { disconnect } = useDisconnect({ config });
@@ -86,10 +87,8 @@ const Navbar = () => {
       );
       if (response.status === 200 || 201) {
         if (response.data.isActive === true) {
-          localStorage.setItem("UserStatus", "Active");
           setUserState("Active");
         } else {
-          localStorage.setItem("UserStatus", "Inactive");
           setUserState("Inactive");
         }
       }
@@ -194,16 +193,16 @@ const Navbar = () => {
                 >
                   Invest
                 </Link>
-                {userState === "Active" && userState !== null && (
-                  <Link
-                    href="/portfolio"
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                      currentPath === "/portfolio" ? "text-secondary" : ""
-                    }`}
-                  >
-                    Portfolio
-                  </Link>
-                )}
+
+                <Link
+                  href="/portfolio"
+                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    currentPath === "/portfolio" ? "text-secondary" : ""
+                  } ${userState !== "Active" && "hidden"}`}
+                >
+                  Portfolio
+                </Link>
+
                 <Link
                   href="/about"
                   className={`font-semibold mr-14 text-xl hover:text-secondary ${
@@ -288,7 +287,7 @@ const Navbar = () => {
       )}
       {showModal && (
         <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center ">
-          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
+          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white ">
             <div className="flex justify-between items-center mb-8">
               <div></div>
               <h2 className="text-3xl font-bold text-primary ">Sign In</h2>

@@ -92,12 +92,12 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-3xl font-bold text-primary ">
+          <h2 className="text-2xl font-bold text-primary ">
             Set Claim Timestamp
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 text-xl mb-4 font-medium">
+        <div className="text-center px-8 mb-4 ">
           Please select the date and time you want to set the claim timestamp
           for.
         </div>
