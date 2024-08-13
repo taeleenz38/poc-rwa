@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { config } from "@/config";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -27,6 +29,9 @@ interface UserDocument {
 const Page = () => {
   // const router = useRouter();
   // const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const account = useAccount({
+    config,
+  });
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [userDocument, setUserDocument] = useState<UserDocument | null>(null);
   const [isFetching, setIsFetching] = useState(true);
@@ -217,11 +222,13 @@ const Page = () => {
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div>
-                      <h3 className="text-lg">&nbsp;</h3>
-                      <h3 className="text-lg">&nbsp;</h3>
+                      <h3 className="text-lg text-primary">
+                        Wallet Address - {account?.address}
+                      </h3>
                     </div>
                   </div>
                 </div>
+                <h3 className="text-lg">&nbsp;</h3>
               </div>
             </div>
           </div>
