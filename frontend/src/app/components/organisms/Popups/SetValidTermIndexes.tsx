@@ -89,9 +89,19 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
           <div className="mt-4 text-white">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
-              <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {tx2Hash}
-              </p>
+              <div className="flex flex-col gap-1">
+                <p className="text-white overflow-x-scroll text-sm">
+                  Transaction successful!
+                </p>
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${tx2Hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline  overflow-x-scroll text-sm text-[#0000BF]"
+                >
+                  view transaction
+                </a>
+              </div>
             )}
           </div>
         )}
