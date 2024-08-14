@@ -138,7 +138,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
         {txHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
+            {!isLoading && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"

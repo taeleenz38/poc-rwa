@@ -170,7 +170,7 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
         {txHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isLoading && <p>Transaction is pending...</p>}
-            {!isLoading && (
+            {receipt && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"

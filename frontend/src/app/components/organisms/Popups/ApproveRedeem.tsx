@@ -71,7 +71,21 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
         ],
       });
 
+      const redemptionIdFormatted = Number(redemptionIdInput);
+      const redemptionIdHexlified = ethers.utils.hexZeroPad(
+        ethers.utils.hexlify(redemptionIdFormatted),
+        32
+      );
+
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "approveRedemptionRequest",
+        args: [[redemptionIdHexlified]],
+      });
+
       setTxApprovalHash(approvalTx);
+      SetTxSecondHash(tx);
     } catch (error) {
       console.error("Error approving:", error);
     }
@@ -82,33 +96,32 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
       hash: txApprovalHash as `0x${string}`,
     });
 
-  useEffect(() => {
-    if (approvalReceipt) {
-      const approveRedemptionRequest = async () => {
-        try {
-          const redemptionIdFormatted = Number(redemptionIdInput);
-          const redemptionIdHexlified = ethers.utils.hexZeroPad(
-            ethers.utils.hexlify(redemptionIdFormatted),
-            32
-          );
+  // useEffect(() => {
+  //   // if (approvalReceipt) {
+  //   const approveRedemptionRequest = async () => {
+  //     try {
+  //       const redemptionIdFormatted = Number(redemptionIdInput);
+  //       const redemptionIdHexlified = ethers.utils.hexZeroPad(
+  //         ethers.utils.hexlify(redemptionIdFormatted),
+  //         32
+  //       );
 
-          const tx = await writeContractAsync({
-            abi: abi.abi,
-            address: process.env
-              .NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-            functionName: "approveRedemptionRequest",
-            args: [[redemptionIdHexlified]],
-          });
+  //       const tx = await writeContractAsync({
+  //         abi: abi.abi,
+  //         address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+  //         functionName: "approveRedemptionRequest",
+  //         args: [[redemptionIdHexlified]],
+  //       });
 
-          SetTxSecondHash(tx);
-        } catch (error) {
-          console.error("Error requesting deposit:", error);
-        }
-      };
+  //       SetTxSecondHash(tx);
+  //     } catch (error) {
+  //       console.error("Error requesting deposit:", error);
+  //     }
+  //   };
 
-      approveRedemptionRequest();
-    }
-  }, [redemptionIdInput, writeContractAsync, approvalReceipt]);
+  //   approveRedemptionRequest();
+  //   // }
+  // }, [redemptionIdInput, writeContractAsync, approvalReceipt]);
 
   const { data: SecondReceipt, isLoading: isSecondLoading } =
     useWaitForTransactionReceipt({

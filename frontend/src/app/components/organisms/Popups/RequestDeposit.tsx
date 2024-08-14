@@ -170,7 +170,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         {txDepositHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isDepositLoading && <p>Deposit transaction is pending...</p>}
-            {!isDepositLoading && (
+            {depositReceipt && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txDepositHash}`}
                 target="_blank"

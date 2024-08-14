@@ -148,7 +148,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         {txRedemptionHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {isRedemptionLoading && <p>Redemption transaction is pending...</p>}
-            {!isRedemptionLoading && (
+            {redemptionReceipt && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txRedemptionHash}`}
                 target="_blank"
