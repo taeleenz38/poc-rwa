@@ -7,6 +7,9 @@ import RequestRedemption from "@/app/components/organisms/Popups/RequestRedempti
 import Allowlist from "@/app/components/organisms/Popups/AllowlistPopUp";
 import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
 import PriceList from "../molecules/PriceList";
+import { config, projectId } from "@/config";
+import { createWeb3Modal } from "@web3modal/wagmi";
+import { useAccount } from "wagmi";
 
 type FundDetails2Props = {
   logoSrc: string;
@@ -45,6 +48,18 @@ const FundDetails2 = (props: FundDetails2Props) => {
     userStatus,
   } = props;
 
+  const modal = createWeb3Modal({
+    wagmiConfig: config,
+    projectId,
+    themeVariables: {
+      "--w3m-accent": "#031329",
+      "--w3m-color-mix": "#031329",
+      "--w3m-border-radius-master": "1px",
+    },
+  });
+
+  const { address } = useAccount({ config });
+
   return (
     <div
       className="flex justify-center items-center p-0 m-0 z-10"
@@ -78,13 +93,23 @@ const FundDetails2 = (props: FundDetails2Props) => {
             <Button
               text={Button1Text}
               className={Button1Class}
-              onClick={onButton1Click}
+              onClick={() => {
+                if (!!address) onButton1Click();
+                else {
+                  modal.open();
+                }
+              }}
               disabled={userStatus === "Inactive"}
             />
             <Button
               text={Button2Text}
               className={Button2Class}
-              onClick={onButton2Click}
+              onClick={() => {
+                if (!!address) onButton2Click();
+                else {
+                  modal.open();
+                }
+              }}
               disabled={userStatus === "Inactive"}
             />
           </div>
