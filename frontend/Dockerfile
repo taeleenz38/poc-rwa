@@ -10,7 +10,7 @@ RUN npm ci
 RUN npm run build
 
 
-FROM builder AS runner
+FROM node:22.6-alpine AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
@@ -21,7 +21,7 @@ COPY --from=builder /app/public ./public
 
 # Set the correct permission for prerender cache
 # RUN mkdir .next
-RUN chown nextjs:nodejs .next
+# RUN chown nextjs:nodejs .next
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
