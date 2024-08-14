@@ -1552,7 +1552,12 @@ export class AlchemyService {
         console.error("Error decoding log:", error);
       }
     });
-    finalTransactionHistoryResponse.sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
+    finalTransactionHistoryResponse.sort((a, b) => {
+      const dateA = parseDate(a.transactionDate);
+      const dateB = parseDate(b.transactionDate);
+      return dateB.getTime() - dateA.getTime(); // Latest first
+    });
+    // finalTransactionHistoryResponse.sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
     return finalTransactionHistoryResponse;
   }
 }
