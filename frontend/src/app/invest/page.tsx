@@ -20,8 +20,8 @@ const formatNumberWithCommas = (number: number | string): string => {
   const num = typeof number === "string" ? parseFloat(number) : number;
   // Format number with commas and ensure two decimal places
   return num.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
   });
 };
 

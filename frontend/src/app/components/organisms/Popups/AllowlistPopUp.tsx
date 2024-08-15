@@ -19,6 +19,8 @@ interface AllowlistProps {
 
 const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [safeTxHash, setSafeTxHash] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
@@ -111,7 +113,7 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
             {!showLink && <p>Transaction is pending...</p>}
             {showLink && (
               <a
-                href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                href={`https://app.safe.global/transactions/history?safe=sep:${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline overflow-x-scroll text-sm text-[#0000BF]"

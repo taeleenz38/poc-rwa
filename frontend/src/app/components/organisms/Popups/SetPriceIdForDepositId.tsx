@@ -29,9 +29,11 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   const [localDepositId, setLocalDepositId] = useState<string>(depositId);
   const [prices, setPrices] = useState<PricingResponse[]>([]);
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
+  const [safeTxHash, setSafeTxHash] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     setLocalDepositId(depositId);
@@ -69,6 +71,8 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   const resetForm = () => {
     setSelectedPriceId(null);
     setShowLink(false);
+    setTxHash("");
+    setSafeTxHash("");
   };
 
   const onCloseModal = () => {
@@ -102,25 +106,51 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
         functionName: "setPriceIdForDeposits",
         args: [[depositIdHexlified], [formattedPriceId]],
       });
-      setTxHash(tx);
-      console.log("Price Id Successfully Set - transaction hash:", tx);
+      setSafeTxHash(tx);
     } catch (error) {
       console.error("Error setting priceId:", error);
     }
   };
+
+  useEffect(() => {
+    if (!safeTxHash) return;
+
+    const fetchTransactionData = async () => {
+      try {
+        const transactionResponse = await axios.get(
+          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
+        );
+
+        console.log("Transaction response:", transactionResponse.data);
+
+        if (transactionResponse.data.transactionHash) {
+          setTxHash(transactionResponse.data.transactionHash);
+          setError("");
+        } else {
+          // If transactionHash is null, continue polling
+          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        setError("Error fetching transaction data");
+      }
+    };
+
+    fetchTransactionData();
+  }, [safeTxHash]);
 
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
 
   useEffect(() => {
-    if (txHash) {
+    if (safeTxHash) {
       const timer = setTimeout(() => {
         setShowLink(true);
       }, 30000);
       return () => clearTimeout(timer);
     }
-  }, [txHash]);
+  }, [safeTxHash]);
 
   const hexToDecimal = (hex: string): number => {
     return parseInt(hex, 16);
@@ -180,7 +210,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
             />
           </div>
         </div>
-        {txHash && (
+        {safeTxHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {!showLink && <p>Transaction is pending...</p>}
             {showLink && (

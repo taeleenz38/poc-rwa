@@ -64,7 +64,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
     if (txHash) {
       const timer = setTimeout(() => {
         setShowLink(true);
-      }, 30000);
+      }, 24000);
       return () => clearTimeout(timer);
     }
   }, [txHash]);
