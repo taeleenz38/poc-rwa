@@ -210,7 +210,7 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
             />
           </div>
         </div>
-        {txHash && (
+        {safeTxHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {!showLink && <p>Transaction is pending...</p>}
             {showLink && (
