@@ -258,7 +258,10 @@ export class AlchemyService {
         if (existingEntryIndex !== -1) {
           // If the account exists, compare the dates
           const existingEntry = accountStatusResponse[existingEntryIndex];
-          if (new Date(existingEntry.date).getTime() < new Date(date).getTime()) {
+          const newDate = parseDate(date);
+          const oldDate = parseDate(existingEntry.date);
+
+          if (oldDate < newDate) {
             // Update the existing entry if the new entry has a more recent date
             accountStatusResponse[existingEntryIndex] = {
               account: account,
@@ -281,7 +284,14 @@ export class AlchemyService {
         console.error("Error decoding log:", error);
       }
     }
-    accountStatusResponse.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    accountStatusResponse.sort((a, b) => {
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateB.getTime() - dateA.getTime(); // Latest first
+    });
+
+    // accountStatusResponse.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     return accountStatusResponse;
   }
 
