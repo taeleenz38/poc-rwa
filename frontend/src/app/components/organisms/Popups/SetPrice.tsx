@@ -21,6 +21,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
   const [addPrice, setAddPrice] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
+  const [showLink, setShowLink] = useState(false);
 
   const resetForm = () => {
     setAddPrice("");
@@ -28,6 +29,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
   const onCloseModal = () => {
     onClose();
     resetForm();
+    setShowLink(false);
   };
 
   const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +57,15 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
+
+  useEffect(() => {
+    if (txHash) {
+      const timer = setTimeout(() => {
+        setShowLink(true);
+      }, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [txHash]);
 
   if (!isOpen) return null;
 
@@ -96,15 +107,15 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
         </div>
         {txHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
+            {!showLink && <p>Transaction is pending...</p>}
+            {showLink && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-               Completed: View Transaction
+                View Transaction
               </a>
             )}
           </div>

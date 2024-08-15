@@ -21,6 +21,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const [validAmount, setValidAmount] = useState<boolean>(true); // New state for validation
   const { writeContractAsync, isPending } = useWriteContract({ config });
+  const [showLink, setShowLink] = useState(false);
 
   const MIN_AMOUNT = 1000;
   const MAX_AMOUNT = 150000;
@@ -31,6 +32,8 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
     setTxApprovalHash(null);
     setError(null);
     setValidAmount(true); // Reset validation state
+    setShowLink(false);
+
   };
 
   const onCloseModal = () => {
@@ -114,6 +117,15 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       hash: txDepositHash as `0x${string}`,
     });
 
+    useEffect(() => {
+      if (txDepositHash) {
+        const timer = setTimeout(() => {
+          setShowLink(true);
+        }, 18000);
+        return () => clearTimeout(timer);
+      }
+    }, [txDepositHash]);
+
   if (!isOpen) return null;
 
   return (
@@ -169,15 +181,15 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         )}
         {txDepositHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {isDepositLoading && <p>Deposit transaction is pending...</p>}
-            {depositReceipt && (
+            {!showLink && <p>Deposit transaction is pending...</p>}
+            {showLink && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txDepositHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-               Completed: View Transaction
+               View Transaction
               </a>
             )}
           </div>

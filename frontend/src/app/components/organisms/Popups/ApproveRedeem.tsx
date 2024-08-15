@@ -27,6 +27,8 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
   const [txSecondHash, SetTxSecondHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
+  const [showLink, setShowLink] = useState(false);
+
 
   useEffect(() => {
     if (redemptionId && redeemAmount) {
@@ -38,6 +40,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   const resetForm = () => {
     setAmount("");
     setTxApprovalHash(null);
+    setShowLink(false);
   };
 
   const onCloseModal = () => {
@@ -96,32 +99,14 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
       hash: txApprovalHash as `0x${string}`,
     });
 
-  // useEffect(() => {
-  //   // if (approvalReceipt) {
-  //   const approveRedemptionRequest = async () => {
-  //     try {
-  //       const redemptionIdFormatted = Number(redemptionIdInput);
-  //       const redemptionIdHexlified = ethers.utils.hexZeroPad(
-  //         ethers.utils.hexlify(redemptionIdFormatted),
-  //         32
-  //       );
-
-  //       const tx = await writeContractAsync({
-  //         abi: abi.abi,
-  //         address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-  //         functionName: "approveRedemptionRequest",
-  //         args: [[redemptionIdHexlified]],
-  //       });
-
-  //       SetTxSecondHash(tx);
-  //     } catch (error) {
-  //       console.error("Error requesting deposit:", error);
-  //     }
-  //   };
-
-  //   approveRedemptionRequest();
-  //   // }
-  // }, [redemptionIdInput, writeContractAsync, approvalReceipt]);
+    useEffect(() => {
+      if (txSecondHash) {
+        const timer = setTimeout(() => {
+          setShowLink(true);
+        }, 20000);
+        return () => clearTimeout(timer);
+      }
+    }, [txSecondHash]);
 
   const { data: SecondReceipt, isLoading: isSecondLoading } =
     useWaitForTransactionReceipt({
@@ -181,17 +166,17 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
         </div>
         {txSecondHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {isSecondLoading && (
+            {!showLink && (
               <p>Redemption approval transaction is pending...</p>
             )}
-            {SecondReceipt && (
+            {showLink && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txSecondHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline overflow-x-scroll text-sm text-[#0000BF]"
               >
-                Completed: View Transaction
+                View Transaction
               </a>
             )}
           </div>

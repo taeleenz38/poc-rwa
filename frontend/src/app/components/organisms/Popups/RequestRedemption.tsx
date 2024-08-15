@@ -22,11 +22,13 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
   const [txRedemptionHash, setTxRedemptionHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
+  const [showLink, setShowLink] = useState(false);
 
   const resetForm = () => {
     setAmount("");
     setTxRedemptionHash(null);
     setTxApprovalHash(null);
+    setShowLink(false);
   };
 
   const onCloseModal = () => {
@@ -96,6 +98,15 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
       hash: txRedemptionHash as `0x${string}`,
     });
 
+    useEffect(() => {
+      if (txRedemptionHash) {
+        const timer = setTimeout(() => {
+          setShowLink(true);
+        }, 18000);
+        return () => clearTimeout(timer);
+      }
+    }, [txRedemptionHash]);
+
   if (!isOpen) return null;
 
   return (
@@ -147,15 +158,15 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         )}
         {txRedemptionHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {isRedemptionLoading && <p>Redemption transaction is pending...</p>}
-            {redemptionReceipt && (
+            {!showLink && <p>Redemption transaction is pending...</p>}
+            {showLink && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txRedemptionHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-               Completed: View Transaction
+               View Transaction
               </a>
             )}
           </div>

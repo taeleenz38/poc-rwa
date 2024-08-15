@@ -21,10 +21,12 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
+  const [showLink, setShowLink] = useState(false);
 
   const resetForm = () => {
     setWalletAddress(null);
     setTxHash(null);
+    setShowLink(false);
   };
   const onCloseModal = () => {
     onClose();
@@ -53,6 +55,15 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
+
+  useEffect(() => {
+    if (txHash) {
+      const timer = setTimeout(() => {
+        setShowLink(true);
+      }, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [txHash]);
 
   if (!isOpen) return null;
 
@@ -97,15 +108,15 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
         </div>
         {txHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
+            {!showLink && <p>Transaction is pending...</p>}
+            {showLink && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline  overflow-x-scroll text-sm text-[#0000BF]"
+                className="underline overflow-x-scroll text-sm text-[#0000BF]"
               >
-                view transaction
+                View Transaction
               </a>
             )}
           </div>

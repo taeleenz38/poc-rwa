@@ -31,6 +31,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
+  const [showLink, setShowLink] = useState(false);
 
   useEffect(() => {
     setLocalDepositId(depositId);
@@ -67,6 +68,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
 
   const resetForm = () => {
     setSelectedPriceId(null);
+    setShowLink(false);
   };
 
   const onCloseModal = () => {
@@ -110,6 +112,15 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
+
+  useEffect(() => {
+    if (txHash) {
+      const timer = setTimeout(() => {
+        setShowLink(true);
+      }, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [txHash]);
 
   const hexToDecimal = (hex: string): number => {
     return parseInt(hex, 16);
@@ -171,15 +182,15 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
         </div>
         {txHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {isLoading && <p>Transaction is pending...</p>}
-            {receipt && (
+            {!showLink && <p>Transaction is pending...</p>}
+            {showLink && (
               <a
                 href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-               Completed: View Transaction
+                View Transaction
               </a>
             )}
           </div>
