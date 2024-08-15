@@ -117,7 +117,7 @@ const Portfolio = () => {
     const fetchClaimableTokens = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-details`
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-details/${address}`
         );
         const data = await response.json();
         setClaimableTokens(data);
@@ -129,13 +129,13 @@ const Portfolio = () => {
     };
 
     fetchClaimableTokens();
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     const fetchClaimableAUDCTokens = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-redemption-list`
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-redemption-list/${address}`
         );
         const data = await response.json();
         setClaimableAUDCTokens(data);
@@ -147,7 +147,7 @@ const Portfolio = () => {
     };
 
     fetchClaimableAUDCTokens();
-  }, []);
+  }, [address]);
 
   const claimMint = async (depositId: string) => {
     const depositIdFormatted = Number(depositId);
@@ -191,7 +191,9 @@ const Portfolio = () => {
 
       setIsFetchingTransactions(true);
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-history/${address}`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-history/${address}`
+        );
         setTransactions(response.data);
       } catch (error) {
         console.error("Error fetching transactions", error);
