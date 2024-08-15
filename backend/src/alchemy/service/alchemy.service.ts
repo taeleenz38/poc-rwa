@@ -258,7 +258,10 @@ export class AlchemyService {
         if (existingEntryIndex !== -1) {
           // If the account exists, compare the dates
           const existingEntry = accountStatusResponse[existingEntryIndex];
-          if (new Date(existingEntry.date).getTime() < new Date(date).getTime()) {
+          const newDate = parseDate(date);
+          const oldDate = parseDate(existingEntry.date);
+
+          if (oldDate < newDate) {
             // Update the existing entry if the new entry has a more recent date
             accountStatusResponse[existingEntryIndex] = {
               account: account,
