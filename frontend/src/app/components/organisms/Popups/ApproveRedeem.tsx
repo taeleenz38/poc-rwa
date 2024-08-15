@@ -5,6 +5,7 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
+import axios from "axios";
 import audcabi from "@/artifacts/AUDC.json";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
@@ -26,9 +27,11 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   const [redemptionIdInput, setRedemptionIdInput] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
   const [txSecondHash, SetTxSecondHash] = useState<string | null>(null);
+  const [safeTxHash, setSafeTxHash] = useState<string>("");
+  const [txHash, setTxHash] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
-
 
   useEffect(() => {
     if (redemptionId && redeemAmount) {
@@ -40,6 +43,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   const resetForm = () => {
     setAmount("");
     setTxApprovalHash(null);
+    setSafeTxHash("");
     setShowLink(false);
   };
 
@@ -88,25 +92,52 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
       });
 
       setTxApprovalHash(approvalTx);
-      SetTxSecondHash(tx);
+      setSafeTxHash(tx);
     } catch (error) {
       console.error("Error approving:", error);
     }
   };
+
+  useEffect(() => {
+    if (!safeTxHash) return;
+
+    const fetchTransactionData = async () => {
+      try {
+        const transactionResponse = await axios.get(
+          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
+        );
+
+        console.log("Transaction response:", transactionResponse.data);
+
+        if (transactionResponse.data.transactionHash) {
+          setTxHash(transactionResponse.data.transactionHash);
+          setError("");
+        } else {
+          // If transactionHash is null, continue polling
+          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        setError("Error fetching transaction data");
+      }
+    };
+
+    fetchTransactionData();
+  }, [safeTxHash]);
 
   const { data: approvalReceipt, isLoading: isApprovalLoading } =
     useWaitForTransactionReceipt({
       hash: txApprovalHash as `0x${string}`,
     });
 
-    useEffect(() => {
-      if (txSecondHash) {
-        const timer = setTimeout(() => {
-          setShowLink(true);
-        }, 20000);
-        return () => clearTimeout(timer);
-      }
-    }, [txSecondHash]);
+  useEffect(() => {
+    if (safeTxHash) {
+      const timer = setTimeout(() => {
+        setShowLink(true);
+      }, 20000);
+      return () => clearTimeout(timer);
+    }
+  }, [safeTxHash]);
 
   const { data: SecondReceipt, isLoading: isSecondLoading } =
     useWaitForTransactionReceipt({
@@ -151,7 +182,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isApprovalLoading || isSecondLoading}
+              disabled={isPending}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
@@ -159,19 +190,17 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
             <Submit
               label={isPending ? "Approving..." : "Approve Redeem"}
               onClick={handleApproveRedeem}
-              disabled={isPending || isApprovalLoading || isSecondLoading}
+              disabled={isPending}
               className="w-full"
             />
           </div>
         </div>
         {txSecondHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {!showLink && (
-              <p>Redemption approval transaction is pending...</p>
-            )}
+            {!showLink && <p>Redemption approval transaction is pending...</p>}
             {showLink && (
               <a
-                href={`https://sepolia.etherscan.io/tx/${txSecondHash}`}
+                href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline overflow-x-scroll text-sm text-[#0000BF]"

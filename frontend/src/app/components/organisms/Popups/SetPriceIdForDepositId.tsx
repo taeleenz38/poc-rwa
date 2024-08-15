@@ -197,7 +197,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isLoading}
+              disabled={isPending}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
@@ -205,7 +205,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
             <Submit
               onClick={handleSetPriceIdForDepositId}
               label={isPending ? "Confirming..." : "Confirm"}
-              disabled={isPending || isLoading || !selectedPriceId}
+              disabled={isPending || !selectedPriceId}
               className="w-full"
             />
           </div>

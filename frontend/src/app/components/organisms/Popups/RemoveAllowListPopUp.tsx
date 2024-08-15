@@ -10,6 +10,7 @@ import {
   useSignMessage,
   useWaitForTransactionReceipt,
 } from "wagmi";
+import axios from "axios";
 import { config } from "@/config";
 
 interface AllowlistProps {
@@ -23,14 +24,15 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
   onClose,
   walletAddress,
 }) => {
-  //   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [safeTxHash, setSafeTxHash] = useState<string>("");
+  const [txHash, setTxHash] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
 
-
   const resetForm = () => {
-    setTxHash(null);
+    setTxHash("");
+    setSafeTxHash("");
     setShowLink(false);
   };
   const onCloseModal = () => {
@@ -46,7 +48,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
         functionName: "setAccountStatus",
         args: [walletAddress as `0x${string}`, 0, false],
       });
-      setTxHash(tx);
+      setSafeTxHash(tx);
       console.log(
         "wallet address successfully removed - transaction hash:",
         tx
@@ -56,20 +58,46 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (!safeTxHash) return;
+
+    const fetchTransactionData = async () => {
+      try {
+        const transactionResponse = await axios.get(
+          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
+        );
+
+        console.log("Transaction response:", transactionResponse.data);
+
+        if (transactionResponse.data.transactionHash) {
+          setTxHash(transactionResponse.data.transactionHash);
+          setError("");
+        } else {
+          // If transactionHash is null, continue polling
+          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        setError("Error fetching transaction data");
+      }
+    };
+
+    fetchTransactionData();
+  }, [safeTxHash]);
+
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
 
   useEffect(() => {
-    if (txHash) {
+    if (safeTxHash) {
       const timer = setTimeout(() => {
         setShowLink(true);
       }, 24000);
       return () => clearTimeout(timer);
     }
-  }, [txHash]);
+  }, [safeTxHash]);
 
-  if (!isOpen) return null;
 
   if (!isOpen) return null;
 
@@ -98,7 +126,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isLoading}
+              disabled={isPending}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
@@ -106,7 +134,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
             <Submit
               onClick={handleAllowlistRemove}
               label={isPending ? "Confirming..." : "Remove User"}
-              disabled={isPending || isLoading}
+              disabled={isPending}
               className="w-full"
             />
           </div>
@@ -121,7 +149,7 @@ const RemoveAllowListPopUp: React.FC<AllowlistProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-              View Transaction
+                View Transaction
               </a>
             )}
           </div>

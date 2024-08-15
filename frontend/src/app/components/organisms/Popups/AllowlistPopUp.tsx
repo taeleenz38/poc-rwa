@@ -5,6 +5,7 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/IAllowlist.json";
+import axios from "axios";
 import {
   useWriteContract,
   useSignMessage,
@@ -27,7 +28,8 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
 
   const resetForm = () => {
     setWalletAddress(null);
-    setTxHash(null);
+    setTxHash("");
+    setSafeTxHash("");
     setShowLink(false);
   };
   const onCloseModal = () => {
@@ -47,25 +49,52 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
         functionName: "setAccountStatus",
         args: [walletAddress as `0x${string}`, 0, true],
       });
-      setTxHash(tx);
+      setSafeTxHash(tx);
       console.log("Term successfully added - transaction hash:", tx);
     } catch (error) {
       console.error("Error adding term to allowlist:", error);
     }
   };
 
+  useEffect(() => {
+    if (!safeTxHash) return;
+
+    const fetchTransactionData = async () => {
+      try {
+        const transactionResponse = await axios.get(
+          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
+        );
+
+        console.log("Transaction response:", transactionResponse.data);
+
+        if (transactionResponse.data.transactionHash) {
+          setTxHash(transactionResponse.data.transactionHash);
+          setError("");
+        } else {
+          // If transactionHash is null, continue polling
+          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        setError("Error fetching transaction data");
+      }
+    };
+
+    fetchTransactionData();
+  }, [safeTxHash]);
+
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
 
   useEffect(() => {
-    if (txHash) {
+    if (safeTxHash) {
       const timer = setTimeout(() => {
         setShowLink(true);
       }, 30000);
       return () => clearTimeout(timer);
     }
-  }, [txHash]);
+  }, [safeTxHash]);
 
   if (!isOpen) return null;
 

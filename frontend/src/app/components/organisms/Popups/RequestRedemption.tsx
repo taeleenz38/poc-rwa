@@ -98,14 +98,14 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
       hash: txRedemptionHash as `0x${string}`,
     });
 
-    useEffect(() => {
-      if (txRedemptionHash) {
-        const timer = setTimeout(() => {
-          setShowLink(true);
-        }, 18000);
-        return () => clearTimeout(timer);
-      }
-    }, [txRedemptionHash]);
+  useEffect(() => {
+    if (txRedemptionHash) {
+      const timer = setTimeout(() => {
+        setShowLink(true);
+      }, 18000);
+      return () => clearTimeout(timer);
+    }
+  }, [txRedemptionHash]);
 
   if (!isOpen) return null;
 
@@ -134,7 +134,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isApprovalLoading || isRedemptionLoading}
+              disabled={isPending || isApprovalLoading}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
@@ -142,11 +142,9 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
             <Submit
               onClick={handleRequestRedemption}
               label={
-                isPending || isApprovalLoading || isRedemptionLoading
-                  ? "Confirming..."
-                  : "Confirm"
+                isPending || isApprovalLoading ? "Confirming..." : "Confirm"
               }
-              disabled={isPending || isApprovalLoading || isRedemptionLoading}
+              disabled={isPending || isApprovalLoading}
               className="w-full"
             />
           </div>
@@ -166,7 +164,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-               View Transaction
+                View Transaction
               </a>
             )}
           </div>

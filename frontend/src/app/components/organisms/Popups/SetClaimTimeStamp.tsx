@@ -5,6 +5,7 @@ import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import axios from "axios";
 import { config } from "@/config";
 
 interface SetClaimTimestampProps {
@@ -21,10 +22,11 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
   const [localDepositId, setLocalDepositId] = useState<string>(depositId);
   const [dateStamp, setDateStamp] = useState<string>("");
   const [timeStamp, setTimeStamp] = useState<string>("");
+  const [safeTxHash, setSafeTxHash] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
-
 
   useEffect(() => {
     setLocalDepositId(depositId);
@@ -34,8 +36,10 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     setLocalDepositId("");
     setDateStamp("");
     setTimeStamp("");
+    setTxHash("");
+    setError("");
+    setSafeTxHash("");
     setShowLink(false);
-
   };
 
   const onCloseModal = () => {
@@ -74,25 +78,52 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
         functionName: "setClaimableTimestamp",
         args: [claimTimestampFormatted, [depositIdHexlified]],
       });
-      setTxHash(tx);
+      setSafeTxHash(tx);
       console.log("Claim Timestamp Successfully Set - transaction hash:", tx);
     } catch (error) {
       console.error("Error setting claimTimestamp:", error);
     }
   };
 
+  useEffect(() => {
+    if (!safeTxHash) return;
+
+    const fetchTransactionData = async () => {
+      try {
+        const transactionResponse = await axios.get(
+          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
+        );
+
+        console.log("Transaction response:", transactionResponse.data);
+
+        if (transactionResponse.data.transactionHash) {
+          setTxHash(transactionResponse.data.transactionHash);
+          setError("");
+        } else {
+          // If transactionHash is null, continue polling
+          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        setError("Error fetching transaction data");
+      }
+    };
+
+    fetchTransactionData();
+  }, [safeTxHash]);
+
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}`,
   });
 
   useEffect(() => {
-    if (txHash) {
+    if (safeTxHash) {
       const timer = setTimeout(() => {
         setShowLink(true);
       }, 30000);
       return () => clearTimeout(timer);
     }
-  }, [txHash]);
+  }, [safeTxHash]);
 
   const hexToDecimal = (hex: string): number => {
     return parseInt(hex, 16);
@@ -135,7 +166,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isLoading}
+              disabled={isPending}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
@@ -143,7 +174,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
             <Submit
               onClick={handleSetClaimTimestamp}
               label={isPending ? "Confirming..." : "Confirm"}
-              disabled={isPending || isLoading || !dateStamp || !timeStamp}
+              disabled={isPending || !dateStamp || !timeStamp}
               className="w-full"
             />
           </div>
@@ -158,7 +189,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-              View Transaction
+                View Transaction
               </a>
             )}
           </div>

@@ -33,7 +33,6 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
     setError(null);
     setValidAmount(true); // Reset validation state
     setShowLink(false);
-
   };
 
   const onCloseModal = () => {
@@ -117,14 +116,14 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       hash: txDepositHash as `0x${string}`,
     });
 
-    useEffect(() => {
-      if (txDepositHash) {
-        const timer = setTimeout(() => {
-          setShowLink(true);
-        }, 18000);
-        return () => clearTimeout(timer);
-      }
-    }, [txDepositHash]);
+  useEffect(() => {
+    if (txDepositHash) {
+      const timer = setTimeout(() => {
+        setShowLink(true);
+      }, 18000);
+      return () => clearTimeout(timer);
+    }
+  }, [txDepositHash]);
 
   if (!isOpen) return null;
 
@@ -152,7 +151,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
             <Submit
               onClick={onCloseModal}
               label={"Go Back"}
-              disabled={isPending || isApprovalLoading || isDepositLoading}
+              disabled={isPending || isApprovalLoading}
               className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
             />
           </div>
@@ -160,9 +159,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
             <Submit
               onClick={handleRequestDeposit}
               label={
-                isPending || isApprovalLoading || isDepositLoading
-                  ? "Confirming..."
-                  : "Confirm"
+                isPending || isApprovalLoading ? "Confirming..." : "Confirm"
               }
               disabled={
                 isPending ||
@@ -189,7 +186,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-               View Transaction
+                View Transaction
               </a>
             )}
           </div>
