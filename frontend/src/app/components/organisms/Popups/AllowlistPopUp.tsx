@@ -142,7 +142,7 @@ const AllowlistPopUp: React.FC<AllowlistProps> = ({ isOpen, onClose }) => {
             {!showLink && <p>Transaction is pending...</p>}
             {showLink && (
               <a
-                href={`https://app.safe.global/transactions/history?safe=sep:${txHash}`}
+                href={`https://sepolia.etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline overflow-x-scroll text-sm text-[#0000BF]"
