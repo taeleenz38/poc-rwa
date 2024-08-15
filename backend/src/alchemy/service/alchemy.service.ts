@@ -281,7 +281,14 @@ export class AlchemyService {
         console.error("Error decoding log:", error);
       }
     }
-    accountStatusResponse.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    accountStatusResponse.sort((a, b) => {
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateB.getTime() - dateA.getTime(); // Latest first
+    });
+
+    // accountStatusResponse.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     return accountStatusResponse;
   }
 
