@@ -674,7 +674,7 @@ export class AlchemyService {
     return claimableTimestampResponse;
   }
 
-  async getClaimableDetails(): Promise<ClaimableList[]> {
+  async getClaimableDetails(userAddress: string): Promise<ClaimableList[]> {
     let claimList: ClaimableList[] = [];
     let returnClaimList: ClaimableList[] = [];
 
@@ -721,21 +721,23 @@ export class AlchemyService {
 
     mintList.forEach((value) => {
       try {
-        const matchingDeposits = claimableList.filter(item => item.depositId === value.depositId);
+        if(value.user === userAddress) {
+          const matchingDeposits = claimableList.filter(item => item.depositId === value.depositId);
 
-        // Add matching deposits to mintList
-        if (matchingDeposits.length > 0) {
-          const claimableItem: ClaimableList = {
-            user: value.user,
-            depositId: value.depositId,
-            collateralAmountDeposited: scaleAndRoundToTwoDecimals(value.collateralAmountDeposited),
-            depositAmountAfterFee: scaleAndRoundToTwoDecimals(value.depositAmountAfterFee),
-            feeAmount: scaleAndRoundToTwoDecimals(value.feeAmount),
-            claimTimestamp: matchingDeposits[0].claimTimestamp,
-            claimTimestampFromChain: matchingDeposits[0].claimTimestampFromChain,
-            priceId: value.priceId
-          };
-          claimList.push(claimableItem);
+          // Add matching deposits to mintList
+          if (matchingDeposits.length > 0) {
+            const claimableItem: ClaimableList = {
+              user: value.user,
+              depositId: value.depositId,
+              collateralAmountDeposited: scaleAndRoundToTwoDecimals(value.collateralAmountDeposited),
+              depositAmountAfterFee: scaleAndRoundToTwoDecimals(value.depositAmountAfterFee),
+              feeAmount: scaleAndRoundToTwoDecimals(value.feeAmount),
+              claimTimestamp: matchingDeposits[0].claimTimestamp,
+              claimTimestampFromChain: matchingDeposits[0].claimTimestampFromChain,
+              priceId: value.priceId
+            };
+            claimList.push(claimableItem);
+          }
         }
       } catch (error) {
         console.error("Error decoding log:", error);
@@ -1058,7 +1060,7 @@ export class AlchemyService {
     return claimableRedemptionResponse;
   }
 
-  async getClaimableRedemptionList(): Promise<RedemptionRequestResponse[]> {
+  async getClaimableRedemptionList(userAddress: string): Promise<RedemptionRequestResponse[]> {
     let approvedRedeemptionIds = new Set();
     let pricedRedeemptionIdList: PriceIdForRedemption[] = [];
     let completedRedemptionIds = new Set();
@@ -1174,26 +1176,27 @@ export class AlchemyService {
 
     pendingRedeemptionList.forEach((value) => {
       try {
+        if(value.user === userAddress) {
+          const reeemItem = pricedRedeemptionIdList.filter(item => item.redeemId === value.redemptionId);
+          if (reeemItem.length > 0) {
+              const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
 
-        const reeemItem = pricedRedeemptionIdList.filter(item => item.redeemId === value.redemptionId);
-        if (reeemItem.length > 0) {
-          const matchingDeposits = priceList.filter(item => ethers.BigNumber.from(item.priceId).toString() === ethers.BigNumber.from(reeemItem[0].priceId).toString());
+            // Add matching deposits to mintList
+            if (matchingDeposits.length > 0) {
+              const redemptionAmount = parseFloat(value.rwaAmountIn);
+              const price = parseFloat(matchingDeposits[0].price);
 
-          // Add matching deposits to mintList
-          if (matchingDeposits.length > 0) {
-            const redemptionAmount = parseFloat(value.rwaAmountIn);
-            const price = parseFloat(matchingDeposits[0].price);
-
-            const redeemAmount: number = redemptionAmount * price;
-            
-            const claimableRedemption: ClaimableRedemptionResponse = {
-              user: value.user,
-              redemptionId: value.redemptionId,
-              priceId: value.priceId,
-              redeemAmount: redeemAmount,
-              rwaAmountIn: value.rwaAmountIn
-            };
-            claimableRedemptionResponse.push(claimableRedemption);
+              const redeemAmount: number = redemptionAmount * price;
+              
+              const claimableRedemption: ClaimableRedemptionResponse = {
+                user: value.user,
+                redemptionId: value.redemptionId,
+                priceId: value.priceId,
+                redeemAmount: redeemAmount,
+                rwaAmountIn: value.rwaAmountIn
+              };
+              claimableRedemptionResponse.push(claimableRedemption);
+            }
           }
         }
       } catch (error) {

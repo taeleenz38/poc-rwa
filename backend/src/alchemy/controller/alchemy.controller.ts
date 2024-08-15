@@ -53,14 +53,14 @@ export class AlchemyController {
     return this.appService.getPendingApprovalRedemptionList();
   }
 
-  @Get("/claimable-redemption-list")
-  getClaimableRedemptionList(): Promise<RedemptionRequestResponse[]> {
-    return this.appService.getClaimableRedemptionList();
+  @Get("/claimable-redemption-list/:user")
+  getClaimableRedemptionList(@Param('user') user: string): Promise<RedemptionRequestResponse[]> {
+    return this.appService.getClaimableRedemptionList(user);
   }
 
-  @Get("/claimable-details")
-  getClaimableDetails(): Promise<ClaimableList[]> {
-    return this.appService.getClaimableDetails();
+  @Get("/claimable-details/:user")
+  getClaimableDetails(@Param('user') user: string): Promise<ClaimableList[]> {
+    return this.appService.getClaimableDetails(user);
   }
 
   @Get("/transaction-history/:user")
