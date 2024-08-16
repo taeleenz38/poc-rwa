@@ -166,7 +166,7 @@ const DepositRequests = () => {
               </tbody>
             </table>
           </div>
-          <div className="flex w-1/3 mx-auto justify-between items-center mt-8">
+          <div className="flex w-full md:w-1/3 mx-auto justify-between items-center mt-8">
             <button
               className={`mx-1 px-3 py-1 rounded ${
                 currentPage === 1

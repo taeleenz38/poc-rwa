@@ -18,7 +18,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   error,
 }) => {
   return (
-    <div className="relative flex w-1/2 items-center mb-5 border border-gray/70 rounded-md">
+    <div className="relative flex w-full items-center mb-5 border border-gray/70 rounded-md">
       <label
         htmlFor={label}
         className="absolute -top-3 left-2 bg-white px-1 text-sm text-gray/50"
