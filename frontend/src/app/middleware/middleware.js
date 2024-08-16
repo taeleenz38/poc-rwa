@@ -39,6 +39,16 @@ export function middleware(req) {
     url.searchParams.set("showModal", "true");
     return NextResponse.redirect(url);
   }
+  if (pathname.startsWith("/portfolio") && userRole !== "user") {
+    url.pathname = "/";
+    url.searchParams.set("showModal", "true");
+    return NextResponse.redirect(url);
+  }
+  if (pathname.startsWith("/profile") && !isLoggedIn) {
+    url.pathname = "/";
+    url.searchParams.set("showModal", "true");
+    return NextResponse.redirect(url);
+  }
 
   return NextResponse.next();
 }
@@ -49,5 +59,7 @@ export const config = {
     "/invest/:path*",
     "/allowlist/:path*",
     "/assetsender/:path*",
+    "/portfolio/:path*",
+    "/profile/:path*",
   ],
 };

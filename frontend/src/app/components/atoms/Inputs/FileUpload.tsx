@@ -22,7 +22,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <div className={`flex flex-col items-start mb-6 ${className}`}>
+    <div
+      className={`flex flex-col ml-0 md:ml-16 items-start mb-6 ${className}`}
+    >
       <label className="block font-bold mb-2 text-gray/70">{label}</label>
       <input
         type="file"
