@@ -12,14 +12,10 @@ import { UserStatusDto } from "./dto/userstatus.response.dto";
 @Injectable()
 export class AuthService {
 
-    private SALT = process.env.SIGNUP_GEN_PASSWORD_HASHING_SALT;
     constructor(private userRepoService: UserRepoService,
         private jwtService: JwtService,
         private verificationService: KycVerifcationService
     ) {
-        if (!this.SALT) {
-            throw new Error('Startup error! User password salt has not been configured!');
-        }
     }
 
     public async signup(request: CredentialRequestDto) {
@@ -36,7 +32,7 @@ export class AuthService {
 
     public async signin(request: SigninRequestDto): Promise<AuthResponseDto> {
         const user = await this.userRepoService.findUser(request.email);
-        if (user && user.password === await this.getHashedPassword(request.password)) {
+        if (user && await bcrypt.compare(request.password, user.password)) {
             const payload = { sub: user.id, username: user.email };
             const jwt = await this.jwtService.signAsync(payload, { secret: process.env.AUTH_JWT_SECRET, expiresIn: process.env.AUTH_JWT_EXPIRES });
             const res = new AuthResponseDto();
@@ -71,6 +67,10 @@ export class AuthService {
         res.isActive = false;
 
         const user = await this.userRepoService.findUser(email);
+        if (!user || user === undefined) {
+            throw new NotFoundException('User is not found!')
+        }
+
         if (user.isActive) {
             res.isActive = true;
             return res;
@@ -94,6 +94,6 @@ export class AuthService {
 
 
     private async getHashedPassword(password: string) {
-        return await bcrypt.hash(password, this.SALT);
+        return await bcrypt.hash(password, 4);
     }
 }
