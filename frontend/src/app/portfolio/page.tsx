@@ -235,7 +235,7 @@ const Portfolio = () => {
 
   return (
     <>
-      <div className="min-h-screen w-full flex flex-col text-primary root-container">
+      <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your portfolio
         </h1>

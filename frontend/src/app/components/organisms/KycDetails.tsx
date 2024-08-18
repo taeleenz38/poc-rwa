@@ -152,31 +152,6 @@ const KycDetails = (props: KycDetailsProps) => {
     }
   };
 
-  // const isFormValid = () => {
-  //   console.log(
-  //     country.trim() !== "",
-  //     firstName.trim() !== "",
-  //     lastName.trim() !== "",
-  //     issuedDate.trim() !== "",
-  //     validUntil.trim() !== "",
-  //     number.trim() !== "",
-  //     dob.trim() !== "",
-  //     frontFile !== null,
-  //     backtFile !== null
-  //   );
-  //   return (
-  //     country.trim() !== "" &&
-  //     firstName.trim() !== "" &&
-  //     lastName.trim() !== "" &&
-  //     issuedDate.trim() !== "" &&
-  //     validUntil.trim() !== "" &&
-  //     number.trim() !== "" &&
-  //     dob.trim() !== "" &&
-  //     frontFile !== null &&
-  //     backtFile !== null
-  //   );
-  // };
-
   const nextStep = () => {
     if (isFormValid()) {
       setCurrentStep((prevStep) => {
@@ -195,7 +170,7 @@ const KycDetails = (props: KycDetailsProps) => {
       if (newStep >= 1) {
         return newStep;
       }
-      return prevStep; // or handle steps below 1 if necessary
+      return prevStep;
     });
   };
 
@@ -410,7 +385,7 @@ const KycDetails = (props: KycDetailsProps) => {
             width={75}
             height={75}
           />
-          <p className="text-4xl font-semibold mt-4 text-primary text-center md:text-left">
+          <p className="text-4xl font-semibold mt-4 text-primary text-center md:text-left px-4 md:px-0">
             Onboard to Copiam AYF
           </p>
           <div className="mt-8 hidden md:block">
@@ -444,53 +419,54 @@ const KycDetails = (props: KycDetailsProps) => {
           </h1>
 
           {currentStep === 1 && (
-            <div className="flex flex-col rounded-md justify-center items-center gap-y-5 ">
-              <InputWithLabel
-                id="firstName"
-                name="firstName"
-                type="text"
-                label="First Name"
-                placeholder="Enter first name"
-                value={firstName}
-                onChange={handleChange(setFirstName)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.firstName}
-              />
-              <InputWithLabel
-                id="lastName"
-                name="lastName"
-                type="text"
-                label="Last Name"
-                placeholder="Enter last name"
-                value={lastName}
-                onChange={handleChange(setLastName)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.lastName}
-              />
-              <InputWithLabel
-                id="email"
-                name="email"
-                type="email"
-                label="Email"
-                placeholder="Enter email"
-                value={email}
-                onChange={handleChange(setEmail)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.email}
-              />
+            <div className="flex flex-col rounded-md justify-center items-center gap-y-5 px-4 md:px-8">
+              <div className="flex flex-col w-full px-0 md:px-8 gap-y-5 max-w-sm mx-auto">
+                <InputWithLabel
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  label="First Name"
+                  placeholder="Enter first name"
+                  value={firstName}
+                  onChange={handleChange(setFirstName)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.firstName}
+                />
+                <InputWithLabel
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  label="Last Name"
+                  placeholder="Enter last name"
+                  value={lastName}
+                  onChange={handleChange(setLastName)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.lastName}
+                />
+                <InputWithLabel
+                  id="email"
+                  name="email"
+                  type="email"
+                  label="Email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={handleChange(setEmail)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.email}
+                />
 
-              <SelectField
-                label="Country"
-                value={country}
-                onChange={handleChange(setCountry)}
-                options={countryOptions}
-                className="mb-4"
-              />
+                <SelectField
+                  label="Country"
+                  value={country}
+                  onChange={handleChange(setCountry)}
+                  options={countryOptions}
+                  className="mb-4"
+                />
 
-              {/* <InputWithLabel
+                {/* <InputWithLabel
                 id="placeOfBirth"
                 name="placeOfBirth"
                 type="text"
@@ -501,102 +477,111 @@ const KycDetails = (props: KycDetailsProps) => {
                 widthfull={true}
                 required={true}
               /> */}
-              <InputWithLabel
-                id="dob"
-                name="dob"
-                type="date"
-                label="Date of Birth"
-                placeholder="Enter date of birth"
-                value={dob}
-                onChange={handleChange(setDob)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.dob}
-              />
+                <InputWithLabel
+                  id="dob"
+                  name="dob"
+                  type="date"
+                  label="Date of Birth"
+                  placeholder="Enter date of birth"
+                  value={dob}
+                  onChange={handleChange(setDob)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.dob}
+                />
+              </div>
             </div>
           )}
           {currentStep === 2 && (
-            <div className="flex flex-col rounded-md justify-center items-center gap-y-5">
-              <InputWithLabel
-                id="issuedDate"
-                name="issuedDate"
-                type="date"
-                label="Issued Date"
-                placeholder="Enter issued date"
-                value={issuedDate}
-                onChange={handleChange(setIssuedDate)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.issuedDate}
-              />
-              <InputWithLabel
-                id="validUntil"
-                name="validUntil"
-                type="date"
-                label="Valid Until"
-                placeholder="Enter valid until date"
-                value={validUntil}
-                onChange={handleChange(setValidUntil)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.validUntil}
-              />
-              <SelectField
-                label="Document Type:"
-                value={idDocType}
-                onChange={handleSelectChange(setIdDocType)}
-                options={documentOptions}
-                className="mb-4"
-              />
-              <InputWithLabel
-                id="number"
-                name="number"
-                type="text"
-                label="Document Number"
-                placeholder="Enter document number"
-                value={number}
-                onChange={handleChange(setNumber)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.number}
-              />
+            <div className="flex flex-col rounded-md justify-center items-center gap-y-5 px-4 md:px-8">
+              <div className="flex flex-col w-full px-0 md:px-10 gap-y-5 max-w-sm mx-auto">
+                <InputWithLabel
+                  id="issuedDate"
+                  name="issuedDate"
+                  type="date"
+                  label="Issued Date"
+                  placeholder="Enter issued date"
+                  value={issuedDate}
+                  onChange={handleChange(setIssuedDate)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.issuedDate}
+                />
+                <InputWithLabel
+                  id="validUntil"
+                  name="validUntil"
+                  type="date"
+                  label="Valid Until"
+                  placeholder="Enter valid until date"
+                  value={validUntil}
+                  onChange={handleChange(setValidUntil)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.validUntil}
+                />
+                <SelectField
+                  label="Document Type:"
+                  value={idDocType}
+                  onChange={handleSelectChange(setIdDocType)}
+                  options={documentOptions}
+                  className="mb-4"
+                />
+                <InputWithLabel
+                  id="number"
+                  name="number"
+                  type="text"
+                  label="Document Number"
+                  placeholder="Enter document number"
+                  value={number}
+                  onChange={handleChange(setNumber)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.number}
+                />
+              </div>
             </div>
           )}
           {currentStep === 3 && (
-            <div className="flex flex-col rounded-md justify-center items-center p-2 border border-gray/20 ">
-              <FileUpload
-                label="Upload Front of Driver's License"
-                onChange={(file) => {
-                  setFrontFile(file as File);
-                }}
-                className="mb-8"
-                error={validationErrors.frontFile}
-              />
-              <FileUpload
-                label="Upload Back of Driver's License"
-                onChange={(file) => {
-                  setBackFile(file as File);
-                }}
-                className="mb-4"
-                error={validationErrors.backFile}
-              />
+            <div className="flex flex-col rounded-md justify-center items-center text-center pt-6 border border-gray/20">
+              <div className="px-2 md:px-0">
+                <FileUpload
+                  label="Upload Front of Driver's License"
+                  onChange={(file) => {
+                    setFrontFile(file as File);
+                  }}
+                  className="mb-8"
+                  error={validationErrors.frontFile}
+                />
+              </div>
+              <div className="px-2 md:px-0">
+                <FileUpload
+                  label="Upload Back of Driver's License"
+                  onChange={(file) => {
+                    setBackFile(file as File);
+                  }}
+                  className="mb-4"
+                  error={validationErrors.backFile}
+                />
+              </div>
             </div>
           )}
 
           {currentStep === 4 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
-              <InputWithLabel
-                id="Wallet Address"
-                name="Wallet Address"
-                type="text"
-                label="Wallet Address"
-                placeholder="Wallet Address"
-                value={walletAddress}
-                onChange={handleChange(setWalletAddress)}
-                widthfull={true}
-                required={true}
-                error={validationErrors.walletAddress}
-              />
+            <div className="flex flex-col rounded-md justify-center items-center px-4 md:px-8">
+              <div className="flex flex-col w-full px-0 md:px-8 max-w-sm mx-auto">
+                <InputWithLabel
+                  id="Wallet Address"
+                  name="Wallet Address"
+                  type="text"
+                  label="Wallet Address"
+                  placeholder="Wallet Address"
+                  value={walletAddress}
+                  onChange={handleChange(setWalletAddress)}
+                  widthfull={true}
+                  required={true}
+                  error={validationErrors.walletAddress}
+                />
+              </div>
             </div>
           )}
 
@@ -608,7 +593,7 @@ const KycDetails = (props: KycDetailsProps) => {
                     ? "Preparing the document.."
                     : "Sign Document"
                 }`}
-                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md  ${
+                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md mb-6  ${
                   docSignedProgress && "bg-white text-primary hover:bg-white"
                 } ${docSigned && "hidden"}`}
                 onClick={sendSignRequest}
@@ -624,60 +609,62 @@ const KycDetails = (props: KycDetailsProps) => {
           )}
 
           {currentStep === 6 && (
-            <div className="flex flex-col rounded-md justify-center items-center ">
-              <InputWithLabel
-                id="email"
-                name="Email Address"
-                type="text"
-                label="Email Address"
-                placeholder="Email Address"
-                value={email}
-                onChange={() => {}}
-                widthfull={true}
-                required={true}
-              />
-              <InputWithLabel
-                id="Password"
-                name="Password"
-                type="password"
-                label="Password"
-                placeholder="Password"
-                value={password}
-                onChange={handleChange(setPassword)}
-                widthfull={true}
-                required={true}
-              />
-              <InputWithLabel
-                id="ConfirmPassword"
-                name="ConfirmPassword"
-                type="password"
-                label="Confirm Password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={handleChange(setConfirmPassword)}
-                widthfull={true}
-                required={true}
-              />
-              {passwordError && (
-                <span className="text-xs font-semibold error-text text-pretty mb-4">
-                  Passwords do not match
-                </span>
-              )}
-              <Button
-                text={` ${isLoading ? "Submitting..." : "Submit"}`}
-                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-                  isLoading && "bg-white text-primary hover:bg-white"
-                }`}
-                onClick={submitCredntail}
-              />
+            <div className="flex flex-col rounded-md justify-center items-center gap-y-2 px-4 md:px-8">
+              <div className="flex flex-col w-full px-0 md:px-10 max-w-sm mx-auto">
+                <InputWithLabel
+                  id="email"
+                  name="Email Address"
+                  type="text"
+                  label="Email Address"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={() => {}}
+                  widthfull={true}
+                  required={true}
+                />
+                <InputWithLabel
+                  id="Password"
+                  name="Password"
+                  type="password"
+                  label="Password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={handleChange(setPassword)}
+                  widthfull={true}
+                  required={true}
+                />
+                <InputWithLabel
+                  id="ConfirmPassword"
+                  name="ConfirmPassword"
+                  type="password"
+                  label="Confirm Password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={handleChange(setConfirmPassword)}
+                  widthfull={true}
+                  required={true}
+                />
+                {passwordError && (
+                  <span className="text-xs font-semibold error-text text-center mb-5">
+                    Passwords do not match
+                  </span>
+                )}
+                <Button
+                  text={` ${isLoading ? "Submitting..." : "Submit"}`}
+                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
+                    isLoading && "bg-white text-primary hover:bg-white"
+                  }`}
+                  onClick={submitCredntail}
+                />
+              </div>
             </div>
           )}
 
           {currentStep === 7 && (
             <div className="flex flex-col rounded-md justify-center items-center ">
               <Button
-                text="Proceed to Home Page "
-                className={`bg-primary py-2  text-light hover:bg-light hover:text-primary rounded-md `}
+                text="Proceed to Home Page"
+                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md `}
                 onClick={() => {
                   router.push("/");
                 }}

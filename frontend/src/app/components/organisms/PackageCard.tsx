@@ -71,14 +71,14 @@ export const PackageCard = (props: PackageCardProps) => {
               <div className="bg-light rounded-full py-1.5 px-3 text-black flex justify-center items-center text-base">
                 <p>${TVL} TVL</p>
               </div>
-              <div className="bg-light rounded-full py-1.5 px-3 flex items-center">
+              <div className="bg-light rounded-full py-1.5 px-3 flex justify-center items-center">
                 {chains}
               </div>
               <div className="border-2 rounded-full py-1.5 px-3 bg-transparent text-light text-sm font-medium flex justify-center items-center ">
                 <p className="line-clamp-1">{footerText}</p>
               </div>
             </div>
-            <div className="border-2 w-10 h-10 rounded-full ml-1 lg:ml-28 flex justify-center items-center ">
+            <div className="border-2 w-10 h-10 rounded-full ml-0 md:ml-28 flex justify-center items-center ">
               <IoArrowForwardSharp />
             </div>
           </div>

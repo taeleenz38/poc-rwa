@@ -11,6 +11,7 @@ import axios from "axios";
 import { MdAlternateEmail } from "react-icons/md";
 import { Router } from "next/router";
 import NavButtons from "./atoms/Buttons/NavButtons";
+import InputWithLabel from "./atoms/Inputs/InputWithLabel";
 
 const Navbar = () => {
   const { address } = useAccount({ config });
@@ -24,6 +25,7 @@ const Navbar = () => {
   const [password, setPassword] = useState("");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [userState, setUserState] = useState<string | null>("Inactive");
+  const [signInError, setSignInError] = useState("");
   const pathname = usePathname();
   const router = useRouter();
 
@@ -48,6 +50,8 @@ const Navbar = () => {
         "/invest",
         "/allowlist",
         "/assetsender",
+        "/portfolio",
+        "/profile",
       ];
       if (restrictedPaths.includes(currentPath) && !isLoggedIn) {
         router.push("/");
@@ -152,11 +156,11 @@ const Navbar = () => {
           setJustLoggedIn(true);
         }
       } else {
-        alert("Invalid credentials");
+        setSignInError("Invalid credentials");
       }
     } catch (error) {
       console.log(error);
-      alert("Invalid credentials");
+      setSignInError("Invalid credentials");
     }
   };
 
@@ -445,7 +449,7 @@ const Navbar = () => {
           </div>
         </ul>
       </div>
-      {showModal && (
+      {!isLoggedIn && showModal && (
         <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-6 lg:px-8">
           <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-full max-w-md mx-auto">
             <div className="flex justify-between items-center mb-8">
@@ -463,29 +467,36 @@ const Navbar = () => {
             </div>
             <div className="flex flex-col items-center space-y-4">
               <div className="w-full px-8">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Username
-                </label>
-                <input
+                <InputWithLabel
+                  id="email"
+                  name="email"
                   type="text"
+                  label="Email"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="p-2 border rounded w-full"
+                  widthfull={true} // Optional, you can pass widthfull to control width
+                  border={true} // Optional, you can pass border to control border style
+                  required={true} // Optional, you can pass required if needed
                 />
               </div>
               <div className="w-full px-8">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
-                </label>
-                <input
+                <InputWithLabel
+                  id="password"
+                  name="password"
                   type="password"
+                  label="Password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="p-2 border rounded w-full"
+                  widthfull={true} // Optional
+                  border={true} // Optional
+                  required={true} // Optional
                 />
               </div>
+              {signInError && (
+                <div className="error-message error-text">{signInError}</div>
+              )}
               <div className="w-full px-8">
                 <Button
                   text={"Sign In"}

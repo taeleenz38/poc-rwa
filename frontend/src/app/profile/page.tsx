@@ -5,11 +5,6 @@ import { config } from "@/config";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useRouter } from "next/navigation";
-import Button from "../components/atoms/Buttons/Button";
-import Image from "next/image";
-import { BiRefresh } from "react-icons/bi";
-
 interface UserDetails {
   firstName: string;
   lastName: string;
@@ -27,8 +22,6 @@ interface UserDocument {
 }
 
 const Page = () => {
-  // const router = useRouter();
-  // const isLoggedIn = localStorage.getItem("isLoggedIn");
   const account = useAccount({
     config,
   });
@@ -41,16 +34,6 @@ const Page = () => {
   const [userStatus, setUserStatus] = useState<"Active" | "Inactive">(
     "Inactive"
   );
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     router.push("/");
-  //   }
-  // }, [isLoggedIn, router]);
-
-  // if (!isLoggedIn) {
-  //   return null;
-  // }
 
   const fetchUserStatus = async (user: string) => {
     try {
@@ -67,7 +50,7 @@ const Page = () => {
       }
     } catch (err) {
       console.error("Failed to fetch status ", err);
-      localStorage.set("UserStatus", "Inactive");
+      localStorage.setItem("UserStatus", "Inactive");
       setUserStatus("Inactive");
     } finally {
       setIsFetchingStatus(false);
@@ -119,7 +102,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="min-h-screen w-full flex flex-col text-primary root-container">
+      <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your Profile
         </h1>
@@ -127,8 +110,8 @@ const Page = () => {
           Track and manage your information
         </h2>
 
-        <div className="flex flex-row gap-x-16 mb-12">
-          <div className="flex flex-col w-1/2 text-primary h-fit py-5 px-6 border borderColor">
+        <div className="flex flex-col md:flex-row md:gap-x-16 mb-0 md:mb-12">
+          <div className="flex flex-col w-full md:w-1/2 text-primary h-fit py-5 px-6 border borderColor">
             <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
               Account Details
             </h2>
@@ -144,22 +127,30 @@ const Page = () => {
                 <div className="text-primary p-3 mb-4">
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold text-sm">First Name</div>
-                    <div className="text-sm">{userDetails?.firstName}</div>
+                    <div className="text-sm break-all">
+                      {userDetails?.firstName}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold text-sm">Last Name</div>
-                    <div className="text-sm">{userDetails?.lastName}</div>
+                    <div className="text-sm break-all">
+                      {userDetails?.lastName}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold text-sm">Email</div>
-                    <div className="text-sm">{userDetails?.email}</div>
+                    <div className="text-sm break-all">
+                      {userDetails?.email}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold text-sm">Country</div>
-                    <div className="text-sm">{userDetails?.country}</div>
+                    <div className="text-sm break-all">
+                      {userDetails?.country}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
@@ -170,7 +161,7 @@ const Page = () => {
               )}
             </div>
           </div>
-          <div className="w-1/2 flex flex-col">
+          <div className="w-full md:w-1/2 flex flex-col mt-4 md:mt-0">
             <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor">
               <h2 className="text-xl font-bold flex items-center justify-start px-1">
                 Overview
@@ -179,31 +170,19 @@ const Page = () => {
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div className="flex flex-col gap-2 w-full">
-                      {/* <div className="flex  w-full items-center justify-center">
-
-                        <div
-                          className=" flex  border border-gray rounded-md hover:cursor-pointer hover:bg-gray/20"
-                          onClick={() => {
-                            fetchUserStatus(username);
-                          }}
-                        >
-                          <BiRefresh size={25} />
-                        </div>
-                      </div> */}
-
                       <h3>
                         <span className="text-sm font-semibold">
-                          User Status -{" "}
+                          User Status -
                         </span>
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full]" />
                         ) : (
                           <span className="text-sm">{userStatus}</span>
-                        )}{" "}
+                        )}
                       </h3>
                       <h3>
                         <span className="text-sm font-semibold">
-                          KYC Status -{" "}
+                          KYC Status -
                         </span>
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full" />
@@ -211,7 +190,7 @@ const Page = () => {
                           <span className="text-sm">Completed</span>
                         ) : (
                           <span className="text-sm">Pending</span>
-                        )}{" "}
+                        )}
                       </h3>
                     </div>
                   </div>
@@ -226,7 +205,7 @@ const Page = () => {
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div>
-                      <h3 className="text-sm text-primary">
+                      <h3 className="text-sm text-primary break-all">
                         {userDetails?.walletAddress}
                       </h3>
                     </div>
@@ -238,8 +217,8 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="flex flex-row gap-x-16 border borderColor">
-          <div className="flex flex-col gap-y-4 w-1/2">
+        <div className="flex flex-col md:flex-row gap-x-16 border borderColor">
+          <div className="flex flex-col gap-y-4 w-full md:w-1/2">
             <div className="flex flex-col w-full py-8 text-primary h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 Documents
@@ -286,7 +265,7 @@ const Page = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-y-4 w-1/2">
+          <div className="flex flex-col gap-y-4 w-full md:w-1/2">
             <div className="flex flex-col w-full py-8 text-primary h-fit p-5">
               <div className="mb-11"></div>
               <div className="overflow-x-auto">
