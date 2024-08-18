@@ -617,7 +617,7 @@ const KycDetails = (props: KycDetailsProps) => {
 
               {docSigned && (
                 <span className="text-base font-semibold text-green text-pretty mt-7">
-                  Document Signing Succesfully Completed !
+                  Document Signing Successfully Completed !
                 </span>
               )}
             </div>

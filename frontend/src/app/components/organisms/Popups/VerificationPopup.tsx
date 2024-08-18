@@ -83,7 +83,7 @@ const VerificationPopup = ({ isOpen, onClose, id, nextStep }: Props) => {
             {status === "Done"
               ? "You have been verified !"
               : status === "Init"
-              ? "Verification is being proccessed. Try Again !"
+              ? "Verification is being processed. Try Again !"
               : ""}
           </span>
           {status === "Done" ? (
