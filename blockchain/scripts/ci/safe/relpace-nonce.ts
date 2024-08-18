@@ -52,16 +52,16 @@ async function main() {
   };
 
   try {
-    const guardianSafe: string = process.env.GUARDIAN_WALLET!;
+    const guardianSafe: string = process.env.MANAGER_ADMIN_WALLET!;
     console.log("guardianSafe==>", guardianSafe);
     const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;
     const userSafe: string = process.env.STABLE_COIN_USER_WALLET!;
-    const safeSdk = await Safe.create({ ethAdapter, safeAddress: guardianSafe });
+    const safeSdk = await Safe.create({ ethAdapter, safeAddress: managerAdminSafe });
     console.log("Gnosis Safe setup complete.");
 
-    for (let nonce = 106; nonce < 210; nonce++) {
+    for (let nonce = 276; nonce < 330; nonce++) {
       const txData: SafeTransactionDataPartial = {
-        to: "0x66077e6e1243D54b27f49C8F7B5Fc997BC224a37",
+        to: "0xbd8136866c184Acf2bf3c8E5d58081DAB49adA62",
         value: "0",
         data: "0x",  // No data, effectively a no-op
         operation: 0, // CALL
