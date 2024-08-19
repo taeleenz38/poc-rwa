@@ -38,9 +38,10 @@ services:
       - rwa
   frontend:
     container_name: frontend
-    build: ./frontend
-    env_file:
-      - frontend/.env.local
+    build: 
+      context: ./frontend
+      args:
+        - APPENV=dev
     ports:
       - 3000:3000
     expose:

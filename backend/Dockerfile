@@ -29,7 +29,7 @@ RUN ls -al /app
 RUN npm ci --production
 RUN ls -al /app 
 
-COPY ./config /app/dist/config 
+COPY ./config/.env /app/dist/config/.env 
 RUN mkdir /app/dist/db
 RUN touch /app/dist/db/database.db
 
