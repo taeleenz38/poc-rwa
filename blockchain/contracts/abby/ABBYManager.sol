@@ -109,9 +109,9 @@ contract ABBYManager is
     uint256 claimTimestamp,
     bytes32[] calldata depositIds
   ) external onlyRole(TIMESTAMP_SETTER_ROLE) {
-    if (claimTimestamp < block.timestamp) {
-      revert ClaimableTimestampInPast();
-    }
+    // if (claimTimestamp < block.timestamp) {
+    //   revert ClaimableTimestampInPast();
+    // }
 
     uint256 depositsSize = depositIds.length;
     for (uint256 i; i < depositsSize; ++i) {
