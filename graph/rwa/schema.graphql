@@ -6,6 +6,7 @@ type PriceAdded @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  status: String!
 }
 
 type PriceUpdated @entity(immutable: true) {
@@ -18,32 +19,17 @@ type PriceUpdated @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type RoleAdminChanged @entity(immutable: true) {
+type LatestPriceUpdated @entity(immutable: false) {
   id: Bytes!
-  role: Bytes! # bytes32
-  previousAdminRole: Bytes! # bytes32
-  newAdminRole: Bytes! # bytes32
+  priceId: BigInt! # uint256
+  newPrice: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  status: String!
 }
 
-type RoleGranted @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RoleRevoked @entity(immutable: true) {
-  id: Bytes!
-  role: Bytes! # bytes32
-  account: Bytes! # address
-  sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type PriceIdIndex @entity {
+  id: ID!  # `priceId` as a string
+  latestPriceId: Bytes!  # The ID of the LatestPriceUpdated entity
 }

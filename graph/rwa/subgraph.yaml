@@ -18,9 +18,6 @@ dataSources:
       entities:
         - PriceAdded
         - PriceUpdated
-        - RoleAdminChanged
-        - RoleGranted
-        - RoleRevoked
       abis:
         - name: Pricer
           file: ./abis/Pricer.json
@@ -29,10 +26,4 @@ dataSources:
           handler: handlePriceAdded
         - event: PriceUpdated(indexed uint256,uint256,uint256)
           handler: handlePriceUpdated
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
-        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleGranted
-        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleRevoked
       file: ./src/pricer.ts
