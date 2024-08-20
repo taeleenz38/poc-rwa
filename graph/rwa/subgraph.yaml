@@ -27,3 +27,35 @@ dataSources:
         - event: PriceUpdated(indexed uint256,uint256,uint256)
           handler: handlePriceUpdated
       file: ./src/pricer.ts
+  - kind: ethereum
+    name: AbbyManager
+    network: sepolia
+    source:
+      address: "0x9Cb898830Ff93F0D9530B2DeC07CC82bBFc77583"
+      abi: ABBYManager
+      startBlock: 6489018
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - MintRequested
+        # - MintCompleted
+        - PriceIdSetForDeposit
+        # - PriceIdSetForRedemption
+        # - ClaimableTimestampSet
+      abis:
+        - name: ABBYManager
+          file: ./abis/ABBYManager.json
+      eventHandlers:
+        - event: MintRequested(indexed address,indexed bytes32,uint256,uint256,uint256)
+          handler: handleMintRequestedEvent
+        - event: PriceIdSetForDeposit(indexed bytes32,indexed uint256)
+          handler: handlePriceIdSetForDepositEvent
+          # - event: PriceIdSetForRedemption(indexed bytes32, indexed uint256)
+          #   handler: handlePriceUpdated
+        - event: ClaimableTimestampSet(indexed uint256,indexed bytes32)
+          handler: handleClaimableTimestampSetEvent
+        - event: MintCompleted(indexed address,indexed bytes32,uint256,uint256,uint256,uint256)
+          handler: handleMintCompletedEvent
+      file: ./src/abbyManager.ts

@@ -33,3 +33,35 @@ type PriceIdIndex @entity {
   id: ID!  # `priceId` as a string
   latestPriceId: Bytes!  # The ID of the LatestPriceUpdated entity
 }
+
+type PendingDepositRequest @entity {
+  id: Bytes!
+  user: Bytes! # address
+  collateralAmountDeposited: BigInt! # uint256
+  depositAmountAfterFee: BigInt! # uint256
+  feeAmount: BigInt! # uint256
+  priceId: BigInt # Optional, corresponds to priceId in the response class
+  claimableTimestamp: String # Optional, corresponds to claimableTimestamp in the response class
+  status: String # Optional, corresponds to status in the response class
+  price: BigInt # Optional, corresponds to price in the response class
+  requestTimestamp: String # Optional, corresponds to requestTimestamp in the response class
+  claimableAmount: BigInt
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransactionHistory @entity {
+  id: Bytes! # Unique identifier, could be transaction hash + log index or other unique identifier
+  stableAmount: BigInt # Optional, storing as BigInt
+  depositAmountAfterFee: BigInt! # uint256
+  feeAmount: BigInt! # uint256
+  tokenAmount: BigInt # Optional, storing as BigInt
+  type: String! # Type is required, storing as String
+  currency: String # Optional, storing as String
+  status: String # Optional, storing as String
+  price: BigInt # Optional, storing as BigInt
+  requestTime: String # Optional, storing as BigInt (timestamp)
+  mintedTime: String # Optional, storing as BigInt (timestamp)
+  transactionDate: String # Optional, storing as BigInt (timestamp)
+}
