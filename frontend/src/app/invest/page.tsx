@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useReadContract } from "wagmi";
 import { config } from "@/config";
 import ayfabi from "@/artifacts/ABBY.json";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
@@ -10,6 +10,7 @@ import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
 import { EthIcon } from "@/app/components/atoms/Icons";
 import { BigNumber, ethers } from "ethers";
 import axios from "axios";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 interface Item {
   date: string;
@@ -26,9 +27,8 @@ const formatNumberWithCommas = (number: number | string): string => {
 };
 
 const Invest = () => {
-  const { address } = useAccount({
-    config,
-  });
+  const { address, isConnected } = useAccount({ config });
+  const { open } = useWeb3Modal();
   const [isFetching, setIsFetching] = useState(true);
   const [price, setPrice] = useState<string | null>(null);
   const [isBuyOpen, setIsBuyOpen] = React.useState(false);
@@ -40,11 +40,19 @@ const Invest = () => {
   const email = localStorage.getItem("username");
 
   const handleButton1Click = () => {
-    setIsBuyOpen(true);
+    if (!isConnected) {
+      open();
+    } else {
+      setIsBuyOpen(true);
+    }
   };
 
   const handleButton2Click = () => {
-    setIsRedeemOpen(true);
+    if (!isConnected) {
+      open();
+    } else {
+      setIsRedeemOpen(true);
+    }
   };
 
   const fetchUserStatus = async (user: string) => {
