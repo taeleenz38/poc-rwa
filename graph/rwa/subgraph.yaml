@@ -27,3 +27,23 @@ dataSources:
         - event: PriceUpdated(indexed uint256,uint256,uint256)
           handler: handlePriceUpdated
       file: ./src/pricer.ts
+  - kind: ethereum
+    name: AllowlistUpgradeable
+    network: sepolia
+    source:
+      address: "0xeF05a2c00B9FA30A7c1882cF96f8898D26DC6983"
+      abi: AllowlistUpgradeable
+      startBlock: 6489018
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AllowlistEntity
+      abis:
+        - name: AllowlistUpgradeable
+          file: ./abis/AllowlistUpgradeable.json
+      eventHandlers:
+        - event: AccountStatusSetByAdmin(indexed address,indexed uint256,bool)
+          handler: handleAccountStatusSetByAdmin
+      file: src/allowList.ts    

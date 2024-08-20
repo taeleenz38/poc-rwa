@@ -45,8 +45,9 @@ export function handlePriceAdded(event: PriceAddedEvent): void {
 }
 
 export function handlePriceUpdated(event: PriceUpdatedEvent): void {
+  let entityId=event.transaction.hash.concatI32(event.logIndex.toI32())
   let entity = new PriceUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
+    entityId
   )
   entity.priceId = event.params.priceId
   entity.oldPrice = event.params.oldPrice
@@ -59,7 +60,7 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
   entity.save()
 
   let entityPriceAdded = new PriceAdded(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
+    entityId
   )
   entityPriceAdded.priceId = event.params.priceId
   entityPriceAdded.price = event.params.newPrice
@@ -77,11 +78,9 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
   let priceIdIndex = PriceIdIndex.load(priceId)
   if (priceIdIndex == null) {
     priceIdIndex = new PriceIdIndex(priceId)
-    // Initialize with a placeholder value, which will be updated
-    priceIdIndex.latestPriceId = Bytes.empty() // or some other placeholder
+    priceIdIndex.latestPriceId = Bytes.empty()
   }
 
-  let entityId = event.transaction.hash.concatI32(event.logIndex.toI32())
   let existingLatestPriceEntity = LatestPriceUpdated.load(priceIdIndex.latestPriceId)
 
   if (existingLatestPriceEntity != null) {
@@ -95,7 +94,7 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
     existingLatestPriceEntity.save()
   }else{
     let latestPriceUpdated = new LatestPriceUpdated(
-      event.transaction.hash.concatI32(event.logIndex.toI32())
+      entityId
     )
     latestPriceUpdated.priceId = event.params.priceId
     latestPriceUpdated.newPrice = event.params.newPrice
@@ -106,8 +105,10 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
     latestPriceUpdated.status = "New Price ID"
   
     latestPriceUpdated.save()
+
+    priceIdIndex.latestPriceId = entityId
+    priceIdIndex.save()
   }
 
-  priceIdIndex.latestPriceId = entityId
-  priceIdIndex.save()
+
 }

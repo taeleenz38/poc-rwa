@@ -33,3 +33,28 @@ type PriceIdIndex @entity {
   id: ID!  # `priceId` as a string
   latestPriceId: Bytes!  # The ID of the LatestPriceUpdated entity
 }
+
+type AccountStatusSetByAdmin @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  termIndex: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  status: Boolean!
+}
+
+type AccountStatusSetByIndex @entity {
+  id: ID!  # `account` as a string
+  accountStatusSetByAdmin: Bytes!  # The ID of the AccountStatusSetByAdmin entity
+}
+
+type LatestUniqueAccountStatusSetByAdmin @entity(immutable: false) {
+  id: Bytes!
+  account: Bytes! # address
+  termIndex: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  status: Boolean!
+}
