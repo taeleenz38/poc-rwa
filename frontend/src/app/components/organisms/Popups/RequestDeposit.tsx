@@ -19,7 +19,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
   const [txDepositHash, setTxDepositHash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [validAmount, setValidAmount] = useState<boolean>(true); // New state for validation
+  const [validAmount, setValidAmount] = useState<boolean>(true);
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
 
@@ -31,7 +31,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
     setTxDepositHash(null);
     setTxApprovalHash(null);
     setError(null);
-    setValidAmount(true); // Reset validation state
+    setValidAmount(true);
     setShowLink(false);
   };
 
@@ -43,7 +43,6 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
 
-    // Validate amount on change
     const numericAmount = parseFloat(e.target.value);
     if (
       isNaN(numericAmount) ||
@@ -59,12 +58,30 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   };
 
   const handleRequestDeposit = async () => {
-    if (!validAmount) return; // Prevent submission if amount is invalid
+    if (!validAmount) return;
 
     try {
-      const approvalAmount = BigNumber.from(amount).mul(
+      // Convert the amount to a string to handle both integer and float values
+      const amountString = amount.toString();
+
+      // Split the string into integer and fractional parts
+      const [integerPart, decimalPart = ""] = amountString.split(".");
+
+      // Convert integer part to BigNumber
+      let integerAmount = BigNumber.from(integerPart).mul(
         BigNumber.from(10).pow(18)
       );
+
+      // Convert fractional part to BigNumber, adjusting for its length
+      let fractionalAmount = BigNumber.from(0);
+      if (decimalPart.length > 0) {
+        fractionalAmount = BigNumber.from(decimalPart).mul(
+          BigNumber.from(10).pow(18 - decimalPart.length)
+        );
+      }
+
+      // Sum the integer and fractional amounts
+      const approvalAmount = integerAmount.add(fractionalAmount);
 
       const approvalTx = await writeContractAsync({
         abi: audcabi.abi,
@@ -79,7 +96,6 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  // Wait for the approval transaction to be mined
   const { data: approvalReceipt, isLoading: isApprovalLoading } =
     useWaitForTransactionReceipt({
       hash: txApprovalHash as `0x${string}`,
@@ -89,9 +105,27 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
     if (approvalReceipt) {
       const requestDepositTransaction = async () => {
         try {
-          const depositAmount = BigNumber.from(amount).mul(
+          // Convert the amount to a string to handle both integer and float values
+          const amountString = amount.toString();
+
+          // Split the string into integer and fractional parts
+          const [integerPart, decimalPart = ""] = amountString.split(".");
+
+          // Convert integer part to BigNumber
+          let integerAmount = BigNumber.from(integerPart).mul(
             BigNumber.from(10).pow(18)
           );
+
+          // Convert fractional part to BigNumber, adjusting for its length
+          let fractionalAmount = BigNumber.from(0);
+          if (decimalPart.length > 0) {
+            fractionalAmount = BigNumber.from(decimalPart).mul(
+              BigNumber.from(10).pow(18 - decimalPart.length)
+            );
+          }
+
+          // Sum the integer and fractional amounts
+          const depositAmount = integerAmount.add(fractionalAmount);
 
           const depositTx = await writeContractAsync({
             abi: abi.abi,

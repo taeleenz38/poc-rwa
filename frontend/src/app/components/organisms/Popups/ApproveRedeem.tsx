@@ -26,7 +26,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   const [amount, setAmount] = useState<string>("");
   const [redemptionIdInput, setRedemptionIdInput] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
-  const [txSecondHash, SetTxSecondHash] = useState<string | null>(null);
+  const [safe, Setsafe] = useState<string | null>(null);
   const [safeTxHash, setSafeTxHash] = useState<string>("");
   const [txHash, setTxHash] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -141,7 +141,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
 
   const { data: SecondReceipt, isLoading: isSecondLoading } =
     useWaitForTransactionReceipt({
-      hash: txSecondHash as `0x${string}`,
+      hash: safe as `0x${string}`,
     });
 
   if (!isOpen) return null;
@@ -195,7 +195,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
             />
           </div>
         </div>
-        {txSecondHash && (
+        {safeTxHash && (
           <div className="mt-4 text-primary text-center overflow-x-scroll">
             {!showLink && <p>Redemption approval transaction is pending...</p>}
             {showLink && (
