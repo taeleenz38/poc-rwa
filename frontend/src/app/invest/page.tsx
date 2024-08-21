@@ -8,7 +8,7 @@ import FundDescription from "@/app/components/organisms/FundDescription";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
 import { EthIcon } from "@/app/components/atoms/Icons";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import axios from "axios";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 
