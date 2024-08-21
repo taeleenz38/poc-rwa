@@ -1,19 +1,18 @@
 // src/sumsub/sumsub.service.ts
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import * as crypto from 'crypto';
-import * as fs from 'fs';
 import * as FormData from 'form-data';
 import { from, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DocumentDto } from '../dto/request/document.dto';
 import { ApplicantResponse, ReviewResponse } from '../dto/response/response.dto';
 
-const SUMSUB_APP_TOKEN = 'sbx:UiIPY77LLjmiAQDy53S6VyCO.dfF2rWI73X7ve7I787lE2QuUMVWYmE0d';
-const SUMSUB_SECRET_KEY = 'MFZuESK65NJAOqe4LurFVTopntsL2d4O';
-const SUMSUB_BASE_URL = 'https://api.sumsub.com';
-const verficationLevel = 'basic-kyc-level';
+const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN;
+const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY;
+const SUMSUB_BASE_URL = process.env.SUMSUB_BASE_URL;
+const verficationLevel = process.env.verficationLevel;
 
 @Injectable()
 export class KycVerifcationService {
