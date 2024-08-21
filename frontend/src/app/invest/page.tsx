@@ -112,40 +112,6 @@ const Invest = () => {
     functionName: "totalSupply",
   });
 
-  // const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
-  //   return BigNumber.from(bigIntValue.toString());
-  // };
-
-  // useEffect(() => {
-  //   const calculateTVL = () => {
-  //     if (totalSupply && price) {
-  //       try {
-  //         let totalSupplyNormal;
-  //         // Handle BigInt case
-  //         if (typeof totalSupply === "bigint") {
-  //           const bigNumberSupply = convertBigIntToBigNumber(totalSupply);
-  //           totalSupplyNormal = ethers.utils.formatUnits(bigNumberSupply, 18);
-  //         } else if (BigNumber.isBigNumber(totalSupply)) {
-  //           totalSupplyNormal = ethers.utils.formatUnits(totalSupply, 18);
-  //         } else {
-  //           console.error("Invalid totalSupply format:", totalSupply);
-  //           return;
-  //         }
-
-  //         const tvlValue = (
-  //           parseFloat(totalSupplyNormal) * parseFloat(price)
-  //         ).toFixed(2);
-
-  //         setTvl(formatNumberWithCommas(tvlValue));
-  //       } catch (error) {
-  //         console.error("Error calculating TVL:", error);
-  //       }
-  //     }
-  //   };
-
-  //   calculateTVL();
-  // }, [totalSupply, price]);
-
   useEffect(() => {
     const calculateTVL = async () => {
       if (price) {

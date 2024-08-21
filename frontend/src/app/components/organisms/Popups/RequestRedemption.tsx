@@ -42,9 +42,27 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
 
   const handleRequestRedemption = async () => {
     try {
-      const approvalAmount = BigNumber.from(amount).mul(
+      // Convert the amount to a string to handle both integer and float values
+      const amountString = amount.toString();
+
+      // Split the string into integer and fractional parts
+      const [integerPart, decimalPart = ""] = amountString.split(".");
+
+      // Convert integer part to BigNumber
+      let integerAmount = BigNumber.from(integerPart).mul(
         BigNumber.from(10).pow(18)
       );
+
+      // Convert fractional part to BigNumber, adjusting for its length
+      let fractionalAmount = BigNumber.from(0);
+      if (decimalPart.length > 0) {
+        fractionalAmount = BigNumber.from(decimalPart).mul(
+          BigNumber.from(10).pow(18 - decimalPart.length)
+        );
+      }
+
+      // Sum the integer and fractional amounts
+      const approvalAmount = integerAmount.add(fractionalAmount);
 
       const approvalTx = await writeContractAsync({
         abi: ayfabi.abi,
@@ -71,9 +89,27 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
     if (approvalReceipt) {
       const requestRedemptionTransaction = async () => {
         try {
-          const redemptionAmount = BigNumber.from(amount).mul(
+          // Convert the amount to a string to handle both integer and float values
+          const amountString = amount.toString();
+
+          // Split the string into integer and fractional parts
+          const [integerPart, decimalPart = ""] = amountString.split(".");
+
+          // Convert integer part to BigNumber
+          let integerAmount = BigNumber.from(integerPart).mul(
             BigNumber.from(10).pow(18)
           );
+
+          // Convert fractional part to BigNumber, adjusting for its length
+          let fractionalAmount = BigNumber.from(0);
+          if (decimalPart.length > 0) {
+            fractionalAmount = BigNumber.from(decimalPart).mul(
+              BigNumber.from(10).pow(18 - decimalPart.length)
+            );
+          }
+
+          // Sum the integer and fractional amounts to get the full redemption amount
+          const redemptionAmount = integerAmount.add(fractionalAmount);
 
           const redemptionTx = await writeContractAsync({
             abi: abi.abi,
