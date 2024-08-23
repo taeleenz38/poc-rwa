@@ -15,7 +15,7 @@ import { KycVerifcationService } from './verification/verification.service';
 
 @Module({
   imports: [DropBoxSignModule, DropBoxSignEmbeddedModule, AuthModule, VerificationModule, HttpModule, ConfigModule.forRoot({
-    envFilePath: '/app/dist/config/.env',
+    envFilePath: 'config/.env',
   }), TypeOrmModule.forRoot({
     type: 'postgres',
     host: process.env.DATABASE_HOST,
