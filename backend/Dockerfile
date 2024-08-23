@@ -14,7 +14,8 @@ RUN node -v
 
 RUN npm install
 RUN npm run build 
-COPY ./config /app/dist/config/
+# COPY ./config /app/dist/config/
+RUN mkdir /app/dist/config
 RUN mkdir /app/dist/db
 RUN touch /app/dist/db/database.db
 
