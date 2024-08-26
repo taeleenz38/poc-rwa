@@ -7,7 +7,7 @@ WORKDIR /app
 RUN ls -al /app 
 
 RUN mkdir /app/config
-RUN ln -s ./config/.env .env
+RUN ln -s /app/config/.env .env
 RUN npm install
 RUN npm run build
 RUN rm -rf node_modules
