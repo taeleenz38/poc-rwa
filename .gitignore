@@ -5,5 +5,4 @@
 /backend/node_modules/
 /backend/dist
 /backend/build
-frontend/.env
-frontend/**/.env
+
