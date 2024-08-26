@@ -7,7 +7,8 @@ async function main() {
   const signers = await ethers.getSigners();
   const managerAdmin = signers[2];
 
-  const abbyManager = await ethers.getContract("ABBYManager");
+  // const abbyManager = await ethers.getContract("ABBYManager");
+  const abbyManager = await ethers.getContractAt("ABBYManager", "0x2C7747ba23706a77159BC08814AbC70f0C9042F4");
 
   console.log("abbyManager==>", abbyManager.address);
 
