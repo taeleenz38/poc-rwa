@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
+import { config } from 'dotenv';
+import path from 'path';
+
+config({ path: path.resolve(process.cwd(), './config/.env') });
+
 const nextConfig = {
+  env: {
+    ...Object.fromEntries(
+      Object.entries(process.env).filter(([key]) => key.startsWith('NEXT_PUBLIC_'))
+    ),
+  },
   async headers() {
     return [
       {
