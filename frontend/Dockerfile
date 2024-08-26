@@ -6,15 +6,16 @@ ADD . /app/
 WORKDIR /app
 RUN ls -al /app 
 
-RUN mkdir /app/config
-RUN ln -s /app/config/.env .env
+# RUN mkdir /app/config
+# RUN ln -s /app/config/.env .env
 RUN npm install
 RUN npm run build
 RUN rm -rf node_modules
 RUN npm install --production
 
+
 ENV PORT 3000
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["ln", "-s", "/app/config/.env", ".env", "&&","npm", "start"]
 
  
