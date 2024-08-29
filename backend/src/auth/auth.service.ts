@@ -12,14 +12,10 @@ import { UserStatusDto } from "./dto/userstatus.response.dto";
 @Injectable()
 export class AuthService {
 
-    private SALT = process.env.SIGNUP_GEN_PASSWORD_HASHING_SALT;
     constructor(private userRepoService: UserRepoService,
         private jwtService: JwtService,
         private verificationService: KycVerifcationService
     ) {
-        if (!this.SALT) {
-            throw new Error('Startup error! User password salt has not been configured!');
-        }
     }
 
     public async signup(request: CredentialRequestDto) {
@@ -94,6 +90,6 @@ export class AuthService {
 
 
     private async getHashedPassword(password: string) {
-        return await bcrypt.hash(password, this.SALT);
+        return await bcrypt.hash(password, 4);
     }
 }

@@ -2,6 +2,7 @@
 import { config } from 'dotenv';
 import path from 'path';
 
+console.log("CWD: " + process.cwd());
 config({ path: path.resolve(process.cwd(), './config/.env') });
 
 const nextConfig = {
@@ -10,6 +11,7 @@ const nextConfig = {
       Object.entries(process.env).filter(([key]) => key.startsWith('NEXT_PUBLIC_'))
     ),
   },
+  output: 'standalone',
   async headers() {
     return [
       {
