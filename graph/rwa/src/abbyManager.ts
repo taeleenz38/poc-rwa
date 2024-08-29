@@ -103,7 +103,7 @@ export function handleClaimableTimestampSetEvent(event: ClaimableTimestampSetEve
         if (price && price.notEqual(BigInt.fromI32(0))) {
             let depositAmountAfterFee = pendingDepositRequestEntity.depositAmountAfterFee;
 
-            let scaledDepositAmount = depositAmountAfterFee.times(BigInt.fromI32(100));
+            let scaledDepositAmount = depositAmountAfterFee.times(BigInt.fromI32(10).pow(18));
             let claimableAmount = scaledDepositAmount.div(price);
 
             pendingDepositRequestEntity.claimableAmount = claimableAmount;
@@ -149,9 +149,9 @@ export function handleMintCompletedEvent(event: MintCompletedEvent): void {
         transactionHistoryEntity.completedTime = mintTimestamp
 
         let rwaAmountOut = event.params.rwaAmountOut;
-        let rwaAmountOutConverted = rwaAmountOut.div(BigInt.fromI32(10).pow(16));
+        //let rwaAmountOutConverted = rwaAmountOut.div(BigInt.fromI32(10).pow(16));
 
-        transactionHistoryEntity.tokenAmount = rwaAmountOutConverted
+        transactionHistoryEntity.tokenAmount = rwaAmountOut
         transactionHistoryEntity.save()
     }
 }
@@ -231,9 +231,9 @@ export function handleRedemptionCompletedEvent(event: RedemptionCompletedEvent):
         transactionHistoryEntity.completedTime = redemptionTimestamp
 
         let rwaAmountRequested = event.params.rwaAmountRequested;
-        let rwaAmountOutConverted = rwaAmountRequested.div(BigInt.fromI32(10).pow(16));
+        //let rwaAmountOutConverted = rwaAmountRequested.div(BigInt.fromI32(10).pow(16));
 
-        transactionHistoryEntity.tokenAmount = rwaAmountOutConverted
+        transactionHistoryEntity.tokenAmount = rwaAmountRequested
         transactionHistoryEntity.save()
     }
 }
@@ -278,7 +278,7 @@ export function handlePriceIdSetForRedemption(event: PriceIdSetForRedemptionEven
             if (latestPriceEntity != null) {
                 redemptionRequestEntity.price = latestPriceEntity.price
                 let redeemAmount = redemptionRequestEntity.rwaAmountIn.times(latestPriceEntity.price);
-                let redeemAmountConverted = redeemAmount.div(BigInt.fromI32(10).pow(34));
+                let redeemAmountConverted = redeemAmount.div(BigInt.fromI32(10).pow(18));
                 redemptionRequestEntity.redeemAmount = redeemAmountConverted
             }
         }
