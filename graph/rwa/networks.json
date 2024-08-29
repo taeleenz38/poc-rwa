@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "Pricer": {
+      "address": "0xe51249B69E0a8e15E7eBCb1Ff3c824901820Ef6c",
+      "startBlock": 6489018
+    }
+  }
+}
