@@ -9,15 +9,17 @@ import {
   LatestPriceUpdated,
   PriceIdIndex,
 } from "../generated/schema"
+import { formatDate } from "./utills/utillServices";
 
 export function handlePriceAdded(event: PriceAddedEvent): void {
+  const date = formatDate(event.block.timestamp);
   let entity = new PriceAdded(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
   entity.priceId = event.params.priceId
   entity.price = event.params.price
   entity.timestamp = event.params.timestamp
-
+  entity.date = date
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
@@ -28,7 +30,8 @@ export function handlePriceAdded(event: PriceAddedEvent): void {
   let latestPriceEntityId = event.transaction.hash.concatI32(event.logIndex.toI32())
   let latesPriceEntity = new LatestPriceUpdated(latestPriceEntityId)
   latesPriceEntity.priceId = event.params.priceId
-  latesPriceEntity.newPrice = event.params.price
+  latesPriceEntity.price = event.params.price
+  latesPriceEntity.date = date
 
   latesPriceEntity.blockNumber = event.block.number
   latesPriceEntity.blockTimestamp = event.block.timestamp
@@ -45,6 +48,7 @@ export function handlePriceAdded(event: PriceAddedEvent): void {
 }
 
 export function handlePriceUpdated(event: PriceUpdatedEvent): void {
+  const date = formatDate(event.block.timestamp);
   let entityId=event.transaction.hash.concatI32(event.logIndex.toI32())
   let entity = new PriceUpdated(
     entityId
@@ -52,7 +56,7 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
   entity.priceId = event.params.priceId
   entity.oldPrice = event.params.oldPrice
   entity.newPrice = event.params.newPrice
-
+  entity.date = date
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
@@ -65,7 +69,7 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
   entityPriceAdded.priceId = event.params.priceId
   entityPriceAdded.price = event.params.newPrice
   entityPriceAdded.timestamp = event.block.timestamp
-  
+  entityPriceAdded.date = date
   entityPriceAdded.blockNumber = event.block.number
   entityPriceAdded.blockTimestamp = event.block.timestamp
   entityPriceAdded.transactionHash = event.transaction.hash
@@ -84,8 +88,8 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
   let existingLatestPriceEntity = LatestPriceUpdated.load(priceIdIndex.latestPriceId)
 
   if (existingLatestPriceEntity != null) {
-    existingLatestPriceEntity.newPrice = event.params.newPrice
-
+    existingLatestPriceEntity.price = event.params.newPrice
+    existingLatestPriceEntity.date = date
     existingLatestPriceEntity.blockNumber = event.block.number
     existingLatestPriceEntity.blockTimestamp = event.block.timestamp
     existingLatestPriceEntity.transactionHash = event.transaction.hash
@@ -97,8 +101,8 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
       entityId
     )
     latestPriceUpdated.priceId = event.params.priceId
-    latestPriceUpdated.newPrice = event.params.newPrice
-    
+    latestPriceUpdated.price = event.params.newPrice
+    latestPriceUpdated.date = date
     latestPriceUpdated.blockNumber = event.block.number
     latestPriceUpdated.blockTimestamp = event.block.timestamp
     latestPriceUpdated.transactionHash = event.transaction.hash
@@ -109,6 +113,4 @@ export function handlePriceUpdated(event: PriceUpdatedEvent): void {
     priceIdIndex.latestPriceId = entityId
     priceIdIndex.save()
   }
-
-
 }

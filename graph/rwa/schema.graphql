@@ -2,6 +2,7 @@ type PriceAdded @entity(immutable: true) {
   id: Bytes!
   priceId: BigInt! # uint256
   price: BigInt! # uint256
+  date: String!
   timestamp: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
@@ -14,6 +15,7 @@ type PriceUpdated @entity(immutable: true) {
   priceId: BigInt! # uint256
   oldPrice: BigInt! # uint256
   newPrice: BigInt! # uint256
+  date: String!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -22,7 +24,8 @@ type PriceUpdated @entity(immutable: true) {
 type LatestPriceUpdated @entity(immutable: false) {
   id: Bytes!
   priceId: BigInt! # uint256
-  newPrice: BigInt! # uint256
+  price: BigInt! # uint256
+  date: String!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -38,6 +41,7 @@ type AccountStatusSetByAdmin @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
   termIndex: BigInt! # uint256
+  date: String!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -53,10 +57,22 @@ type LatestUniqueAccountStatusSetByAdmin @entity(immutable: false) {
   id: Bytes!
   account: Bytes! # address
   termIndex: BigInt! # uint256
+  date: String!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
   status: Boolean!
+}
+
+type MintRequested @entity {
+  id: Bytes! # use depositId
+  user: Bytes! # address
+  collateralAmountDeposited: BigInt! # uint256
+  depositAmountAfterFee: BigInt! # uint256
+  feeAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type PendingDepositRequest @entity {
@@ -71,15 +87,13 @@ type PendingDepositRequest @entity {
   price: BigInt # Optional, corresponds to price in the response class
   requestTimestamp: String # Optional, corresponds to requestTimestamp in the response class
   claimableAmount: BigInt
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
 }
 
-type TransactionHistory @entity {
-  id: Bytes! # Unique identifier, could be transaction hash + log index or other unique identifier
+type DepositTransactionHistory @entity {
+  id: Bytes! # depositId
+  user: Bytes! # address
   stableAmount: BigInt # Optional, storing as BigInt
-  depositAmountAfterFee: BigInt! # uint256
+  collateralAmount: BigInt # uint256
   feeAmount: BigInt! # uint256
   tokenAmount: BigInt # Optional, storing as BigInt
   type: String! # Type is required, storing as String
@@ -87,6 +101,86 @@ type TransactionHistory @entity {
   status: String # Optional, storing as String
   price: BigInt # Optional, storing as BigInt
   requestTime: String # Optional, storing as BigInt (timestamp)
-  mintedTime: String # Optional, storing as BigInt (timestamp)
+  completedTime: String # Optional, storing as BigInt (timestamp)
+  transactionDate: String # Optional, storing as BigInt (timestamp)
+}
+
+type MintCompleted @entity(immutable: true) {
+  id: Bytes! # use depositId
+  user: Bytes! # address
+  rwaAmountOut: BigInt! # uint256
+  collateralAmountDeposited: BigInt! # uint256
+  price: BigInt! # uint256
+  priceId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RedemptionRequested @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  redemptionId: Bytes!
+  rwaAmountIn: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RedemptionCompleted @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  redemptionId: Bytes!
+  rwaAmountRequested: BigInt! # uint256
+  collateralAmountReturned: BigInt! # uint256
+  price: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PriceIdSetForRedemption @entity(immutable: true) {
+  id: Bytes!
+  redemptionIdSet: Bytes!
+  priceIdSet: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RedemptionRequest @entity(immutable: false){
+  id: Bytes! # use redemptionId
+  user: Bytes! # address;
+  rwaAmountIn: BigInt! # uint256
+  priceId: BigInt # uint256
+  requestTimestamp: String!
+  blockTimestamp: BigInt!
+  price: BigInt # uint256
+  requestedRedeemAmount: BigInt # uint256
+  requestedRedeemAmountAfterFee: BigInt # uint256
+  feeAmount: BigInt # uint256
+  status: String!
+  claimApproved: Boolean!
+  redeemAmount: BigInt
+}
+
+type RedemptionApproved @entity(immutable: true) {
+  id: Bytes!
+  redemptionIdSet: Bytes!
+}
+
+type RedemptionTransactionHistory @entity {
+  id: Bytes! # redemptionId
+  user: Bytes! # address
+  stableAmount: BigInt # Optional, storing as BigInt
+  collateralAmount: BigInt # uint256
+  feeAmount: BigInt! # uint256
+  tokenAmount: BigInt # Optional, storing as BigInt
+  type: String! # Type is required, storing as String
+  currency: String # Optional, storing as String
+  status: String # Optional, storing as String
+  price: BigInt # Optional, storing as BigInt
+  requestTime: String # Optional, storing as BigInt (timestamp)
+  completedTime: String # Optional, storing as BigInt (timestamp)
   transactionDate: String # Optional, storing as BigInt (timestamp)
 }

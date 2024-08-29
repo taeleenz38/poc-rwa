@@ -8,9 +8,9 @@ dataSources:
     name: Pricer
     network: sepolia
     source:
-      address: "0xe51249B69E0a8e15E7eBCb1Ff3c824901820Ef6c"
+      address: "0x51b4AC2092b76843322De03796705cb3368565cB"
       abi: Pricer
-      startBlock: 6489018
+      startBlock: 6573044
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -31,9 +31,9 @@ dataSources:
     name: AllowlistUpgradeable
     network: sepolia
     source:
-      address: "0xeF05a2c00B9FA30A7c1882cF96f8898D26DC6983"
+      address: "0xcea6E0a53C29C595fF82944FAbAd2B43C05f10e8"
       abi: AllowlistUpgradeable
-      startBlock: 6489018
+      startBlock: 6573044
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -51,9 +51,9 @@ dataSources:
     name: AbbyManager
     network: sepolia
     source:
-      address: "0x9Cb898830Ff93F0D9530B2DeC07CC82bBFc77583"
+      address: "0x0cED863C5C399C9d907A5B60350c516e042EE19d"
       abi: ABBYManager
-      startBlock: 6489018
+      startBlock: 6573044
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -62,8 +62,11 @@ dataSources:
         - MintRequested
         # - MintCompleted
         - PriceIdSetForDeposit
-        # - PriceIdSetForRedemption
+        - PriceIdSetForRedemption
         # - ClaimableTimestampSet
+        - RedemptionRequested
+        - RedemptionCompleted
+        - RedemptionRequest
       abis:
         - name: ABBYManager
           file: ./abis/ABBYManager.json
@@ -72,10 +75,16 @@ dataSources:
           handler: handleMintRequestedEvent
         - event: PriceIdSetForDeposit(indexed bytes32,indexed uint256)
           handler: handlePriceIdSetForDepositEvent
-          # - event: PriceIdSetForRedemption(indexed bytes32, indexed uint256)
-          #   handler: handlePriceUpdated
         - event: ClaimableTimestampSet(indexed uint256,indexed bytes32)
           handler: handleClaimableTimestampSetEvent
         - event: MintCompleted(indexed address,indexed bytes32,uint256,uint256,uint256,uint256)
           handler: handleMintCompletedEvent
+        - event: RedemptionRequested(indexed address,indexed bytes32,uint256)
+          handler: handleRedemptionRequestedEvent
+        - event: RedemptionCompleted(indexed address,indexed bytes32,uint256,uint256,uint256)
+          handler: handleRedemptionCompletedEvent
+        - event: PriceIdSetForRedemption(indexed bytes32,indexed uint256)
+          handler: handlePriceIdSetForRedemption
+        - event: RedemptionApproved(indexed bytes32)
+          handler: handleRedemptionApproved
       file: ./src/abbyManager.ts 
