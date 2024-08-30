@@ -1,18 +1,31 @@
 #base-image
-FROM node:22.6-alpine 
-
+FROM node:22.6-alpine AS builder
 ADD . /app/
 
 WORKDIR /app
 RUN ls -al /app 
 
-RUN npm install
+RUN npm ci
 RUN npm run build
-RUN rm -rf node_modules
-RUN npm install --production
+RUN ls -al /app 
 
-ENV PORT 3000
+FROM node:22.6-alpine AS runner
+WORKDIR /app
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+RUN mkdir .next
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
 EXPOSE 3000
-CMD ["npm", "start"]
+
+ENV PORT=3000
+CMD ["node", "server.js"]
 
  

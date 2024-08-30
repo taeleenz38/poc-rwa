@@ -6,3 +6,6 @@
 /backend/dist
 /backend/build
 
+backend/config/.env
+frontend/.env
+frontend/config/.env
