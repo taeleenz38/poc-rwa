@@ -32,7 +32,7 @@ export class AuthService {
 
     public async signin(request: SigninRequestDto): Promise<AuthResponseDto> {
         const user = await this.userRepoService.findUser(request.email);
-        if (user && user.password === await this.getHashedPassword(request.password)) {
+        if (user && await bcrypt.compare(request.password, user.password)) {
             const payload = { sub: user.id, username: user.email };
             const jwt = await this.jwtService.signAsync(payload, { secret: process.env.AUTH_JWT_SECRET, expiresIn: process.env.AUTH_JWT_EXPIRES });
             const res = new AuthResponseDto();
