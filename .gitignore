@@ -9,3 +9,4 @@
 backend/config/.env
 frontend/.env
 frontend/config/.env
+node_modules
