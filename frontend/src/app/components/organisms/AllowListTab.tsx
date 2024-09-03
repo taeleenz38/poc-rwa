@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import Button from "../atoms/Buttons/Button";
 import AllowlistPopUp from "@/app/components/organisms/Popups/AllowlistPopUp";
 import RemoveAllowListPopUp from "./Popups/RemoveAllowListPopUp";
+import { GET_ACCOUNT_STATUS } from "@/lib/urqlQueries";
+import { useQuery } from "urql";
 
 interface AccountStatusResponse {
   termIndex: string;
@@ -12,17 +13,21 @@ interface AccountStatusResponse {
   date: string;
 }
 
-const ITEMS_PER_PAGE = 6; // Number of items per page
+const ITEMS_PER_PAGE = 6;
 
 const AllowlistTab = () => {
-  const [wallets, setWallets] = useState<AccountStatusResponse[]>([]);
-  const [isTableLoading, setIsTableLoading] = useState(false);
+  // const [wallets, setWallets] = useState<AccountStatusResponse[]>([]);
+  // const [isTableLoading, setIsTableLoading] = useState(false);
   const [addAddressOpen, setAddAddressOpen] = useState(false);
   const [removeAddressOpen, setRemoveAddressOpen] = useState(false);
   const [selectedAllowListIndex, setSelectedAllowListIndex] = useState<
     number | null
   >(null);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [{ data, fetching, error }] = useQuery({
+    query: GET_ACCOUNT_STATUS,
+  });
 
   const handleRadioChange = (index: number) => {
     if (index === selectedAllowListIndex) {
@@ -32,24 +37,8 @@ const AllowlistTab = () => {
     }
   };
 
-  const fetchWallets = async () => {
-    try {
-      setIsTableLoading(true);
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/account-status`
-      );
-      setWallets(response.data);
-    } catch (error) {
-      console.error("Error fetching wallets:", error);
-    } finally {
-      setIsTableLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchWallets();
-  }, []);
-
+  const wallets: AccountStatusResponse[] =
+    data?.latestUniqueAccountStatusSetByAdmins || [];
   const totalPages = Math.ceil(wallets.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
@@ -73,7 +62,7 @@ const AllowlistTab = () => {
     currentPage * ITEMS_PER_PAGE
   );
 
-  if (isTableLoading) {
+  if (fetching) {
     return (
       <>
         <div
@@ -85,6 +74,12 @@ const AllowlistTab = () => {
           <div className="text-base text-gray">AllowList Data Loading....</div>
         </div>
       </>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-500">Error fetching data: {error.message}</div>
     );
   }
 

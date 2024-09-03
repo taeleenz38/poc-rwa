@@ -8,21 +8,31 @@ import FundDescription from "@/app/components/organisms/FundDescription";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
 import { EthIcon } from "@/app/components/atoms/Icons";
+import { GET_PRICE_LIST, GET_ACCOUNT_STATUS } from "@/lib/urqlQueries";
 import { BigNumber, ethers } from "ethers";
 import axios from "axios";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useQuery } from "urql";
 
 interface Item {
   date: string;
   price: string;
 }
 
-const formatNumberWithCommas = (number: number | string): string => {
+// Convert wei to ether
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+// Format number with commas and fixed decimals
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
   const num = typeof number === "string" ? parseFloat(number) : number;
-  // Format number with commas and ensure two decimal places
   return num.toLocaleString(undefined, {
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3,
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
   });
 };
 
@@ -38,6 +48,15 @@ const Invest = () => {
     "Inactive"
   );
   const email = localStorage.getItem("username");
+
+  const [{ data: accountStatusData }, reexecuteQueryAccountStatus] = useQuery({
+    query: GET_ACCOUNT_STATUS,
+    variables: { email },
+  });
+
+  const [{ data: priceListData, error: priceListError }] = useQuery({
+    query: GET_PRICE_LIST,
+  });
 
   const handleButton1Click = () => {
     if (!isConnected) {
@@ -55,55 +74,29 @@ const Invest = () => {
     }
   };
 
-  const fetchUserStatus = async (user: string) => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/auth/status?email=${user}`
-      );
-      if (response.status === 200 || 201) {
-        if (response.data.isActive === true) {
-          setUserStatus("Active");
-        } else {
-          setUserStatus("Inactive");
-        }
-      }
-    } catch (err) {
-      console.error("Failed to fetch status ", err);
-
-      setUserStatus("Inactive");
+  useEffect(() => {
+    if (accountStatusData) {
+      const status =
+        accountStatusData.latestUniqueAccountStatusSetByAdmins.find(
+          (status: { account: string | null }) => status.account === email
+        );
+      setUserStatus(status?.status === "Active" ? "Active" : "Inactive");
     }
-  };
-  const fetchPriceId = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("price data", data);
-
-      const latestPrice = data.sort(
-        (a: Item, b: Item) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-      )[0];
-
-      setPrice(latestPrice ? latestPrice.price : "...");
-    } catch (error) {
-      console.error("Error fetching price ID:", error);
-    } finally {
-      setIsFetching(false);
-    }
-  };
+  }, [accountStatusData, email]);
 
   useEffect(() => {
-    fetchPriceId();
-    fetchUserStatus(email as string);
-  }, []);
+    if (priceListData) {
+      const sortedPriceList = priceListData.priceAddeds.sort(
+        (a: Item, b: Item) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      const latestPrice = sortedPriceList[0];
+      setPrice(latestPrice ? latestPrice.price : "...");
+    }
+  }, [priceListData]);
 
   const formattedPrice = price
-    ? formatNumberWithCommas(parseFloat(price))
+    ? formatNumber(parseFloat(weiToEther(price)))
     : "...";
 
   const { data: totalSupply } = useReadContract({
@@ -127,10 +120,12 @@ const Invest = () => {
           const supply = await contract.totalSupply();
           const formattedSupply = ethers.utils.formatUnits(supply, 18);
 
-          const tvlValue = (
-            parseFloat(formattedSupply) * parseFloat(price)
-          ).toFixed(2);
-          setTvl(formatNumberWithCommas(tvlValue));
+          const priceInEther = parseFloat(weiToEther(price));
+
+          const tvlValue = (parseFloat(formattedSupply) * priceInEther).toFixed(
+            2
+          );
+          setTvl(formatNumber(tvlValue));
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }

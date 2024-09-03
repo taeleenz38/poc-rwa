@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
-import dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
+import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
 
 console.log("CWD: " + process.cwd());
-const __dirname = new URL('.', import.meta.url).pathname;
-const envPath = path.resolve(__dirname, 'config/.env');
+const __dirname = new URL(".", import.meta.url).pathname;
+const envPath = path.resolve(__dirname, "config/.env");
 
 console.log("Env File Path: " + envPath);
 // config({ path: envPath });
@@ -13,15 +13,17 @@ console.log("Env File Path: " + envPath);
 if (fs.existsSync(envPath)) {
   dotenv.config({ path: envPath });
 }
-console.log('Environment Variable:', process.env.NEXT_PUBLIC_BACKEND_API);
+console.log("Environment Variable:", process.env.NEXT_PUBLIC_BACKEND_API);
 
 const nextConfig = {
   env: {
     ...Object.fromEntries(
-      Object.entries(process.env).filter(([key]) => key.startsWith('NEXT_PUBLIC_'))
+      Object.entries(process.env).filter(([key]) =>
+        key.startsWith("NEXT_PUBLIC_")
+      )
     ),
   },
-  output: 'standalone',
+  output: "standalone",
   async headers() {
     return [
       {
@@ -31,7 +33,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://api.tokenisation.gcp-hub.com.au",
+            value: "https://dev.tokenisation.gcp-hub.com.au",
           }, // replace this with your actual origin
           {
             key: "Access-Control-Allow-Methods",

@@ -1,37 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
+import { GET_PENDING_APPROVAL_REDEMPTION_LIST } from "@/lib/urqlQueries";
+import { useQuery } from "urql";
 
-type RedemptionList = {
-  user: string;
-  redemptionId: string;
-  redeemAmount: number;
-  rwaAmountIn: string;
+type RedemptionListData = {
+  redemptionRequests: {
+    id: string;
+    user: string;
+    rwaAmountIn: string;
+    redeemAmount: number;
+  }[];
 };
 
 const RedemptionList: React.FC = () => {
-  const [redemtions, setRedemptions] = useState<RedemptionList[]>([]);
   const [Loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    const fetchPriceList = async () => {
-      try {
-        setLoaded(false);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-approval-redemption-list`
-        );
-
-        console.log(response, "response");
-        const data = await response.json();
-        setRedemptions(data);
-      } catch (error) {
-        console.error("Error fetching price list:", error);
-      } finally {
-        setLoaded(true);
-      }
-    };
-
-    fetchPriceList();
-  }, []);
+  const [{ data, fetching, error }] = useQuery<RedemptionListData>({
+    query: GET_PENDING_APPROVAL_REDEMPTION_LIST,
+  });
 
   return (
     <div className="w-full h-3/4 p-4 mx-auto text-primary bg-white flex flex-col mt-8 rounded-md bg-no-repeat bg-right-bottom">
@@ -45,17 +31,18 @@ const RedemptionList: React.FC = () => {
           </p>
         )}
 
-        {redemtions.length === 0 && Loaded && (
-          <p className="flex justify-center items-center ">
-            <strong>No Redemption Items found</strong>
-          </p>
-        )}
+        {!data ||
+          (!data.redemptionRequests && (
+            <p className="flex justify-center items-center ">
+              <strong>No Redemption Items found</strong>
+            </p>
+          ))}
 
-        {redemtions.map((item) => (
+        {data?.redemptionRequests.map((item) => (
           <div key={item.user} className="p-4 rounded-lg bg-primary text-light">
             <div>
               <h3 className="text-lg font-medium mb-2 text-secondary">
-                <strong>Redemption Id: {item.redemptionId}</strong>
+                <strong>Redemption Id: {item.id}</strong>
               </h3>
               <p>
                 <strong>User:</strong> {item.user}

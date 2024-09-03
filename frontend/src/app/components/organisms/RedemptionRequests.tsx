@@ -1,27 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
+import { useQuery } from "urql";
+import { GET_PENDING_REDEMPTION_REQUEST_LIST } from "@/lib/urqlQueries";
+import { ethers } from "ethers";
 
 type RedemptionRequest = {
+  id: string;
   user: string;
-  redemptionId: string;
   rwaAmountIn: string;
-  priceId?: string;
-  requestTimestamp?: string;
-  price?: string;
-  requestedRedeemAmount?: string;
-  requestedRedeemAmountAfterFee?: string;
-  feeAmount?: string;
-  status?: string;
+  priceId: string;
+  requestTimestamp: string;
+  price: string;
+  requestedRedeemAmount: string;
+  requestedRedeemAmountAfterFee: string;
+  feeAmount: string;
+  status: string;
+  redeemAmount: string;
+  claimApproved: boolean;
+};
+
+// Convert wei to ether
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+// Format number with commas and fixed decimals
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
+  const num = typeof number === "string" ? parseFloat(number) : number;
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
 };
 
 const ITEMS_PER_PAGE = 6;
 
 const RedemptionRequests = () => {
-  const [loading, setLoading] = useState(true);
-  const [redemptionRequests, setRedemptionRequests] = useState<
-    RedemptionRequest[]
-  >([]);
   const [selectedRedemptionId, setSelectedRedemptionId] = useState<
     string | undefined
   >(undefined);
@@ -29,36 +47,23 @@ const RedemptionRequests = () => {
     useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [
+    {
+      data: redemptionData,
+      fetching: fetchingRedemptions,
+      error: redemptionError,
+    },
+  ] = useQuery({
+    query: GET_PENDING_REDEMPTION_REQUEST_LIST,
+  });
+
   const handleButtonClick = (redemptionId: string) => {
     setSelectedRedemptionId(redemptionId);
     setIsSetPriceIdForRedemptionIdOpen(true);
   };
 
-  useEffect(() => {
-    const fetchRedemptionRequests = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-redemption-request-list`
-        );
-        const data = await response.json();
-
-        const sortedData = data.sort(
-          (a: RedemptionRequest, b: RedemptionRequest) => {
-            return parseInt(b.redemptionId, 16) - parseInt(a.redemptionId, 16);
-          }
-        );
-
-        setRedemptionRequests(sortedData);
-      } catch (error) {
-        console.error("Error fetching redemptions:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRedemptionRequests();
-  }, []);
+  const redemptionRequests: RedemptionRequest[] =
+    redemptionData?.redemptionRequests || [];
 
   const hexToDecimal = (hex: string): number => {
     return parseInt(hex, 16);
@@ -89,7 +94,7 @@ const RedemptionRequests = () => {
 
   return (
     <div className="p-3">
-      {loading ? (
+      {fetchingRedemptions ? (
         <div className="text-center">Redemption Requests loading...</div>
       ) : (
         <div>
@@ -116,13 +121,13 @@ const RedemptionRequests = () => {
               <tbody>
                 {paginatedRequests.map((request) => (
                   <tr
-                    key={request.redemptionId}
+                    key={request.id}
                     className="border-b-2 border-[#F5F2F2] text-sm"
                   >
-                    <td>{hexToDecimal(request.redemptionId)}</td>
+                    <td>{hexToDecimal(request.id)}</td>
                     <td>{request.user}</td>
                     <td>{request.status}</td>
-                    <td>{request.rwaAmountIn} AYF</td>
+                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} AYF</td>
                     <td>
                       {request.requestedRedeemAmountAfterFee
                         ? `${request.requestedRedeemAmountAfterFee} AUDC`
@@ -135,9 +140,7 @@ const RedemptionRequests = () => {
                         <Button
                           text="Set Price ID"
                           className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={() =>
-                            handleButtonClick(request.redemptionId)
-                          }
+                          onClick={() => handleButtonClick(request.id)}
                         />
                       )}
                     </td>

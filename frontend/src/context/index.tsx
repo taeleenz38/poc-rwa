@@ -11,6 +11,9 @@ import { State, WagmiProvider } from "wagmi";
 
 const queryClient = new QueryClient();
 
+import { Provider as UrQlProvider } from "urql";
+import { client } from "../lib/urql";
+
 if (!projectId) throw new Error("Project ID is not defined");
 
 createWeb3Modal({
@@ -31,8 +34,12 @@ export default function Web3ModalProvider({
   initialState?: State;
 }) {
   return (
-    <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </WagmiProvider>
+    <UrQlProvider value={client}>
+      <WagmiProvider config={config} initialState={initialState}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </WagmiProvider>
+    </UrQlProvider>
   );
 }
