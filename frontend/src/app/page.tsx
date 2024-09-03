@@ -3,20 +3,35 @@ import React, { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import ayfabi from "@/artifacts/ABBY.json";
 import { config } from "@/config";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { PackageCard } from "./components/organisms/PackageCard";
 import { EthIcon } from "@/app/components/atoms/Icons";
+import { useQuery } from "urql";
+import { GET_PRICE_LIST } from "@/lib/urqlQueries";
 
-interface Item {
-  date: string;
-  price: string;
+interface PriceData {
+  priceAddeds: {
+    id: string;
+    price: string;
+    date: string;
+    status: string;
+  }[];
 }
 
-const formatNumberWithCommas = (number: number | string): string => {
+// Convert wei to ether
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+// Format number with commas and fixed decimals
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
   const num = typeof number === "string" ? parseFloat(number) : number;
   return num.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
   });
 };
 
@@ -26,18 +41,7 @@ export default function Home() {
   });
   const [isFetching, setIsFetching] = useState(true);
   const [price, setPrice] = useState<string | null>(null);
-  const [isBuyOpen, setIsBuyOpen] = React.useState(false);
-  const [isRedeemOpen, setIsRedeemOpen] = React.useState(false);
   const [tvl, setTvl] = useState<string>("...");
-  const [userStatus, setUserStatus] = useState<boolean>(false);
-
-  const handleButton1Click = () => {
-    setIsBuyOpen(true);
-  };
-
-  const handleButton2Click = () => {
-    setIsRedeemOpen(true);
-  };
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
@@ -45,40 +49,20 @@ export default function Home() {
     functionName: "totalSupply",
   });
 
-  // const convertBigIntToBigNumber = (bigIntValue: bigint): BigNumber => {
-  //   return BigNumber.from(bigIntValue.toString());
-  // };
+  const [{ data, fetching, error }] = useQuery<PriceData>({
+    query: GET_PRICE_LIST,
+  });
 
   useEffect(() => {
-    const fetchLatestPrice = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Price data:", data);
+    if (!fetching && data) {
+      const latestPrice = data.priceAddeds[0];
+      console.log("latestPrice", latestPrice);
 
-        if (Array.isArray(data) && data.length > 0) {
-          const latestPrice = data.sort(
-            (a: Item, b: Item) =>
-              new Date(b.date).getTime() - new Date(a.date).getTime()
-          )[0];
-
-          const fetchedPrice = latestPrice ? latestPrice.price : "0";
-          setPrice(fetchedPrice);
-        } else {
-          console.error("Price list data is empty or not an array.");
-        }
-      } catch (error) {
-        console.error("Error fetching the latest price:", error);
-      }
-    };
-
-    fetchLatestPrice();
-  }, []);
+      const fetchedPrice = latestPrice ? latestPrice.price : "0";
+      setPrice(fetchedPrice);
+      setIsFetching(false);
+    }
+  }, [fetching, data]);
 
   useEffect(() => {
     const calculateTVL = async () => {
@@ -95,10 +79,13 @@ export default function Home() {
           const supply = await contract.totalSupply();
           const formattedSupply = ethers.utils.formatUnits(supply, 18);
 
-          const tvlValue = (
-            parseFloat(formattedSupply) * parseFloat(price)
-          ).toFixed(2);
-          setTvl(formatNumberWithCommas(tvlValue));
+          // Convert price from wei to ether
+          const priceInEther = parseFloat(weiToEther(price));
+
+          const tvlValue = (parseFloat(formattedSupply) * priceInEther).toFixed(
+            2
+          );
+          setTvl(formatNumber(tvlValue));
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }
@@ -108,8 +95,9 @@ export default function Home() {
     calculateTVL();
   }, [price]);
 
+  // Format price to include commas and fixed decimal places
   const formattedPrice = price
-    ? formatNumberWithCommas(parseFloat(price))
+    ? formatNumber(parseFloat(weiToEther(price)))
     : "...";
 
   return (

@@ -3,36 +3,63 @@ import Button from "@/app/components/atoms/Buttons/Button";
 import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
 import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
 import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
+import {
+  GET_PENDING_DEPOSIT_REQUESTS,
+  GET_PENDING_REDEMPTION_REQUEST_LIST,
+} from "@/lib/urqlQueries";
+import { useQuery } from "urql";
 
 // Define the type for the deposit request
 type DepositRequest = {
+  id: string;
   user: string;
-  depositId: string;
   collateralAmountDeposited: string;
   depositAmountAfterFee: string;
   feeAmount: string;
   priceId?: string;
+  claimableTimestamp: string;
+  requestTimestamp: string;
 };
 
 type RedemptionRequest = {
+  id: string;
   user: string;
-  redemptionId: string;
-  redeemAmount: number;
   rwaAmountIn: string;
+  priceId: string;
+  requestTimestamp: string;
+  price: string;
+  requestedRedeemAmount: string;
+  requestedRedeemAmountAfterFee: string;
+  feeAmount: string;
+  status: string;
+  redeemAmount: string;
+  claimApproved: boolean;
 };
 
 const PricingSection = () => {
-  const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
   const [Loaded, setLoaded] = useState(false);
-  const [redemptionRequests, setRedemptionRequests] = useState<
-    RedemptionRequest[]
-  >([]);
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
     React.useState(false);
   const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] =
     React.useState(false);
   const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
     React.useState(false);
+
+  const [
+    { data: depositData, fetching: fetchingDeposits, error: depositError },
+  ] = useQuery({
+    query: GET_PENDING_DEPOSIT_REQUESTS,
+  });
+
+  const [
+    {
+      data: redemptionData,
+      fetching: fetchingRedemptions,
+      error: redemptionError,
+    },
+  ] = useQuery({
+    query: GET_PENDING_REDEMPTION_REQUEST_LIST,
+  });
 
   const handleButton1Click = () => {
     setIsSetClaimTimestampOpen(true);
@@ -46,42 +73,11 @@ const PricingSection = () => {
     setIsSetPriceIdForRedemptionIdOpen(true);
   };
 
-  useEffect(() => {
-    const fetchDepositRequests = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-deposit-request-list`
-        );
-        const data = await response.json();
-        setDepositRequests(data);
-      } catch (error) {
-        console.error("Error fetching deposit requests:", error);
-      }
-    };
+  const depositRequests: DepositRequest[] =
+    depositData?.pendingDepositRequests || [];
 
-    fetchDepositRequests();
-  }, []);
-
-  useEffect(() => {
-    const fetchRedemptionRequests = async () => {
-      try {
-        setLoaded(false);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-redemption-request-list`
-        );
-
-        console.log(response, "response");
-        const data = await response.json();
-        setRedemptionRequests(data);
-      } catch (error) {
-        console.error("Error fetching redemptions:", error);
-      } finally {
-        setLoaded(true);
-      }
-    };
-
-    fetchRedemptionRequests();
-  }, []);
+  const redemptionRequests: RedemptionRequest[] =
+    redemptionData?.redemptionRequests || [];
 
   const hexToDecimal = (hex: string): number => {
     return parseInt(hex, 16);
@@ -108,11 +104,11 @@ const PricingSection = () => {
         <div className="flex flex-col gap-y-4 max-h-[80vh] overflow-y-scroll">
           {depositRequests.map((request) => (
             <div
-              key={request.depositId}
+              key={request.id}
               className="p-4 rounded-lg shadow-md bg-primary text-light"
             >
               <h3 className="text-lg font-bold mb-2 text-secondary">
-                Deposit ID: {hexToDecimal(request.depositId)}
+                Deposit ID: {hexToDecimal(request.id)}
               </h3>
               <p>
                 <strong>User:</strong> {request.user}
@@ -146,11 +142,11 @@ const PricingSection = () => {
         <div className="flex flex-col gap-y-4 max-h-[80vh] overflow-y-scroll">
           {redemptionRequests.map((request) => (
             <div
-              key={request.redemptionId}
+              key={request.id}
               className="p-4 rounded-lg shadow-md bg-primary text-light"
             >
               <h3 className="text-lg font-bold mb-2 text-secondary">
-                Redemption ID: {request.redemptionId}
+                Redemption ID: {request.id}
               </h3>
               <p>
                 <strong>User:</strong> {request.user}

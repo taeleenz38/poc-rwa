@@ -3,42 +3,36 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../atoms/Buttons/Button";
 import ApproveRedeem from "./Popups/ApproveRedeem";
+import { GET_PENDING_APPROVAL_REDEMPTION_LIST } from "@/lib/urqlQueries";
+import { useQuery } from "urql";
 
-interface RedemptionList {
-  user: string;
-  redemptionId: string;
-  redeemAmount: number;
-  rwaAmountIn: string;
-}
+type RedemptionListData = {
+  redemptionRequests: {
+    id: string;
+    user: string;
+    rwaAmountIn: string;
+    redeemAmount: number;
+  }[];
+};
 
 const RedemptionApprovalTab = () => {
-  const [wallets, setWallets] = useState<RedemptionList[]>([]);
+  const [wallets, setWallets] = useState<RedemptionListData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [approveRedeem, setApproveRedeem] = useState(false);
-  const [selectedRedemption, setSelectedRedemption] =
-    useState<RedemptionList | null>(null);
+  const [selectedRedemption, setSelectedRedemption] = useState<{
+    id: string;
+    user: string;
+    rwaAmountIn: string;
+    redeemAmount: number;
+  } | null>(null);
+
+  const [{ data, fetching, error }] = useQuery<RedemptionListData>({
+    query: GET_PENDING_APPROVAL_REDEMPTION_LIST,
+  });
 
   const handleRadioChange = (index: number) => {
-    setSelectedRedemption(wallets[index]);
+    setSelectedRedemption(data?.redemptionRequests[index] || null);
   };
-
-  useEffect(() => {
-    const fetchWallets = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-approval-redemption-list`
-        );
-        setWallets(response.data);
-      } catch (error) {
-        console.error("Error fetching wallets:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchWallets();
-  }, []);
 
   if (isLoading) {
     return (
@@ -92,22 +86,22 @@ const RedemptionApprovalTab = () => {
               </tr>
             </thead>
             <tbody>
-              {wallets.map((wallet: RedemptionList, index) => (
+              {data?.redemptionRequests.map((request, index) => (
                 <tr
                   className="border-b-2 border-[#F5F2F2] text-sm text-gray"
                   key={index}
                 >
-                  <td className="text-center">{wallet.redemptionId}</td>
-                  <td className="text-center">{wallet.user}</td>
-                  <td className="text-center">{wallet.redeemAmount} AUDC</td>
-                  <td className="text-center">{wallet.rwaAmountIn} AYF</td>
+                  <td className="text-center">{request.id}</td>
+                  <td className="text-center">{request.user}</td>
+                  <td className="text-center">{request.redeemAmount} AUDC</td>
+                  <td className="text-center">{request.rwaAmountIn} AYF</td>
                   <td className="text-center">
                     <div className="flex justify-center items-center">
                       <input
                         type="radio"
                         name="RedemptionSelection"
                         className="custom-checkbox"
-                        checked={selectedRedemption === wallets[index]}
+                        checked={selectedRedemption?.id === request.id}
                         onChange={() => handleRadioChange(index)}
                       />
                     </div>
@@ -120,7 +114,7 @@ const RedemptionApprovalTab = () => {
         <ApproveRedeem
           isOpen={approveRedeem}
           onClose={() => setApproveRedeem(false)}
-          redemptionId={selectedRedemption?.redemptionId || ""}
+          redemptionId={selectedRedemption?.id || ""}
           redeemAmount={selectedRedemption?.redeemAmount || 0}
         />
       </div>

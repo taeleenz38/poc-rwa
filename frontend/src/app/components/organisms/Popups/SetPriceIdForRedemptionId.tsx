@@ -7,6 +7,8 @@ import axios from "axios";
 import { BigNumber, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { GET_TRANSACTION_PRICING } from "@/lib/urqlQueries";
+import { useQuery } from "urql";
 
 interface SetPriceIdForRedemptionIdProps {
   isOpen: boolean;
@@ -20,6 +22,23 @@ interface PricingResponse {
   status: string;
   date: string;
 }
+
+// Convert wei to ether
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+// Format number with commas and fixed decimals
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
+  const num = typeof number === "string" ? parseFloat(number) : number;
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
+};
 
 const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
   isOpen,
@@ -36,36 +55,29 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
 
+  const [{ data, fetching, error: queryError }] = useQuery({
+    query: GET_TRANSACTION_PRICING,
+  });
 
   useEffect(() => {
     setLocalRedemptionId(redemptionId);
   }, [redemptionId]);
 
   useEffect(() => {
-    const fetchPrices = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-pricing`
-        );
+    if (data) {
+      const uniquePrices = data.latestPriceUpdateds.filter(
+        (price: PricingResponse, index: number, self: PricingResponse[]) =>
+          index === self.findIndex((p) => p.priceId === price.priceId)
+      );
 
-        // const sortedPrices = response.data.sort((a: any, b: any) => {
-        //   return new Date(b.date).getTime() - new Date(a.date).getTime();
-        // });
+      const lastFourPrices = uniquePrices.slice(0, 4);
+      setPrices(lastFourPrices);
+    }
 
-        const uniquePrices = response.data.filter(
-          (price: any, index: any, self: any) =>
-            index === self.findIndex((p: any) => p.priceId === price.priceId)
-        );
-
-        const lastFourPrices = uniquePrices.slice(0, 4);
-        setPrices(lastFourPrices);
-      } catch (error) {
-        console.error("Error fetching prices:", error);
-      }
-    };
-
-    fetchPrices();
-  }, []);
+    if (queryError) {
+      console.error("GraphQL query error:", queryError);
+    }
+  }, [data, queryError]);
 
   const resetForm = () => {
     setSelectedPriceId(null);
@@ -179,7 +191,9 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
             >
               <div>
                 <label className="font-semibold">ID: {price.priceId}</label>
-                <div className="font-semibold">Price: {price.price} AUDC</div>
+                <div className="font-semibold">
+                  Price: {formatNumber(weiToEther(price.price))} AUDC
+                </div>
               </div>
               <input
                 type="radio"
@@ -220,7 +234,7 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
                 rel="noopener noreferrer"
                 className="underline  overflow-x-scroll text-sm text-[#0000BF]"
               >
-              View Transaction
+                View Transaction
               </a>
             )}
           </div>

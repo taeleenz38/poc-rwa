@@ -3,9 +3,11 @@ import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
 import { config } from "@/config";
+import { GET_TRANSACTION_PRICING } from "@/lib/urqlQueries";
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
 import { useEffect, useState } from "react";
+import { useQuery } from "urql";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 interface SetPriceIdForDepositIdProps {
@@ -21,6 +23,21 @@ interface PricingResponse {
   date: string;
 }
 
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
+  const num = typeof number === "string" ? parseFloat(number) : number;
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
+};
+
 const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   isOpen,
   onClose,
@@ -35,38 +52,29 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
   const [showLink, setShowLink] = useState(false);
   const [error, setError] = useState<string>("");
 
+  const [{ data, fetching, error: queryError }] = useQuery({
+    query: GET_TRANSACTION_PRICING,
+  });
+
   useEffect(() => {
     setLocalDepositId(depositId);
   }, [depositId]);
 
   useEffect(() => {
-    const fetchPrices = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-pricing`
-        );
+    if (data) {
+      const uniquePrices = data.latestPriceUpdateds.filter(
+        (price: PricingResponse, index: number, self: PricingResponse[]) =>
+          index === self.findIndex((p) => p.priceId === price.priceId)
+      );
 
-        // const sortedPrices = response.data.sort(
-        //   (a: PricingResponse, b: PricingResponse) => {
-        //     return new Date(b.date).getTime() - new Date(a.date).getTime();
-        //   }
-        // );
+      const lastFourPrices = uniquePrices.slice(0, 4);
+      setPrices(lastFourPrices);
+    }
 
-        const uniquePrices = response.data.filter(
-          (price: any, index: any, self: any) =>
-            index === self.findIndex((p: any) => p.priceId === price.priceId)
-        );
-
-        const lastFourPrices = uniquePrices.slice(0, 4);
-        setPrices(lastFourPrices);
-      } catch (error) {
-        console.error("Error fetching prices:", error);
-      } finally {
-      }
-    };
-
-    fetchPrices();
-  }, []);
+    if (queryError) {
+      console.error("GraphQL query error:", queryError);
+    }
+  }, [data, queryError]);
 
   const resetForm = () => {
     setSelectedPriceId(null);
@@ -152,10 +160,6 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
     }
   }, [safeTxHash]);
 
-  const hexToDecimal = (hex: string): number => {
-    return parseInt(hex, 16);
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -179,7 +183,9 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
             >
               <div>
                 <label className="font-semibold">ID: {price.priceId}</label>
-                <div className="font-semibold">Price: {price.price} AUDC</div>
+                <div className="font-semibold">
+                  Price: {formatNumber(weiToEther(price.price))} AUDC
+                </div>
               </div>
               <input
                 type="radio"

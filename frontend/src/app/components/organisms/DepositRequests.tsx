@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
 import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
 import Button from "@/app/components/atoms/Buttons/Button";
+import { GET_PENDING_DEPOSIT_REQUESTS } from "@/lib/urqlQueries";
+import { useQuery } from "urql";
+import { ethers } from "ethers";
 
 type DepositRequest = {
   user: string;
-  depositId: string;
+  id: string;
   collateralAmountDeposited: string;
   depositAmountAfterFee: string;
   feeAmount: string;
@@ -16,9 +19,25 @@ type DepositRequest = {
   requestTimestamp?: string;
 };
 
+// Convert wei to ether
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+// Format number with commas and fixed decimals
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
+  const num = typeof number === "string" ? parseFloat(number) : number;
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
+};
+
 const ITEMS_PER_PAGE = 6;
 const DepositRequests = () => {
-  const [depositRequests, setDepositRequests] = useState<DepositRequest[]>([]);
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
     useState(false);
   const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] = useState(false);
@@ -31,6 +50,12 @@ const DepositRequests = () => {
     undefined
   );
 
+  const [
+    { data: depositData, fetching: fetchingDeposits, error: depositError },
+  ] = useQuery({
+    query: GET_PENDING_DEPOSIT_REQUESTS,
+  });
+
   const handleButton1Click = (depositId: string) => {
     setSelectedDepositId(depositId);
     setIsSetClaimTimestampOpen(true);
@@ -42,29 +67,8 @@ const DepositRequests = () => {
     setIsSetPriceIdForDepositIdOpen(true);
   };
 
-  useEffect(() => {
-    const fetchDepositRequests = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/pending-deposit-request-list`
-        );
-        const data = await response.json();
-
-        const sortedData = data.sort((a: DepositRequest, b: DepositRequest) => {
-          return parseInt(b.depositId, 16) - parseInt(a.depositId, 16);
-        });
-
-        setDepositRequests(sortedData);
-      } catch (error) {
-        console.error("Error fetching deposit requests:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDepositRequests();
-  }, []);
+  const depositRequests: DepositRequest[] =
+    depositData?.pendingDepositRequests || [];
 
   const hexToDecimal = (hex: string): number => {
     return parseInt(hex, 16);
@@ -95,7 +99,7 @@ const DepositRequests = () => {
 
   return (
     <div className="p-3">
-      {loading ? (
+      {fetchingDeposits ? (
         <div className="text-center">Deposit Requests loading...</div>
       ) : (
         <div>
@@ -124,16 +128,22 @@ const DepositRequests = () => {
               <tbody>
                 {paginatedRequests.map((request) => (
                   <tr
-                    key={request.depositId}
+                    key={request.id}
                     className="border-b-2 border-[#F5F2F2]  text-sm"
                   >
-                    <td className="">{hexToDecimal(request.depositId)}</td>
+                    <td className="">{hexToDecimal(request.id)}</td>
                     <td className="">{request.user}</td>
                     <td className="">{request.status}</td>
                     <td className="">
-                      {request.collateralAmountDeposited} AUDC
+                      {formatNumber(
+                        weiToEther(request.collateralAmountDeposited)
+                      )}{" "}
+                      AUDC
                     </td>
-                    <td className="">{request.depositAmountAfterFee} AUDC</td>
+                    <td className="">
+                      {formatNumber(weiToEther(request.depositAmountAfterFee))}{" "}
+                      AUDC
+                    </td>
                     <td className="">
                       {request.priceId ? (
                         request.priceId
@@ -142,10 +152,7 @@ const DepositRequests = () => {
                           text="Set Price ID"
                           className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
                           onClick={() =>
-                            handleButton2Click(
-                              request.depositId,
-                              request.priceId
-                            )
+                            handleButton2Click(request.id, request.priceId)
                           }
                         />
                       )}
@@ -157,7 +164,7 @@ const DepositRequests = () => {
                         <Button
                           text="Set Claim Timestamp"
                           className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={() => handleButton1Click(request.depositId)}
+                          onClick={() => handleButton1Click(request.id)}
                         />
                       )}
                     </td>

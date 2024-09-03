@@ -1,10 +1,12 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Button from "../atoms/Buttons/Button";
 import AddPrice from "./Popups/SetPrice";
 import UpdatePrice from "./Popups/UpdatePrice";
+import { useQuery } from "urql";
+import { GET_PRICE_LIST } from "@/lib/urqlQueries";
 
 interface PricingResponse {
+  id: string;
   priceId: string;
   price: string;
   status: string;
@@ -21,6 +23,10 @@ const Pricing = () => {
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [{ data, fetching, error }] = useQuery({
+    query: GET_PRICE_LIST,
+  });
+
   const handleRadioChange = (priceId: string) => {
     if (priceId === selectedPriceId) {
       setSelectedPriceId(null);
@@ -30,29 +36,15 @@ const Pricing = () => {
   };
 
   useEffect(() => {
-    const fetchPrices = async () => {
-      try {
-        setIsTableLoading(true);
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-        );
-
-        const sortedPrices = response.data.sort(
-          (a: PricingResponse, b: PricingResponse) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-          }
-        );
-
-        setPrices(sortedPrices);
-      } catch (error) {
-        console.error("Error fetching prices:", error);
-      } finally {
-        setIsTableLoading(false);
-      }
-    };
-
-    fetchPrices();
-  }, []);
+    if (data) {
+      const sortedPrices = data.priceAddeds.sort(
+        (a: PricingResponse, b: PricingResponse) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      );
+      setPrices(sortedPrices);
+    }
+  }, [data]);
 
   const totalPages = Math.ceil(prices.length / ITEMS_PER_PAGE);
 
@@ -75,6 +67,14 @@ const Pricing = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  const formatPrice = (price: string): string => {
+    const parsedPrice = parseFloat(price) / 1e18; // Adjust this divisor based on your unit
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(parsedPrice);
   };
 
   if (isTableLoading) {
@@ -132,7 +132,7 @@ const Pricing = () => {
                   key={price.priceId}
                 >
                   <td className="text-center">{price.priceId}</td>
-                  <td className="text-center">${price.price}</td>
+                  <td className="text-center">{formatPrice(price.price)}</td>
                   <td className="text-center">{price.status}</td>
                   <td className="text-center">{price.date}</td>
                   <td className="text-center">

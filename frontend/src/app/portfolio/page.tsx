@@ -2,16 +2,22 @@
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
 import { config } from "@/config";
-import axios from "axios";
+import {
+  GET_PRICE_LIST,
+  GET_TRANSACTION_HISTORY,
+  GET_CLAIMABLE_DETAILS,
+  GET_CLAIMABLE_REDEMPTION_LIST,
+} from "@/lib/urqlQueries"; // Import the new query
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useQuery } from "urql";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 
 type ClaimableToken = {
   user: string;
-  depositId: string;
+  id: string;
   collateralAmountDeposited: string;
   depositAmountAfterFee: string;
   feeAmount: string;
@@ -45,16 +51,37 @@ interface Item {
   date: string;
 }
 
-const formatNumber = (value: number, options?: Intl.NumberFormatOptions) => {
-  return new Intl.NumberFormat("en-US", options).format(value);
+// Convert wei to ether
+const weiToEther = (wei: string | number): string => {
+  return ethers.utils.formatUnits(wei, 18);
+};
+
+// Format number with commas and fixed decimals
+const formatNumber = (
+  number: number | string,
+  decimalPlaces: number = 2
+): string => {
+  const num = typeof number === "string" ? parseFloat(number) : number;
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
 };
 
 const Portfolio = () => {
-  // const router = useRouter();
-  // const isLoggedIn = localStorage.getItem("isLoggedIn");
   const { address } = useAccount({
     config,
   });
+  const [claimableTokens, setClaimableTokens] = useState<ClaimableToken[]>([]);
+  const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
+    ClaimableAUDCToken[]
+  >([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [isFetchingAUDC, setIsFetchingAUDC] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [transactionsPerPage] = useState(5);
+  const [price, setPrice] = useState<string | null>(null);
+
   const { writeContractAsync } = useWriteContract({ config });
 
   const { data: ayfData } = useBalance({
@@ -63,17 +90,42 @@ const Portfolio = () => {
     config,
   });
 
-  const [claimableTokens, setClaimableTokens] = useState<ClaimableToken[]>([]);
-  const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
-    ClaimableAUDCToken[]
-  >([]);
-  const [isFetching, setIsFetching] = useState(true);
-  const [isFetchingAUDC, setIsFetchingAUDC] = useState(true);
-  const [isFetchingTransactions, setIsFetchingTransactions] = useState(true);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [transactionsPerPage] = useState(5);
-  const [price, setPrice] = useState<string | null>(null);
+  const [{ data: priceListData, error: priceListError }] = useQuery({
+    query: GET_PRICE_LIST,
+  });
+
+  const [
+    {
+      data: transactionData,
+      fetching: fetchingTransactions,
+      error: transactionError,
+    },
+  ] = useQuery({
+    query: GET_TRANSACTION_HISTORY,
+    variables: { user: address || "" },
+  });
+
+  const [{ data: claimableDetailsData, fetching: fetchingClaimableDetails }] =
+    useQuery({
+      query: GET_CLAIMABLE_DETAILS,
+      variables: { user: address || "" },
+    });
+
+  const [
+    {
+      data: claimableRedemptionListData,
+      fetching: fetchingClaimableRedemptionList,
+    },
+  ] = useQuery({
+    query: GET_CLAIMABLE_REDEMPTION_LIST,
+  });
+
+  const transactions = transactionData
+    ? [
+        ...transactionData.depositTransactionHistories,
+        ...transactionData.redemptionTransactionHistories,
+      ]
+    : [];
 
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
@@ -88,14 +140,11 @@ const Portfolio = () => {
     setCurrentPage(pageNumber);
   };
 
-  const formatDate = (dateString: string | number | Date) => {
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString("en-UK");
-    const formattedTime = date.toLocaleTimeString("en-UK");
-    return `${formattedDate} ${formattedTime}`;
-  };
+  const formattedPrice = price
+    ? formatNumber(parseFloat(weiToEther(price)))
+    : "...";
 
-  const formattedPrice = price ? parseFloat(price) : 0;
+  const priceInEther = parseFloat(weiToEther(price ?? "0"));
 
   const formatBalance = (balanceData: any): number => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
@@ -103,51 +152,19 @@ const Portfolio = () => {
 
   const formattedAyfBalance = formatBalance(ayfData);
 
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     router.push("/");
-  //   }
-  // }, [isLoggedIn, router]);
-
-  // if (!isLoggedIn) {
-  //   return null;
-  // }
+  useEffect(() => {
+    if (claimableDetailsData) {
+      setClaimableTokens(claimableDetailsData.pendingDepositRequests);
+      setIsFetching(false);
+    }
+  }, [claimableDetailsData]);
 
   useEffect(() => {
-    const fetchClaimableTokens = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-details/${address}`
-        );
-        const data = await response.json();
-        setClaimableTokens(data);
-      } catch (error) {
-        console.error("Error fetching claimable tokens:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-
-    fetchClaimableTokens();
-  }, [address]);
-
-  useEffect(() => {
-    const fetchClaimableAUDCTokens = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/claimable-redemption-list/${address}`
-        );
-        const data = await response.json();
-        setClaimableAUDCTokens(data);
-      } catch (error) {
-        console.error("Error fetching claimable AUDC tokens:", error);
-      } finally {
-        setIsFetchingAUDC(false);
-      }
-    };
-
-    fetchClaimableAUDCTokens();
-  }, [address]);
+    if (claimableRedemptionListData) {
+      setClaimableAUDCTokens(claimableRedemptionListData.redemptionRequests);
+      setIsFetchingAUDC(false);
+    }
+  }, [claimableRedemptionListData]);
 
   const claimMint = async (depositId: string) => {
     const depositIdFormatted = Number(depositId);
@@ -186,53 +203,18 @@ const Portfolio = () => {
   };
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      if (!address) return;
-
-      setIsFetchingTransactions(true);
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/transaction-history/${address}`
-        );
-        setTransactions(response.data);
-      } catch (error) {
-        console.error("Error fetching transactions", error);
-      } finally {
-        setIsFetchingTransactions(false);
-      }
-    };
-    fetchTransactions();
-  }, [address]);
-
-  useEffect(() => {
-    const fetchPriceId = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/price-list`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-
-        const latestPrice = data.sort(
-          (a: Item, b: Item) =>
-            new Date(b.date).getTime() - new Date(a.date).getTime()
-        )[0];
-
-        setPrice(latestPrice ? latestPrice.price : "N/A");
-      } catch (error) {
-        console.error("Error fetching price ID:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchPriceId();
-  }, []);
+    if (priceListData) {
+      const sortedPriceList = priceListData.priceAddeds.sort(
+        (a: Item, b: Item) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      const latestPrice = sortedPriceList[0];
+      setPrice(latestPrice ? latestPrice.price : "...");
+    }
+  }, [priceListData]);
 
   const parsedPrice = price !== null ? parseFloat(price) : 0;
   const ayfMarketValue = formattedAyfBalance * parsedPrice;
-
   return (
     <>
       <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
@@ -260,10 +242,7 @@ const Portfolio = () => {
                     </>
                   ) : (
                     <h3 className="text-2xl">
-                      {formatNumber(formattedPrice * formattedAyfBalance, {
-                        style: "currency",
-                        currency: "AUD",
-                      })}
+                      ${formatNumber(ayfMarketValue)} AUD
                     </h3>
                   )}
                 </>
@@ -342,10 +321,7 @@ const Portfolio = () => {
                         const isClaimable =
                           Date.now() / 1000 >= token.claimTimestampFromChain;
                         return (
-                          <tr
-                            className="border-b borderColor"
-                            key={token.depositId}
-                          >
+                          <tr className="border-b borderColor" key={token.id}>
                             <td>{token.depositAmountAfterFee} AUDC</td>
                             <td>{token.claimTimestamp}</td>
                             <td>
@@ -359,7 +335,7 @@ const Portfolio = () => {
                                     ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
                                     : "bg-[#e6e6e6] text-light cursor-not-allowed"
                                 }`}
-                                onClick={() => claimMint(token.depositId)}
+                                onClick={() => claimMint(token.id)}
                                 disabled={!isClaimable}
                               />
                             </td>
@@ -413,13 +389,15 @@ const Portfolio = () => {
                         >
                           <td className="flex-1">
                             {formatNumber(
-                              token.rwaAmountIn as unknown as number
+                              weiToEther(token.rwaAmountIn as unknown as number)
                             )}{" "}
                             AYF
                           </td>
                           <td className="flex-1">
                             {formatNumber(
-                              token.redeemAmount as unknown as number
+                              weiToEther(
+                                token.redeemAmount as unknown as number
+                              )
                             )}{" "}
                             AUDC
                           </td>
@@ -463,7 +441,7 @@ const Portfolio = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {isFetchingTransactions ? (
+                    {fetchingTransactions ? (
                       <tr className="border-none">
                         <td colSpan={9} className="text-center py-4">
                           <Skeleton height={26} className="w-full" />
@@ -477,25 +455,23 @@ const Portfolio = () => {
                           <td>{transaction.type}</td>
                           <td>{transaction.transactionDate}</td>
                           <td>
-                            {transaction.price
-                              ? `$${formatNumber(
-                                  transaction.price as unknown as number
-                                )}`
-                              : ""}
+                            {transaction.price ? `$${formattedPrice}` : ""}
                           </td>
                           <td>
                             {transaction.tokenAmount
                               ? `${formatNumber(
-                                  parseFloat(transaction.tokenAmount).toFixed(
-                                    2
-                                  ) as unknown as number
+                                  parseFloat(
+                                    weiToEther(transaction.tokenAmount)
+                                  )
                                 )}`
                               : ""}
                           </td>
                           <td>
                             {transaction.stableAmount
                               ? `$${formatNumber(
-                                  transaction.stableAmount as unknown as number
+                                  parseFloat(
+                                    weiToEther(transaction.stableAmount)
+                                  )
                                 )}`
                               : ""}
                           </td>
@@ -511,7 +487,7 @@ const Portfolio = () => {
                   </tbody>
                 </table>
               </div>
-              {!isFetchingTransactions && totalPages > 1 && (
+              {!fetchingTransactions && totalPages > 1 && (
                 <div className="flex justify-between items-center mt-4">
                   <Button
                     text="Previous"
