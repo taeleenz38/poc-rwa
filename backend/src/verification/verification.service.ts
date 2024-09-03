@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 import { DocumentDto } from '../dto/request/document.dto';
 import { ApplicantResponse, ReviewResponse } from '../dto/response/response.dto';
 
-const SUMSUB_APP_TOKEN = 'sbx:UiIPY77LLjmiAQDy53S6VyCO.dfF2rWI73X7ve7I787lE2QuUMVWYmE0d';
-const SUMSUB_SECRET_KEY = 'MFZuESK65NJAOqe4LurFVTopntsL2d4O';
+const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN;
+const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY;
 const SUMSUB_BASE_URL = 'https://api.sumsub.com';
 const verficationLevel = 'basic-kyc-level';
 
