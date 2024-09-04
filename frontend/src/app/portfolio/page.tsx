@@ -118,6 +118,7 @@ const Portfolio = () => {
     },
   ] = useQuery({
     query: GET_CLAIMABLE_REDEMPTION_LIST,
+    variables: { user: address || "" },
   });
 
   const transactions = transactionData

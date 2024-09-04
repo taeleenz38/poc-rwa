@@ -146,9 +146,14 @@ export const GET_PENDING_APPROVAL_REDEMPTION_LIST = gql`
 `;
 
 export const GET_CLAIMABLE_REDEMPTION_LIST = gql`
-  query GetClaimableRedemptionList {
+  query GetClaimableRedemptionList($user: String!) {
     redemptionRequests(
-      where: { price_not: null, priceId_not: null, claimApproved: true }
+      where: {
+        user: $user
+        price_not: null
+        priceId_not: null
+        claimApproved: true
+      }
       first: 1000
       orderBy: requestTimestamp
       orderDirection: desc
