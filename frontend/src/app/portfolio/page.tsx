@@ -144,8 +144,6 @@ const Portfolio = () => {
     ? formatNumber(parseFloat(weiToEther(price)))
     : "...";
 
-  const priceInEther = parseFloat(weiToEther(price ?? "0"));
-
   const formatBalance = (balanceData: any): number => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
   };
