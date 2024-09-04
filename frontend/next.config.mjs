@@ -5,7 +5,8 @@ import path from "path";
 
 console.log("CWD: " + process.cwd());
 const __dirname = new URL(".", import.meta.url).pathname;
-const envPath = path.resolve(__dirname, "config/.env");
+const envPath = path.resolve(process.cwd(), "config/.env");
+
 
 console.log("Env File Path: " + envPath);
 // config({ path: envPath });
