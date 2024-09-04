@@ -49,11 +49,6 @@ const Invest = () => {
   );
   const email = localStorage.getItem("username");
 
-  const [{ data: accountStatusData }, reexecuteQueryAccountStatus] = useQuery({
-    query: GET_ACCOUNT_STATUS,
-    variables: { email },
-  });
-
   const [{ data: priceListData, error: priceListError }] = useQuery({
     query: GET_PRICE_LIST,
   });
@@ -74,22 +69,27 @@ const Invest = () => {
     }
   };
 
-  useEffect(() => {
-    if (accountStatusData) {
-      console.log("Address:", address);
-      console.log("Account Statuses:", accountStatusData.latestUniqueAccountStatusSetByAdmins);
-  
-      const status =
-        accountStatusData.latestUniqueAccountStatusSetByAdmins.find(
-          (status: { account: string | null }) => status.account === address
-        );
-  
-      console.log("Matching Status:", status);
-      setUserStatus(status?.status === "Active" ? "Active" : "Inactive");
+  const fetchUserStatus = async (user: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/auth/status?email=${user}`
+      );
+      if (response.status === 200 || 201) {
+        if (response.data.isActive === true) {
+          setUserStatus("Active");
+        } else {
+          setUserStatus("Inactive");
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch status ", err);
+
+      setUserStatus("Inactive");
     }
-  }, [accountStatusData, address]);
-  
-  
+  };
+
+  fetchUserStatus(email as string);
+
 
   useEffect(() => {
     if (priceListData) {
