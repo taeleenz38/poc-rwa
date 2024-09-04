@@ -60,6 +60,7 @@ export const GET_PENDING_DEPOSIT_REQUESTS = gql`
 export const GET_TRANSACTION_HISTORY = gql`
   query GetTransactionHistory($user: String!) {
     depositTransactionHistories(
+      where: { user: $user }
       first: 1000
       orderBy: transactionDate
       orderDirection: desc
@@ -76,6 +77,7 @@ export const GET_TRANSACTION_HISTORY = gql`
       transactionDate
     }
     redemptionTransactionHistories(
+      where: { user: $user }
       first: 1000
       orderBy: transactionDate
       orderDirection: desc
