@@ -21,7 +21,7 @@ type ClaimableToken = {
   collateralAmountDeposited: string;
   depositAmountAfterFee: string;
   feeAmount: string;
-  claimTimestamp: string;
+  claimableTimestamp: string;
   claimTimestampFromChain: number;
   priceId: string;
   claimableAmount?: number;
@@ -153,6 +153,7 @@ const Portfolio = () => {
 
   useEffect(() => {
     if (claimableDetailsData) {
+      console.log("claimmmm", claimableDetailsData.pendingDepositRequests); // Check the data structure
       setClaimableTokens(claimableDetailsData.pendingDepositRequests);
       setIsFetching(false);
     }
@@ -318,14 +319,25 @@ const Portfolio = () => {
                     ) : (
                       claimableTokens.map((token) => {
                         const isClaimable =
-                          Date.now() / 1000 >= token.claimTimestampFromChain;
+                          Date.now() >=
+                          new Date(token.claimableTimestamp).getTime();
+
                         return (
                           <tr className="border-b borderColor" key={token.id}>
-                            <td>{token.depositAmountAfterFee} AUDC</td>
-                            <td>{token.claimTimestamp}</td>
                             <td>
-                              {(token.claimableAmount || 0).toFixed(3)} AYF
+                              {formatNumber(
+                                weiToEther(token.depositAmountAfterFee)
+                              )}{" "}
+                              AUDC
                             </td>
+                            <td>{token.claimableTimestamp}</td>
+                            <td>
+                              {formatNumber(
+                                weiToEther(token.claimableAmount ?? 0)
+                              )}{" "}
+                              AYF
+                            </td>
+
                             <td>
                               <Button
                                 text="Claim"
