@@ -187,9 +187,9 @@ const Page = () => {
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full" />
                         ) : userStatus === "Active" ? (
-                          <span className="text-sm">Completed</span>
+                          <span className="text-sm"> Completed</span>
                         ) : (
-                          <span className="text-sm">Pending</span>
+                          <span className="text-sm"> Pending</span>
                         )}
                       </h3>
                     </div>
