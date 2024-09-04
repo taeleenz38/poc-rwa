@@ -10,8 +10,6 @@ import { map } from 'rxjs/operators';
 import { DocumentDto } from '../dto/request/document.dto';
 import { ApplicantResponse, ReviewResponse } from '../dto/response/response.dto';
 
-const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN;
-const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY;
 const SUMSUB_BASE_URL = 'https://api.sumsub.com';
 const verficationLevel = 'basic-kyc-level';
 
@@ -23,7 +21,7 @@ export class KycVerifcationService {
 
   private createSignature(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     const ts = Math.floor(Date.now() / 1000);
-    const signature = crypto.createHmac('sha256', SUMSUB_SECRET_KEY);
+    const signature = crypto.createHmac('sha256', process.env.SUMSUB_SECRET_KEY);
     signature.update(ts + config.method.toUpperCase() + config.url);
 
     if (config.data instanceof FormData) {
@@ -49,7 +47,7 @@ export class KycVerifcationService {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-App-Token': SUMSUB_APP_TOKEN,
+        'X-App-Token': process.env.SUMSUB_APP_TOKEN,
       },
       data: JSON.stringify(body),
       baseURL: SUMSUB_BASE_URL,
@@ -92,7 +90,7 @@ export class KycVerifcationService {
       url,
       headers: {
         'Accept': 'application/json',
-        'X-App-Token': SUMSUB_APP_TOKEN,
+        'X-App-Token': process.env.SUMSUB_APP_TOKEN,
         ...form.getHeaders(),
       },
       data: form,
@@ -119,7 +117,7 @@ export class KycVerifcationService {
       url,
       headers: {
         'Accept': 'application/json',
-        'X-App-Token': SUMSUB_APP_TOKEN,
+        'X-App-Token': process.env.SUMSUB_APP_TOKEN,
       },
       baseURL: SUMSUB_BASE_URL,
     };
@@ -145,7 +143,7 @@ export class KycVerifcationService {
       url,
       headers: {
         'Accept': 'application/json',
-        'X-App-Token': SUMSUB_APP_TOKEN,
+        'X-App-Token': process.env.SUMSUB_APP_TOKEN,
       },
       baseURL: SUMSUB_BASE_URL,
     };
