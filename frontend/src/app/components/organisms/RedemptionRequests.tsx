@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
 import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
+import SetRedemptionFee from "./Popups/SetRedemptionFee";
 import { useQuery } from "urql";
 import { GET_PENDING_REDEMPTION_REQUEST_LIST } from "@/lib/urqlQueries";
 import { ethers } from "ethers";
@@ -45,6 +46,7 @@ const RedemptionRequests = () => {
   >(undefined);
   const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
     useState(false);
+  const [isRedemptionFeeOpen, setIsRedemptionFeeOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [
@@ -93,12 +95,19 @@ const RedemptionRequests = () => {
   );
 
   return (
-    <div className="p-3">
+    <div className="p-4">
+      <div className="w-full flex justify-center py-6">
+        <Button
+          text={"Set Redemption Fee"}
+          onClick={() => setIsRedemptionFeeOpen(true)}
+          className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+        />
+      </div>
       {fetchingRedemptions ? (
         <div className="text-center">Redemption Requests loading...</div>
       ) : (
         <div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto pt-4">
             <table className="table w-full">
               <thead>
                 <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
@@ -194,6 +203,10 @@ const RedemptionRequests = () => {
         isOpen={isSetPriceIdForRedemptionIdOpen}
         onClose={() => setIsSetPriceIdForRedemptionIdOpen(false)}
         redemptionId={selectedRedemptionId}
+      />
+      <SetRedemptionFee
+        isOpen={isRedemptionFeeOpen}
+        onClose={() => setIsRedemptionFeeOpen(false)}
       />
     </div>
   );

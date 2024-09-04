@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../atoms/Buttons/Button";
 import AddPrice from "./Popups/SetPrice";
 import UpdatePrice from "./Popups/UpdatePrice";
+import SetPricer from "./Popups/SetPricer";
 import { useQuery } from "urql";
 import { GET_PRICE_LIST } from "@/lib/urqlQueries";
 
@@ -22,6 +23,7 @@ const Pricing = () => {
   const [updatePriceOprn, setUpdatePriceOpen] = useState(false);
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isPricerOpen, setIsPricerOpen] = useState(false);
 
   const [{ data, fetching, error }] = useQuery({
     query: GET_PRICE_LIST,
@@ -103,6 +105,11 @@ const Pricing = () => {
           } py-2 rounded-md`}
           disabled={selectedPriceId === null}
         />
+        <Button
+          text={"Set Pricer"}
+          onClick={() => setIsPricerOpen(true)}
+          className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+        />
       </div>
       <div className="overflow-x-auto pt-4">
         <table className="table">
@@ -160,6 +167,10 @@ const Pricing = () => {
           isOpen={updatePriceOprn}
           onClose={() => setUpdatePriceOpen(false)}
           priceId={selectedPriceId || ""}
+        />
+        <SetPricer
+          isOpen={isPricerOpen}
+          onClose={() => setIsPricerOpen(false)}
         />
       </div>
 

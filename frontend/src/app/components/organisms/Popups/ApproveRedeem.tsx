@@ -113,7 +113,6 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
           setTxHash(transactionResponse.data.transactionHash);
           setError("");
         } else {
-          // If transactionHash is null, continue polling
           setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
         }
       } catch (error) {

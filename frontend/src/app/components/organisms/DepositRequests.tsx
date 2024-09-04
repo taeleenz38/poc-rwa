@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
 import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
+import SetMintFee from "./Popups/SetMintFee";
 import Button from "@/app/components/atoms/Buttons/Button";
 import { GET_PENDING_DEPOSIT_REQUESTS } from "@/lib/urqlQueries";
 import { useQuery } from "urql";
@@ -41,6 +42,7 @@ const DepositRequests = () => {
   const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
     useState(false);
   const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] = useState(false);
+  const [isSetMintFeeOpen, setIsSetMintFeeOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDepositId, setSelectedDepositId] = useState<
@@ -98,12 +100,19 @@ const DepositRequests = () => {
   );
 
   return (
-    <div className="p-3">
+    <div className="p-4">
+      <div className="w-full flex justify-center py-6">
+        <Button
+          text={"Set Mint Fee"}
+          onClick={() => setIsSetMintFeeOpen(true)}
+          className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+        />
+      </div>
       {fetchingDeposits ? (
         <div className="text-center">Deposit Requests loading...</div>
       ) : (
         <div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto pt-4">
             <table className="table w-full">
               <thead>
                 <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
@@ -223,6 +232,10 @@ const DepositRequests = () => {
         isOpen={isSetPriceIdForDepositIdOpen}
         onClose={() => setIsSetPriceIdForDepositIdOpen(false)}
         depositId={selectedDepositId}
+      />
+      <SetMintFee
+        isOpen={isSetMintFeeOpen}
+        onClose={() => setIsSetMintFeeOpen(false)}
       />
     </div>
   );
