@@ -76,13 +76,20 @@ const Invest = () => {
 
   useEffect(() => {
     if (accountStatusData) {
+      console.log("Address:", address);
+      console.log("Account Statuses:", accountStatusData.latestUniqueAccountStatusSetByAdmins);
+  
       const status =
         accountStatusData.latestUniqueAccountStatusSetByAdmins.find(
-          (status: { account: string | null }) => status.account === email
+          (status: { account: string | null }) => status.account === address
         );
+  
+      console.log("Matching Status:", status);
       setUserStatus(status?.status === "Active" ? "Active" : "Inactive");
     }
-  }, [accountStatusData, email]);
+  }, [accountStatusData, address]);
+  
+  
 
   useEffect(() => {
     if (priceListData) {
