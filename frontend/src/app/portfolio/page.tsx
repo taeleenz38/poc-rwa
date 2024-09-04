@@ -29,7 +29,7 @@ type ClaimableToken = {
 
 type ClaimableAUDCToken = {
   user: string;
-  redemptionId: string;
+  id: string;
   rwaAmountIn: string;
   priceId: string;
   redeemAmount: number;
@@ -394,10 +394,7 @@ const Portfolio = () => {
                       </tr>
                     ) : (
                       claimableAUDCTokens.map((token) => (
-                        <tr
-                          className="border-b borderColor"
-                          key={token.redemptionId}
-                        >
+                        <tr className="border-b borderColor" key={token.id}>
                           <td className="flex-1">
                             {formatNumber(
                               weiToEther(token.rwaAmountIn as unknown as number)
@@ -420,9 +417,7 @@ const Portfolio = () => {
                                   ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
                                   : "bg-[#e6e6e6] text-light cursor-not-allowed"
                               }`}
-                              onClick={() =>
-                                claimRedemption(token.redemptionId)
-                              }
+                              onClick={() => claimRedemption(token.id)}
                               disabled={false}
                             />
                           </td>
