@@ -1,5 +1,5 @@
 #base-image
-FROM node:20-alpine AS builder
+FROM node:20.11.1-alpine AS builder
 ADD . /app/
 
 WORKDIR /app
@@ -9,7 +9,7 @@ RUN npm ci
 RUN npm run build
 RUN ls -al /app 
 
-FROM node:20-alpine AS runner
+FROM node:20.11.1-alpine AS runner
 WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
