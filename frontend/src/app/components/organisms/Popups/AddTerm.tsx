@@ -1,5 +1,4 @@
 "use client";
-import { ethers } from "ethers";
 import { useState } from "react";
 import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
@@ -8,21 +7,21 @@ import abi from "@/artifacts/IAllowlist.json";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
-interface SetValidTermIndexesProps {
+interface AddTermProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
-  isOpen,
-  onClose,
-}) => {
-  const [validTermIndexes, setValidTermIndexes] = useState<number[]>([]);
+const AddTerm: React.FC<AddTermProps> = ({ isOpen, onClose }) => {
+  const [term, setTerm] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
-  const { writeContractAsync, isPending } = useWriteContract({ config });
+  const {
+    writeContractAsync: writeAddTermContractAsync,
+    isPending: isAddTermPending,
+  } = useWriteContract({ config });
 
   const resetForm = () => {
-    setValidTermIndexes([]);
+    setTerm(null);
     setTxHash(null);
   };
 
@@ -31,32 +30,22 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
     resetForm();
   };
 
-  const onValidTermSetValidTermIndexesChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    const indexes = value
-      .split(",")
-      .map((item) => parseInt(item.trim(), 10))
-      .filter((item) => !isNaN(item));
-    setValidTermIndexes(indexes);
+  const onTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTerm(e.target.value);
   };
 
-  const handleSetValidTermIndexes = async () => {
+  const handleAddTerm = async () => {
     try {
-      const tx = await writeContractAsync({
+      const tx = await writeAddTermContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_ALLOWLIST_ADDRESS as `0x${string}`,
-        functionName: "setValidTermIndexes",
-        args: [validTermIndexes],
+        functionName: "addTerm",
+        args: [term],
       });
-      setTxHash(txHash);
-      console.log(
-        "Successfully set valid term indexes - transaction hash:",
-        tx
-      );
+      setTxHash(tx);
+      console.log("Term successfully added - transaction hash:", tx);
     } catch (error) {
-      console.error("Error setting valid term indexes:", error);
+      console.error("Error adding term to allowlist:", error);
     }
   };
 
@@ -71,16 +60,19 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-2xl font-bold text-primary">
-            Set Valid Term Indexes
-          </h2>
+          <h2 className="text-2xl font-bold text-primary">Add Term</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <InputField
-          label="Valid Term Indexes:"
-          value={validTermIndexes.join(", ")}
-          onChange={onValidTermSetValidTermIndexesChange}
-        />
+        <div className="text-center px-8  mb-4 ">
+          Please enter the term you wish to add.
+        </div>
+        <div className="w-full text-center mx-auto mb-4">
+          <InputField
+            label="Term:"
+            value={term || ""}
+            onChange={onTermChange}
+          />
+        </div>
         <div className="w-full flex justify-between">
           <div className="w-[49%]">
             <Submit
@@ -92,16 +84,26 @@ const SetValidTermIndexes: React.FC<SetValidTermIndexesProps> = ({
           </div>
           <div className="w-[49%]">
             <Submit
-              onClick={handleSetValidTermIndexes}
-              label={isPending ? "Confirming..." : "Set"}
-              disabled={isPending || isLoading}
+              onClick={handleAddTerm}
+              label={isAddTermPending ? "Confirming..." : "Add Term"}
+              disabled={isAddTermPending || isLoading}
               className="w-full"
             />
           </div>
         </div>
+        {txHash && (
+          <div className="mt-4 text-white mb-4">
+            {isLoading && <p>Transaction is pending...</p>}
+            {receipt && (
+              <p className="text-white overflow-x-scroll">
+                Transaction successful! Hash: {txHash}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default SetValidTermIndexes;
+export default AddTerm;

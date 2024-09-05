@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 import Button from "../atoms/Buttons/Button";
 import AllowlistPopUp from "@/app/components/organisms/Popups/AllowlistPopUp";
+import AddTerm from "@/app/components/organisms/Popups/AddTerm";
 import RemoveAllowListPopUp from "./Popups/RemoveAllowListPopUp";
+import SetValidTermIndexes from "./Popups/SetValidTermIndexes";
 import { GET_ACCOUNT_STATUS } from "@/lib/urqlQueries";
 import { useQuery } from "urql";
 
@@ -20,6 +22,8 @@ const AllowlistTab = () => {
   // const [isTableLoading, setIsTableLoading] = useState(false);
   const [addAddressOpen, setAddAddressOpen] = useState(false);
   const [removeAddressOpen, setRemoveAddressOpen] = useState(false);
+  const [addTerm, setAddTerm] = useState(false);
+  const [validTermIndexes, setValidTermIndexes] = useState(false);
   const [selectedAllowListIndex, setSelectedAllowListIndex] = useState<
     number | null
   >(null);
@@ -106,6 +110,16 @@ const AllowlistTab = () => {
                 : "bg-primary text-light hover:bg-light hover:text-primary"
             } py-2 rounded-md`}
             disabled={selectedAllowListIndex === null}
+          />
+          <Button
+            text={"Add Term"}
+            onClick={() => setAddTerm(true)}
+            className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+          />
+          <Button
+            text={"Set Valid Term Indexes"}
+            onClick={() => setValidTermIndexes(true)}
+            className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
           />
         </div>
 
@@ -197,6 +211,11 @@ const AllowlistTab = () => {
           isOpen={removeAddressOpen}
           onClose={() => setRemoveAddressOpen(false)}
           walletAddress={wallets[selectedAllowListIndex as number]?.account}
+        />
+        <AddTerm isOpen={addTerm} onClose={() => setAddTerm(false)} />
+        <SetValidTermIndexes
+          isOpen={validTermIndexes}
+          onClose={() => setValidTermIndexes(false)}
         />
       </div>
     </div>
