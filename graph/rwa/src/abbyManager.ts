@@ -83,6 +83,12 @@ export function handlePriceIdSetForDepositEvent(event: PriceIdSetForDepositEvent
                     let claimableAmount = scaledDepositAmount.div(price);
 
                     pendingDepositRequestEntity.claimableAmount = claimableAmount;
+                    let transactionHistoryEntity = DepositTransactionHistory.load(depositId);
+                    if (transactionHistoryEntity != null) {
+
+                        transactionHistoryEntity.price = latestPriceEntity.price
+                        transactionHistoryEntity.save()
+                    }
                 }
             }
         }
@@ -189,7 +195,7 @@ export function handleRedemptionRequestedEvent(event: RedemptionRequestedEvent):
         transactionHistoryEntity.type = "Redemption"
         transactionHistoryEntity.currency = "AUDC"
         transactionHistoryEntity.status = "SUBMITTED"
-        transactionHistoryEntity.feeAmount = event.params.rwaAmountIn
+        transactionHistoryEntity.tokenAmount = event.params.rwaAmountIn
         transactionHistoryEntity.requestTime = requestTimeStamp
         transactionHistoryEntity.transactionDate = requestTimeStamp
         transactionHistoryEntity.save()
@@ -280,6 +286,14 @@ export function handlePriceIdSetForRedemption(event: PriceIdSetForRedemptionEven
                 let redeemAmount = redemptionRequestEntity.rwaAmountIn.times(latestPriceEntity.price);
                 let redeemAmountConverted = redeemAmount.div(BigInt.fromI32(10).pow(18));
                 redemptionRequestEntity.redeemAmount = redeemAmountConverted
+
+                let transactionHistoryEntity = RedemptionTransactionHistory.load(event.params.redemptionIdSet);
+                if (transactionHistoryEntity != null) {
+
+                    transactionHistoryEntity.price = latestPriceEntity.price
+                    transactionHistoryEntity.save()
+                }
+
             }
         }
         redemptionRequestEntity.save()

@@ -94,7 +94,7 @@ type DepositTransactionHistory @entity {
   user: Bytes! # address
   stableAmount: BigInt # Optional, storing as BigInt
   collateralAmount: BigInt # uint256
-  feeAmount: BigInt! # uint256
+  feeAmount: BigInt # uint256
   tokenAmount: BigInt # Optional, storing as BigInt
   type: String! # Type is required, storing as String
   currency: String # Optional, storing as String
@@ -174,7 +174,7 @@ type RedemptionTransactionHistory @entity {
   user: Bytes! # address
   stableAmount: BigInt # Optional, storing as BigInt
   collateralAmount: BigInt # uint256
-  feeAmount: BigInt! # uint256
+  feeAmount: BigInt # uint256
   tokenAmount: BigInt # Optional, storing as BigInt
   type: String! # Type is required, storing as String
   currency: String # Optional, storing as String
