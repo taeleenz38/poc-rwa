@@ -76,6 +76,12 @@ const DepositRequests = () => {
     return parseInt(hex, 16);
   };
 
+  const sortedDepositRequests = [...depositRequests].sort((a, b) => {
+    const timestampA = a.requestTimestamp ? new Date(a.requestTimestamp).getTime() : 0;
+    const timestampB = b.requestTimestamp ? new Date(b.requestTimestamp).getTime() : 0;
+    return timestampB - timestampA;
+  });
+
   const totalPages = Math.ceil(depositRequests.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
@@ -94,11 +100,11 @@ const DepositRequests = () => {
     }
   };
 
-  const paginatedRequests = depositRequests.slice(
+  const paginatedRequests = sortedDepositRequests.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
+  
   return (
     <div className="p-4">
       <div className="w-full flex justify-center py-6">

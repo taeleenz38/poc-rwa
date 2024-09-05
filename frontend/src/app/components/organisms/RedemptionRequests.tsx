@@ -71,6 +71,13 @@ const RedemptionRequests = () => {
     return parseInt(hex, 16);
   };
 
+  const sortedRedemptionRequests = [...redemptionRequests].sort((a, b) => {
+    const timestampA = a.requestTimestamp ? new Date(a.requestTimestamp).getTime() : 0;
+    const timestampB = b.requestTimestamp ? new Date(b.requestTimestamp).getTime() : 0;
+    return timestampB - timestampA;
+  });
+
+
   const totalPages = Math.ceil(redemptionRequests.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
@@ -89,7 +96,7 @@ const RedemptionRequests = () => {
     }
   };
 
-  const paginatedRequests = redemptionRequests.slice(
+  const paginatedRequests = sortedRedemptionRequests.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
