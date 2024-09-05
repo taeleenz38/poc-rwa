@@ -467,7 +467,13 @@ const Portfolio = () => {
                           <td>{transaction.type}</td>
                           <td>{transaction.transactionDate}</td>
                           <td>
-                            {transaction.price ? `$${formattedPrice}` : ""}
+                            {transaction.price
+                              ? `$${formatNumber(
+                                  parseFloat(
+                                    weiToEther(transaction.price)
+                                  )
+                                )}`
+                              : ""}
                           </td>
                           <td>
                             {transaction.tokenAmount
