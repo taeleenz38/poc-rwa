@@ -4,6 +4,7 @@ import axios from "axios";
 import Button from "../atoms/Buttons/Button";
 import ApproveRedeem from "./Popups/ApproveRedeem";
 import { GET_PENDING_APPROVAL_REDEMPTION_LIST } from "@/lib/urqlQueries";
+import { ethers } from "ethers";
 import { useQuery } from "urql";
 
 type RedemptionListData = {
@@ -91,10 +92,16 @@ const RedemptionApprovalTab = () => {
                   className="border-b-2 border-[#F5F2F2] text-sm text-gray"
                   key={index}
                 >
-                  <td className="text-center">{request.id}</td>
+                  <td className="text-center">{BigInt(request.id).toString()}</td>
                   <td className="text-center">{request.user}</td>
-                  <td className="text-center">{request.redeemAmount} AUDC</td>
-                  <td className="text-center">{request.rwaAmountIn} AYF</td>
+                  <td className="text-center">
+                    {" "}
+                    {ethers.utils.formatUnits(request.redeemAmount, 18)} AUDC
+                  </td>
+                  <td className="text-center">
+                    {" "}
+                    {ethers.utils.formatUnits(request.rwaAmountIn, 18)} AYF
+                  </td>
                   <td className="text-center">
                     <div className="flex justify-center items-center">
                       <input
