@@ -14,6 +14,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useQuery } from "urql";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
+import BigNumber from "bignumber.js";
 
 type ClaimableToken = {
   user: string;
@@ -21,7 +22,7 @@ type ClaimableToken = {
   collateralAmountDeposited: string;
   depositAmountAfterFee: string;
   feeAmount: string;
-  claimTimestamp: string;
+  claimableTimestamp: string;
   claimTimestampFromChain: number;
   priceId: string;
   claimableAmount?: number;
@@ -29,7 +30,7 @@ type ClaimableToken = {
 
 type ClaimableAUDCToken = {
   user: string;
-  redemptionId: string;
+  id: string;
   rwaAmountIn: string;
   priceId: string;
   redeemAmount: number;
@@ -53,7 +54,9 @@ interface Item {
 
 // Convert wei to ether
 const weiToEther = (wei: string | number): string => {
-  return ethers.utils.formatUnits(wei, 18);
+  const weiBN = new BigNumber(wei);
+  const etherBN = weiBN.dividedBy(new BigNumber(10).pow(18));
+  return etherBN.toFixed();
 };
 
 // Format number with commas and fixed decimals
@@ -127,6 +130,8 @@ const Portfolio = () => {
         ...transactionData.redemptionTransactionHistories,
       ]
     : [];
+
+  console.log("transactions", transactions);
 
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
@@ -213,7 +218,9 @@ const Portfolio = () => {
   }, [priceListData]);
 
   const parsedPrice = price !== null ? parseFloat(price) : 0;
-  const ayfMarketValue = formattedAyfBalance * parsedPrice;
+  const ayfBalanceInEther = weiToEther(formattedAyfBalance.toString());
+  const ayfMarketValueInEther = parseFloat(ayfBalanceInEther) * parsedPrice;
+
   return (
     <>
       <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
@@ -241,7 +248,7 @@ const Portfolio = () => {
                     </>
                   ) : (
                     <h3 className="text-2xl">
-                      ${formatNumber(ayfMarketValue)} AUD
+                      ${formatNumber(ayfMarketValueInEther)} AUD
                     </h3>
                   )}
                 </>
@@ -279,7 +286,7 @@ const Portfolio = () => {
                           <td>Copiam Australian Yield Fund</td>
                           <td>${formattedPrice}</td>
                           <td>{formatNumber(formattedAyfBalance)}</td>
-                          <td>${formatNumber(ayfMarketValue)}</td>
+                          <td>${formatNumber(ayfMarketValueInEther)}</td>
                         </tr>
                       </>
                     )}
@@ -318,14 +325,25 @@ const Portfolio = () => {
                     ) : (
                       claimableTokens.map((token) => {
                         const isClaimable =
-                          Date.now() / 1000 >= token.claimTimestampFromChain;
+                          Date.now() >=
+                          new Date(token.claimableTimestamp).getTime();
+
                         return (
                           <tr className="border-b borderColor" key={token.id}>
-                            <td>{token.depositAmountAfterFee} AUDC</td>
-                            <td>{token.claimTimestamp}</td>
                             <td>
-                              {(token.claimableAmount || 0).toFixed(3)} AYF
+                              {formatNumber(
+                                weiToEther(token.depositAmountAfterFee)
+                              )}{" "}
+                              AUDC
                             </td>
+                            <td>{token.claimableTimestamp}</td>
+                            <td>
+                              {formatNumber(
+                                weiToEther(token.claimableAmount ?? 0)
+                              )}{" "}
+                              AYF
+                            </td>
+
                             <td>
                               <Button
                                 text="Claim"
@@ -382,10 +400,7 @@ const Portfolio = () => {
                       </tr>
                     ) : (
                       claimableAUDCTokens.map((token) => (
-                        <tr
-                          className="border-b borderColor"
-                          key={token.redemptionId}
-                        >
+                        <tr className="border-b borderColor" key={token.id}>
                           <td className="flex-1">
                             {formatNumber(
                               weiToEther(token.rwaAmountIn as unknown as number)
@@ -408,9 +423,7 @@ const Portfolio = () => {
                                   ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
                                   : "bg-[#e6e6e6] text-light cursor-not-allowed"
                               }`}
-                              onClick={() =>
-                                claimRedemption(token.redemptionId)
-                              }
+                              onClick={() => claimRedemption(token.id)}
                               disabled={false}
                             />
                           </td>
