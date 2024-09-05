@@ -75,6 +75,7 @@ export const GET_TRANSACTION_HISTORY = gql`
       requestTime
       completedTime
       transactionDate
+      price
     }
     redemptionTransactionHistories(
       where: { user: $user }
@@ -92,6 +93,7 @@ export const GET_TRANSACTION_HISTORY = gql`
       requestTime
       completedTime
       transactionDate
+      price
     }
   }
 `;
