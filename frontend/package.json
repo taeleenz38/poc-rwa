@@ -13,6 +13,7 @@
     "@types/hellosign-embedded": "^2.0.6",
     "@web3modal/wagmi": "^4.0.9",
     "axios": "^1.7.2",
+    "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
     "encoding": "^0.1.13",
     "ethers": "5.7",
