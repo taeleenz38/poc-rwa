@@ -14,6 +14,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useQuery } from "urql";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
+import BigNumber from "bignumber.js";
 
 type ClaimableToken = {
   user: string;
@@ -53,7 +54,9 @@ interface Item {
 
 // Convert wei to ether
 const weiToEther = (wei: string | number): string => {
-  return ethers.utils.formatUnits(wei, 18);
+  const weiBN = new BigNumber(wei);
+  const etherBN = weiBN.dividedBy(new BigNumber(10).pow(18));
+  return etherBN.toFixed();
 };
 
 // Format number with commas and fixed decimals
@@ -128,6 +131,8 @@ const Portfolio = () => {
       ]
     : [];
 
+  console.log("transactions", transactions);
+
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
   const currentTransactions = transactions.slice(
@@ -153,7 +158,6 @@ const Portfolio = () => {
 
   useEffect(() => {
     if (claimableDetailsData) {
-      console.log("claimmmm", claimableDetailsData.pendingDepositRequests); // Check the data structure
       setClaimableTokens(claimableDetailsData.pendingDepositRequests);
       setIsFetching(false);
     }
@@ -214,7 +218,9 @@ const Portfolio = () => {
   }, [priceListData]);
 
   const parsedPrice = price !== null ? parseFloat(price) : 0;
-  const ayfMarketValue = formattedAyfBalance * parsedPrice;
+  const ayfBalanceInEther = weiToEther(formattedAyfBalance.toString());
+  const ayfMarketValueInEther = parseFloat(ayfBalanceInEther) * parsedPrice;
+
   return (
     <>
       <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
@@ -242,7 +248,7 @@ const Portfolio = () => {
                     </>
                   ) : (
                     <h3 className="text-2xl">
-                      ${formatNumber(ayfMarketValue)} AUD
+                      ${formatNumber(ayfMarketValueInEther)} AUD
                     </h3>
                   )}
                 </>
@@ -280,7 +286,7 @@ const Portfolio = () => {
                           <td>Copiam Australian Yield Fund</td>
                           <td>${formattedPrice}</td>
                           <td>{formatNumber(formattedAyfBalance)}</td>
-                          <td>${formatNumber(ayfMarketValue)}</td>
+                          <td>${formatNumber(ayfMarketValueInEther)}</td>
                         </tr>
                       </>
                     )}
