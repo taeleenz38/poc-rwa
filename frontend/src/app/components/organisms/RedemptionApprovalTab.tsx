@@ -92,7 +92,9 @@ const RedemptionApprovalTab = () => {
                   className="border-b-2 border-[#F5F2F2] text-sm text-gray"
                   key={index}
                 >
-                  <td className="text-center">{BigInt(request.id).toString()}</td>
+                  <td className="text-center">
+                    {BigInt(request.id).toString()}
+                  </td>
                   <td className="text-center">{request.user}</td>
                   <td className="text-center">
                     {" "}
@@ -121,8 +123,18 @@ const RedemptionApprovalTab = () => {
         <ApproveRedeem
           isOpen={approveRedeem}
           onClose={() => setApproveRedeem(false)}
-          redemptionId={selectedRedemption?.id || ""}
-          redeemAmount={selectedRedemption?.redeemAmount || 0}
+          redemptionId={
+            selectedRedemption?.id
+              ? parseInt(selectedRedemption.id, 16).toString()
+              : ""
+          }
+          redeemAmount={
+            selectedRedemption?.redeemAmount
+              ? parseFloat(
+                  ethers.utils.formatUnits(selectedRedemption.redeemAmount, 18)
+                )
+              : 0
+          }
         />
       </div>
     </div>

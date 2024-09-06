@@ -455,49 +455,54 @@ const Portfolio = () => {
                   <tbody>
                     {fetchingTransactions ? (
                       <tr className="border-none">
-                        <td colSpan={9} className="text-center py-4">
+                        <td colSpan={7} className="text-center py-4">
                           <Skeleton height={26} className="w-full" />
                         </td>
                       </tr>
                     ) : currentTransactions.length > 0 ? (
-                      currentTransactions.map((transaction, index) => (
-                        <tr key={index} className="border-b borderColor">
-                          <td>Copiam Australian Yield Fund</td>
-                          <td>{transaction.status}</td>
-                          <td>{transaction.type}</td>
-                          <td>{transaction.transactionDate}</td>
-                          <td>
-                            {transaction.price
-                              ? `$${formatNumber(
-                                  parseFloat(
-                                    weiToEther(transaction.price)
-                                  )
-                                )}`
-                              : ""}
-                          </td>
-                          <td>
-                            {transaction.tokenAmount
-                              ? `${formatNumber(
-                                  parseFloat(
-                                    weiToEther(transaction.tokenAmount)
-                                  )
-                                )}`
-                              : ""}
-                          </td>
-                          <td>
-                            {transaction.stableAmount
-                              ? `$${formatNumber(
-                                  parseFloat(
-                                    weiToEther(transaction.stableAmount)
-                                  )
-                                )}`
-                              : ""}
-                          </td>
-                        </tr>
-                      ))
+                      currentTransactions
+                        .slice() 
+                        .sort(
+                          (a, b) =>
+                            new Date(b.transactionDate).getTime() -
+                            new Date(a.transactionDate).getTime()
+                        )
+                        .map((transaction, index) => (
+                          <tr key={index} className="border-b borderColor">
+                            <td>Copiam Australian Yield Fund</td>
+                            <td>{transaction.status}</td>
+                            <td>{transaction.type}</td>
+                            <td>{transaction.transactionDate}</td>
+                            <td>
+                              {transaction.price
+                                ? `$${formatNumber(
+                                    parseFloat(weiToEther(transaction.price))
+                                  )}`
+                                : ""}
+                            </td>
+                            <td>
+                              {transaction.tokenAmount
+                                ? `${formatNumber(
+                                    parseFloat(
+                                      weiToEther(transaction.tokenAmount)
+                                    )
+                                  )}`
+                                : ""}
+                            </td>
+                            <td>
+                              {transaction.stableAmount
+                                ? `$${formatNumber(
+                                    parseFloat(
+                                      weiToEther(transaction.stableAmount)
+                                    )
+                                  )}`
+                                : ""}
+                            </td>
+                          </tr>
+                        ))
                     ) : (
                       <tr className="border-none">
-                        <td colSpan={9} className="text-center py-4">
+                        <td colSpan={7} className="text-center py-4">
                           No transactions found
                         </td>
                       </tr>
