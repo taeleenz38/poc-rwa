@@ -240,6 +240,9 @@ export function handleRedemptionCompletedEvent(event: RedemptionCompletedEvent):
         //let rwaAmountOutConverted = rwaAmountRequested.div(BigInt.fromI32(10).pow(16));
 
         transactionHistoryEntity.tokenAmount = rwaAmountRequested
+        let stableAmount = rwaAmountRequested.times(event.params.price);
+        let stableAmountConverted = stableAmount.div(BigInt.fromI32(10).pow(18));
+        transactionHistoryEntity.stableAmount = stableAmountConverted
         transactionHistoryEntity.save()
     }
 }
