@@ -20,7 +20,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   IPricerReader public pricer;
   // Address to receive deposits
   address public constant assetRecipient =
-    0x0686b3a7B9bE2751bB51084a6E0E7DB7f1746eb1; // ABBY - CB Deposit Address
+    0xB473DeE33A20aDb36Cd5BA6BD68f115a285fa528; // ABBY - CB Deposit Address
   // Address to send redemptions
   address public assetSender;
   // Address fee recipient
