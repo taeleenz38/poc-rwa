@@ -15,14 +15,14 @@ async function main() {
   console.log("The managerAdmin is:", managerAdmin);
 
 
-  await deploy("ABBY_Pricer", {
+  await deploy("AYF_Pricer", {
     from: deployer,
     contract: "Pricer",
     args: [guardian, managerAdmin],
     log: true,
   });
 
-  const pricer = await ethers.getContract("ABBY_Pricer");
+  const pricer = await ethers.getContract("AYF_Pricer");
 
   // Set price to $1
   // await pricer.connect(managerAdmin).addPrice(parseUnits("10", 18), "1");

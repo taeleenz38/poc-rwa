@@ -17,13 +17,13 @@ async function main() {
   const instantMintAdmin = process.env.GUARDIAN_WALLET!;
   const feeRecipient = process.env.FEE_RECEIPIENT_WALLET!;
 
-  const abby = await ethers.getContract("ABBY");
+  const abby = await ethers.getContract("AFY");
   const blocklist = await ethers.getContract("Blocklist");
 
   console.log('parameters parsed to contract:', AUDC_ADDRESS, abby.address, managerAdmin, pauser, assetSender, feeRecipient, blocklist.address);
 
 
-  await deploy("ABBYManager", { //PRICE_ID_SETTER_ROLE, TIMESTAMP_SETTER_ROLE, PAUSER_ADMIN - managerAdmin
+  await deploy("AFYManager", { //PRICE_ID_SETTER_ROLE, TIMESTAMP_SETTER_ROLE, PAUSER_ADMIN - managerAdmin
     from: deployer,
     args: [
       AUDC_ADDRESS, //_collateral
@@ -40,8 +40,8 @@ async function main() {
     gasLimit: 6000000, // Manually specify gas limit for deployment
   });
   console.log('deployed ABBYManager!');
-  const abbyManager = await ethers.getContract("ABBYManager");
-  const pricer = await ethers.getContract("ABBY_Pricer");
+  const abbyManager = await ethers.getContract("AFYManager");
+  const pricer = await ethers.getContract("AFY_Pricer");
 
   // Grant minting role to abby manager
   await abby

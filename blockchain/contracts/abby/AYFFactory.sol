@@ -4,7 +4,7 @@ pragma solidity 0.8.16;
 // Proxy admin contract used in OZ upgrades plugin
 import "contracts/external/openzeppelin/contracts/proxy/ProxyAdmin.sol";
 import "contracts/Proxy.sol";
-import "contracts/abby/ABBY.sol";
+import "contracts/abby/AYF.sol";
 import "contracts/interfaces/IMulticall.sol";
 
 /**
@@ -25,7 +25,7 @@ import "contracts/interfaces/IMulticall.sol";
  *
  * @notice `guardian` address in constructor is a msig.
  */
-contract ABBYFactory is IMulticall {
+contract AYFFactory is IMulticall {
   struct ABBYListData {
     address blocklist;
     address allowlist;
@@ -36,7 +36,7 @@ contract ABBYFactory is IMulticall {
   bytes32 public constant DEFAULT_ADMIN_ROLE = bytes32(0);
 
   address internal immutable guardian;
-  ABBY public abbyImplementation;
+  AYF public abbyImplementation;
   ProxyAdmin public abbyProxyAdmin;
   TokenProxy public abbyProxy;
 
@@ -67,14 +67,14 @@ contract ABBYFactory is IMulticall {
     string calldata ticker,
     ABBYListData calldata listData
   ) external onlyGuardian returns (address, address, address) {
-    abbyImplementation = new ABBY();
+    abbyImplementation = new AYF();
     abbyProxyAdmin = new ProxyAdmin();
     abbyProxy = new TokenProxy(
       address(abbyImplementation),
       address(abbyProxyAdmin),
       ""
     );
-    ABBY abbyProxied = ABBY(address(abbyProxy));
+    AYF abbyProxied = AYF(address(abbyProxy));
     abbyProxied.initialize(
       name,
       ticker,

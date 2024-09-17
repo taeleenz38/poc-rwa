@@ -17,7 +17,7 @@ async function main() {
   });
 
   // ABBY deps
-  const factory = await ethers.getContract("ABBYFactory");
+  const factory = await ethers.getContract("AYYFactory");
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
@@ -41,7 +41,7 @@ async function main() {
   console.log(`The ABBY proxy admin is deployed @: ${abbyProxyAdmin}`);
   console.log(`The ABBY Implementation is deployed @: ${abbyImplementation}\n`);
 
-  const abbyArtifact = await deployments.getExtendedArtifact("ABBY");
+  const abbyArtifact = await deployments.getExtendedArtifact("AFY");
   const paAtrifact = await deployments.getExtendedArtifact("ProxyAdmin");
 
   let abbyProxied = {
@@ -57,9 +57,9 @@ async function main() {
     ...abbyImplementation,
   };
 
-  await save("ABBY", abbyProxied);
+  await save("AFY", abbyProxied);
   await save("ProxyAdminABBY", abbyAdmin);
-  await save("ABBYImplementation", abbyImpl);
+  await save("AFYImplementation", abbyImpl);
 };
 
 main().catch((error) => {

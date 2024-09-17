@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.16;
 
-import "contracts/RWAHubOffChainRedemptions.sol";
+import "contracts/HYFHub.sol";
 //import "contracts/abby/blocklist/BlocklistClient.sol";
 //import "contracts/sanctions/SanctionsListClient.sol";
 import "contracts/interfaces/IABBYManager.sol";
 
-contract ABBYManager is
-  RWAHubOffChainRedemptions,
+contract HYFManager is
+  HYFHub,
   IABBYManager
 {
   bytes32 public constant TIMESTAMP_SETTER_ROLE =
@@ -17,6 +17,7 @@ contract ABBYManager is
 
   constructor(
     address _collateral,
+    address _audcCollateral,
     address _rwa,
     address managerAdmin,
     address pauser,
@@ -26,8 +27,9 @@ contract ABBYManager is
     uint256 _minimumRedemptionAmount,
     address blocklist
   )
-    RWAHubOffChainRedemptions(
+    HYFHub(
       _collateral,
+      _audcCollateral,
       _rwa,
       managerAdmin,
       pauser,
