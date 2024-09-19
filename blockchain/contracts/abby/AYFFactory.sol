@@ -91,7 +91,7 @@ contract AYFFactory is IMulticall {
 
     abbyProxyAdmin.transferOwnership(guardian);
     assert(abbyProxyAdmin.owner() == guardian);
-    emit ABBYDeployed(
+    emit AYFDeployed(
       address(abbyProxied),
       address(abbyProxyAdmin),
       address(abbyImplementation),
@@ -138,7 +138,7 @@ contract AYFFactory is IMulticall {
    * @param proxyAdmin        The address for the proxy admin contract
    * @param implementation    The address for the implementation contract
    */
-  event ABBYDeployed(
+  event AYFDeployed(
     address proxy,
     address proxyAdmin,
     address implementation,

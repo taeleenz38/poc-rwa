@@ -91,7 +91,7 @@ contract HYFFactory is IMulticall {
 
     abbyProxyAdmin.transferOwnership(guardian);
     assert(abbyProxyAdmin.owner() == guardian);
-    emit ABBYDeployed(
+    emit HYFDeployed(
       address(proxied),
       address(abbyProxyAdmin),
       address(hfyImplementation),
@@ -138,7 +138,7 @@ contract HYFFactory is IMulticall {
    * @param proxyAdmin        The address for the proxy admin contract
    * @param implementation    The address for the implementation contract
    */
-  event ABBYDeployed(
+  event HYFDeployed(
     address proxy,
     address proxyAdmin,
     address implementation,

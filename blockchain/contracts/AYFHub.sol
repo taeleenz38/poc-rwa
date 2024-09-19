@@ -70,6 +70,7 @@ abstract contract AYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   bytes32 public constant PRICE_ID_SETTER_ROLE =
     keccak256("PRICE_ID_SETTER_ROLE");
   bytes32 public constant RELAYER_ROLE = keccak256("RELAYER_ROLE");
+  bytes32 public constant COLLATERAL_TYPE = keccak256("AUDC");
 
   /// @notice constructor
   constructor(
@@ -235,7 +236,7 @@ abstract contract AYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
 
     rwa.burnFrom(msg.sender, amount);
 
-    emit RedemptionRequested(msg.sender, redemptionId, amount);
+    emit RedemptionRequested(msg.sender, redemptionId, amount, COLLATERAL_TYPE);
   }
 
   /**
@@ -251,7 +252,7 @@ abstract contract AYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     for (uint256 i = 0; i < redemptionsSize; ++i) {
       Redeemer storage member = redemptionIdToRedeemer[redemptionIds[i]];
       member.approved = true;
-      emit RedemptionApproved(redemptionIds[i]);
+      emit RedemptionApproved(redemptionIds[i], COLLATERAL_TYPE);
     }
   }
 
@@ -300,7 +301,8 @@ abstract contract AYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         redemptionIds[i],
         member.amountRwaTokenBurned,
         collateralDuePostFees,
-        price
+        price,
+        COLLATERAL_TYPE
       );
     }
     if (fees > 0) {
@@ -395,7 +397,7 @@ abstract contract AYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         revert PriceIdAlreadySet();
       }
       redemptionIdToRedeemer[redemptionIds[i]].priceId = priceIds[i];
-      emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i]);
+      emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i], COLLATERAL_TYPE);
     }
   }
 

@@ -74,6 +74,10 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     keccak256("PRICE_ID_SETTER_ROLE");
   bytes32 public constant RELAYER_ROLE = keccak256("RELAYER_ROLE");
 
+  uint256 public constant AUDC_TO_USDC_EXCHANGE_RATE = 0.66e18;  // 1 AUDC = 0.66 USDC
+  uint256 public constant HYF_TO_USDC_CONVERSION_RATE = 107.94e18;  // 1 HYF = 107.94 USDC
+  bytes32 public constant COLLATERAL_TYPE = keccak256("USDC");
+
   /// @notice constructor
   constructor(
     address _collateral,
@@ -226,21 +230,34 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   /**
    * @notice Function used by users to request a redemption from the fund
    *
-   * @param amount The amount (in units of `rwa`) that a user wishes to redeem
+   * @param ayfAmount The amount (in units of `rwa`) that a user wishes to redeem
    *               from the fund
    */
   function requestRedemption(
-    uint256 amount
+    uint256 ayfAmount
   ) external virtual nonReentrant ifNotPaused(redemptionPaused) {
-    if (amount < minimumRedemptionAmount) {
-      revert RedemptionTooSmall();
+    // Check minimum redemption amount
+    if (ayfAmount < minimumRedemptionAmount) {
+        revert RedemptionTooSmall();
     }
+
+    // Calculate HYF token amount based on AYF amount
+    // uint256 hyfAmount = calculateHYF(ayfAmount);
+
+    // Generate a new redemption ID
     bytes32 redemptionId = bytes32(redemptionRequestCounter++);
-    redemptionIdToRedeemer[redemptionId] = Redeemer(msg.sender, amount, 0, false);
 
-    rwa.burnFrom(msg.sender, amount);
+    // Add redemption request to the Redemption struct
+    redemptionIdToRedeemer[redemptionId] = Redeemer(msg.sender, ayfAmount, 0, false);
 
-    emit RedemptionRequested(msg.sender, redemptionId, amount);
+    // Safe transfer AYF tokens from user to asset sender wallet
+    IERC20(audcCollateral).safeTransferFrom(msg.sender, assetRecipient, ayfAmount);
+
+    // Burn HYF tokens from the user
+    // rwa.burnFrom(msg.sender, hyfAmount);
+
+    // Emit RedemptionRequested event
+    emit RedemptionRequested(msg.sender, redemptionId, ayfAmount, COLLATERAL_TYPE);
   }
 
   /**
@@ -256,7 +273,7 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     for (uint256 i = 0; i < redemptionsSize; ++i) {
       Redeemer storage member = redemptionIdToRedeemer[redemptionIds[i]];
       member.approved = true;
-      emit RedemptionApproved(redemptionIds[i]);
+      emit RedemptionApproved(redemptionIds[i], COLLATERAL_TYPE);
     }
   }
 
@@ -305,7 +322,8 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         redemptionIds[i],
         member.amountRwaTokenBurned,
         collateralDuePostFees,
-        price
+        price,
+        COLLATERAL_TYPE
       );
     }
     if (fees > 0) {
@@ -400,7 +418,7 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         revert PriceIdAlreadySet();
       }
       redemptionIdToRedeemer[redemptionIds[i]].priceId = priceIds[i];
-      emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i]);
+      emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i], COLLATERAL_TYPE);
     }
   }
 
@@ -717,8 +735,10 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     uint256 rwaTokenAmountBurned,
     uint256 price
   ) internal view returns (uint256 collateralOwed) {
-    uint256 amountE36 = rwaTokenAmountBurned * price;
-    collateralOwed = _scaleDown(amountE36 / 1e18);
+    uint256 audcAmount = rwaTokenAmountBurned * price / 1e18;
+    uint256 usdcAmount = audcAmount * AUDC_TO_USDC_EXCHANGE_RATE / 1e18;
+    uint256 hyfAmount = usdcAmount * 1e18 / HYF_TO_USDC_CONVERSION_RATE;
+    collateralOwed = _scaleDown(hyfAmount);
   }
 
   /**

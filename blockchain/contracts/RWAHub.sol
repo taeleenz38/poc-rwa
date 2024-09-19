@@ -235,7 +235,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
 
     rwa.burnFrom(msg.sender, amount);
 
-    emit RedemptionRequested(msg.sender, redemptionId, amount);
+    // emit RedemptionRequested(msg.sender, redemptionId, amount);
   }
 
   /**
@@ -251,7 +251,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     for (uint256 i = 0; i < redemptionsSize; ++i) {
       Redeemer storage member = redemptionIdToRedeemer[redemptionIds[i]];
       member.approved = true;
-      emit RedemptionApproved(redemptionIds[i]);
+      // emit RedemptionApproved(redemptionIds[i]);
     }
   }
 
@@ -295,13 +295,13 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         collateralDuePostFees
       );
 
-      emit RedemptionCompleted(
-        member.user,
-        redemptionIds[i],
-        member.amountRwaTokenBurned,
-        collateralDuePostFees,
-        price
-      );
+      // emit RedemptionCompleted(
+      //   member.user,
+      //   redemptionIds[i],
+      //   member.amountRwaTokenBurned,
+      //   collateralDuePostFees,
+      //   price
+      // );
     }
     if (fees > 0) {
       collateral.safeTransferFrom(assetSender, feeRecipient, fees);
@@ -395,7 +395,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         revert PriceIdAlreadySet();
       }
       redemptionIdToRedeemer[redemptionIds[i]].priceId = priceIds[i];
-      emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i]);
+      // emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i]);
     }
   }
 

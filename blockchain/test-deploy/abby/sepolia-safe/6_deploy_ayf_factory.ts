@@ -10,14 +10,14 @@ async function main() {
   console.log("The deployer is:", deployer.address);
   // console.log("The guargian is:", guardian);
 
-  await deploy("ABBYFactory", {
+  await deploy("AYFFactory", {
     from: deployer,
     args: [deployerSigner.address],
     log: true,
   });
 
   // ABBY deps
-  const factory = await ethers.getContract("AYYFactory");
+  const factory = await ethers.getContract("AYFFactory");
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 

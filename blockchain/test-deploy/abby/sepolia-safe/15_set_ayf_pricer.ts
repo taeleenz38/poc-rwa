@@ -13,10 +13,10 @@ async function main() {
   const user = signers[7];
 
   const audc = await ethers.getContractAt("AUDC", AUDC_ADDRESS);
-  const abbyManager = await ethers.getContract("ABBYManager");
-  const pricer = await ethers.getContract("ABBY_Pricer");
+  const abbyManager = await ethers.getContract("AYFManager");
+  const pricer = await ethers.getContract("AYF_Pricer");
   const allowlist = await ethers.getContract("Allowlist");
-  const abby = await ethers.getContract("ABBY");
+  const abby = await ethers.getContract("AYF");
   const blocklist = await ethers.getContract("Blocklist");
 
   console.log("audc==>", audc.address);
