@@ -305,11 +305,16 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         member.amountRwaTokenBurned,
         price
       );
+
+      uint256 hyfAmount = collateralDue * 1e18 / HYF_TO_USDC_CONVERSION_RATE;
+
       uint256 fee = _getRedemptionFees(collateralDue);
       uint256 collateralDuePostFees = collateralDue - fee;
       fees += fee;
 
       delete redemptionIdToRedeemer[redemptionIds[i]];
+
+      rwa.burn(hyfAmount);
 
       collateral.safeTransferFrom(
         assetSender,
@@ -737,8 +742,8 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   ) internal view returns (uint256 collateralOwed) {
     uint256 audcAmount = rwaTokenAmountBurned * price / 1e18;
     uint256 usdcAmount = audcAmount * AUDC_TO_USDC_EXCHANGE_RATE / 1e18;
-    uint256 hyfAmount = usdcAmount * 1e18 / HYF_TO_USDC_CONVERSION_RATE;
-    collateralOwed = _scaleDown(hyfAmount);
+    // uint256 hyfAmount = usdcAmount * 1e18 / HYF_TO_USDC_CONVERSION_RATE;
+    collateralOwed = _scaleDown(usdcAmount);
   }
 
   /**

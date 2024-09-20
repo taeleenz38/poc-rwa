@@ -10,20 +10,20 @@ async function main() {
   console.log("The deployer is:", deployer.address);
   // console.log("The guargian is:", guardian);
 
-  await deploy("AYFFactory", {
+  await deploy("HYFFactory", {
     from: deployer,
     args: [deployerSigner.address],
     log: true,
   });
 
   // ABBY deps
-  const factory = await ethers.getContract("AYFFactory");
+  const factory = await ethers.getContract("HYFFactory");
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
   const tx = await factory
     .connect(deployerSigner)
-    .deployABBY("AYF", "AYF", [
+    .deployHFY("HYF", "HYF", [
       blocklist.address,
       allowlist.address
     ]);
@@ -41,7 +41,7 @@ async function main() {
   console.log(`The ABBY proxy admin is deployed @: ${abbyProxyAdmin}`);
   console.log(`The ABBY Implementation is deployed @: ${abbyImplementation}\n`);
 
-  const abbyArtifact = await deployments.getExtendedArtifact("AYF");
+  const abbyArtifact = await deployments.getExtendedArtifact("HYF");
   const paAtrifact = await deployments.getExtendedArtifact("ProxyAdmin");
 
   let abbyProxied = {
@@ -57,9 +57,9 @@ async function main() {
     ...abbyImplementation,
   };
 
-  await save("AYF", abbyProxied);
-  await save("ProxyAdminAYF", abbyAdmin);
-  await save("AYFImplementation", abbyImpl);
+  await save("HYF", abbyProxied);
+  await save("ProxyAdminHYF", abbyAdmin);
+  await save("HYFImplementation", abbyImpl);
 };
 
 main().catch((error) => {

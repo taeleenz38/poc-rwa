@@ -11,7 +11,7 @@ async function main() {
 
   const audc = await ethers.getContractAt("USDC", USDC_ADDRESS);
   const abbyManager = await ethers.getContract("HYFManager");
-  const pricer = await ethers.getContract("HYF_Pricer");
+  const pricer = await ethers.getContract("AYF_Pricer");
   const allowlist = await ethers.getContract("Allowlist");
   const abby = await ethers.getContract("HYF");
   const blocklist = await ethers.getContract("Blocklist");

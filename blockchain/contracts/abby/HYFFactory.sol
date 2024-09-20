@@ -36,7 +36,7 @@ contract HYFFactory is IMulticall {
   bytes32 public constant DEFAULT_ADMIN_ROLE = bytes32(0);
 
   address internal immutable guardian;
-  HYF public hfyImplementation;
+  HYF public abbyImplementation;
   ProxyAdmin public abbyProxyAdmin;
   TokenProxy public abbyProxy;
 
@@ -67,10 +67,10 @@ contract HYFFactory is IMulticall {
     string calldata ticker,
     ABBYListData calldata listData
   ) external onlyGuardian returns (address, address, address) {
-    hfyImplementation = new HYF();
+    abbyImplementation = new HYF();
     abbyProxyAdmin = new ProxyAdmin();
     abbyProxy = new TokenProxy(
-      address(hfyImplementation),
+      address(abbyImplementation),
       address(abbyProxyAdmin),
       ""
     );
@@ -94,7 +94,7 @@ contract HYFFactory is IMulticall {
     emit HYFDeployed(
       address(proxied),
       address(abbyProxyAdmin),
-      address(hfyImplementation),
+      address(abbyImplementation),
       name,
       ticker,
       listData
@@ -103,7 +103,7 @@ contract HYFFactory is IMulticall {
     return (
       address(proxied),
       address(abbyProxyAdmin),
-      address(hfyImplementation)
+      address(abbyImplementation)
     );
   }
 
