@@ -15,6 +15,7 @@ interface Item {
 type PackageCardProps = {
   href: string;
   backgroundImage: string;
+  lpBalance: string;
   heading: string;
   subHeading: string;
   PRICE: string;
@@ -31,6 +32,7 @@ export const PackageCard = (props: PackageCardProps) => {
     href,
     backgroundImage,
     heading,
+    lpBalance,
     subHeading,
     PRICE,
     TVL,
@@ -63,8 +65,9 @@ export const PackageCard = (props: PackageCardProps) => {
           </div>
         </div>
         <div className="flex flex-col space-y-4">
-          <div>
-            <h1 className=" font-medium text-4xl">${PRICE}</h1>
+          <div className="flex items-end">
+            <h1 className=" font-medium text-4xl mr-6">${PRICE}</h1>
+            <h2 className="font-medium">LP tokens: {lpBalance}</h2>
           </div>
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">

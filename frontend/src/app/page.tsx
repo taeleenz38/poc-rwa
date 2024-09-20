@@ -95,7 +95,6 @@ export default function Home() {
     calculateTVL();
   }, [price]);
 
-  // Format price to include commas and fixed decimal places
   const formattedPrice = price
     ? formatNumber(parseFloat(weiToEther(price)))
     : "...";
@@ -110,15 +109,27 @@ export default function Home() {
         DeFi with access to the deepest, most efficient institutional FX and
         capital markets in TradFi.
       </h2>
-      <div className="flex flex-col sm:flex-row p-2 mt-4 gap-4 sm:gap-6 lg:gap-11">
+      <div className="flex p-2 mt-4 gap-4 sm:gap-6 lg:gap-11">
         <PackageCard
           heading="AYF"
           subHeading="Australian Yield Fund"
+          lpBalance="100"
           PRICE={formattedPrice}
           TVL={tvl}
           href="/invest"
           backgroundImage="url('/Graphic1.png')"
           footerText="For Wholesale Investors"
+          chains={<EthIcon />}
+        />
+        <PackageCard
+          heading="HYF"
+          subHeading="High Yield Fund"
+          lpBalance="100"
+          PRICE={"107.34"}
+          TVL={"1,240,000"}
+          href="/invest"
+          backgroundImage="url('/Graphic1.png')"
+          footerText="For Retail Investors"
           chains={<EthIcon />}
         />
       </div>

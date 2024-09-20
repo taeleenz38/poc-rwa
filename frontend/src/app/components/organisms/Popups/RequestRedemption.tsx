@@ -20,6 +20,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
 }) => {
   const [amount, setAmount] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("AUDC");
   const [txRedemptionHash, setTxRedemptionHash] = useState<string | null>(null);
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
@@ -151,19 +152,31 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-2xl font-bold text-primary">
-            Redeem AYF For AUDC
+            Redeem AYF For Stablecoins
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8  mb-4 ">
-          Please enter the amount of AYF you wish to redeem in return for AUDC.
+        <div className="text-center px-8 mb-4">
+          Please Select the stablecoin currency and the amount you wish to
+          redeem in return for AUDC.
         </div>
-        <div className="w-full text-center mx-auto mb-8">
+        <div className="w-full flex justify-between items-center text-center mx-auto mb-8">
           <InputField
             label="Amount:"
             value={amount || ""}
             onChange={onAmountChange}
           />
+          <div className="ml-4">
+            <select
+              id="currency"
+              value={selectedCurrency}
+              onChange={(e) => setSelectedCurrency(e.target.value)}
+              className="mt-1 mb-5 p-2 border border-primary bg-primary text-white rounded-md hover:cursor-pointer"
+            >
+              <option value="AUDC">AUDC</option>
+              <option value="USDC">USDC</option>
+            </select>
+          </div>
         </div>
         <div className="w-full flex justify-between">
           <div className="w-[49%]">

@@ -15,6 +15,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useQuery } from "urql";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 import BigNumber from "bignumber.js";
+import PendingTokensTable from "@/app/components/organisms/PendingTokensTable";
+import RedemptionTable from "@/app/components/organisms/PendingRedemptionsTable";
 
 type ClaimableToken = {
   user: string;
@@ -84,6 +86,10 @@ const Portfolio = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [transactionsPerPage] = useState(5);
   const [price, setPrice] = useState<string | null>(null);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [openRedemptionAccordion, setOpenRedemptionAccordion] = useState<
+    string | null
+  >(null);
 
   const { writeContractAsync } = useWriteContract({ config });
 
@@ -221,6 +227,16 @@ const Portfolio = () => {
   const ayfBalanceInEther = weiToEther(formattedAyfBalance.toString());
   const ayfMarketValueInEther = parseFloat(ayfBalanceInEther) * parsedPrice;
 
+  const toggleAccordion = (accordion: string) => {
+    setOpenAccordion(openAccordion === accordion ? null : accordion);
+  };
+
+  const toggleRedemptionAccordion = (accordion: string) => {
+    setOpenRedemptionAccordion(
+      openRedemptionAccordion === accordion ? null : accordion
+    );
+  };
+
   return (
     <>
       <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
@@ -288,6 +304,12 @@ const Portfolio = () => {
                           <td>{formatNumber(formattedAyfBalance)}</td>
                           <td>${formatNumber(ayfMarketValueInEther)}</td>
                         </tr>
+                        <tr className="border-b borderColor">
+                          <td>Copiam High Yield Fund</td>
+                          <td>${formattedPrice}</td>
+                          <td>{formatNumber(formattedAyfBalance)}</td>
+                          <td>${formatNumber(ayfMarketValueInEther)}</td>
+                        </tr>
                       </>
                     )}
                   </tbody>
@@ -295,145 +317,104 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+            <div className="flex flex-col w-full py-8 text-primary rounded-md p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
-                Pending AYF Tokens
+                Pending Tokens
               </h2>
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  <thead className="text-primary bg-[#F5F2F2] border-none">
-                    <tr className="border-none">
-                      <th>Deposit Amount After Fee</th>
-                      <th>Request Date</th>
-                      <th>Claimable Amount</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {isFetching ? (
-                      <tr className="border-none">
-                        <td colSpan={5} className="py-4">
-                          <Skeleton height={26} className="w-full" />
-                        </td>
-                      </tr>
-                    ) : claimableTokens.length === 0 ? (
-                      <tr className="border-none">
-                        <td colSpan={5} className="text-center py-4">
-                          No pending requests found
-                        </td>
-                      </tr>
-                    ) : (
-                      claimableTokens.map((token) => {
-                        const isClaimable =
-                          Date.now() >=
-                          new Date(token.claimableTimestamp).getTime();
 
-                        return (
-                          <tr className="border-b borderColor" key={token.id}>
-                            <td>
-                              {formatNumber(
-                                weiToEther(token.depositAmountAfterFee)
-                              )}{" "}
-                              AUDC
-                            </td>
-                            <td>{token.claimableTimestamp}</td>
-                            <td>
-                              {formatNumber(
-                                weiToEther(token.claimableAmount ?? 0)
-                              )}{" "}
-                              AYF
-                            </td>
+              {/* AYF Accordion */}
+              <div className="mb-4">
+                <button
+                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  onClick={() => toggleAccordion("AYF")}
+                >
+                  <span>AYF</span>
+                  <span>{openAccordion === "AYF" ? "▲" : "▼"}</span>
+                </button>
+                {openAccordion === "AYF" && (
+                  <div className="p-4 bg-white rounded-md mt-2">
+                    <PendingTokensTable
+                      tokens={claimableTokens}
+                      isFetching={isFetching}
+                      claimMint={claimMint}
+                      type="AYF"
+                    />
+                  </div>
+                )}
+              </div>
 
-                            <td>
-                              <Button
-                                text="Claim"
-                                className={`py-2 btn-sm items-center flex justify-center ${
-                                  isClaimable
-                                    ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                                    : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                                }`}
-                                onClick={() => claimMint(token.id)}
-                                disabled={!isClaimable}
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })
-                    )}
-                  </tbody>
-                </table>
+              {/* HYF Accordion */}
+              <div>
+                <button
+                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  onClick={() => toggleAccordion("HYF")}
+                >
+                  <span>HYF</span>
+                  <span>{openAccordion === "HYF" ? "▲" : "▼"}</span>
+                </button>
+                {openAccordion === "HYF" && (
+                  <div className="p-4 bg-white rounded-md mt-2">
+                    {/* Currently using the same data as AYF */}
+                    <PendingTokensTable
+                      tokens={claimableTokens}
+                      isFetching={isFetching}
+                      claimMint={claimMint}
+                      type="HYF"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+            <div className="flex flex-col w-full py-8 text-primary rounded-md p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 AUDC Redemption
               </h2>
 
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  <thead className="text-primary bg-[#F5F2F2] border-none">
-                    <tr className="border-none">
-                      <th className="flex-1">Redeem Amount</th>
-                      <th className="flex-1">Claimable Amount</th>
-                      <th className="flex-1">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {isFetchingAUDC ? (
-                      <tr className="border-none">
-                        <td
-                          colSpan={3}
-                          className="text-center py-4 border-none"
-                        >
-                          <Skeleton height={26} className="w-full" />
-                        </td>
-                      </tr>
-                    ) : claimableAUDCTokens.length === 0 ? (
-                      <tr className="border-none">
-                        <td
-                          colSpan={3}
-                          className="text-center py-4 border-none"
-                        >
-                          No claimable tokens found
-                        </td>
-                      </tr>
-                    ) : (
-                      claimableAUDCTokens.map((token) => (
-                        <tr className="border-b borderColor" key={token.id}>
-                          <td className="flex-1">
-                            {formatNumber(
-                              weiToEther(token.rwaAmountIn as unknown as number)
-                            )}{" "}
-                            AYF
-                          </td>
-                          <td className="flex-1">
-                            {formatNumber(
-                              weiToEther(
-                                token.redeemAmount as unknown as number
-                              )
-                            )}{" "}
-                            AUDC
-                          </td>
-                          <td className="flex-1">
-                            <Button
-                              text="Claim"
-                              className={`py-2  btn-sm items-center flex justify-center ${
-                                true
-                                  ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                                  : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                              }`}
-                              onClick={() => claimRedemption(token.id)}
-                              disabled={false}
-                            />
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+              {/* AYF Redemption Accordion */}
+              <div className="mb-4">
+                <button
+                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  onClick={() => toggleRedemptionAccordion("AYF")}
+                >
+                  <span>AYF</span>
+                  <span>{openRedemptionAccordion === "AYF" ? "▲" : "▼"}</span>
+                </button>
+                {openRedemptionAccordion === "AYF" && (
+                  <div className="p-4 bg-white mt-2">
+                    <RedemptionTable
+                      tokens={claimableAUDCTokens}
+                      isFetching={isFetchingAUDC}
+                      claimRedemption={claimRedemption}
+                      type="AYF"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* HYF Redemption Accordion */}
+              <div>
+                <button
+                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  onClick={() => toggleRedemptionAccordion("HYF")}
+                >
+                  <span>HYF</span>
+                  <span>{openRedemptionAccordion === "HYF" ? "▲" : "▼"}</span>
+                </button>
+                {openRedemptionAccordion === "HYF" && (
+                  <div className="p-4 bg-white mt-2">
+                    {/* Currently using the same data as AYF */}
+                    <RedemptionTable
+                      tokens={claimableAUDCTokens}
+                      isFetching={isFetchingAUDC}
+                      claimRedemption={claimRedemption}
+                      type="HYF"
+                    />
+                  </div>
+                )}
               </div>
             </div>
+
             <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 Transactions
@@ -461,7 +442,7 @@ const Portfolio = () => {
                       </tr>
                     ) : currentTransactions.length > 0 ? (
                       currentTransactions
-                        .slice() 
+                        .slice()
                         .sort(
                           (a, b) =>
                             new Date(b.transactionDate).getTime() -
