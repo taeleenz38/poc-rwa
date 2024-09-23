@@ -9,19 +9,28 @@ async function main() {
   console.log("abbyManager==>", abbyManager.address);
 
   // Setting up Gnosis Safe
-  const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;
+  // const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;
+  let gasPrice = await ethers.provider.getGasPrice();
+// Increase the gas price by 20%
+gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(100));
 
   const mintFee = 20; // Example: 5%
   const redemptionFee = 20; // Example: 3%
 
   try {
-    await abbyManager.connect(managerAdmin).setMintFee(mintFee, {
-      gasLimit: 200000, // Example: Manually specify gas limit for this transaction
+    // let tx = await abbyManager.connect(managerAdmin).setMintFee(mintFee, {
+    //   gasLimit: 6000000, // Manually specify gas limit for deployment
+    //   gasPrice: gasPrice
+    // });
+
+    // tx.wait();
+
+    let tx = await abbyManager.connect(managerAdmin).setRedemptionFee(redemptionFee, {
+      gasLimit: 60000000, // Manually specify gas limit for deployment
+      gasPrice: gasPrice
     });
 
-    await abbyManager.connect(managerAdmin).setRedemptionFee(redemptionFee, {
-      gasLimit: 200000, // Example: Manually specify gas limit for this transaction
-    });
+    tx.wait();
   } catch (error) {
     console.error("Error during Safe setup or transaction:", error);
     throw error;

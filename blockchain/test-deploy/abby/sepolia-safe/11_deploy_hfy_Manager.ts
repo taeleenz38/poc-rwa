@@ -11,17 +11,27 @@ async function main() {
   const { deploy } = deployments;
   const signers = await ethers.getSigners();
   const deployerSigner = signers[0];
-  const guardian = process.env.GUARDIAN_WALLET!;
-  const managerAdmin = process.env.MANAGER_ADMIN_WALLET!;
-  const pauser = process.env.PAUSER_WALLET!;
-  const assetSender = process.env.ASSET_SENDER_WALLET!;
-  const instantMintAdmin = process.env.GUARDIAN_WALLET!;
-  const feeRecipient = process.env.FEE_RECEIPIENT_WALLET!;
+  // const guardian = process.env.GUARDIAN_WALLET!;
+  // const managerAdmin = process.env.MANAGER_ADMIN_WALLET!;
+  // const pauser = process.env.PAUSER_WALLET!;
+  // const assetSender = process.env.ASSET_SENDER_WALLET!;
+  // const instantMintAdmin = process.env.GUARDIAN_WALLET!;
+  // const feeRecipient = process.env.FEE_RECEIPIENT_WALLET!;
 
-  const abby = await ethers.getContract("HYF");
+  let gasPrice = await ethers.provider.getGasPrice();
+// Increase the gas price by 20%
+gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(100));
+
+  const managerAdmin = signers[2].address;
+  const pauser = signers[3].address;
+  const assetSender = signers[4].address;
+  const feeRecipient = signers[6].address;
+
+  const hyf = await ethers.getContract("HYF");
+  const ayf = await ethers.getContract("AYF");
   const blocklist = await ethers.getContract("Blocklist");
 
-  console.log('parameters parsed to contract:', USDC_ADDRESS, abby.address, managerAdmin, pauser, assetSender, feeRecipient, blocklist.address);
+  console.log('parameters parsed to contract:', USDC_ADDRESS, hyf.address, managerAdmin, pauser, assetSender, feeRecipient, blocklist.address);
 
 
   await deploy("HYFManager", { //PRICE_ID_SETTER_ROLE, TIMESTAMP_SETTER_ROLE, PAUSER_ADMIN - managerAdmin
@@ -29,7 +39,8 @@ async function main() {
     args: [
       USDC_ADDRESS, //_collateral
       AUDC_ADDRESS,
-      abby.address, //rwa
+      hyf.address, //rwa
+      ayf.address,
       managerAdmin, //MANAGER_ADMIN - DEFAULT_ADMIN_ROLE
       pauser, //PAUSER_ADMIN
       assetSender, //setAssetSender - MANAGER_ADMIN
@@ -40,13 +51,14 @@ async function main() {
     ],
     log: true,
     gasLimit: 6000000, // Manually specify gas limit for deployment
+    gasPrice: gasPrice 
   });
   console.log('deployed ABBYManager!');
   const abbyManager = await ethers.getContract("HYFManager");
   const pricer = await ethers.getContract("AYF_Pricer");
 
   // Grant minting role to abby manager
-  await abby
+  await hyf
     .connect(deployerSigner)
     .grantRole(
       keccak256(Buffer.from("MINTER_ROLE", "utf-8")),

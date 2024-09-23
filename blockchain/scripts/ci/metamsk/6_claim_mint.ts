@@ -1,19 +1,19 @@
 import { ethers } from "hardhat";
 import {
-  USDC_ADDRESS,
-} from "../../constants";
+  AUDC_ADDRESS,
+} from "../../../test-deploy/constants";
 
 async function main() {
   const signers = await ethers.getSigners();
 
-  const managerAdmin = signers[2];
+  // const managerAdmin = signers[0];
   const user = signers[7];
 
-  const audc = await ethers.getContractAt("USDC", USDC_ADDRESS);
-  const abbyManager = await ethers.getContract("HYFManager");
+  const audc = await ethers.getContractAt("AUDC", AUDC_ADDRESS);
+  const abbyManager = await ethers.getContract("AYFManager");
   const pricer = await ethers.getContract("AYF_Pricer");
   const allowlist = await ethers.getContract("Allowlist");
-  const abby = await ethers.getContract("HYF");
+  const abby = await ethers.getContract("AYF");
   const blocklist = await ethers.getContract("Blocklist");
 
   console.log("audc==>", audc.address);
@@ -22,23 +22,18 @@ async function main() {
   console.log("allowlist==>", allowlist.address);
   console.log("abby==>", abby.address);
 
-
+  // Current gas price (in wei)
   let gasPrice = await ethers.provider.getGasPrice();
-// Increase the gas price by 20%
-gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(100));
+  // Increase the gas price by 10%
+  gasPrice = gasPrice.mul(ethers.BigNumber.from(200)).div(ethers.BigNumber.from(100));
+  
+  const gasLimit = 600000;
 
-  try {
-    let tx = await abbyManager.connect(managerAdmin).setPricer(pricer.address, {
-      gasLimit: 6000000, // Manually specify gas limit for deployment
-      gasPrice: gasPrice 
-    });
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
 
-    tx.wait();
-
-  } catch (error) {
-    console.error("Error during Safe setup or transaction:", error);
-    throw error;
-  }
+  let tx = await abbyManager.connect(user).claimMint([FIRST_DEPOSIT_ID], { gasPrice, gasLimit });
+  await tx.wait();
+  console.log("Tokens claimed");
 }
 
 main().catch((error) => {

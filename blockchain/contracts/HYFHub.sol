@@ -16,11 +16,13 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   using SafeERC20 for IERC20;
   // RWA Token contract
   IRWALike public immutable rwa;
+
+  address public rwaAyf;
   // Pointer to Pricer
   IPricerReader public pricer;
   // Address to receive deposits
   address public constant assetRecipient =
-    0xB473DeE33A20aDb36Cd5BA6BD68f115a285fa528; // ABBY - CB Deposit Address
+    0x6223c2C68d1e786cd02A2eBbDF873e1f9d268D45; // ABBY - CB Deposit Address
   // Address to send redemptions
   address public assetSender;
   // Address fee recipient
@@ -83,6 +85,7 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     address _collateral,
     address _audcCollateral,
     address _rwa,
+    address _rwaAyf,
     address managerAdmin,
     address pauser,
     address _assetSender,
@@ -116,6 +119,7 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     collateral = IERC20(_collateral);
     audcCollateral = _audcCollateral;
     rwa = IRWALike(_rwa);
+    rwaAyf = _rwaAyf;
     feeRecipient = _feeRecipient;
     assetSender = _assetSender;
     minimumDepositAmount = _minimumDepositAmount;
@@ -251,7 +255,7 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     redemptionIdToRedeemer[redemptionId] = Redeemer(msg.sender, ayfAmount, 0, false);
 
     // Safe transfer AYF tokens from user to asset sender wallet
-    IERC20(audcCollateral).safeTransferFrom(msg.sender, assetRecipient, ayfAmount);
+    IERC20(rwaAyf).safeTransferFrom(msg.sender, assetRecipient, ayfAmount);
 
     // Burn HYF tokens from the user
     // rwa.burnFrom(msg.sender, hyfAmount);
