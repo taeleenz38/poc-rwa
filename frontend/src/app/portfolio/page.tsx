@@ -370,8 +370,6 @@ const Portfolio = () => {
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 AUDC Redemption
               </h2>
-
-              {/* AYF Redemption Accordion */}
               <div className="mb-4">
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
@@ -391,8 +389,6 @@ const Portfolio = () => {
                   </div>
                 )}
               </div>
-
-              {/* HYF Redemption Accordion */}
               <div>
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
