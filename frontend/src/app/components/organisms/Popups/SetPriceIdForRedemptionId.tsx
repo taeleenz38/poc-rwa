@@ -54,6 +54,7 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
   const [error, setError] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
+  const [collateralType, setcollateralType] = useState<string>("AUDC");
 
   const [{ data, fetching, error: queryError }] = useQuery({
     query: GET_TRANSACTION_PRICING,
@@ -147,7 +148,6 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
         setError("Error fetching transaction data");
       }
     };
-
     fetchTransactionData();
   }, [safeTxHash]);
 
@@ -180,9 +180,6 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        {/* <div className="text-center px-8 text-xl mb-4 font-medium">
-          Please select a Price ID.
-        </div> */}
         <div className="w-full mx-auto mb-8 mt-8">
           {prices.map((price) => (
             <div

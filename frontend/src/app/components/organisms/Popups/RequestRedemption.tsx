@@ -5,7 +5,9 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
+import hyfmabi from "@/artifacts/HYFManager.json";
 import ayfabi from "@/artifacts/ABBY.json";
+import hyfabi from "@/artifacts/HYF.json";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
@@ -42,42 +44,81 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
   };
 
   const handleRequestRedemption = async () => {
-    try {
-      // Convert the amount to a string to handle both integer and float values
-      const amountString = amount.toString();
+    if (selectedCurrency === "AUDC") {
+      try {
+        // Convert the amount to a string to handle both integer and float values
+        const amountString = amount.toString();
 
-      // Split the string into integer and fractional parts
-      const [integerPart, decimalPart = ""] = amountString.split(".");
+        // Split the string into integer and fractional parts
+        const [integerPart, decimalPart = ""] = amountString.split(".");
 
-      // Convert integer part to BigNumber
-      let integerAmount = BigNumber.from(integerPart).mul(
-        BigNumber.from(10).pow(18)
-      );
-
-      // Convert fractional part to BigNumber, adjusting for its length
-      let fractionalAmount = BigNumber.from(0);
-      if (decimalPart.length > 0) {
-        fractionalAmount = BigNumber.from(decimalPart).mul(
-          BigNumber.from(10).pow(18 - decimalPart.length)
+        // Convert integer part to BigNumber
+        let integerAmount = BigNumber.from(integerPart).mul(
+          BigNumber.from(10).pow(18)
         );
+
+        // Convert fractional part to BigNumber, adjusting for its length
+        let fractionalAmount = BigNumber.from(0);
+        if (decimalPart.length > 0) {
+          fractionalAmount = BigNumber.from(decimalPart).mul(
+            BigNumber.from(10).pow(18 - decimalPart.length)
+          );
+        }
+
+        // Sum the integer and fractional amounts
+        const approvalAmount = integerAmount.add(fractionalAmount);
+
+        const approvalTx = await writeContractAsync({
+          abi: ayfabi.abi,
+          address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+          functionName: "approve",
+          args: [
+            process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+            approvalAmount,
+          ],
+        });
+
+        setTxApprovalHash(approvalTx);
+      } catch (error) {
+        console.error("Error approving:", error);
       }
+    } else {
+      try {
+        const amountString = amount.toString();
 
-      // Sum the integer and fractional amounts
-      const approvalAmount = integerAmount.add(fractionalAmount);
+        // Split the string into integer and fractional parts
+        const [integerPart, decimalPart = ""] = amountString.split(".");
 
-      const approvalTx = await writeContractAsync({
-        abi: ayfabi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
-        functionName: "approve",
-        args: [
-          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-          approvalAmount,
-        ],
-      });
+        // Convert integer part to BigNumber
+        let integerAmount = BigNumber.from(integerPart).mul(
+          BigNumber.from(10).pow(18)
+        );
 
-      setTxApprovalHash(approvalTx);
-    } catch (error) {
-      console.error("Error approving:", error);
+        // Convert fractional part to BigNumber, adjusting for its length
+        let fractionalAmount = BigNumber.from(0);
+        if (decimalPart.length > 0) {
+          fractionalAmount = BigNumber.from(decimalPart).mul(
+            BigNumber.from(10).pow(18 - decimalPart.length)
+          );
+        }
+
+        // Sum the integer and fractional amounts
+        const approvalAmount = integerAmount.add(fractionalAmount);
+
+        const approvalTx = await writeContractAsync({
+          abi: hyfabi.abi,
+          address: process.env.NEXT_PUBLIC_HYF_ADDRESS as `0x${string}`,
+          functionName: "approve",
+          args: [
+            process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+            approvalAmount,
+          ],
+        });
+
+        setTxApprovalHash(approvalTx);
+      } catch (error) {
+        console.error("Error approving:", error);
+      }
     }
   };
 
@@ -87,7 +128,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
     });
 
   useEffect(() => {
-    if (approvalReceipt) {
+    if (approvalReceipt && selectedCurrency === "AUDC") {
       const requestRedemptionTransaction = async () => {
         try {
           // Convert the amount to a string to handle both integer and float values
@@ -127,8 +168,49 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
       };
 
       requestRedemptionTransaction();
+
+    } else if (approvalReceipt && selectedCurrency === "USDC") {
+      const requestRedemptionTransaction = async () => {
+        try {
+          // Convert the amount to a string to handle both integer and float values
+          const amountString = amount.toString();
+
+          // Split the string into integer and fractional parts
+          const [integerPart, decimalPart = ""] = amountString.split(".");
+
+          // Convert integer part to BigNumber
+          let integerAmount = BigNumber.from(integerPart).mul(
+            BigNumber.from(10).pow(18)
+          );
+
+          // Convert fractional part to BigNumber, adjusting for its length
+          let fractionalAmount = BigNumber.from(0);
+          if (decimalPart.length > 0) {
+            fractionalAmount = BigNumber.from(decimalPart).mul(
+              BigNumber.from(10).pow(18 - decimalPart.length)
+            );
+          }
+
+          // Sum the integer and fractional amounts to get the full redemption amount
+          const redemptionAmount = integerAmount.add(fractionalAmount);
+
+          const redemptionTx = await writeContractAsync({
+            abi: hyfmabi.abi,
+            address: process.env
+              .NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+            functionName: "requestRedemption",
+            args: [redemptionAmount],
+          });
+
+          setTxRedemptionHash(redemptionTx);
+        } catch (error) {
+          console.error("Error requesting redemption:", error);
+        }
+      };
+
+      requestRedemptionTransaction();
     }
-  }, [amount, writeContractAsync, approvalReceipt]);
+  }, [amount, writeContractAsync, approvalReceipt, selectedCurrency]);
 
   const { data: redemptionReceipt, isLoading: isRedemptionLoading } =
     useWaitForTransactionReceipt({
@@ -157,8 +239,8 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 mb-4">
-          Please Select the stablecoin currency and the amount you wish to
-          redeem in return for AUDC.
+          Please select the stablecoin currency and the amount you wish to
+          redeem AYF for.
         </div>
         <div className="w-full flex justify-between items-center text-center mx-auto mb-8">
           <InputField
