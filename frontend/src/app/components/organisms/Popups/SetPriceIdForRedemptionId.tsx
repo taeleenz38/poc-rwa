@@ -14,6 +14,7 @@ interface SetPriceIdForRedemptionIdProps {
   isOpen: boolean;
   onClose: () => void;
   redemptionId?: string;
+  collateralType?: string;
 }
 
 interface PricingResponse {

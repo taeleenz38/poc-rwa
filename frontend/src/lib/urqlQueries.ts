@@ -94,6 +94,8 @@ export const GET_TRANSACTION_HISTORY = gql`
       completedTime
       transactionDate
       price
+      displayId
+      collateralType
     }
   }
 `;
@@ -143,6 +145,9 @@ export const GET_PENDING_APPROVAL_REDEMPTION_LIST = gql`
       status
       redeemAmount
       claimApproved
+      displayId
+      collateralType
+      tokenAmount
     }
   }
 `;
@@ -172,6 +177,9 @@ export const GET_CLAIMABLE_REDEMPTION_LIST = gql`
       status
       redeemAmount
       claimApproved
+      displayId
+      collateralType
+      tokenAmount
     }
   }
 `;
@@ -195,6 +203,9 @@ export const GET_PENDING_REDEMPTION_REQUEST_LIST = gql`
       status
       redeemAmount
       claimApproved
+      displayId
+      collateralType
+      tokenAmount
     }
   }
 `;

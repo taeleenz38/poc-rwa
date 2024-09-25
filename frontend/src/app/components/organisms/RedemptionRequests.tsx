@@ -19,6 +19,9 @@ type RedemptionRequest = {
   status: string;
   redeemAmount: string;
   claimApproved: boolean;
+  displayId: string;
+  collateralType: string;
+  tokenAmount: string;
 };
 
 // Convert wei to ether
@@ -44,6 +47,9 @@ const RedemptionRequests = () => {
   const [selectedRedemptionId, setSelectedRedemptionId] = useState<
     string | undefined
   >(undefined);
+  const [selectedCollateralType, setSelectedCollateralType] = useState<
+  string | undefined
+>(undefined);
   const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
     useState(false);
   const [isRedemptionFeeOpen, setIsRedemptionFeeOpen] = useState(false);
@@ -59,8 +65,9 @@ const RedemptionRequests = () => {
     query: GET_PENDING_REDEMPTION_REQUEST_LIST,
   });
 
-  const handleButtonClick = (redemptionId: string) => {
+  const handleButtonClick = (redemptionId: string, collateralType: string) => {
     setSelectedRedemptionId(redemptionId);
+    setSelectedCollateralType(collateralType);
     setIsSetPriceIdForRedemptionIdOpen(true);
   };
 
@@ -156,7 +163,7 @@ const RedemptionRequests = () => {
                         <Button
                           text="Set Price ID"
                           className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={() => handleButtonClick(request.id)}
+                          onClick={() => handleButtonClick(request.id, request.collateralType)}
                         />
                       )}
                     </td>
@@ -210,6 +217,7 @@ const RedemptionRequests = () => {
         isOpen={isSetPriceIdForRedemptionIdOpen}
         onClose={() => setIsSetPriceIdForRedemptionIdOpen(false)}
         redemptionId={selectedRedemptionId}
+        collateralType={selectedCollateralType}
       />
       <SetRedemptionFee
         isOpen={isRedemptionFeeOpen}
