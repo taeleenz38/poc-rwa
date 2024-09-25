@@ -13,6 +13,7 @@ type ClaimableAUDCToken = {
   rwaAmountIn: string;
   priceId: string;
   redeemAmount: number;
+  redemptionId: string;
 };
 
 const weiToEther = (wei: string | number): string => {
@@ -90,7 +91,7 @@ const PendingRedemptionsTable = ({
                         ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
                         : "bg-[#e6e6e6] text-light cursor-not-allowed"
                     }`}
-                    onClick={() => claimRedemption(token.id)}
+                    onClick={() => claimRedemption(token.redemptionId)}
                     disabled={false}
                   />
                 </td>

@@ -22,6 +22,7 @@ type RedemptionRequest = {
   displayId: string;
   collateralType: string;
   tokenAmount: string;
+  redemptionId: string;
 };
 
 // Convert wei to ether
@@ -48,8 +49,8 @@ const RedemptionRequests = () => {
     string | undefined
   >(undefined);
   const [selectedCollateralType, setSelectedCollateralType] = useState<
-  string | undefined
->(undefined);
+    string | undefined
+  >(undefined);
   const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
     useState(false);
   const [isRedemptionFeeOpen, setIsRedemptionFeeOpen] = useState(false);
@@ -66,6 +67,8 @@ const RedemptionRequests = () => {
   });
 
   const handleButtonClick = (redemptionId: string, collateralType: string) => {
+    console.log("redemptionId", redemptionId);
+    console.log("collateralType", collateralType);
     setSelectedRedemptionId(redemptionId);
     setSelectedCollateralType(collateralType);
     setIsSetPriceIdForRedemptionIdOpen(true);
@@ -79,11 +82,14 @@ const RedemptionRequests = () => {
   };
 
   const sortedRedemptionRequests = [...redemptionRequests].sort((a, b) => {
-    const timestampA = a.requestTimestamp ? new Date(a.requestTimestamp).getTime() : 0;
-    const timestampB = b.requestTimestamp ? new Date(b.requestTimestamp).getTime() : 0;
+    const timestampA = a.requestTimestamp
+      ? new Date(a.requestTimestamp).getTime()
+      : 0;
+    const timestampB = b.requestTimestamp
+      ? new Date(b.requestTimestamp).getTime()
+      : 0;
     return timestampB - timestampA;
   });
-
 
   const totalPages = Math.ceil(redemptionRequests.length / ITEMS_PER_PAGE);
 
@@ -147,7 +153,13 @@ const RedemptionRequests = () => {
                     key={request.id}
                     className="border-b-2 border-[#F5F2F2] text-sm"
                   >
-                    <td>{hexToDecimal(request.id)}</td>
+                    <td>
+                      {(() => {
+                        const [hexPart, token] = request.displayId.split("-");
+                        const decimalNumber = parseInt(hexPart, 16);
+                        return `${decimalNumber}-${token}`;
+                      })()}
+                    </td>
                     <td>{request.user}</td>
                     <td>{request.status}</td>
                     <td>{formatNumber(weiToEther(request.rwaAmountIn))} AYF</td>
@@ -163,7 +175,12 @@ const RedemptionRequests = () => {
                         <Button
                           text="Set Price ID"
                           className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
-                          onClick={() => handleButtonClick(request.id, request.collateralType)}
+                          onClick={() =>
+                            handleButtonClick(
+                              request.redemptionId,
+                              request.collateralType
+                            )
+                          }
                         />
                       )}
                     </td>

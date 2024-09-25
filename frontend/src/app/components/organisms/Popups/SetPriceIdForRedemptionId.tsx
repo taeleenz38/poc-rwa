@@ -2,6 +2,7 @@
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
+import hyfabi from "@/artifacts/HYFManager.json";
 import { config } from "@/config";
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
@@ -45,6 +46,7 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
   isOpen,
   onClose,
   redemptionId = "",
+  collateralType = "",
 }) => {
   const [localRedemptionId, setLocalRedemptionId] =
     useState<string>(redemptionId);
@@ -55,7 +57,6 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
   const [error, setError] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
-  const [collateralType, setcollateralType] = useState<string>("AUDC");
 
   const [{ data, fetching, error: queryError }] = useQuery({
     query: GET_TRANSACTION_PRICING,
@@ -112,19 +113,35 @@ const SetPriceIdForRedemptionId: React.FC<SetPriceIdForRedemptionIdProps> = ({
       redemptionIdHexlified,
       formattedPriceId
     );
-    try {
-      const tx = await writeContractAsync({
-        abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "setPriceIdForRedemptions",
-        args: [[redemptionIdHexlified], [formattedPriceId]],
-      });
-      setSafeTxHash(tx);
-      console.log("Price Id Successfully Set - transaction hash:", tx);
-    } catch (error) {
-      console.error("Error setting priceId:", error);
+
+    if (collateralType === "AUDC") {
+      try {
+        const tx = await writeContractAsync({
+          abi: abi.abi,
+          address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+          functionName: "setPriceIdForRedemptions",
+          args: [[redemptionIdHexlified], [formattedPriceId]],
+        });
+        setSafeTxHash(tx);
+        console.log("Price Id Successfully Set - transaction hash:", tx);
+      } catch (error) {
+        console.error("Error setting priceId:", error);
+      }
+    } else {
+      try {
+        const tx = await writeContractAsync({
+          abi: hyfabi.abi,
+          address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+          functionName: "setPriceIdForRedemptions",
+          args: [[redemptionIdHexlified], [formattedPriceId]],
+        });
+        setSafeTxHash(tx);
+        console.log("Price Id Successfully Set - transaction hash:", tx);
+      } catch (error) {
+        console.error("Error setting priceId:", error);
+      }
     }
-  };
+  }; 
 
   useEffect(() => {
     if (!safeTxHash) return;

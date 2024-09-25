@@ -36,6 +36,7 @@ type ClaimableAUDCToken = {
   rwaAmountIn: string;
   priceId: string;
   redeemAmount: number;
+  redemptionId: string;
 };
 
 type Transaction = {

@@ -148,6 +148,7 @@ export const GET_PENDING_APPROVAL_REDEMPTION_LIST = gql`
       displayId
       collateralType
       tokenAmount
+      redemptionId
     }
   }
 `;
@@ -180,6 +181,7 @@ export const GET_CLAIMABLE_REDEMPTION_LIST = gql`
       displayId
       collateralType
       tokenAmount
+      redemptionId
     }
   }
 `;
@@ -206,6 +208,7 @@ export const GET_PENDING_REDEMPTION_REQUEST_LIST = gql`
       displayId
       collateralType
       tokenAmount
+      redemptionId
     }
   }
 `;

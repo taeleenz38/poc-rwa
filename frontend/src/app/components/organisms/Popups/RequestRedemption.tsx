@@ -107,7 +107,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
 
         const approvalTx = await writeContractAsync({
           abi: hyfabi.abi,
-          address: process.env.NEXT_PUBLIC_HYF_ADDRESS as `0x${string}`,
+          address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
           functionName: "approve",
           args: [
             process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,

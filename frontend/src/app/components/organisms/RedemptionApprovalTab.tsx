@@ -10,9 +10,11 @@ import { useQuery } from "urql";
 type RedemptionListData = {
   redemptionRequests: {
     id: string;
+    redemptionId: string;
     user: string;
     rwaAmountIn: string;
     redeemAmount: number;
+    displayId: string;
   }[];
 };
 
@@ -22,6 +24,7 @@ const RedemptionApprovalTab = () => {
   const [approveRedeem, setApproveRedeem] = useState(false);
   const [selectedRedemption, setSelectedRedemption] = useState<{
     id: string;
+    redemptionId: string;
     user: string;
     rwaAmountIn: string;
     redeemAmount: number;
@@ -93,7 +96,11 @@ const RedemptionApprovalTab = () => {
                   key={index}
                 >
                   <td className="text-center">
-                    {BigInt(request.id).toString()}
+                    {(() => {
+                      const [hexPart, token] = request.displayId.split("-");
+                      const decimalNumber = parseInt(hexPart, 16);
+                      return `${decimalNumber}-${token}`;
+                    })()}
                   </td>
                   <td className="text-center">{request.user}</td>
                   <td className="text-center">
@@ -110,7 +117,7 @@ const RedemptionApprovalTab = () => {
                         type="radio"
                         name="RedemptionSelection"
                         className="custom-checkbox"
-                        checked={selectedRedemption?.id === request.id}
+                        checked={selectedRedemption?.redemptionId === request.redemptionId}
                         onChange={() => handleRadioChange(index)}
                       />
                     </div>
@@ -124,8 +131,8 @@ const RedemptionApprovalTab = () => {
           isOpen={approveRedeem}
           onClose={() => setApproveRedeem(false)}
           redemptionId={
-            selectedRedemption?.id
-              ? parseInt(selectedRedemption.id, 16).toString()
+            selectedRedemption?.redemptionId
+              ? parseInt(selectedRedemption.redemptionId, 16).toString()
               : ""
           }
           redeemAmount={
