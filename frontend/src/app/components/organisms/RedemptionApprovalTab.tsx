@@ -15,6 +15,8 @@ type RedemptionListData = {
     rwaAmountIn: string;
     redeemAmount: number;
     displayId: string;
+    collateralType: string;
+    tokenAmount: string;
   }[];
 };
 
@@ -28,6 +30,9 @@ const RedemptionApprovalTab = () => {
     user: string;
     rwaAmountIn: string;
     redeemAmount: number;
+    displayId: string;
+    collateralType: string;
+    tokenAmount: string;
   } | null>(null);
 
   const [{ data, fetching, error }] = useQuery<RedemptionListData>({
@@ -104,8 +109,8 @@ const RedemptionApprovalTab = () => {
                   </td>
                   <td className="text-center">{request.user}</td>
                   <td className="text-center">
-                    {" "}
-                    {ethers.utils.formatUnits(request.redeemAmount, 18)} AUDC
+                    {ethers.utils.formatUnits(request.redeemAmount, 18)}{" "}
+                    {request.collateralType === "AUDC" ? "AUDC" : "USDC"}
                   </td>
                   <td className="text-center">
                     {" "}
@@ -117,7 +122,9 @@ const RedemptionApprovalTab = () => {
                         type="radio"
                         name="RedemptionSelection"
                         className="custom-checkbox"
-                        checked={selectedRedemption?.redemptionId === request.redemptionId}
+                        checked={
+                          selectedRedemption?.displayId === request.displayId
+                        }
                         onChange={() => handleRadioChange(index)}
                       />
                     </div>
@@ -135,6 +142,8 @@ const RedemptionApprovalTab = () => {
               ? parseInt(selectedRedemption.redemptionId, 16).toString()
               : ""
           }
+          collateralType={selectedRedemption?.collateralType || ""}
+          tokenAmount={selectedRedemption?.tokenAmount || ""}
           redeemAmount={
             selectedRedemption?.redeemAmount
               ? parseFloat(

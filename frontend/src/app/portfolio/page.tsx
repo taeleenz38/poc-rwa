@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/app/components/atoms/Buttons/Button";
 import abi from "@/artifacts/ABBYManager.json";
+import hyfabi from "@/artifacts/HYFManager.json";
 import { config } from "@/config";
 import {
   GET_PRICE_LIST,
@@ -31,6 +32,15 @@ type ClaimableToken = {
 };
 
 type ClaimableAUDCToken = {
+  user: string;
+  id: string;
+  rwaAmountIn: string;
+  priceId: string;
+  redeemAmount: number;
+  redemptionId: string;
+};
+
+type ClaimableUSDCToken = {
   user: string;
   id: string;
   rwaAmountIn: string;
@@ -82,8 +92,12 @@ const Portfolio = () => {
   const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
     ClaimableAUDCToken[]
   >([]);
+  const [claimableUSDCTokens, setClaimableUSDCTokens] = useState<
+    ClaimableUSDCToken[]
+  >([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isFetchingAUDC, setIsFetchingAUDC] = useState(true);
+  const [isFetchingUSDC, setIsFetchingUSDC] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [transactionsPerPage] = useState(5);
   const [price, setPrice] = useState<string | null>(null);
@@ -172,8 +186,19 @@ const Portfolio = () => {
 
   useEffect(() => {
     if (claimableRedemptionListData) {
-      setClaimableAUDCTokens(claimableRedemptionListData.redemptionRequests);
+      const redemptionRequests = claimableRedemptionListData.redemptionRequests;
+
+      const audcRequests = redemptionRequests.filter(
+        (request: any) => request.collateralType === "AUDC"
+      );
+      const usdcRequests = redemptionRequests.filter(
+        (request: any) => request.collateralType === "USDC"
+      );
+
+      setClaimableAUDCTokens(audcRequests);
+      setClaimableUSDCTokens(usdcRequests);
       setIsFetchingAUDC(false);
+      setIsFetchingUSDC(false);
     }
   }, [claimableRedemptionListData]);
 
@@ -201,6 +226,7 @@ const Portfolio = () => {
       ethers.utils.hexlify(redemptionIdFormatted),
       32
     );
+    if (openRedemptionAccordion === "AUDC") {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
@@ -211,6 +237,18 @@ const Portfolio = () => {
     } catch (error) {
       console.error("Error claiming tokens:", error);
     }
+  } else {
+    try {
+      const tx = await writeContractAsync({
+        abi: hyfabi.abi,
+        address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "claimRedemption",
+        args: [[redemptionIdHexlified]],
+      });
+    } catch (error) {
+      console.error("Error claiming tokens:", error);
+    }
+  }
   };
 
   useEffect(() => {
@@ -369,23 +407,23 @@ const Portfolio = () => {
 
             <div className="flex flex-col w-full py-8 text-primary rounded-md p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
-                AUDC Redemption
+                Pending Redemptions
               </h2>
               <div className="mb-4">
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleRedemptionAccordion("AYF")}
+                  onClick={() => toggleRedemptionAccordion("AUDC")}
                 >
-                  <span>AYF</span>
-                  <span>{openRedemptionAccordion === "AYF" ? "▲" : "▼"}</span>
+                  <span>AUDC</span>
+                  <span>{openRedemptionAccordion === "AUDC" ? "▲" : "▼"}</span>
                 </button>
-                {openRedemptionAccordion === "AYF" && (
+                {openRedemptionAccordion === "AUDC" && (
                   <div className="p-4 bg-white mt-2">
                     <RedemptionTable
                       tokens={claimableAUDCTokens}
                       isFetching={isFetchingAUDC}
                       claimRedemption={claimRedemption}
-                      type="AYF"
+                      type="AUDC"
                     />
                   </div>
                 )}
@@ -393,19 +431,19 @@ const Portfolio = () => {
               <div>
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleRedemptionAccordion("HYF")}
+                  onClick={() => toggleRedemptionAccordion("USDC")}
                 >
-                  <span>HYF</span>
-                  <span>{openRedemptionAccordion === "HYF" ? "▲" : "▼"}</span>
+                  <span>USDC</span>
+                  <span>{openRedemptionAccordion === "USDC" ? "▲" : "▼"}</span>
                 </button>
-                {openRedemptionAccordion === "HYF" && (
+                {openRedemptionAccordion === "USDC" && (
                   <div className="p-4 bg-white mt-2">
                     {/* Currently using the same data as AYF */}
                     <RedemptionTable
-                      tokens={claimableAUDCTokens}
-                      isFetching={isFetchingAUDC}
+                      tokens={claimableUSDCTokens}
+                      isFetching={isFetchingUSDC}
                       claimRedemption={claimRedemption}
-                      type="HYF"
+                      type="USDC"
                     />
                   </div>
                 )}

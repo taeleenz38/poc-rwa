@@ -5,8 +5,11 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
+import hyfabi from "@/artifacts/HYFManager.json";
 import axios from "axios";
 import audcabi from "@/artifacts/AUDC.json";
+import usdcabi from "@/artifacts/USDC.json";
+import hyf from "@/artifacts/HYF.json";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { config } from "@/config";
 
@@ -15,6 +18,8 @@ interface ApproveRedeemProps {
   onClose: () => void;
   redemptionId: string;
   redeemAmount: number;
+  collateralType: string;
+  tokenAmount: string;
 }
 
 const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
@@ -22,6 +27,8 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   onClose,
   redemptionId,
   redeemAmount,
+  collateralType,
+  tokenAmount,
 }) => {
   const [amount, setAmount] = useState<string>("");
   const [redemptionIdInput, setRedemptionIdInput] = useState<string>("");
@@ -61,44 +68,102 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   };
 
   const handleApproveRedeem = async () => {
-    try {
-      const parsedAmount = parseFloat(amount);
-      const approvalAmount = ethers.utils.parseUnits(
-        parsedAmount.toString(),
-        18
-      );
+    if (collateralType === "AUDC") {
+      try {
+        const parsedAmount = parseFloat(amount);
+        const approvalAmount = ethers.utils.parseUnits(
+          parsedAmount.toString(),
+          18
+        );
 
-      const approvalTx = await writeContractAsync({
-        abi: audcabi.abi,
-        address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
-        functionName: "approve",
-        args: [
-          process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-          approvalAmount,
-        ],
-      });
+        const approvalTx = await writeContractAsync({
+          abi: audcabi.abi,
+          address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
+          functionName: "approve",
+          args: [
+            process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+            approvalAmount,
+          ],
+        });
 
-      const redemptionIdFormatted = Number(redemptionIdInput);
-      const redemptionIdHexlified = ethers.utils.hexZeroPad(
-        ethers.utils.hexlify(redemptionIdFormatted),
-        32
-      );
+        const redemptionIdFormatted = Number(redemptionIdInput);
+        const redemptionIdHexlified = ethers.utils.hexZeroPad(
+          ethers.utils.hexlify(redemptionIdFormatted),
+          32
+        );
 
-      const tx = await writeContractAsync({
-        abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "approveRedemptionRequest",
-        args: [[redemptionIdHexlified]],
-      });
+        const tx = await writeContractAsync({
+          abi: abi.abi,
+          address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+          functionName: "approveRedemptionRequest",
+          args: [[redemptionIdHexlified]],
+        });
 
-      setTxApprovalHash(approvalTx);
-      setSafeTxHash(tx);
-    } catch (error) {
-      console.error("Error approving:", error);
+        setTxApprovalHash(approvalTx);
+        setSafeTxHash(tx);
+      } catch (error) {
+        console.error("Error approving:", error);
+      }
+    } else {
+      try {
+        const parsedAmount = parseFloat(amount);
+        const approvalAmount = ethers.utils.parseUnits(
+          parsedAmount.toString(),
+          18
+        );
+
+        const approvalTx = await writeContractAsync({
+          abi: usdcabi.abi,
+          address: process.env.NEXT_PUBLIC_USDC_ADDRESS as `0x${string}`,
+          functionName: "approve",
+          args: [
+            process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+            approvalAmount,
+          ],
+        });
+
+        const parsedAmountHyf = tokenAmount.toString(); 
+        const hyfAmount = ethers.utils.formatUnits(parsedAmountHyf, 18);
+        const parsedHyf = parseFloat(hyfAmount);
+        const hyfApprovalAmount = ethers.utils.parseUnits(
+          parsedHyf.toString(),
+          18
+        );  
+        console.log(hyfAmount);
+        const hyfAmountTx = await writeContractAsync({
+          abi: hyf.abi,
+          address: process.env.NEXT_PUBLIC_HYF_ADDRESS as `0x${string}`,
+          functionName: "approve",
+          args: [
+            process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+            hyfApprovalAmount,
+          ],
+        });
+
+        const redemptionIdFormatted = Number(redemptionIdInput);
+        const redemptionIdHexlified = ethers.utils.hexZeroPad(
+          ethers.utils.hexlify(redemptionIdFormatted),
+          32
+        );
+
+        const tx = await writeContractAsync({
+          abi: hyfabi.abi,
+          address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+          functionName: "approveRedemptionRequest",
+          args: [[redemptionIdHexlified]],
+        });
+
+        setTxApprovalHash(approvalTx);
+        setSafeTxHash(tx);
+      } catch (error) {
+        console.error("Error approving:", error);
+      }
     }
   };
 
   useEffect(() => {
+    console.log(tokenAmount);
+    console.log(collateralType);
     if (!safeTxHash) return;
 
     const fetchTransactionData = async () => {
@@ -122,7 +187,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
     };
 
     fetchTransactionData();
-  }, [safeTxHash]);
+  }, [safeTxHash, tokenAmount, collateralType]);
 
   const { data: approvalReceipt, isLoading: isApprovalLoading } =
     useWaitForTransactionReceipt({
@@ -156,8 +221,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8  mb-8 ">
-          Please enter the amount of AUDC you wish to approve for the AYF
-          Manager to spend for a given redemption ID.
+          {collateralType === "AUDC" ? "Please enter the amount of AUDC you wish to approve for the AYF Manager to spend for a given redemption ID." : "Please enter the amount of USDC you wish to approve for the HYF Manager to spend for a given Redemption ID."}
         </div>
         <div className="mb-4">
           <InputField

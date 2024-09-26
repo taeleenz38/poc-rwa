@@ -43,7 +43,7 @@ const PendingRedemptionsTable = ({
   tokens: ClaimableAUDCToken[];
   isFetching: boolean;
   claimRedemption: (id: string) => void;
-  type: "AYF" | "HYF";
+  type: "AUDC" | "USDC";
 }) => {
   return (
     <div className="overflow-x-auto">
@@ -78,10 +78,10 @@ const PendingRedemptionsTable = ({
                   AYF
                 </td>
                 <td className="flex-1">
-                  {formatNumber(
+                {formatNumber(
                     weiToEther(token.redeemAmount as unknown as number)
                   )}{" "}
-                  AUDC
+                  {type === "AUDC" ? "AUDC" : "USDC"}
                 </td>
                 <td className="flex-1">
                   <Button
