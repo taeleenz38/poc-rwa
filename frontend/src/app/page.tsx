@@ -118,7 +118,7 @@ export default function Home() {
           "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
         );
         const contractAddress = process.env
-          .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+          .NEXT_PUBLIC_HYF_ADDRESS as `0x${string}`;
         const abi = hyfabi.abi;
         const contract = new ethers.Contract(contractAddress, abi, provider);
 
