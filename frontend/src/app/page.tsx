@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useReadContract, useBalance } from "wagmi";
 import ayfabi from "@/artifacts/ABBY.json";
+import hyfabi from "@/artifacts/HYF.json";
 import { config } from "@/config";
 import { ethers } from "ethers";
 import { PackageCard } from "./components/organisms/PackageCard";
@@ -42,6 +43,9 @@ export default function Home() {
   const [isFetching, setIsFetching] = useState(true);
   const [price, setPrice] = useState<string | null>(null);
   const [tvl, setTvl] = useState<string>("...");
+  const [hyfTvl, setHyfTvl] = useState<string>("...");
+  const [lpBalance, setLpBalance] = useState<string>("...");
+  const [lpBalanceHyf, setLpBalanceHyf] = useState<string>("...");
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
@@ -63,6 +67,18 @@ export default function Home() {
       setIsFetching(false);
     }
   }, [fetching, data]);
+
+  const { data: ayfLpBalance } = useBalance({
+    address: "0x6223c2C68d1e786cd02A2eBbDF873e1f9d268D45",
+    token: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    config,
+  });
+
+  useEffect(() => {
+    if (ayfLpBalance) {
+      setLpBalance(ayfLpBalance.formatted);
+    }
+  }, [ayfLpBalance]);
 
   useEffect(() => {
     const calculateTVL = async () => {
@@ -95,6 +111,34 @@ export default function Home() {
     calculateTVL();
   }, [price]);
 
+  useEffect(() => {
+    const calculateHyfTVL = async () => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider(
+          "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
+        );
+        const contractAddress = process.env
+          .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+        const abi = hyfabi.abi;
+        const contract = new ethers.Contract(contractAddress, abi, provider);
+
+        const supply = await contract.totalSupply();
+        const formattedSupply = ethers.utils.formatUnits(supply, 18);
+
+        setLpBalanceHyf(formattedSupply);
+
+        const tvlValue = (parseFloat(formattedSupply) * 107.34).toFixed(
+          2
+        );
+        setHyfTvl(formatNumber(tvlValue));
+      } catch (error) {
+        console.error("Error calculating TVL:", error);
+      }
+    };
+
+    calculateHyfTVL();
+  }, [price]);
+
   const formattedPrice = price
     ? formatNumber(parseFloat(weiToEther(price)))
     : "...";
@@ -113,7 +157,7 @@ export default function Home() {
         <PackageCard
           heading="AYF"
           subHeading="Australian Yield Fund"
-          lpBalance="100"
+          lpBalance={lpBalance}
           PRICE={formattedPrice}
           TVL={tvl}
           href="/invest"
@@ -124,9 +168,9 @@ export default function Home() {
         <PackageCard
           heading="HYF"
           subHeading="High Yield Fund"
-          lpBalance="100"
+          lpBalance={lpBalanceHyf}
           PRICE={"107.34"}
-          TVL={"1,240,000"}
+          TVL={hyfTvl}
           href="/invest"
           backgroundImage="url('/Graphic1.png')"
           footerText="For Retail Investors"

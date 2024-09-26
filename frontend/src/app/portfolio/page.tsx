@@ -345,9 +345,9 @@ const Portfolio = () => {
                         </tr>
                         <tr className="border-b borderColor">
                           <td>Copiam High Yield Fund</td>
-                          <td>${formattedPrice}</td>
-                          <td>{formatNumber(formattedAyfBalance)}</td>
-                          <td>${formatNumber(ayfMarketValueInEther)}</td>
+                          <td>$107.34</td>
+                          <td>0</td>
+                          <td>$0.00</td>
                         </tr>
                       </>
                     )}
@@ -487,7 +487,7 @@ const Portfolio = () => {
                           <tr key={index} className="border-b borderColor">
                             <td>Copiam Australian Yield Fund</td>
                             <td>{transaction.status}</td>
-                            <td>{transaction.type}</td>
+                            <td>{transaction.type} {transaction.collateralType}</td>
                             <td>{transaction.transactionDate}</td>
                             <td>
                               {transaction.price
