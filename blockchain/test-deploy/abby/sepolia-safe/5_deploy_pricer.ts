@@ -15,6 +15,8 @@ async function main() {
   console.log("The deployer is:", deployer.address);
   console.log("The guargian is:", guardian);
   console.log("The managerAdmin is:", managerAdmin);
+  const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(2)); // Increase gas price by 2 times
+  const gasLimit = 600000;
 
 
   await deploy("AYF_Pricer", {

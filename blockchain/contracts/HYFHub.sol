@@ -318,7 +318,7 @@ abstract contract HYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
 
       delete redemptionIdToRedeemer[redemptionIds[i]];
 
-      rwa.burn(hyfAmount);
+      rwa.burnFrom(assetRecipient, hyfAmount);
 
       collateral.safeTransferFrom(
         assetSender,

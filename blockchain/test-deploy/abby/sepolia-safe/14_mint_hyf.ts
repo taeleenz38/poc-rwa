@@ -1,12 +1,15 @@
 import { ethers } from "hardhat";
+import { keccak256, parseUnits } from "ethers/lib/utils";
 
 async function main() {
   const signers = await ethers.getSigners();
-  const managerAdmin = signers[2];
+  const deployer = signers[0];
 
-  const abbyManager = await ethers.getContract("HYFManager");
+  console.log("deployer==>", deployer.address);
 
-  console.log("abbyManager==>", abbyManager.address);
+  const hyf = await ethers.getContract("HYF");
+
+  console.log("hyf==>", hyf.address);
 
   // Setting up Gnosis Safe
   // const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;
@@ -18,16 +21,20 @@ gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(10
   const redemptionFee = 20; // Example: 3%
 
   try {
-    let tx = await abbyManager.connect(managerAdmin).setMintFee(mintFee, {
-      gasLimit: 600000, // Manually specify gas limit for deployment
-      // gasPrice: gasPrice
-    });
 
-    tx.wait();
+    await hyf
+    .connect(deployer)
+    .grantRole(
+      keccak256(Buffer.from("MINTER_ROLE", "utf-8")),
+      deployer.address,
+      {
+        gasLimit: 200000, // Example: Manually specify gas limit for this transaction
+      }
+    );
 
-    tx = await abbyManager.connect(managerAdmin).setRedemptionFee(redemptionFee, {
-      gasLimit: 600000, // Manually specify gas limit for deployment
-      // gasPrice: gasPrice
+    let tx = await hyf.connect(deployer).mint("0x6223c2C68d1e786cd02A2eBbDF873e1f9d268D45", parseUnits("200000", 18), {
+      gasLimit: 6000000, // Manually specify gas limit for deployment
+      gasPrice: gasPrice
     });
 
     tx.wait();

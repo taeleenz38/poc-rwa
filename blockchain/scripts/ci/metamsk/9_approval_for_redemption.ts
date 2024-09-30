@@ -28,10 +28,15 @@ async function main() {
   gasPrice = gasPrice.mul(ethers.BigNumber.from(110)).div(ethers.BigNumber.from(100));
 
   const gasLimit = 600000;
+  const FIRST_DEPOSIT_ID = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32);
+
 
   let tx = await audc.connect(assetSender).approve(abbyManager.address, parseUnits("20000", 18), { gasPrice, gasLimit });
   await tx.wait();
   console.log("Price set for redemption");
+
+  tx = await abbyManager.connect(assetSender).approveRedemptionRequest([FIRST_DEPOSIT_ID], { gasPrice, gasLimit });
+  await tx.wait();
 }
 
 main().catch((error) => {
