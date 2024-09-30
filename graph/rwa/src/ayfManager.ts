@@ -254,7 +254,7 @@ export function handleRedemptionCompletedEvent(event: RedemptionCompletedEvent):
         combinedKey
     )   
     if(redemptionRequestEntity!=null){
-       store.remove("RedemptionRequest", redemptionId.toHex());
+       store.remove("RedemptionRequest", combinedKey.toHex());
     }
 
     let transactionHistoryEntity = RedemptionTransactionHistory.load(redemptionId);

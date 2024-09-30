@@ -186,7 +186,7 @@ export function handleRedemptionRequestedEvent(event: RedemptionRequestedEvent):
         entity.transactionHash = event.transaction.hash
 
         entity.save()
-        
+
         let displayId = event.params.redemptionId.toHexString() + '-'+ cType
 
         let redemptionId = event.params.redemptionId.toHex();
@@ -256,7 +256,7 @@ export function handleRedemptionCompletedEvent(event: RedemptionCompletedEvent):
         combinedKey
     )   
     if(redemptionRequestEntity!=null){
-       store.remove("RedemptionRequest", redemptionId.toHex());
+       store.remove("RedemptionRequest", combinedKey.toHex());
     }
 
     let transactionHistoryEntity = RedemptionTransactionHistory.load(redemptionId);
