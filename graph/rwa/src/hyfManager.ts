@@ -1,4 +1,4 @@
-import { store } from "@graphprotocol/graph-ts"
+import { store, Bytes, crypto } from "@graphprotocol/graph-ts"
 import {
     MintRequested as MintRequestedEvent,
     PriceIdSetForDeposit as PriceIdSetForDepositEvent,
@@ -8,7 +8,7 @@ import {
     RedemptionCompleted as RedemptionCompletedEvent,
     PriceIdSetForRedemption as PriceIdSetForRedemptionEvent,
     RedemptionApproved as RedemptionApprovedEvent
-} from "../generated/ABBYManager/ABBYManager"
+} from "../generated/HYFManager/HYFManager"
 import {
     PendingDepositRequest,
     DepositTransactionHistory,
@@ -26,6 +26,9 @@ import {
 
 import { BigInt } from "@graphprotocol/graph-ts";
 import { formatDate } from "./utills/utillServices";
+const COLLATERAL_TYPE = crypto.keccak256(Bytes.fromUTF8("USDC"));
+const AUDC_TO_USDC_EXCHANGE_RATE = BigInt.fromString("660000000000000000")  // 1 AUDC = 0.66 USDC
+const HYF_TO_USDC_CONVERSION_RATE = BigInt.fromString("107940000000000000000")
 
 export function handleMintRequestedEvent(event: MintRequestedEvent): void {
     const requestTimeStamp = formatDate(event.block.timestamp);
@@ -164,6 +167,7 @@ export function handleMintCompletedEvent(event: MintCompletedEvent): void {
 
 export function handleRedemptionRequestedEvent(event: RedemptionRequestedEvent): void {
         const requestTimeStamp = formatDate(event.block.timestamp);
+        let cType= 'USDC'
         let entity = new RedemptionRequested(
         event.transaction.hash.concatI32(event.logIndex.toI32())
         )
@@ -171,33 +175,50 @@ export function handleRedemptionRequestedEvent(event: RedemptionRequestedEvent):
         entity.user = event.params.user
         entity.redemptionId = event.params.redemptionId
         entity.rwaAmountIn = event.params.rwaAmountIn
-        
+        if (COLLATERAL_TYPE.equals(event.params.collateralType)) {
+            cType = 'USDC';
+        } else {
+            cType = 'AUDC';
+        }
+        entity.collateralType = cType
         entity.blockNumber = event.block.number
         entity.blockTimestamp = event.block.timestamp
         entity.transactionHash = event.transaction.hash
 
         entity.save()
+        
+        let displayId = event.params.redemptionId.toHexString() + '-'+ cType
 
+        let redemptionId = event.params.redemptionId.toHex();
+        let collateralType = event.params.collateralType.toString();
+        
+        let combinedKeyString = redemptionId + "-" + collateralType;
+        let combinedKey = Bytes.fromUTF8(combinedKeyString);
         let pendingRedemption = new RedemptionRequest(
-            event.params.redemptionId
+            combinedKey
         )
         pendingRedemption.user = event.params.user
         pendingRedemption.rwaAmountIn = event.params.rwaAmountIn
+        pendingRedemption.redemptionId = event.params.redemptionId
+        pendingRedemption.collateralType = cType
         pendingRedemption.requestTimestamp = requestTimeStamp
         pendingRedemption.blockTimestamp = event.block.timestamp
         pendingRedemption.status = 'REQUESTED'
         pendingRedemption.claimApproved = false
+        pendingRedemption.displayId = displayId
                 
         pendingRedemption.save()
         
         let transactionHistoryEntity = new RedemptionTransactionHistory(event.params.redemptionId)
         transactionHistoryEntity.user = event.params.user
         transactionHistoryEntity.type = "Redemption"
-        transactionHistoryEntity.currency = "AUDC"
+        transactionHistoryEntity.currency = cType
         transactionHistoryEntity.status = "SUBMITTED"
         transactionHistoryEntity.tokenAmount = event.params.rwaAmountIn
+        transactionHistoryEntity.collateralType = cType
         transactionHistoryEntity.requestTime = requestTimeStamp
         transactionHistoryEntity.transactionDate = requestTimeStamp
+        transactionHistoryEntity.displayId = displayId
         transactionHistoryEntity.save()
 
 }
@@ -214,15 +235,25 @@ export function handleRedemptionCompletedEvent(event: RedemptionCompletedEvent):
     entity.rwaAmountRequested = event.params.rwaAmountRequested
     entity.collateralAmountReturned = event.params.collateralAmountReturned
     entity.price = event.params.price
+    if (COLLATERAL_TYPE.equals(event.params.collateralType)) {
+        entity.collateralType = 'USDC';
+    } else {
+        entity.collateralType = 'AUDC';
+    }    
     
     entity.blockNumber = event.block.number
     entity.blockTimestamp = event.block.timestamp
     entity.transactionHash = event.transaction.hash
 
     entity.save()
+    let rId = event.params.redemptionId.toHex();
+    let collateralType = event.params.collateralType.toString();
+    
+    let combinedKeyString = rId + "-" + collateralType;
+    let combinedKey = Bytes.fromUTF8(combinedKeyString);
 
     let redemptionRequestEntity = RedemptionRequest.load(
-        event.params.redemptionId
+        combinedKey
     )   
     if(redemptionRequestEntity!=null){
        store.remove("RedemptionRequest", redemptionId.toHex());
@@ -252,8 +283,18 @@ export function handleRedemptionApproved(event: RedemptionApprovedEvent): void{
         event.transaction.hash.concatI32(event.logIndex.toI32())
         )
         entity.redemptionIdSet = event.params.redemptionId
+        if (COLLATERAL_TYPE.equals(event.params.collateralType)) {
+            entity.collateralType = 'USDC';
+        } else {
+            entity.collateralType = 'AUDC';
+        }    
+        let redemptionId = event.params.redemptionId.toHex();
+        let collateralType = event.params.collateralType.toString();
+        
+        let combinedKeyString = redemptionId + "-" + collateralType;
+        let combinedKey = Bytes.fromUTF8(combinedKeyString);        
     let redemptionRequestEntity = RedemptionRequest.load(
-        event.params.redemptionId
+        combinedKey
     )   
     if(redemptionRequestEntity!=null){
         redemptionRequestEntity.claimApproved = true
@@ -268,15 +309,20 @@ export function handlePriceIdSetForRedemption(event: PriceIdSetForRedemptionEven
     )
     entity.redemptionIdSet = event.params.redemptionIdSet
     entity.priceIdSet = event.params.priceIdSet
+    entity.collateralType = event.params.collateralType
     
     entity.blockNumber = event.block.number
     entity.blockTimestamp = event.block.timestamp
     entity.transactionHash = event.transaction.hash
 
     entity.save()
-
+    let redemptionId = event.params.redemptionIdSet.toHex();
+    let collateralType = event.params.collateralType.toString();
+    
+    let combinedKeyString = redemptionId + "-" + collateralType;
+    let combinedKey = Bytes.fromUTF8(combinedKeyString);
     let redemptionRequestEntity = RedemptionRequest.load(
-        event.params.redemptionIdSet
+        combinedKey
     )       
     if(redemptionRequestEntity!=null){
         redemptionRequestEntity.priceId = event.params.priceIdSet
@@ -287,9 +333,10 @@ export function handlePriceIdSetForRedemption(event: PriceIdSetForRedemptionEven
             if (latestPriceEntity != null) {
                 redemptionRequestEntity.price = latestPriceEntity.price
                 let redeemAmount = redemptionRequestEntity.rwaAmountIn.times(latestPriceEntity.price);
-                let redeemAmountConverted = redeemAmount.div(BigInt.fromI32(10).pow(18));
+                let redeemAmountConverted = redeemAmount.times(AUDC_TO_USDC_EXCHANGE_RATE).div(BigInt.fromI32(10).pow(36))
                 redemptionRequestEntity.redeemAmount = redeemAmountConverted
-
+                let tokenAmmount = redeemAmountConverted.times(BigInt.fromI32(10).pow(18)).div(HYF_TO_USDC_CONVERSION_RATE);
+                redemptionRequestEntity.tokenAmount = tokenAmmount
                 let transactionHistoryEntity = RedemptionTransactionHistory.load(event.params.redemptionIdSet);
                 if (transactionHistoryEntity != null) {
 

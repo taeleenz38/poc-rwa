@@ -8,7 +8,7 @@ dataSources:
     name: Pricer
     network: sepolia
     source:
-      address: "0x32105384c2636A06d5eC36aB5Dd7F1E57108a3Ba"
+      address: "0x4bBd232AAC32a95D3E0507986381b95E935a298a"
       abi: Pricer
       startBlock: 6573044
     mapping:
@@ -31,7 +31,7 @@ dataSources:
     name: AllowlistUpgradeable
     network: sepolia
     source:
-      address: "0x7d3761B27b825fA69b9F09704Eba3974Aa1D037a"
+      address: "0x43B5A7004bB0BE974C40f282EaF8d74cD7f34C62"
       abi: AllowlistUpgradeable
       startBlock: 6573044
     mapping:
@@ -48,11 +48,11 @@ dataSources:
           handler: handleAccountStatusSetByAdmin
       file: ./src/allowList.ts   
   - kind: ethereum
-    name: AbbyManager
+    name: AYFManager
     network: sepolia
     source:
-      address: "0x33efe6740c872dC034E79e4393457041E7A13536"
-      abi: ABBYManager
+      address: "0xB6448646cbC568CE8Ed057CC3e2241443bE7ea3e"
+      abi: AYFManager
       startBlock: 6573044
     mapping:
       kind: ethereum/events
@@ -68,8 +68,8 @@ dataSources:
         - RedemptionCompleted
         - RedemptionRequest
       abis:
-        - name: ABBYManager
-          file: ./abis/ABBYManager.json
+        - name: AYFManager
+          file: ./abis/AYFManager.json
       eventHandlers:
         - event: MintRequested(indexed address,indexed bytes32,uint256,uint256,uint256)
           handler: handleMintRequestedEvent
@@ -79,12 +79,53 @@ dataSources:
           handler: handleClaimableTimestampSetEvent
         - event: MintCompleted(indexed address,indexed bytes32,uint256,uint256,uint256,uint256)
           handler: handleMintCompletedEvent
-        - event: RedemptionRequested(indexed address,indexed bytes32,uint256)
+        - event: RedemptionRequested(indexed address,indexed bytes32,uint256,bytes32)
           handler: handleRedemptionRequestedEvent
-        - event: RedemptionCompleted(indexed address,indexed bytes32,uint256,uint256,uint256)
+        - event: RedemptionCompleted(indexed address,indexed bytes32,uint256,uint256,uint256,bytes32)
           handler: handleRedemptionCompletedEvent
-        - event: PriceIdSetForRedemption(indexed bytes32,indexed uint256)
+        - event: PriceIdSetForRedemption(indexed bytes32,indexed uint256,bytes32)
           handler: handlePriceIdSetForRedemption
-        - event: RedemptionApproved(indexed bytes32)
+        - event: RedemptionApproved(indexed bytes32,bytes32)
           handler: handleRedemptionApproved
-      file: ./src/abbyManager.ts
+      file: ./src/ayfManager.ts
+  - kind: ethereum
+    name: HYFManager
+    network: sepolia
+    source:
+      address: "0x3b48ec114dDf77040D3948Fc8736191835377B1C"
+      abi: HYFManager
+      startBlock: 6573044
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - MintRequested
+        # - MintCompleted
+        - PriceIdSetForDeposit
+        - PriceIdSetForRedemption
+        # - ClaimableTimestampSet
+        - RedemptionRequested
+        - RedemptionCompleted
+        - RedemptionRequest
+      abis:
+        - name: HYFManager
+          file: ./abis/HYFManager.json
+      eventHandlers:
+        - event: MintRequested(indexed address,indexed bytes32,uint256,uint256,uint256)
+          handler: handleMintRequestedEvent
+        - event: PriceIdSetForDeposit(indexed bytes32,indexed uint256)
+          handler: handlePriceIdSetForDepositEvent
+        - event: ClaimableTimestampSet(indexed uint256,indexed bytes32)
+          handler: handleClaimableTimestampSetEvent
+        - event: MintCompleted(indexed address,indexed bytes32,uint256,uint256,uint256,uint256)
+          handler: handleMintCompletedEvent
+        - event: RedemptionRequested(indexed address,indexed bytes32,uint256,bytes32)
+          handler: handleRedemptionRequestedEvent
+        - event: RedemptionCompleted(indexed address,indexed bytes32,uint256,uint256,uint256,bytes32)
+          handler: handleRedemptionCompletedEvent
+        - event: PriceIdSetForRedemption(indexed bytes32,indexed uint256,bytes32)
+          handler: handlePriceIdSetForRedemption
+        - event: RedemptionApproved(indexed bytes32,bytes32)
+          handler: handleRedemptionApproved
+      file: ./src/hyfManager.ts      
