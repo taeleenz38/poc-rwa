@@ -21,7 +21,7 @@ async function main() {
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
-  console.log("factory==>", factory)
+  // console.log("factory==>", factory)
 
   const tx = await factory
     .connect(deployerSigner)

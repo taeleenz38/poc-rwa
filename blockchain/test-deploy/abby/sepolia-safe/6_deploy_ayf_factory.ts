@@ -9,22 +9,31 @@ async function main() {
 
   console.log("The deployer is:", deployer.address);
   // console.log("The guargian is:", guardian);
+  const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(3)); // Increase gas price by 2 times
+  const gasLimit = 600000;
 
-  await deploy("AYFFactory", {
+  let tx = await deploy("AYFFactory", {
     from: deployer,
     args: [deployerSigner.address],
     log: true,
   });
+  
 
+  // await tx.wait();
+  console.log("deployed");
   // ABBY deps
   const factory = await ethers.getContract("AYFFactory");
-  const blocklist = await ethers.getContract("Blocklist");
+  // const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
-  const tx = await factory
+  // const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(2)); // Increase gas price by 2 times
+  // const gasLimit = 600000;
+
+
+  tx = await factory
     .connect(deployerSigner)
     .deployABBY("AYF", "AYF", [
-      blocklist.address,
+      allowlist.address,
       allowlist.address
     ]);
 

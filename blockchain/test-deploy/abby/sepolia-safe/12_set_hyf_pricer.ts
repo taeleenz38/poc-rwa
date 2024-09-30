@@ -29,8 +29,8 @@ gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(10
 
   try {
     let tx = await abbyManager.connect(managerAdmin).setPricer(pricer.address, {
-      gasLimit: 6000000, // Manually specify gas limit for deployment
-      gasPrice: gasPrice 
+      gasLimit: 600000, // Manually specify gas limit for deployment
+      // gasPrice: gasPrice 
     });
 
     tx.wait();

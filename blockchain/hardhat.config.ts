@@ -77,13 +77,18 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       url: 'https://eth-sepolia.g.alchemy.com/v2/KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe',
-      accounts: ["f89e2540e10bafb70fb88b9829c5df89f66d8ed5b7fe5258a0b0bcfeba5a7000", guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
+      accounts: ["c9a211627be842ae838c72fe867d4c0bcb3851576eb5c9ec4aa806c91c9c801c", guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
       gasPrice: 10000000000,
     },
     sepoliaSafe: {
       url: 'https://eth-sepolia.g.alchemy.com/v2/KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe',
       accounts: [deployer, guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
-      gasPrice: 10000000000,
+      // gasPrice: 10000000000,
+    },
+    sepoliaSafeAmoy: {
+      url: 'https://polygon-amoy.g.alchemy.com/v2/KAVeQ1V8UkE6JlDQgFkY17g-8c5V-dXe',
+      accounts: [deployer, guardian, managerAdmin, pauser, assetSender, instantMintAdmin, feeReceipent, stableCoinUser],
+      // gasPrice: 10000000000,
     }
   },
   mocha: {

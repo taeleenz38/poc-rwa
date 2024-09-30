@@ -27,6 +27,16 @@ async function main() {
     verifications[i] = await allowlist.verifications(addressToCheck, i);
   }
   console.log(`Verifications for address ${addressToCheck}:`, verifications);
+
+
+  const isSenderAllowed = await allowlist.isAllowed("0x3b48ec114dDf77040D3948Fc8736191835377B1C");
+console.log("Is sender allowed:", isSenderAllowed);
+
+const isFromAllowed = await allowlist.isAllowed("0xD1aa74797C5aefA8CEAbAfDD0dAb488E47D9BcBE");
+console.log("Is 'from' allowed:", isFromAllowed);
+
+const isToAllowed = await allowlist.isAllowed("0x6223c2C68d1e786cd02A2eBbDF873e1f9d268D45");
+console.log("Is 'to' allowed:", isToAllowed);
 }
 
 main().catch((error) => {

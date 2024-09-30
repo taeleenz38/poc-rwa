@@ -51,7 +51,7 @@ gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(10
     ],
     log: true,
     gasLimit: 6000000, // Manually specify gas limit for deployment
-    gasPrice: gasPrice 
+    // gasPrice: gasPrice 
   });
   console.log('deployed ABBYManager!');
   const abbyManager = await ethers.getContract("HYFManager");

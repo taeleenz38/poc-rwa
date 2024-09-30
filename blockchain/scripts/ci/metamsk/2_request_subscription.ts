@@ -27,11 +27,11 @@ async function main() {
 
   const gasLimit = 600000;
 
-  let tx = await audc.connect(usdcWhaleSigner).transfer(user.address, parseUnits("20000", 18), { gasPrice, gasLimit });
-  await tx.wait();
-  console.log("Transferred A$DC!");
+  // let tx = await audc.connect(usdcWhaleSigner).transfer(user.address, parseUnits("20000", 18), { gasPrice, gasLimit });
+  // await tx.wait();
+  // console.log("Transferred A$DC!");
 
-  tx = await audc.connect(user).approve(abbyManager.address, parseUnits("20000", 18), { gasPrice, gasLimit });
+  let tx = await audc.connect(user).approve(abbyManager.address, parseUnits("20000", 18), { gasPrice, gasLimit });
   await tx.wait();
   console.log("Approved A$DC!");
 
