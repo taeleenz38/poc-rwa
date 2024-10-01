@@ -6,7 +6,7 @@ import "contracts/abby/blocklist/BlocklistClientUpgradeable.sol";
 import "contracts/abby/allowlist/AllowlistClientUpgradeable.sol";
 import "contracts/sanctions/SanctionsListClientUpgradeable.sol";
 
-contract ABBY is
+contract HYF is
   ERC20PresetMinterPauserUpgradeable,
   BlocklistClientUpgradeable,
   AllowlistClientUpgradeable,
@@ -77,18 +77,18 @@ contract ABBY is
     if (from != msg.sender && to != msg.sender) {
       require(
         _isAllowed(msg.sender),
-        "ABBY: 'sender' address not on allowlist"
+        "HFY: 'sender' address not on allowlist"
       );
     }
 
     if (from != address(0)) {
       // If not minting
-      require(_isAllowed(from), "ABBY: 'from' address not on allowlist");
+      require(_isAllowed(from), "HFY: 'from' address not on allowlist");
     }
 
     if (to != address(0)) {
       // If not burning
-      require(_isAllowed(to), "ABBY: 'to' address not on allowlist");
+      require(_isAllowed(to), "HFY: 'to' address not on allowlist");
     }
   }
 

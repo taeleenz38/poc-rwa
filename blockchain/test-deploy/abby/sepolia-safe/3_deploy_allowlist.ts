@@ -7,6 +7,7 @@ async function main () {
   const signers = await ethers.getSigners();
   const deployerSigner = signers[0];
   const guardian = process.env.GUARDIAN_WALLET!;
+  // const guardian = signers[1].address;
   
   console.log("The deployer is:", deployerSigner.address);
   console.log("The guardian is:", guardian);

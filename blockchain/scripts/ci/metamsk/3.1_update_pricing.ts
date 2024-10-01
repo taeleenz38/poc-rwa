@@ -1,3 +1,4 @@
+import { parseUnits } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 import {
   AUDC_ADDRESS,
@@ -5,6 +6,7 @@ import {
 import Safe from "@gnosis.pm/safe-core-sdk";
 import EthersAdapter from "@gnosis.pm/safe-ethers-lib";
 import { SafeTransactionDataPartial } from "@gnosis.pm/safe-core-sdk-types";
+import { BigNumber } from "ethers";
 
 async function main() {
   const signers = await ethers.getSigners();
@@ -25,30 +27,32 @@ async function main() {
   console.log("allowlist==>", allowlist.address);
   console.log("abby==>", abby.address);
 
-  // Setting up Gnosis Safe
-  const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;
+  // Current gas price (in wei)
+  let gasPrice = await ethers.provider.getGasPrice();
+  // Increase the gas price by 10%
+  gasPrice = gasPrice.mul(ethers.BigNumber.from(200)).div(ethers.BigNumber.from(100));
+  const gasLimit = 600000;
+
+  console.log("Setting up Gnosis Safe...");
   const signer = managerAdmin.provider.getSigner(managerAdmin.address);
   const ethAdapter = new EthersAdapter({
     ethers,
     signerOrProvider: signer,
   });
 
+  // Ensure Safe wallet address is available
+  const managerAdminSafe: string = process.env.MANAGER_ADMIN_WALLET!;
   const safeSdk = await Safe.create({ ethAdapter, safeAddress: managerAdminSafe });
   console.log("Gnosis Safe setup complete.");
 
   try {
-    // Encode the setPricer function data
-    const setPricerData = abbyManager.interface.encodeFunctionData(
-      "setPricer",
-      [pricer.address]
-    );
+    // Encode the addPrice function data
+    const addPriceData = pricer.interface.encodeFunctionData("updatePrice", [5, parseUnits("12", 18)]);
 
     const txData: SafeTransactionDataPartial = {
-      to: abbyManager.address,
+      to: pricer.address,
       value: "0",
-      data: setPricerData,
-      operation: 0, // CALL
-      safeTxGas: 200000, // Manually specify gas limit for this transaction
+      data: addPriceData,
     };
 
     console.log("Creating Safe transaction...");
@@ -74,7 +78,7 @@ async function main() {
     console.log("Waiting for transaction confirmation...");
     const receipt = await executeTxResponse.transactionResponse?.wait();
 
-    console.log("--------------------setPricer transaction done!----------------------------------", receipt);
+    console.log("--------------------addPrice transaction done!----------------------------------", receipt);
   } catch (error) {
     console.error("Error during Safe setup or transaction:", error);
     throw error;

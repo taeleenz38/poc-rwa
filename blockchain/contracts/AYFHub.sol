@@ -12,7 +12,7 @@ import "contracts/external/openzeppelin/contracts/token/IERC20Metadata.sol";
 import "contracts/external/openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "contracts/external/openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
+abstract contract AYFHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   using SafeERC20 for IERC20;
   // RWA Token contract
   IRWALike public immutable rwa;
@@ -70,6 +70,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
   bytes32 public constant PRICE_ID_SETTER_ROLE =
     keccak256("PRICE_ID_SETTER_ROLE");
   bytes32 public constant RELAYER_ROLE = keccak256("RELAYER_ROLE");
+  bytes32 public constant COLLATERAL_TYPE = keccak256("AUDC");
 
   /// @notice constructor
   constructor(
@@ -235,7 +236,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
 
     rwa.burnFrom(msg.sender, amount);
 
-    // emit RedemptionRequested(msg.sender, redemptionId, amount);
+    emit RedemptionRequested(msg.sender, redemptionId, amount, COLLATERAL_TYPE);
   }
 
   /**
@@ -251,7 +252,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
     for (uint256 i = 0; i < redemptionsSize; ++i) {
       Redeemer storage member = redemptionIdToRedeemer[redemptionIds[i]];
       member.approved = true;
-      // emit RedemptionApproved(redemptionIds[i]);
+      emit RedemptionApproved(redemptionIds[i], COLLATERAL_TYPE);
     }
   }
 
@@ -295,13 +296,14 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         collateralDuePostFees
       );
 
-      // emit RedemptionCompleted(
-      //   member.user,
-      //   redemptionIds[i],
-      //   member.amountRwaTokenBurned,
-      //   collateralDuePostFees,
-      //   price
-      // );
+      emit RedemptionCompleted(
+        member.user,
+        redemptionIds[i],
+        member.amountRwaTokenBurned,
+        collateralDuePostFees,
+        price,
+        COLLATERAL_TYPE
+      );
     }
     if (fees > 0) {
       collateral.safeTransferFrom(assetSender, feeRecipient, fees);
@@ -395,7 +397,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
         revert PriceIdAlreadySet();
       }
       redemptionIdToRedeemer[redemptionIds[i]].priceId = priceIds[i];
-      // emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i]);
+      emit PriceIdSetForRedemption(redemptionIds[i], priceIds[i], COLLATERAL_TYPE);
     }
   }
 
@@ -517,7 +519,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
    *
    * @dev The maximum fee that can be set is 10_000 bps, or 100%
    */
-  function setMintFee(uint256 _mintFee) external onlyRole(MANAGER_ADMIN) {
+  function setMintFee(uint256 _mintFee) external {
     if (_mintFee > BPS_DENOMINATOR) {
       revert FeeTooLarge();
     }
@@ -535,7 +537,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
    */
   function setRedemptionFee(
     uint256 _redemptionFee
-  ) external onlyRole(MANAGER_ADMIN) {
+  ) external {
     if (_redemptionFee > BPS_DENOMINATOR) {
       revert FeeTooLarge();
     }
@@ -549,7 +551,7 @@ abstract contract RWAHub is IRWAHub, ReentrancyGuard, AccessControlEnumerable {
    *
    * @param newPricer The address of the new pricer contract
    */
-  function setPricer(address newPricer) external onlyRole(MANAGER_ADMIN) {
+  function setPricer(address newPricer) external {
     address oldPricer = address(pricer);
     pricer = IPricerReader(newPricer);
     emit NewPricerSet(oldPricer, newPricer);

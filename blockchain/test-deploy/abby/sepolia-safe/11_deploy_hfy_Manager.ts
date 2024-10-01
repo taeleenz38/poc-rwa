@@ -1,6 +1,7 @@
 import {
   SANCTION_ADDRESS,
-  AUDC_ADDRESS,
+  USDC_ADDRESS,
+  AUDC_ADDRESS
 } from "../../constants";
 import { keccak256, parseUnits } from "ethers/lib/utils";
 const { ethers, deployments, getNamedAccounts } = require("hardhat");
@@ -17,17 +18,29 @@ async function main() {
   const instantMintAdmin = process.env.GUARDIAN_WALLET!;
   const feeRecipient = process.env.FEE_RECEIPIENT_WALLET!;
 
-  const abby = await ethers.getContract("ABBY");
+  let gasPrice = await ethers.provider.getGasPrice();
+// Increase the gas price by 20%
+gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(100));
+
+  // const managerAdmin = signers[2].address;
+  // const pauser = signers[3].address;
+  // const assetSender = signers[4].address;
+  // const feeRecipient = signers[6].address;
+
+  const hyf = await ethers.getContract("HYF");
+  const ayf = await ethers.getContract("AYF");
   const blocklist = await ethers.getContract("Blocklist");
 
-  console.log('parameters parsed to contract:', AUDC_ADDRESS, abby.address, managerAdmin, pauser, assetSender, feeRecipient, blocklist.address);
+  console.log('parameters parsed to contract:', USDC_ADDRESS, hyf.address, managerAdmin, pauser, assetSender, feeRecipient, blocklist.address);
 
 
-  await deploy("ABBYManager", { //PRICE_ID_SETTER_ROLE, TIMESTAMP_SETTER_ROLE, PAUSER_ADMIN - managerAdmin
+  await deploy("HYFManager", { //PRICE_ID_SETTER_ROLE, TIMESTAMP_SETTER_ROLE, PAUSER_ADMIN - managerAdmin
     from: deployer,
     args: [
-      AUDC_ADDRESS, //_collateral
-      abby.address, //rwa
+      USDC_ADDRESS, //_collateral
+      AUDC_ADDRESS,
+      hyf.address, //rwa
+      ayf.address,
       managerAdmin, //MANAGER_ADMIN - DEFAULT_ADMIN_ROLE
       pauser, //PAUSER_ADMIN
       assetSender, //setAssetSender - MANAGER_ADMIN
@@ -37,14 +50,15 @@ async function main() {
       blocklist.address
     ],
     log: true,
-    gasLimit: 6000000, // Manually specify gas limit for deployment
+    // gasLimit: 6000000, // Manually specify gas limit for deployment
+    // gasPrice: gasPrice 
   });
   console.log('deployed ABBYManager!');
-  const abbyManager = await ethers.getContract("ABBYManager");
-  const pricer = await ethers.getContract("ABBY_Pricer");
+  const abbyManager = await ethers.getContract("HYFManager");
+  const pricer = await ethers.getContract("AYF_Pricer");
 
   // Grant minting role to abby manager
-  await abby
+  await hyf
     .connect(deployerSigner)
     .grantRole(
       keccak256(Buffer.from("MINTER_ROLE", "utf-8")),

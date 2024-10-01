@@ -5,6 +5,9 @@ async function main() {
   const signers = await ethers.getSigners();
   const deployerSigner = signers[0];
   const guardian = process.env.GUARDIAN_WALLET!;
+  // const guardian = signers[1].address;
+  const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(2)); // Increase gas price by 2 times
+  const gasLimit = 600000;
   
   console.log("The deployer is:", deployerSigner.address);
   console.log("The guardian is:", guardian);
@@ -15,6 +18,8 @@ async function main() {
     from: deployer,
     args: [],
     log: true,
+    gasLimit,
+    gasPrice
   });
 
   // Get the deployed Blocklist contract instance
@@ -24,7 +29,8 @@ async function main() {
   try {
     // Transfer ownership to guardian
     await blocklist.transferOwnership(guardian, {
-      gasLimit: 5000000, // Manually specify gas limit
+      gasLimit,
+      gasPrice
     });
 
     // // Accept ownership as guardian

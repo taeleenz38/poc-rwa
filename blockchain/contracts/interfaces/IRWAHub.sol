@@ -129,7 +129,8 @@ interface IRWAHub {
   event RedemptionRequested(
     address indexed user,
     bytes32 indexed redemptionId,
-    uint256 rwaAmountIn
+    uint256 rwaAmountIn,
+    bytes32 collateralType
   );
 
   /**
@@ -166,7 +167,8 @@ interface IRWAHub {
     bytes32 indexed redemptionId,
     uint256 rwaAmountRequested,
     uint256 collateralAmountReturned,
-    uint256 price
+    uint256 price,
+    bytes32 collateralType
   );
 
   /**
@@ -210,7 +212,8 @@ interface IRWAHub {
    */
   event PriceIdSetForRedemption(
     bytes32 indexed redemptionIdSet,
-    uint256 indexed priceIdSet
+    uint256 indexed priceIdSet,
+    bytes32 collateralType
   );
 
   /**
@@ -287,7 +290,8 @@ interface IRWAHub {
   );
 
   event RedemptionApproved(
-    bytes32 indexed redemptionId
+    bytes32 indexed redemptionId,
+    bytes32 collateralType
   );
 
   /// ERRORS ///

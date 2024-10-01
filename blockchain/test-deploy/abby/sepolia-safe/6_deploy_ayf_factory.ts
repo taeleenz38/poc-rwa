@@ -9,19 +9,28 @@ async function main() {
 
   console.log("The deployer is:", deployer.address);
   // console.log("The guargian is:", guardian);
+  const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(3)); // Increase gas price by 2 times
+  const gasLimit = 2000000;
 
-  await deploy("ABBYFactory", {
+  let tx = await deploy("AYFFactory", {
     from: deployer,
     args: [deployerSigner.address],
     log: true,
   });
+  
 
+  // await tx.wait();
+  console.log("deployed");
   // ABBY deps
-  const factory = await ethers.getContract("ABBYFactory");
+  const factory = await ethers.getContract("AYFFactory");
   const blocklist = await ethers.getContract("Blocklist");
   const allowlist = await ethers.getContract("Allowlist");
 
-  const tx = await factory
+  // const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(2)); // Increase gas price by 2 times
+  // const gasLimit = 600000;
+
+
+  tx = await factory
     .connect(deployerSigner)
     .deployABBY("AYF", "AYF", [
       blocklist.address,
@@ -41,7 +50,7 @@ async function main() {
   console.log(`The ABBY proxy admin is deployed @: ${abbyProxyAdmin}`);
   console.log(`The ABBY Implementation is deployed @: ${abbyImplementation}\n`);
 
-  const abbyArtifact = await deployments.getExtendedArtifact("ABBY");
+  const abbyArtifact = await deployments.getExtendedArtifact("AYF");
   const paAtrifact = await deployments.getExtendedArtifact("ProxyAdmin");
 
   let abbyProxied = {
@@ -57,9 +66,9 @@ async function main() {
     ...abbyImplementation,
   };
 
-  await save("ABBY", abbyProxied);
-  await save("ProxyAdminABBY", abbyAdmin);
-  await save("ABBYImplementation", abbyImpl);
+  await save("AYF", abbyProxied);
+  await save("ProxyAdminAYF", abbyAdmin);
+  await save("AYFImplementation", abbyImpl);
 };
 
 main().catch((error) => {

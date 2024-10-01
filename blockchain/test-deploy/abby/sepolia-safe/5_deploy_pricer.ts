@@ -8,21 +8,26 @@ async function main() {
   const signers = await ethers.getSigners();
   const deployerSigner = signers[0];
   const guardian = process.env.GUARDIAN_WALLET!;
+  // const guardian = signers[1].address;
   const managerAdmin = process.env.MANAGER_ADMIN_WALLET!; //PRICE_UPDATE_ROLE - addPrice - updatePrice
+  // const managerAdmin = signers[2].address;
 
   console.log("The deployer is:", deployer.address);
   console.log("The guargian is:", guardian);
   console.log("The managerAdmin is:", managerAdmin);
+  const gasPrice = (await ethers.provider.getGasPrice()).mul(ethers.BigNumber.from(2)); // Increase gas price by 2 times
+  const gasLimit = 600000;
 
 
-  await deploy("ABBY_Pricer", {
+  await deploy("AYF_Pricer", {
     from: deployer,
     contract: "Pricer",
     args: [guardian, managerAdmin],
     log: true,
   });
 
-  const pricer = await ethers.getContract("ABBY_Pricer");
+  const pricer = await ethers.getContract("AYF_Pricer");
+  console.log(pricer)
 
   // Set price to $1
   // await pricer.connect(managerAdmin).addPrice(parseUnits("10", 18), "1");
