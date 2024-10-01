@@ -95,8 +95,8 @@ const AddTerm: React.FC<AddTermProps> = ({ isOpen, onClose }) => {
           <div className="mt-4 text-white mb-4">
             {isLoading && <p>Transaction is pending...</p>}
             {receipt && (
-              <p className="text-white overflow-x-scroll">
-                Transaction successful! Hash: {txHash}
+              <p className="text-primary text-center overflow-x-scroll">
+                Transaction successful! {txHash}
               </p>
             )}
           </div>

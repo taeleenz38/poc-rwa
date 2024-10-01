@@ -90,7 +90,7 @@ const RedemptionApprovalTab = () => {
                 <th className="text-center">Redemption ID</th>
                 <th className="text-center">User</th>
                 <th className="text-center">Redeem Amount</th>
-                <th className="text-center">RWA Burned</th>
+                <th className="text-center">RWA Amount</th>
                 <th className="text-center">Select</th>
               </tr>
             </thead>
