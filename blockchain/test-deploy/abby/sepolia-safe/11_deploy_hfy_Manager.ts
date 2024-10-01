@@ -11,21 +11,21 @@ async function main() {
   const { deploy } = deployments;
   const signers = await ethers.getSigners();
   const deployerSigner = signers[0];
-  // const guardian = process.env.GUARDIAN_WALLET!;
-  // const managerAdmin = process.env.MANAGER_ADMIN_WALLET!;
-  // const pauser = process.env.PAUSER_WALLET!;
-  // const assetSender = process.env.ASSET_SENDER_WALLET!;
-  // const instantMintAdmin = process.env.GUARDIAN_WALLET!;
-  // const feeRecipient = process.env.FEE_RECEIPIENT_WALLET!;
+  const guardian = process.env.GUARDIAN_WALLET!;
+  const managerAdmin = process.env.MANAGER_ADMIN_WALLET!;
+  const pauser = process.env.PAUSER_WALLET!;
+  const assetSender = process.env.ASSET_SENDER_WALLET!;
+  const instantMintAdmin = process.env.GUARDIAN_WALLET!;
+  const feeRecipient = process.env.FEE_RECEIPIENT_WALLET!;
 
   let gasPrice = await ethers.provider.getGasPrice();
 // Increase the gas price by 20%
 gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(100));
 
-  const managerAdmin = signers[2].address;
-  const pauser = signers[3].address;
-  const assetSender = signers[4].address;
-  const feeRecipient = signers[6].address;
+  // const managerAdmin = signers[2].address;
+  // const pauser = signers[3].address;
+  // const assetSender = signers[4].address;
+  // const feeRecipient = signers[6].address;
 
   const hyf = await ethers.getContract("HYF");
   const ayf = await ethers.getContract("AYF");
@@ -50,7 +50,7 @@ gasPrice = gasPrice.mul(ethers.BigNumber.from(120)).div(ethers.BigNumber.from(10
       blocklist.address
     ],
     log: true,
-    gasLimit: 6000000, // Manually specify gas limit for deployment
+    // gasLimit: 6000000, // Manually specify gas limit for deployment
     // gasPrice: gasPrice 
   });
   console.log('deployed ABBYManager!');

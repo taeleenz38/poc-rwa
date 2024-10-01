@@ -7,10 +7,10 @@ async function main() {
   const { deployer } = await getNamedAccounts();
   const signers = await ethers.getSigners();
   const deployerSigner = signers[0];
-  // const guardian = process.env.GUARDIAN_WALLET!;
-  const guardian = signers[1].address;
-  // const managerAdmin = process.env.MANAGER_ADMIN_WALLET!; //PRICE_UPDATE_ROLE - addPrice - updatePrice
-  const managerAdmin = signers[2].address;
+  const guardian = process.env.GUARDIAN_WALLET!;
+  // const guardian = signers[1].address;
+  const managerAdmin = process.env.MANAGER_ADMIN_WALLET!; //PRICE_UPDATE_ROLE - addPrice - updatePrice
+  // const managerAdmin = signers[2].address;
 
   console.log("The deployer is:", deployer.address);
   console.log("The guargian is:", guardian);
