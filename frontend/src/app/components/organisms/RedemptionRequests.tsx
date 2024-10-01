@@ -116,13 +116,13 @@ const RedemptionRequests = () => {
 
   return (
     <div className="p-4">
-      <div className="w-full flex justify-center py-6">
+      {/* <div className="w-full flex justify-center py-6">
         <Button
           text={"Set Redemption Fee"}
           onClick={() => setIsRedemptionFeeOpen(true)}
           className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
         />
-      </div>
+      </div> */}
       {fetchingRedemptions ? (
         <div className="text-center">Redemption Requests loading...</div>
       ) : (

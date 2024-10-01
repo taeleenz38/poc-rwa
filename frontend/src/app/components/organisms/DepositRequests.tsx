@@ -107,13 +107,13 @@ const DepositRequests = () => {
   
   return (
     <div className="p-4">
-      <div className="w-full flex justify-center py-6">
+      {/* <div className="w-full flex justify-center py-6">
         <Button
           text={"Set Mint Fee"}
           onClick={() => setIsSetMintFeeOpen(true)}
           className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
         />
-      </div>
+      </div> */}
       {fetchingDeposits ? (
         <div className="text-center">Deposit Requests loading...</div>
       ) : (

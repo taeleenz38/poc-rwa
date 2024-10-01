@@ -98,10 +98,11 @@ export default function Home() {
           // Convert price from wei to ether
           const priceInEther = parseFloat(weiToEther(price));
 
-          const tvlValue = (parseFloat(formattedSupply) * priceInEther).toFixed(
-            2
+          // Calculate TVL and format it to two decimal places
+          const tvlValue = parseFloat(
+            (parseFloat(formattedSupply) * priceInEther).toFixed(2)
           );
-          setTvl(formatNumber(tvlValue));
+          setTvl(formatNumber(tvlValue, 2)); // Format TVL value with two decimal points
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }
@@ -125,11 +126,10 @@ export default function Home() {
         const supply = await contract.totalSupply();
         const formattedSupply = ethers.utils.formatUnits(supply, 18);
 
-        setLpBalanceHyf(formattedSupply);
+        // Format lpBalanceHyf to two decimal places
+        setLpBalanceHyf(formatNumber(formattedSupply, 2));
 
-        const tvlValue = (parseFloat(formattedSupply) * 107.34).toFixed(
-          2
-        );
+        const tvlValue = (parseFloat(formattedSupply) * 107.34).toFixed(2);
         setHyfTvl(formatNumber(tvlValue));
       } catch (error) {
         console.error("Error calculating TVL:", error);

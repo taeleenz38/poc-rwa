@@ -105,11 +105,11 @@ const Pricing = () => {
           } py-2 rounded-md`}
           disabled={selectedPriceId === null}
         />
-        <Button
+        {/* <Button
           text={"Set Pricer"}
           onClick={() => setIsPricerOpen(true)}
           className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-        />
+        /> */}
       </div>
       <div className="overflow-x-auto pt-4">
         <table className="table">
