@@ -18,8 +18,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000, '10.198.48.5');
-  console.log(`Application is running on: http://10.198.48.5:3000`);
+  await app.listen(3000);
+  console.log(`Application is running on: http://localhost:3000`);
 }
 
 bootstrap();
