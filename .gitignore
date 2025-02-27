@@ -6,9 +6,9 @@
 /backend/dist
 /backend/build
 
-backend/config/.env
-frontend/.env
-frontend/config/.env
+# backend/config/.env
+# frontend/.env
+# frontend/config/.env
 node_modules
-blockchain/.env
-backend/.env
+# blockchain/.env
+# backend/.env
