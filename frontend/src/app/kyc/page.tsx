@@ -13,7 +13,7 @@ type Props = {};
 const KYC = (props: Props) => {
   return (
     <KycDetails
-      logoSrc="/LOGO.png"
+      logoSrc="/BM-LOGO.png"
       altText="Fund logo"
       fundName="AYF"
       fundDescription="Copiam Australian Dollar Yield"

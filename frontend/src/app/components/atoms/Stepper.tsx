@@ -15,7 +15,7 @@ const Stepper: React.FC<StepperProps> = ({
   return (
     <div className="flex flex-col justify-center ">
       {Array.from({ length: 4 }, (_, index) => (
-        <div key={index} className="flex mb-2 items-center">
+        <div key={index} className="flex mb-3 items-center">
           <div
             className={`w-10 h-10 rounded-full border  border-secondary  outline-2 outline-white ${
               (currentStep >= 4 && index <= 1) ||
@@ -27,7 +27,7 @@ const Stepper: React.FC<StepperProps> = ({
             }`}
             style={{ borderWidth: "8px" }}
           ></div>
-          <span className="ml-2 text-primary">{stepLabels[index]}</span>
+          <span className="ml-3 font-semibold text-primary">{stepLabels[index]}</span>
         </div>
       ))}
     </div>

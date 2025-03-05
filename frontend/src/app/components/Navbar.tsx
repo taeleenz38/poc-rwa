@@ -185,9 +185,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center lg:px-28 px-8 border-b-2 border-light py-4 transition-all duration-300 ${
-        scrolled ? "bg-white" : "bg-primary"
-      } ${scrolled ? "text-dark" : "text-light"}`}
+      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center lg:px-28 px-8 border-b-2 border-light py-4 transition-all duration-300 bg-white text-primary`}
     >
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex items-center justify-between">
@@ -196,17 +194,17 @@ const Navbar = () => {
             <label
               htmlFor="my-drawer"
               className={`bg-none drawer-button items-center text-2xl lg:hidden cursor-pointer
-            ${scrolled ? "text-primary" : "text-light"}`}
+            `}
             >
               ☰
             </label>
           ) : (
             <Link href="/">
               <Image
-                src={scrolled ? "/LOGO-LIGHT.png" : "/LOGO-DARK.png"}
+                src="/BM-LOGO.png"
                 alt="logo"
-                width={100}
-                height={100}
+                width={60}
+                height={60}
                 className="mr-16 lg:hidden"
               />
             </Link>
@@ -214,10 +212,10 @@ const Navbar = () => {
 
           <Link href="/">
             <Image
-              src={scrolled ? "/LOGO-LIGHT.png" : "/LOGO-DARK.png"}
+              src="/BM-LOGO.png"
               alt="logo"
-              width={150}
-              height={150}
+              width={60}
+              height={60}
               className="mr-16 hidden lg:block"
             />
           </Link>
@@ -227,35 +225,27 @@ const Navbar = () => {
                 <>
                   <Link
                     href="/invest"
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                      currentPath === "/invest" ? "text-secondary" : ""
-                    }`}
+                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] `}
                   >
                     Invest
                   </Link>
                   {userState === "Active" && userState !== null && (
                     <Link
                       href="/portfolio"
-                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                        currentPath === "/portfolio" ? "text-secondary" : ""
-                      }`}
+                      className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969]`}
                     >
                       Portfolio
                     </Link>
                   )}
                   <Link
                     href="/about"
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                      currentPath === "/about" ? "text-secondary" : ""
-                    }`}
+                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] `}
                   >
                     About
                   </Link>
                   <Link
                     href="/profile"
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
-                      currentPath === "/profile" ? "text-secondary" : ""
-                    }`}
+                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969]`}
                   >
                     Profile
                   </Link>
@@ -265,7 +255,7 @@ const Navbar = () => {
                 <>
                   <Link
                     href="/admin"
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
                       currentPath === "/admin" ? "text-secondary" : ""
                     }`}
                   >
@@ -276,7 +266,7 @@ const Navbar = () => {
               {userRole === "guardian" && (
                 <Link
                   href="/allowlist"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
                     currentPath === "/allowlist" ? "text-secondary" : ""
                   }`}
                 >
@@ -286,7 +276,7 @@ const Navbar = () => {
               {userRole === "assetsender" && (
                 <Link
                   href="/assetsender"
-                  className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                  className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
                     currentPath === "/assetsender" ? "text-secondary" : ""
                   }`}
                 >
@@ -305,23 +295,25 @@ const Navbar = () => {
                 <div className="hidden lg:block">
                   <Button
                     text={"Sign Out"}
-                    className="border-0 hover:bg-secondary py-1 px-3"
+                    className="border-0 bg-primary text-md text-white bg-buttonhover py-1 px-3"
                     onClick={handleSignOut}
                   />
                 </div>
-                <w3m-button />
+                <div className="rounded-full">
+                  <w3m-button />
+                </div>
               </>
             ) : (
               <>
                 <NavButtons
                   text={"Sign In"}
-                  className="border-0 hover:bg-secondary py-1 px-2 lg:py-2 lg:px-4"
+                  className="border-0 hover:bg-secondary-focus text-white py-1 px-2 lg:py-2 lg:px-4"
                   onClick={() => setShowModal(true)}
                 />
                 <Link href="/kyc">
                   <NavButtons
                     text={"Sign Up"}
-                    className="bg-white hover:bg-primary text-primary hover:text-white py-1 px-2 lg:py-2 lg:px-4"
+                    className="hover:bg-secondary-focus text-white hover:text-white py-1 px-2 lg:py-2 lg:px-4"
                     onClick={() => {}}
                   />
                 </Link>
@@ -346,7 +338,7 @@ const Navbar = () => {
                     <Link
                       href="/invest"
                       onClick={closeSidebar}
-                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                         currentPath === "/invest" ? "text-secondary" : ""
                       }`}
                     >
@@ -358,7 +350,7 @@ const Navbar = () => {
                       <Link
                         href="/portfolio"
                         onClick={closeSidebar}
-                        className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                        className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                           currentPath === "/portfolio" ? "text-secondary" : ""
                         }`}
                       >
@@ -370,7 +362,7 @@ const Navbar = () => {
                     <Link
                       href="/about"
                       onClick={closeSidebar}
-                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                         currentPath === "/about" ? "text-secondary" : ""
                       }`}
                     >
@@ -381,7 +373,7 @@ const Navbar = () => {
                     <Link
                       href="/profile"
                       onClick={closeSidebar}
-                      className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                         currentPath === "/profile" ? "text-secondary" : ""
                       }`}
                     >
@@ -395,7 +387,7 @@ const Navbar = () => {
                   <Link
                     href="/admin"
                     onClick={closeSidebar}
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                       currentPath === "/admin" ? "text-secondary" : ""
                     }`}
                   >
@@ -408,7 +400,7 @@ const Navbar = () => {
                   <Link
                     href="/allowlist"
                     onClick={closeSidebar}
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                       currentPath === "/allowlist" ? "text-secondary" : ""
                     }`}
                   >
@@ -421,7 +413,7 @@ const Navbar = () => {
                   <Link
                     href="/assetsender"
                     onClick={closeSidebar}
-                    className={`font-semibold mr-14 text-xl hover:text-secondary ${
+                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
                       currentPath === "/assetsender" ? "text-secondary" : ""
                     }`}
                   >
@@ -437,7 +429,7 @@ const Navbar = () => {
                 <div className="">
                   <Button
                     text={"Sign Out"}
-                    className="font-semibold text-xl hover:text-secondary"
+                    className="font-semibold text-2xl text-[rgb(128,128,128)] hover:bg-secondary-focus hover:text-[#696969]"
                     onClick={() => {
                       handleSignOut();
                       closeSidebar();
@@ -451,7 +443,7 @@ const Navbar = () => {
       </div>
       {!isLoggedIn && showModal && (
         <div className="fixed inset-0 text-primary bg-black bg-opacity-50 flex justify-center items-center px-4 sm:px-6 lg:px-8">
-          <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-full max-w-md mx-auto">
+          <div className="p-6 rounded-md text-gray bg-white shadow-md shadow-white w-full max-w-md mx-auto">
             <div className="flex justify-between items-center mb-8">
               <div></div>
               <h2 className="text-2xl sm:text-3xl font-bold text-primary">
@@ -500,7 +492,7 @@ const Navbar = () => {
               <div className="w-full px-8">
                 <Button
                   text={"Sign In"}
-                  className="bg-primary rounded-lg w-full mt-4 mb-2 hover:bg-white hover:text-primary text-white py-2 px-4"
+                  className="bg-primary rounded-full w-full mt-4 mb-2 hover:bg-secondary-focus text-white py-2 px-4"
                   onClick={handleSignIn}
                 />
               </div>

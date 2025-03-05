@@ -149,7 +149,7 @@ export default function Home() {
         Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
       </h1>
       <h2 className="text-lg sm:text-xl mt-4 sm:mt-6 lg:mt-8 w-full sm:w-3/4 lg:w-1/2">
-        Copiam is bridging the next generation of financial infrastructure in
+        Block Majority is bridging the next generation of financial infrastructure in
         DeFi with access to the deepest, most efficient institutional FX and
         capital markets in TradFi.
       </h2>

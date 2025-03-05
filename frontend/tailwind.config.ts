@@ -8,8 +8,9 @@ const config: Config = {
   ],
   theme: {
     colors: {
-      primary: "#031329",
-      secondary: "#C99383",
+      primary: "#9571f6",
+      secondary: "#9571f6",
+      "secondary-focus": "#9F7EF6",
       black: "#000000",
       white: "#FFFFFF",
       light: "#F5F2F2",
@@ -35,12 +36,13 @@ const config: Config = {
     themes: [
       {
         dark: {
-          primary: "#031329",
-          "primary-focus": "#570df8",
-          "primary-content": "#ffffff",
-          secondary: "#C99383",
-          "secondary-focus": "#000000",
-          "secondary-content": "#ffffff",
+          primary: "#9571f6",
+          "primary-focus": "#9571f6",
+          "primary-content": "#9571f6",
+          secondary: "rgb(128,128,128)",
+          "secondary-focus": "#9F7EF6",
+          "secondary-content": "#9571f6",
+          buttonhover: "#9F7EF6",
           accent: "#000000",
           gray: "#595959",
           "accent-focus": "#2aa79b",
