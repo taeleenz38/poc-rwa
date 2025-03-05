@@ -125,21 +125,21 @@ const Navbar = () => {
       );
 
       if (response.status === 201 || 200) {
-        if (email === "tedhansen@copiam.io") {
+        if (email === "admin@blockmajority.io") {
           setIsLoggedIn(true);
           setUserRole("admin");
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userRole", "admin");
           setShowModal(false);
           setJustLoggedIn(true);
-        } else if (email === "alicesherman@copiam.io") {
+        } else if (email === "guardian@blockmajority.io") {
           setIsLoggedIn(true);
           setUserRole("guardian");
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userRole", "guardian");
           setShowModal(false);
           setJustLoggedIn(true);
-        } else if (email === "bobross@copiam.io") {
+        } else if (email === "assetsender@blockmajority.io") {
           setIsLoggedIn(true);
           setUserRole("assetsender");
           localStorage.setItem("isLoggedIn", "true");

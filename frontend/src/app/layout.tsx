@@ -12,8 +12,8 @@ import Footer from "@/app/components/Footer";
 const openSans = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "COPIAM",
-  description: "COPIAM",
+  title: "Fund Tokenisation",
+  description: "Fund Tokenisation",
 };
 
 export default function RootLayout({
