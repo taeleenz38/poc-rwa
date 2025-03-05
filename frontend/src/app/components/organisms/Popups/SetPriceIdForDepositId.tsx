@@ -204,7 +204,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
               onClick={onCloseModal}
               label={"Go Back"}
               disabled={isPending}
-              className="w-full !bg-[#e6e6e6] !text-primary hover:!text-secondary"
+              className="w-full !bg-[#e6e6e6] !text-secondary hover:!text-primary"
             />
           </div>
           <div className="w-[49%]">

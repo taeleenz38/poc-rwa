@@ -18,7 +18,7 @@ const Submit: React.FC<SubmitProps> = ({
       className={`p-2 w-44 duration-200 font-semibold rounded-full shadow-md ${
         disabled
           ? "bg-white text-primary/60 hover:bg-white hover:text-primary/60 cursor-not-allowed"
-          : "bg-primary text-light hover:border-primary hover:text-secondary"
+          : "bg-primary text-light hover:bg-secondary-focus"
       } ${className}`}
       onClick={onClick}
       disabled={disabled}

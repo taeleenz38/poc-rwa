@@ -43,7 +43,7 @@ export const PackageCard = (props: PackageCardProps) => {
   return (
     <Link href={href}>
       <div
-        className="rounded-xl bg-primary opacity-100 text-light flex flex-col justify-between h-80 p-2 max-w-2xl mt-4 hover:opacity-90 hover:cursor-pointer shadow-black shadow-md transition-transform duration-500 hover:scale-105 "
+        className="rounded-xl bg-primary opacity-100 text-white flex flex-col justify-between h-80 p-2 max-w-2xl mt-4 hover:opacity-90 hover:cursor-pointer shadow-black shadow-md transition-transform duration-500 hover:scale-105"
         style={{
           backgroundImage,
           backgroundPosition: "left",
@@ -53,7 +53,7 @@ export const PackageCard = (props: PackageCardProps) => {
       >
         <div className="flex space-x-3">
           <Image
-            src={"/LOGO.png"}
+            src={"/BM-LOGO.png"}
             alt="image"
             width={50}
             height={50}
@@ -71,13 +71,13 @@ export const PackageCard = (props: PackageCardProps) => {
           </div>
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">
-              <div className="bg-light rounded-full py-1.5 px-3 text-black flex justify-center items-center text-base">
+              <div className="bg-white text-black rounded-full py-1.5 px-3 flex justify-center items-center text-base">
                 <p>${TVL} TVL</p>
               </div>
-              <div className="bg-light rounded-full py-1.5 px-3 flex justify-center items-center">
+              <div className="bg-white rounded-full py-1.5 px-3 flex justify-center items-center">
                 {chains}
               </div>
-              <div className="border-2 rounded-full py-1.5 px-3 bg-transparent text-light text-sm font-medium flex justify-center items-center ">
+              <div className="border-2 border-white rounded-full py-1.5 px-3 bg-transparent text-sm font-medium flex justify-center items-center ">
                 <p className="line-clamp-1">{footerText}</p>
               </div>
             </div>

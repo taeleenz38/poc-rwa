@@ -149,31 +149,20 @@ export default function Home() {
         Institutional-Grade FX and Debt Liquidity, bridging TradFi and DeFi.
       </h1>
       <h2 className="text-lg sm:text-xl mt-4 sm:mt-6 lg:mt-8 w-full sm:w-3/4 lg:w-1/2">
-        Block Majority is bridging the next generation of financial infrastructure in
-        DeFi with access to the deepest, most efficient institutional FX and
-        capital markets in TradFi.
+        Block Majority is bridging the next generation of financial
+        infrastructure in DeFi with access to the deepest, most efficient
+        institutional FX and capital markets in TradFi.
       </h2>
       <div className="flex p-2 mt-4 gap-4 sm:gap-6 lg:gap-11">
         <PackageCard
-          heading="AYF"
-          subHeading="Australian Yield Fund"
+          heading="BYF"
+          subHeading="Block Majority Yield Fund"
           lpBalance={lpBalance}
           PRICE={formattedPrice}
           TVL={tvl}
           href="/invest"
-          backgroundImage="url('/Graphic1.png')"
+          backgroundImage="url('/Graphic1.avif')"
           footerText="For Wholesale Investors"
-          chains={<EthIcon />}
-        />
-        <PackageCard
-          heading="HYF"
-          subHeading="High Yield Fund"
-          lpBalance={lpBalanceHyf}
-          PRICE={"107.34"}
-          TVL={hyfTvl}
-          href="/invest"
-          backgroundImage="url('/Graphic1.png')"
-          footerText="For Retail Investors"
           chains={<EthIcon />}
         />
       </div>

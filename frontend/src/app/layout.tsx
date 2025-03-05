@@ -28,7 +28,7 @@ export default function RootLayout({
         <Web3ModalProvider initialState={initialState}>
           <Navbar />
           <div className="pt-[92px] text-primary">{children}</div>
-          <Footer />
+          {/* <Footer /> */}
         </Web3ModalProvider>
       </body>
     </html>

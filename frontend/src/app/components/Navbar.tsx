@@ -185,7 +185,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center lg:px-28 px-8 border-b-2 border-light py-4 transition-all duration-300 bg-white text-primary`}
+      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center shadow-md lg:px-28 px-8 py-4 transition-all duration-300 bg-white text-primary`}
     >
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex items-center justify-between">
@@ -295,7 +295,7 @@ const Navbar = () => {
                 <div className="hidden lg:block">
                   <Button
                     text={"Sign Out"}
-                    className="border-0 bg-primary text-md text-white bg-buttonhover py-1 px-3"
+                    className="border-0 bg-primary text-md text-white hover:bg-secondary-focus py-1 px-3"
                     onClick={handleSignOut}
                   />
                 </div>

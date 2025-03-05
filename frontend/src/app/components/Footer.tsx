@@ -9,10 +9,10 @@ const Footer = () => {
       <div className="bg-primary px-8 py-12 sm:px-16 lg:px-28 sm:py-16 lg:py-24 flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-0">
         <div>
           <Image
-            src="/LOGO-DARK.png"
+            src="/BM-LOGO.png"
             alt="logo"
-            width={150}
-            height={150}
+            width={100}
+            height={100}
             className="mb-6 lg:mb-0"
           />
         </div>

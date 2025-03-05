@@ -8,11 +8,11 @@ const AdminRequests = () => {
 
   return (
     <div className="text-black flex flex-col border-2 border-[#F5F2F2]">
-      <div className="grid grid-cols-3 text-center  font-semibold text-[#ba745f]">
+      <div className="grid grid-cols-3 text-center font-semibold text-primary">
         <div
           className={`p-4 border-b-2 border-r-2 text-sm md:text-base border-[#F5F2F2] ${
             view === "DepositRequests"
-              ? "bg-[#F5F2F2] border-b-[#ba745f] "
+              ? "bg-[#F5F2F2] border-b-primary "
               : "bg-white text-primary cursor-pointer"
           }`}
           onClick={() => setView("DepositRequests")}
@@ -22,7 +22,7 @@ const AdminRequests = () => {
         <div
           className={`p-4 pr-2 md:pr-0 border-b-2 border-r-2 text-sm md:text-base border-[#F5F2F2] ${
             view === "RedemptionRequests"
-              ? "bg-[#F5F2F2] border-b-[#ba745f] "
+              ? "bg-[#F5F2F2] border-b-primary"
               : "bg-white text-primary cursor-pointer"
           }`}
           onClick={() => setView("RedemptionRequests")}
@@ -32,7 +32,7 @@ const AdminRequests = () => {
         <div
           className={`p-4 border-b-2 text-sm md:text-base border-[#F5F2F2] ${
             view === "Pricing"
-              ? "bg-[#F5F2F2] border-b-[#ba745f] "
+              ? "bg-[#F5F2F2] border-b-primary"
               : "bg-white text-primary cursor-pointer"
           }`}
           onClick={() => setView("Pricing")}
