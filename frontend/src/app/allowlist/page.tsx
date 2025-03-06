@@ -22,7 +22,7 @@ const Allowlist = () => {
       <h1 className="text-4xl font-semibold text-black mb-4">
         AllowList Management
       </h1>
-      <h2 className="text-xl font-normal text-gray mb-12">
+      <h2 className="text-xl font-normal text-black mb-12">
         Manage list of all allowed users
       </h2>
       <AllowlistTab />

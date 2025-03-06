@@ -49,7 +49,7 @@ const FundDetails2 = (props: FundDetails2Props) => {
     <div
       className="flex justify-center items-center p-0 m-0 z-10"
       style={{
-        backgroundImage: "url('/Graphic1.png')",
+        backgroundImage: "url('/Graphic1.avif')",
         backgroundSize: "cover", // Ensures the image covers the container
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat", // No repeating background

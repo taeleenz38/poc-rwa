@@ -145,21 +145,21 @@ const Invest = () => {
   return (
     <div className="">
       <FundDetails2
-        logoSrc="/LOGO.png"
+        logoSrc="/BM-LOGO.png"
         altText="Fund logo"
-        fundName="AYF"
-        fundDescription="Copiam Australian Yield Fund"
+        fundName="BYF"
+        fundDescription="Block Majority Yield Fund"
         yieldText="Stable, high-quality Australian Yield Fund"
         price={formattedPrice}
         tvl={tvl}
-        Button1Text="Buy AYF"
+        Button1Text="Buy BYF"
         Button2Text="Redeem"
-        Button1Class={`bg-white text-primary hover:bg-primary hover:text-light ${
+        Button1Class={`bg-secondary text-primary hover:bg-primary hover:text-light ${
           userStatus === "Inactive" &&
-          "bg-white text-primary/60 hover:bg-white hover:text-primary/60"
+          "bg-white text-secondary hover:bg-white"
         }`}
-        Button2Class={`bg-secondary text-light hover:bg-primary ${
-          userStatus === "Inactive" && "bg-white text-primary/60 hover:bg-white"
+        Button2Class={`bg-secondary text-primary hover:bg-primary hover:text-light ${
+          userStatus === "Inactive" && "bg-white text-secondary hover:bg-white"
         }`}
         onButton1Click={handleButton1Click}
         onButton2Click={handleButton2Click}

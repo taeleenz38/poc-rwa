@@ -102,7 +102,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
+      <div className="min-h-screen w-full flex flex-col text-secondary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your Profile
         </h1>
@@ -111,12 +111,12 @@ const Page = () => {
         </h2>
 
         <div className="flex flex-col md:flex-row md:gap-x-16 mb-0 md:mb-12">
-          <div className="flex flex-col w-full md:w-1/2 text-primary h-fit py-5 px-6 border borderColor">
+          <div className="flex flex-col w-full md:w-1/2  h-fit py-5 px-6 border borderColor">
             <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
               Account Details
             </h2>
             <div className="overflow-x-auto">
-              <div className="bg-[#F5F2F2] text-primary py-4 font-bold"></div>
+              <div className="bg-[#F5F2F2]  py-4 font-bold"></div>
               {isFetching ? (
                 <div className="text-center py-4">
                   <Skeleton height={26} className="w-full" />
@@ -124,7 +124,7 @@ const Page = () => {
               ) : !userDetails ? (
                 <p className="text-center py-4">No account details found.</p>
               ) : (
-                <div className="text-primary p-3 mb-4">
+                <div className=" p-3 mb-4">
                   <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                     <div className="font-semibold text-sm">First Name</div>
                     <div className="text-sm break-all">
@@ -172,7 +172,7 @@ const Page = () => {
                     <div className="flex flex-col gap-2 w-full">
                       <h3>
                         <span className="text-sm font-semibold">
-                          User Status -
+                          User Status -{" "}
                         </span>
                         {isFetchingStatus ? (
                           <Skeleton height={26} className="w-full]" />
@@ -205,7 +205,7 @@ const Page = () => {
                 <div className="border-l-4 border-[#C99383] px-3">
                   <div className="flex flex-col gap-y-5">
                     <div>
-                      <h3 className="text-sm text-primary break-all">
+                      <h3 className="text-sm  break-all">
                         {userDetails?.walletAddress}
                       </h3>
                     </div>
@@ -219,12 +219,12 @@ const Page = () => {
 
         <div className="flex flex-col md:flex-row gap-x-16 border borderColor">
           <div className="flex flex-col gap-y-4 w-full md:w-1/2">
-            <div className="flex flex-col w-full py-8 text-primary h-fit p-5">
+            <div className="flex flex-col w-full py-8  h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 Documents
               </h2>
               <div className="overflow-x-auto">
-                <div className="bg-[#F5F2F2] text-primary py-2 px-3 font-bold">
+                <div className="bg-[#F5F2F2]  py-2 px-3 font-bold">
                   <h3>Submitted for KYC</h3>
                 </div>
                 {isFetching ? (
@@ -234,7 +234,7 @@ const Page = () => {
                 ) : !userDetails ? (
                   <p className="text-center py-4">No document details found.</p>
                 ) : (
-                  <div className="text-primary p-3 mb-4">
+                  <div className=" p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
                       <div className="font-semibold text-sm">ID Document</div>
                       <div className="text-sm">{userDetails?.idDocument}</div>
@@ -266,10 +266,10 @@ const Page = () => {
           </div>
 
           <div className="flex flex-col gap-y-4 w-full md:w-1/2">
-            <div className="flex flex-col w-full py-8 text-primary h-fit p-5">
+            <div className="flex flex-col w-full py-8  h-fit p-5">
               <div className="mb-11"></div>
               <div className="overflow-x-auto">
-                <div className="bg-[#F5F2F2] text-primary py-2 px-3 font-bold">
+                <div className="bg-[#F5F2F2]  py-2 px-3 font-bold">
                   <h3>Signed Documents</h3>
                 </div>
                 {isFetchingDocuments ? (
@@ -281,7 +281,7 @@ const Page = () => {
                     No signed documents found.
                   </p>
                 ) : (
-                  <div className="text-primary p-3 mb-4">
+                  <div className=" p-3 mb-4">
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b borderColor py-2">
                       <div className="font-semibold px-0.5 text-sm">
                         Agreement

@@ -2,13 +2,13 @@ import React from "react";
 
 const AboutSection = () => {
   return (
-    <div className="flex flex-col pt-4 pb-10 md:pt-20 md:pb-12 items-center bg-gray-50 mx-2">
-      <h2 className="text-4xl font-semibold text-primary mb-12">
-        About Copiam
+    <div className="flex flex-col pt-4 pb-10 md:pt-20 md:pb-12 items-center text-secondary bg-gray-50 mx-2">
+      <h2 className="text-4xl font-semibold mb-12">
+        About Block Majority
       </h2>
       <div className="border borderColor rounded-sm shadow-lg p-10 max-w-4xl w-full text-center">
         <p className="text-lg sm:text-xl text-gray-700 leading-relaxed mb-8 px-1">
-          Copiam&apos;s vision is to be the world&apos;s leading provider of FX
+          Block Majority&apos;s vision is to be the world&apos;s leading provider of FX
           and Debt Security liquidity to the main stakeholders in the digital
           asset ecosystem who trade in native digital “crypto” assets.
         </p>

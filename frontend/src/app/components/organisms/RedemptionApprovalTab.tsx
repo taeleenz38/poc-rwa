@@ -46,7 +46,7 @@ const RedemptionApprovalTab = () => {
   if (isLoading) {
     return (
       <>
-        <div className="p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-[#ba745f] text-[#ba745f] bg-secondary/20 w-fit">
+        <div className="p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit">
           Incoming Redemption Requests
         </div>
         <div className="flex justify-center items-center flex-col w-full p-10 border h-full">
@@ -60,7 +60,7 @@ const RedemptionApprovalTab = () => {
 
   return (
     <div>
-      <div className="p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-[#ba745f] text-[#ba745f] bg-secondary/20 w-fit">
+      <div className="p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit">
         Incoming Redemption Requests
       </div>
       <div className="flex flex-col w-full border p-4">

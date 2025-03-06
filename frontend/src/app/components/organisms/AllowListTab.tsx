@@ -70,7 +70,7 @@ const AllowlistTab = () => {
     return (
       <>
         <div
-          className={`p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-[#ba745f] text-[#ba745f] bg-secondary/20 w-fit`}
+          className={`p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit`}
         >
           Manage AllowList
         </div>
@@ -90,37 +90,41 @@ const AllowlistTab = () => {
   return (
     <div>
       <div
-        className={`p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-[#ba745f] text-[#ba745f] bg-secondary/20 w-fit`}
+        className={`p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit`}
       >
         Manage AllowList
       </div>
       <div className="flex flex-col w-full border p-4">
-        <div className="flex w-full justify-around items-center py-6">
-          <Button
-            text={"Add New Address"}
-            onClick={() => setAddAddressOpen(true)}
-            className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-          />
-          <Button
-            text={"Remove Address"}
-            onClick={() => setRemoveAddressOpen(true)}
-            className={`${
-              selectedAllowListIndex === null
-                ? `bg-gray/20 text-primary`
-                : "bg-primary text-light hover:bg-light hover:text-primary"
-            } py-2 rounded-md`}
-            disabled={selectedAllowListIndex === null}
-          />
-          <Button
-            text={"Add Term"}
-            onClick={() => setAddTerm(true)}
-            className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-          />
-          <Button
-            text={"Set Valid Term Indexes"}
-            onClick={() => setValidTermIndexes(true)}
-            className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
-          />
+        <div className="flex w-full justify-between items-center py-6">
+          <div className="flex justify-center items-center w-full">
+            <Button
+              text={"Add New Address"}
+              onClick={() => setAddAddressOpen(true)}
+              className="bg-primary py-2 mr-3 text-white hover:bg-secondary-focus"
+            />
+            <Button
+              text={"Remove Address"}
+              onClick={() => setRemoveAddressOpen(true)}
+              className={`${
+                selectedAllowListIndex === null
+                  ? `bg-gray/20 text-primary`
+                  : "bg-primary text-light hover:bg-secondary-focus"
+              } py-2`}
+              disabled={selectedAllowListIndex === null}
+            />
+          </div>
+          <div className="flex justify-center items-center w-full">
+            <Button
+              text={"Add Term"}
+              onClick={() => setAddTerm(true)}
+              className="bg-primary py-2 mr-3 text-light hover:bg-secondary-focus"
+            />
+            <Button
+              text={"Set Valid Term Indexes"}
+              onClick={() => setValidTermIndexes(true)}
+              className="bg-primary py-2 text-light hover:bg-secondary-focus"
+            />
+          </div>
         </div>
 
         <div className="overflow-x-auto pt-4">
