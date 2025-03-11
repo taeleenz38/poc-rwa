@@ -1,0 +1,66 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ISanctionsListClient",
+  "sourceName": "contracts/sanctions/ISanctionsListClient.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "SanctionedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SanctionsListZeroAddress",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "oldSanctionsList",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newSanctionsList",
+          "type": "address"
+        }
+      ],
+      "name": "SanctionsListSet",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "sanctionsList",
+      "outputs": [
+        {
+          "internalType": "contract ISanctionsList",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sanctionsList",
+          "type": "address"
+        }
+      ],
+      "name": "setSanctionsList",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

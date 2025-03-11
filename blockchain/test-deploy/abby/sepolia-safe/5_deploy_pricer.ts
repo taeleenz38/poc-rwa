@@ -27,7 +27,7 @@ async function main() {
   });
 
   const pricer = await ethers.getContract("AYF_Pricer");
-  console.log(pricer)
+  console.log(pricer.address)
 
   // Set price to $1
   // await pricer.connect(managerAdmin).addPrice(parseUnits("10", 18), "1");

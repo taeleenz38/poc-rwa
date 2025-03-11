@@ -13,13 +13,13 @@ async function main() {
   // const ma = signers[1];
 
   const audc = await ethers.getContractAt("AUDC", AUDC_ADDRESS);
-  const abbyManager = await ethers.getContract("ABBYManager");
-  const pricer = await ethers.getContract("ABBY_Pricer");
+  const ayfManager = await ethers.getContract("AYFManager");
+  const pricer = await ethers.getContract("Pricer");
   const allowlist = await ethers.getContract("Allowlist");
 
   // Print the addresses for verification
   console.log("audc==>", audc.address);
-  console.log("abbyManager==>", abbyManager.address);
+  console.log("ayfManager==>", ayfManager.address);
   console.log("pricer==>", pricer.address);
   console.log("allowlist==>", allowlist.address);
 

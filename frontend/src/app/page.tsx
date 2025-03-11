@@ -157,7 +157,6 @@ export default function Home() {
         <PackageCard
           heading="AYF"
           subHeading="Block Majority Australian Yield Fund"
-          lpBalance={lpBalance}
           PRICE={formattedPrice}
           TVL={tvl}
           href="/invest"

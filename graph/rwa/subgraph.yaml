@@ -8,7 +8,7 @@ dataSources:
     name: Pricer
     network: sepolia
     source:
-      address: "0x302A6b92F704355FFE052E06368ED9A1E848E341"
+      address: "0x5866Ba9bA3AA0B4F9062d2b7a540BE54B2cb3E5F"
       abi: Pricer
       startBlock: 6573044
     mapping:
@@ -31,7 +31,7 @@ dataSources:
     name: AllowlistUpgradeable
     network: sepolia
     source:
-      address: "0xA75A245Ece44983be1CAF9f874BC7EDEAa94ae89"
+      address: "0xe80101C53196cffF5aA75695faaA9ae74E56D7DC"
       abi: AllowlistUpgradeable
       startBlock: 6573044
     mapping:
@@ -51,7 +51,7 @@ dataSources:
     name: AYFManager
     network: sepolia
     source:
-      address: "0x5c5121F0DFa0c6263f5d4682Ea5BEcFF65d4f0db"
+      address: "0xd8cd8feeb03b9e662230D15607445dfDe0C09eD0"
       abi: AYFManager
       startBlock: 6573044
     mapping:
