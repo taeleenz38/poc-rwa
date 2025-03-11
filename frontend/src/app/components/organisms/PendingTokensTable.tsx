@@ -46,14 +46,40 @@ const PendingTokensTable = ({
 }: {
   tokens: ClaimableToken[];
   isFetching: boolean;
-  claimMint: (id: string) => void;
+  claimMint: (id: string) => Promise<any>; // Updated type to include Promise
   claimRedemption?: (id: string) => void;
   type: "AYF" | "HYF";
 }) => {
+  const [claimingTokens, setClaimingTokens] = useState<Set<string>>(new Set()); // Track tokens being claimed
+
+  const handleClaim = async (tokenId: string) => {
+    setClaimingTokens((prev) => new Set(prev.add(tokenId))); // Mark token as claiming
+
+    try {
+      // Initiate the claimMint function
+      const tx = await claimMint(tokenId); // Assuming claimMint returns a transaction object
+
+      // Wait for the transaction receipt
+      await tx.wait(); // Wait for the transaction to be mined and confirmed
+
+      console.log("Transaction confirmed:", tx);
+
+    } catch (error) {
+      console.error("Claim failed", error);
+    } finally {
+      // Mark token as no longer claiming
+      setClaimingTokens((prev) => {
+        const updated = new Set(prev);
+        updated.delete(tokenId);
+        return updated;
+      });
+    }
+  };
+
   return (
     <div className="overflow-x-auto border-none">
       <table className="table w-full border-none">
-        <thead className="text-primary bg-[#F5F2F2] border-none">
+        <thead className="text-secondary bg-[#F5F2F2] border-none">
           <tr className="border-none">
             <th>Deposit Amount After Fee</th>
             <th>Request Date</th>
@@ -78,6 +104,7 @@ const PendingTokensTable = ({
             tokens.map((token) => {
               const isClaimable =
                 Date.now() >= new Date(token.claimableTimestamp).getTime();
+              const isClaiming = claimingTokens.has(token.id); // Check if the token is in the claiming state
 
               return (
                 <tr className="border-b borderColor" key={token.id}>
@@ -91,14 +118,14 @@ const PendingTokensTable = ({
 
                   <td>
                     <Button
-                      text="Claim"
-                      className={`py-2 btn-sm items-center flex justify-center ${
-                        isClaimable
-                          ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                          : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                      text={isClaiming ? "Claiming..." : "Claim"} 
+                      className={`py-3 btn-sm w-20 items-center flex justify-center ${
+                        isClaimable && !isClaiming
+                          ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
+                          : "bg-primary text-light cursor-not-allowed"
                       }`}
-                      onClick={() => claimMint(token.id)}
-                      disabled={!isClaimable}
+                      onClick={() => handleClaim(token.id)}
+                      disabled={!isClaimable || isClaiming}
                     />
                   </td>
                 </tr>

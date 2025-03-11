@@ -92,12 +92,8 @@ const Portfolio = () => {
   const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
     ClaimableAUDCToken[]
   >([]);
-  const [claimableUSDCTokens, setClaimableUSDCTokens] = useState<
-    ClaimableUSDCToken[]
-  >([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isFetchingAUDC, setIsFetchingAUDC] = useState(true);
-  const [isFetchingUSDC, setIsFetchingUSDC] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [transactionsPerPage] = useState(5);
   const [price, setPrice] = useState<string | null>(null);
@@ -196,9 +192,7 @@ const Portfolio = () => {
       );
 
       setClaimableAUDCTokens(audcRequests);
-      setClaimableUSDCTokens(usdcRequests);
       setIsFetchingAUDC(false);
-      setIsFetchingUSDC(false);
     }
   }, [claimableRedemptionListData]);
 
@@ -227,28 +221,28 @@ const Portfolio = () => {
       32
     );
     if (openRedemptionAccordion === "AUDC") {
-    try {
-      const tx = await writeContractAsync({
-        abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "claimRedemption",
-        args: [[redemptionIdHexlified]],
-      });
-    } catch (error) {
-      console.error("Error claiming tokens:", error);
+      try {
+        const tx = await writeContractAsync({
+          abi: abi.abi,
+          address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+          functionName: "claimRedemption",
+          args: [[redemptionIdHexlified]],
+        });
+      } catch (error) {
+        console.error("Error claiming tokens:", error);
+      }
+    } else {
+      try {
+        const tx = await writeContractAsync({
+          abi: hyfabi.abi,
+          address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+          functionName: "claimRedemption",
+          args: [[redemptionIdHexlified]],
+        });
+      } catch (error) {
+        console.error("Error claiming tokens:", error);
+      }
     }
-  } else {
-    try {
-      const tx = await writeContractAsync({
-        abi: hyfabi.abi,
-        address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "claimRedemption",
-        args: [[redemptionIdHexlified]],
-      });
-    } catch (error) {
-      console.error("Error claiming tokens:", error);
-    }
-  }
   };
 
   useEffect(() => {
@@ -278,7 +272,7 @@ const Portfolio = () => {
 
   return (
     <>
-      <div className="min-h-screen w-full flex flex-col text-primary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
+      <div className="min-h-screen w-full flex flex-col text-secondary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your portfolio
         </h1>
@@ -287,11 +281,11 @@ const Portfolio = () => {
         </h2>
 
         <div className="flex flex-col justify-start py-3 items-start my-4 px-4 bg-[#F5F2F2]">
-          <h2 className="text-3xl font-semibold flex items-center justify-start px-1">
+          <h2 className="text-3xl font-semibold flex items-center justify-start px-1 text-primary">
             Overview
           </h2>
           <div className="flex flex-col justify-start py-2 items-start my-4 mx-4">
-            <div className="border-l-4 border-[#C99383] px-3">
+            <div className="border-l-4 border-primary px-3">
               <div className="flex flex-col gap-y-5">
                 <h3 className="text-xl flex items-center justify-start">
                   Current portfolio value
@@ -314,13 +308,13 @@ const Portfolio = () => {
 
         <div className="border borderColor">
           <div className="flex flex-col gap-y-4 w-full px-4">
-            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+            <div className="flex flex-col w-full py-8 text-secondary overflow-y-scroll rounded-md h-fit p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
                 Holdings
               </h2>
               <div className="overflow-x-auto">
                 <table className="table w-full">
-                  <thead className="text-primary bg-[#F5F2F2]">
+                  <thead className="text-secondary bg-[#F5F2F2]">
                     <tr className="border-none">
                       <th>Token</th>
                       <th>Token Price AUD</th>
@@ -338,16 +332,10 @@ const Portfolio = () => {
                     ) : (
                       <>
                         <tr className="border-b borderColor">
-                          <td>Copiam Australian Yield Fund</td>
+                          <td>Block Majority Australian Yield Fund</td>
                           <td>${formattedPrice}</td>
                           <td>{formatNumber(formattedAyfBalance)}</td>
                           <td>${formatNumber(ayfMarketValueInEther)}</td>
-                        </tr>
-                        <tr className="border-b borderColor">
-                          <td>Copiam High Yield Fund</td>
-                          <td>$107.34</td>
-                          <td>0</td>
-                          <td>$0.00</td>
                         </tr>
                       </>
                     )}
@@ -356,8 +344,8 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-primary rounded-md p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+            <div className="flex flex-col w-full py-8 text-secondary rounded-md p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
                 Pending Tokens
               </h2>
 
@@ -367,7 +355,7 @@ const Portfolio = () => {
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
                   onClick={() => toggleAccordion("AYF")}
                 >
-                  <span>AYF</span>
+                  <span className="text-primary">AYF</span>
                   <span>{openAccordion === "AYF" ? "▲" : "▼"}</span>
                 </button>
                 {openAccordion === "AYF" && (
@@ -381,32 +369,10 @@ const Portfolio = () => {
                   </div>
                 )}
               </div>
-
-              {/* HYF Accordion */}
-              <div>
-                <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleAccordion("HYF")}
-                >
-                  <span>HYF</span>
-                  <span>{openAccordion === "HYF" ? "▲" : "▼"}</span>
-                </button>
-                {openAccordion === "HYF" && (
-                  <div className="p-4 bg-white rounded-md mt-2">
-                    {/* Currently using the same data as AYF */}
-                    <PendingTokensTable
-                      tokens={claimableTokens}
-                      isFetching={isFetching}
-                      claimMint={claimMint}
-                      type="HYF"
-                    />
-                  </div>
-                )}
-              </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-primary rounded-md p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+            <div className="flex flex-col w-full py-8 text-secondary rounded-md p-5">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
                 Pending Redemptions
               </h2>
               <div className="mb-4">
@@ -414,7 +380,7 @@ const Portfolio = () => {
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
                   onClick={() => toggleRedemptionAccordion("AUDC")}
                 >
-                  <span>AUDC</span>
+                  <span className="text-primary">AUDC</span>
                   <span>{openRedemptionAccordion === "AUDC" ? "▲" : "▼"}</span>
                 </button>
                 {openRedemptionAccordion === "AUDC" && (
@@ -428,36 +394,16 @@ const Portfolio = () => {
                   </div>
                 )}
               </div>
-              <div>
-                <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleRedemptionAccordion("USDC")}
-                >
-                  <span>USDC</span>
-                  <span>{openRedemptionAccordion === "USDC" ? "▲" : "▼"}</span>
-                </button>
-                {openRedemptionAccordion === "USDC" && (
-                  <div className="p-4 bg-white mt-2">
-                    {/* Currently using the same data as AYF */}
-                    <RedemptionTable
-                      tokens={claimableUSDCTokens}
-                      isFetching={isFetchingUSDC}
-                      claimRedemption={claimRedemption}
-                      type="USDC"
-                    />
-                  </div>
-                )}
-              </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-primary overflow-y-scroll rounded-md h-fit p-5">
+            <div className="flex flex-col w-full py-8 text-secondary overflow-y-scroll rounded-md h-fit p-5">
               <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
                 Transactions
               </h2>
 
               <div className="overflow-x-auto">
                 <table className="table w-full">
-                  <thead className="text-primary bg-[#F5F2F2] border-none">
+                  <thead className="text-secondary bg-[#F5F2F2] border-none">
                     <tr className="border-none">
                       <th>Token</th>
                       <th>Status</th>
@@ -485,9 +431,11 @@ const Portfolio = () => {
                         )
                         .map((transaction, index) => (
                           <tr key={index} className="border-b borderColor">
-                            <td>Copiam Australian Yield Fund</td>
+                            <td>Block Majority Australian Yield Fund</td>
                             <td>{transaction.status}</td>
-                            <td>{transaction.type} {transaction.collateralType}</td>
+                            <td>
+                              {transaction.type} {transaction.collateralType}
+                            </td>
                             <td>{transaction.transactionDate}</td>
                             <td>
                               {transaction.price
@@ -532,8 +480,8 @@ const Portfolio = () => {
                     text="Previous"
                     className={`btn-sm items-center flex justify-center ${
                       currentPage !== 1
-                        ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                        : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
+                        : "bg-primary cursor-not-allowed"
                     }`}
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
@@ -545,7 +493,7 @@ const Portfolio = () => {
                     text="Next"
                     className={`py-2 btn-sm items-center flex justify-center ${
                       currentPage !== totalPages
-                        ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
+                        ? "bg-[#e6e6e6] text-secondary hover:bg-light hover:text-secondary font-semibold"
                         : "bg-[#e6e6e6] text-light cursor-not-allowed"
                     }`}
                     onClick={() => handlePageChange(currentPage + 1)}

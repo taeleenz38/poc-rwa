@@ -48,7 +48,7 @@ const PendingRedemptionsTable = ({
   return (
     <div className="overflow-x-auto">
       <table className="table w-full">
-        <thead className="text-primary bg-[#F5F2F2] border-none">
+        <thead className="text-secondary bg-[#F5F2F2] border-none">
           <tr className="border-none">
             <th className="flex-1">Redeem Amount</th>
             <th className="flex-1">Claimable Amount</th>

@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const CONTRACT_ADDRESS = "0x9383a568a4c4fe24E516C2D8BE04F6238a01d533";
+const CONTRACT_ADDRESS = "0xCf073c6683584dd0bba965eeF933dC8c98bcee5B";
 const MINT_TO = "0xD44B3b1e21d5F55f5b5Bb050E68218552aa4eAfC";
 const MINT_AMOUNT = ethers.utils.parseUnits("500000000", 18);
 

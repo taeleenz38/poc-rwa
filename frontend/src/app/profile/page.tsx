@@ -112,7 +112,7 @@ const Page = () => {
 
         <div className="flex flex-col md:flex-row md:gap-x-16 mb-0 md:mb-12">
           <div className="flex flex-col w-full md:w-1/2  h-fit py-5 px-6 border borderColor">
-            <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+            <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
               Account Details
             </h2>
             <div className="overflow-x-auto">
@@ -163,11 +163,11 @@ const Page = () => {
           </div>
           <div className="w-full md:w-1/2 flex flex-col mt-4 md:mt-0">
             <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor">
-              <h2 className="text-xl font-bold flex items-center justify-start px-1">
+              <h2 className="text-xl font-bold flex items-center justify-start px-1 text-primary">
                 Overview
               </h2>
               <div className="flex flex-col justify-start items-start my-4 mx-2">
-                <div className="border-l-4 border-[#C99383] px-3">
+                <div className="border-l-4 border-primary px-3">
                   <div className="flex flex-col gap-y-5">
                     <div className="flex flex-col gap-2 w-full">
                       <h3>
@@ -198,11 +198,11 @@ const Page = () => {
               </div>
             </div>
             <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
-              <h2 className="text-xl font-bold flex items-center justify-start px-1">
+              <h2 className="text-xl font-bold flex items-center justify-start px-1 text-primary">
                 Wallet Address
               </h2>
               <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
-                <div className="border-l-4 border-[#C99383] px-3">
+                <div className="border-l-4 border-primary px-3">
                   <div className="flex flex-col gap-y-5">
                     <div>
                       <h3 className="text-sm  break-all">
@@ -220,7 +220,7 @@ const Page = () => {
         <div className="flex flex-col md:flex-row gap-x-16 border borderColor">
           <div className="flex flex-col gap-y-4 w-full md:w-1/2">
             <div className="flex flex-col w-full py-8  h-fit p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
+              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
                 Documents
               </h2>
               <div className="overflow-x-auto">
@@ -269,7 +269,7 @@ const Page = () => {
             <div className="flex flex-col w-full py-8  h-fit p-5">
               <div className="mb-11"></div>
               <div className="overflow-x-auto">
-                <div className="bg-[#F5F2F2]  py-2 px-3 font-bold">
+                <div className="bg-[#F5F2F2] py-2 px-3 font-bold">
                   <h3>Signed Documents</h3>
                 </div>
                 {isFetchingDocuments ? (
