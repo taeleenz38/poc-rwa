@@ -5,7 +5,7 @@ const FundDescription = () => {
     <div className="flex flex-col md:flex-row w-full mx-auto max-w-screen-xl py-8 md:py-14 px-8 text-black">
       <div className="w-full md:w-1/3">
         <p className="text-base lg:text-lg  text-left">
-          BYF is a tokenised Fund and is designed for investors seeking a
+          AYF is a tokenised Fund and is designed for investors seeking a
           secure, liquid, and low-risk investment option. The Fund primarily
           invests in high-quality Australian bank bills and other short-term
           money market instruments. Its objective is to provide investors with a
@@ -16,7 +16,7 @@ const FundDescription = () => {
         {[
           {
             heading: "Fund Name",
-            description: "Stage 1 Block Majority Yield Fund",
+            description: "Stage 1 Block Majority Australian Yield Fund",
           },
           {
             heading: "Fund Structure",
@@ -29,7 +29,7 @@ const FundDescription = () => {
           {
             heading: "Units",
             description:
-              "Issued as BYF tokens minted on the Sepolia Testnet blockchain",
+              "Issued as AYF tokens minted on the Sepolia Testnet blockchain",
           },
           {
             heading: "Subscription Website",
@@ -57,7 +57,7 @@ const FundDescription = () => {
           {
             heading: "Subscription and Redemption Price",
             description:
-              "The Subscription and Redemption Price of BYF tokens is calculated by the Trustee on a daily basis and posted on the copiam.io website. The Subscription Price is determined as the Net Asset Value (NAV) of the Fund less accrued platform fees, divided by the number of BYF tokens issued. The NAV is the total value of the Fund's assets minus its liabilities.The BYF Token Price is calculated daily by the Trustee as the Net Asset Value (NAV) of The BYF Fund less accrued platform fees, divided by the number of BYF Tokens. The Trustee connects their wallet to BYF Pricing Contract sets the price every day at 3 pm AEST",
+              "The Subscription and Redemption Price of AYF tokens is calculated by the Trustee on a daily basis and posted on the copiam.io website. The Subscription Price is determined as the Net Asset Value (NAV) of the Fund less accrued platform fees, divided by the number of AYF tokens issued. The NAV is the total value of the Fund's assets minus its liabilities.The AYF Token Price is calculated daily by the Trustee as the Net Asset Value (NAV) of The AYF Fund less accrued platform fees, divided by the number of AYF Tokens. The Trustee connects their wallet to AYF Pricing Contract sets the price every day at 3 pm AEST",
           },
           {
             heading: "Distributions",

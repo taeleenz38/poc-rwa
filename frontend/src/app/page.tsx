@@ -155,8 +155,8 @@ export default function Home() {
       </h2>
       <div className="flex p-2 mt-4 gap-4 sm:gap-6 lg:gap-11">
         <PackageCard
-          heading="BYF"
-          subHeading="Block Majority Yield Fund"
+          heading="AYF"
+          subHeading="Block Majority Australian Yield Fund"
           lpBalance={lpBalance}
           PRICE={formattedPrice}
           TVL={tvl}
