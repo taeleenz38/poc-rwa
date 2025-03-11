@@ -20,7 +20,7 @@ async function main() {
 
   const tx = await factory
     .connect(guardian)
-    .deployABBY("AYF", "AYF", [
+    .deployABBY("BYF", "BYF", [
       blocklist.address,
       allowlist.address
     ]);

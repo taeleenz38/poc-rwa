@@ -69,7 +69,7 @@ const FundDetails = (props: FundDetailsProps) => {
             {fundDescription}
           </p>
           <p
-            className="lg:text-5xl text-3xl w-full  text-pretty text-start mb-5 font-semibold"
+            className="lg:text-5xl text-3xl w-full text-pretty text-start mb-5 font-semibold"
             style={{ lineHeight: "1.2" }}
           >
             {yieldText}

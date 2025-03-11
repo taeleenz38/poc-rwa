@@ -385,7 +385,7 @@ const KycDetails = (props: KycDetailsProps) => {
             width={75}
             height={75}
           />
-          <p className="text-4xl font-semibold mt-4 text-primary text-center md:text-left px-4 md:px-0">
+          <p className="text-4xl font-semibold mt-4 text-secondary text-center md:text-left px-4 md:px-0">
             Onboard to Block Majority BYF
           </p>
           <div className="mt-8 hidden md:block">
@@ -651,7 +651,7 @@ const KycDetails = (props: KycDetailsProps) => {
                 )}
                 <Button
                   text={` ${isLoading ? "Submitting..." : "Submit"}`}
-                  className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
+                  className={`bg-primary py-2 text-light hover:bg-secondary-focus ${
                     isLoading && "bg-white text-primary hover:bg-white"
                   }`}
                   onClick={submitCredntail}
@@ -664,7 +664,7 @@ const KycDetails = (props: KycDetailsProps) => {
             <div className="flex flex-col rounded-md justify-center items-center ">
               <Button
                 text="Proceed to Home Page"
-                className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md `}
+                className={`bg-primary py-2 text-light hover:bg-secondary-focus`}
                 onClick={() => {
                   router.push("/");
                 }}

@@ -165,7 +165,7 @@ const DepositRequests = () => {
                       ) : (
                         <Button
                           text="Set Price ID"
-                          className="bg-primary text-light hover:bg-secondary-focus rounded-md whitespace-nowrap"
+                          className="bg-primary text-light hover:bg-secondary-focus whitespace-nowrap"
                           onClick={() =>
                             handleButton2Click(request.id, request.priceId)
                           }
@@ -178,7 +178,7 @@ const DepositRequests = () => {
                       ) : (
                         <Button
                           text="Set Claim Timestamp"
-                          className="bg-primary py-2 text-light hover:bg-secondary-focus rounded-md whitespace-nowrap"
+                          className="bg-primary py-2 text-light hover:bg-secondary-focus whitespace-nowrap"
                           onClick={() => handleButton1Click(request.id)}
                         />
                       )}

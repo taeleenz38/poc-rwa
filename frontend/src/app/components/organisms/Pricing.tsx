@@ -93,7 +93,7 @@ const Pricing = () => {
         <Button
           text={"Add New Price ID"}
           onClick={() => setAddPriceOpen(true)}
-          className="bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md"
+          className="bg-primary py-2 text-light hover:bg-secondary-focus"
         />
         <Button
           text={"Update Existing Price ID"}
@@ -101,8 +101,8 @@ const Pricing = () => {
           className={`${
             selectedPriceId === null
               ? `bg-gray/20 text-primary`
-              : "bg-primary text-light hover:bg-light hover:text-primary"
-          } py-2 rounded-md`}
+              : "bg-primary text-light hover:bg-secondary-focus"
+          } py-2`}
           disabled={selectedPriceId === null}
         />
         {/* <Button
