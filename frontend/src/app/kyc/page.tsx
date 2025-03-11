@@ -16,7 +16,7 @@ const KYC = (props: Props) => {
       logoSrc="/BM-LOGO.png"
       altText="Fund logo"
       fundName="AYF"
-      fundDescription="Copiam Australian Dollar Yield"
+      fundDescription="Block Majority Australian Dollar Yield"
       yieldText="Verify your identity and onboard to Copiam"
     />
   );
