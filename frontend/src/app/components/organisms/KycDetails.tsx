@@ -257,6 +257,7 @@ const KycDetails = (props: KycDetailsProps) => {
           const response = await axios.post(applicantUrl);
           const id = response.data.id;
           setApplicationId((prev) => id);
+          console.log("Applicant ID:", id)
 
           // Now, upload the document with the ID
           const documentUrl =
