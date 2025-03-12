@@ -52,7 +52,7 @@ const FundDescription = () => {
           {
             heading: "Minimum and Maximum Subscription and Redemption amounts",
             description:
-              "A$1,000 per investor, limited initially to a total of A$150,000",
+              "$100,000 AUD per investor, limited initially to a total of $5,000,000 AUD",
           },
           {
             heading: "Subscription and Redemption Price",

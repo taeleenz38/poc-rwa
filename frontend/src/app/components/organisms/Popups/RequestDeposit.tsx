@@ -23,8 +23,8 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
   const { writeContractAsync, isPending } = useWriteContract({ config });
   const [showLink, setShowLink] = useState(false);
 
-  const MIN_AMOUNT = 1000;
-  const MAX_AMOUNT = 150000;
+  const MIN_AMOUNT = 100000;
+  const MAX_AMOUNT = 5000000;
 
   const resetForm = () => {
     setAmount("");
