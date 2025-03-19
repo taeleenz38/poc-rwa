@@ -46,28 +46,24 @@ const PendingTokensTable = ({
 }: {
   tokens: ClaimableToken[];
   isFetching: boolean;
-  claimMint: (id: string) => Promise<any>; // Updated type to include Promise
+  claimMint: (id: string) => Promise<any>;
   claimRedemption?: (id: string) => void;
   type: "AYF" | "HYF";
 }) => {
-  const [claimingTokens, setClaimingTokens] = useState<Set<string>>(new Set()); // Track tokens being claimed
+  const [claimingTokens, setClaimingTokens] = useState<Set<string>>(new Set());
 
   const handleClaim = async (tokenId: string) => {
-    setClaimingTokens((prev) => new Set(prev.add(tokenId))); // Mark token as claiming
+    setClaimingTokens((prev) => new Set(prev.add(tokenId)));
 
     try {
-      // Initiate the claimMint function
-      const tx = await claimMint(tokenId); // Assuming claimMint returns a transaction object
+      const tx = await claimMint(tokenId);
 
-      // Wait for the transaction receipt
-      await tx.wait(); // Wait for the transaction to be mined and confirmed
+      await tx.wait();
 
       console.log("Transaction confirmed:", tx);
-
     } catch (error) {
       console.error("Claim failed", error);
     } finally {
-      // Mark token as no longer claiming
       setClaimingTokens((prev) => {
         const updated = new Set(prev);
         updated.delete(tokenId);
@@ -118,7 +114,7 @@ const PendingTokensTable = ({
 
                   <td>
                     <Button
-                      text={isClaiming ? "Claiming..." : "Claim"} 
+                      text={isClaiming ? "Claiming..." : "Claim"}
                       className={`py-3 btn-sm w-20 items-center flex justify-center ${
                         isClaimable && !isClaiming
                           ? "bg-primary text-light hover:bg-secondary-focus font-semibold"

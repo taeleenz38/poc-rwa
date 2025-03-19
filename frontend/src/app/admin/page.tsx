@@ -11,7 +11,6 @@ const Admin = () => {
         Track and manage your requests
       </h2>
       <AdminRequests />
-      {/* <PricingSection /> */}
     </div>
   );
 };

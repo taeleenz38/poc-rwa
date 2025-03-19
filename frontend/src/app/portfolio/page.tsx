@@ -209,8 +209,10 @@ const Portfolio = () => {
         functionName: "claimMint",
         args: [[depositIdHexlified]],
       });
+      return tx;
     } catch (error) {
       console.error("Error claiming tokens:", error);
+      throw error;
     }
   };
 
