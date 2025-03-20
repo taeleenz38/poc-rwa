@@ -90,7 +90,6 @@ const Invest = () => {
 
   fetchUserStatus(email as string);
 
-
   useEffect(() => {
     if (priceListData) {
       const sortedPriceList = priceListData.priceAddeds.sort(
@@ -112,6 +111,14 @@ const Invest = () => {
     functionName: "totalSupply",
   });
 
+  // Format large numbers (e.g., 1,000,000 -> 1.0M)
+  const formatLargeNumber = (num: number): string => {
+    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+    if (num >= 1_000) return (num / 1_000).toFixed(1) + "K";
+    return num.toFixed(2);
+  };
+
   useEffect(() => {
     const calculateTVL = async () => {
       if (price) {
@@ -129,10 +136,9 @@ const Invest = () => {
 
           const priceInEther = parseFloat(weiToEther(price));
 
-          const tvlValue = (parseFloat(formattedSupply) * priceInEther).toFixed(
-            2
-          );
-          setTvl(formatNumber(tvlValue));
+          const tvlValue = parseFloat(formattedSupply) * priceInEther;
+
+          setTvl(formatLargeNumber(tvlValue));
         } catch (error) {
           console.error("Error calculating TVL:", error);
         }
@@ -155,8 +161,7 @@ const Invest = () => {
         Button1Text="Buy AYF"
         Button2Text="Redeem"
         Button1Class={`bg-primary text-light hover:bg-secondary-focus ${
-          userStatus === "Inactive" &&
-          "bg-white text-secondary hover:bg-white"
+          userStatus === "Inactive" && "bg-white text-secondary hover:bg-white"
         }`}
         Button2Class={`bg-primary text-light hover:bg-secondary-focus ${
           userStatus === "Inactive" && "bg-white text-secondary hover:bg-white"
