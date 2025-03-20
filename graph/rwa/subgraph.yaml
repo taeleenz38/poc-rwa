@@ -51,7 +51,7 @@ dataSources:
     name: AYFManager
     network: sepolia
     source:
-      address: "0x037B7A625c30FF118D72B8d245cB376Bd20A8966"
+      address: "0x95b7278e95256D1b1Ec957f55704daE076cd4F4E"
       abi: AYFManager
       startBlock: 7935800
     mapping:
