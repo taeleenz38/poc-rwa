@@ -114,7 +114,7 @@ const Pricing = () => {
       <div className="overflow-x-auto pt-4">
         <table className="table">
           <thead>
-            <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
+            <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
               <th className="text-center">ID</th>
               <th className="text-center">Price</th>
               <th className="text-center">Status</th>
@@ -127,7 +127,7 @@ const Pricing = () => {
               <tr>
                 <td
                   colSpan={5}
-                  className="py-10 font-medium text-gray text-center"
+                  className="py-10 font-medium text-secondary text-center"
                 >
                   No prices have been listed yet
                 </td>
@@ -135,7 +135,7 @@ const Pricing = () => {
             ) : (
               paginatedPrices.map((price: PricingResponse) => (
                 <tr
-                  className="border-b-2 border-[#F5F2F2] text-sm text-gray"
+                  className="border-b-2 border-[#F5F2F2] text-sm text-secondary"
                   key={price.priceId}
                 >
                   <td className="text-center">{price.priceId}</td>
@@ -178,7 +178,7 @@ const Pricing = () => {
         <button
           className={`mx-1 px-3 py-1 rounded ${
             currentPage === 1
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-gray-300 text-secondary cursor-not-allowed"
               : "bg-light text-primary"
           }`}
           onClick={handlePreviousPage}

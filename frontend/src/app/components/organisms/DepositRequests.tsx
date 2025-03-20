@@ -121,7 +121,7 @@ const DepositRequests = () => {
           <div className="overflow-x-auto pt-4">
             <table className="table w-full">
               <thead>
-                <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
+                <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
                   <th className="">ID</th>
                   <th className="">User</th>
                   <th className="">
@@ -192,7 +192,7 @@ const DepositRequests = () => {
             <button
               className={`mx-1 px-3 py-1 rounded ${
                 currentPage === 1
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  ? "bg-gray-300 text-secondary cursor-not-allowed"
                   : "bg-light text-primary"
               }`}
               onClick={handlePreviousPage}
@@ -206,7 +206,7 @@ const DepositRequests = () => {
                   key={index}
                   className={`mx-1 px-3 py-1 rounded ${
                     currentPage === index + 1
-                      ? "bg-primary text-light"
+                      ? "bg-primary text-secondary"
                       : "bg-light text-primary"
                   }`}
                   onClick={() => handlePageChange(index + 1)}

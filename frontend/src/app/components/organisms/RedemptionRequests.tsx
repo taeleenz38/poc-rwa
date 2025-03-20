@@ -130,7 +130,7 @@ const RedemptionRequests = () => {
           <div className="overflow-x-auto pt-4">
             <table className="table w-full">
               <thead>
-                <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none">
+                <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
                   <th>ID</th>
                   <th>User</th>
                   <th>
@@ -193,7 +193,7 @@ const RedemptionRequests = () => {
             <button
               className={`mx-1 px-3 py-1 rounded ${
                 currentPage === 1
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  ? "bg-gray-300 text-secondary cursor-not-allowed"
                   : "bg-light text-primary"
               }`}
               onClick={handlePreviousPage}
