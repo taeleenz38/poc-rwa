@@ -46,7 +46,7 @@ const RedemptionApprovalTab = () => {
   if (isLoading) {
     return (
       <>
-        <div className="p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit">
+        <div className="p-4 border-b-2 border-[#DDDDDD] bg-[#DDDDDD] border-b-primary text-primary bg-secondary/20 w-fit">
           Incoming Redemption Requests
         </div>
         <div className="flex justify-center items-center flex-col w-full p-10 border h-full">
@@ -60,7 +60,7 @@ const RedemptionApprovalTab = () => {
 
   return (
     <div>
-      <div className="p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit">
+      <div className="p-4 border-b-2 font-bold border-[#DDDDDD] bg-[#DDDDDD] border-b-primary text-primary bg-secondary/20 w-fit">
         Incoming Redemption Requests
       </div>
       <div className="flex flex-col w-full border p-4">
@@ -86,7 +86,7 @@ const RedemptionApprovalTab = () => {
         <div className="overflow-x-auto pt-4">
           <table className="table">
             <thead>
-              <tr className="text-gray text-sm font-semibold bg-[#F5F2F2] border-none ">
+              <tr className="text-gray text-sm font-semibold bg-[#DDDDDD] border-none ">
                 <th className="text-center">Redemption ID</th>
                 <th className="text-center">User</th>
                 <th className="text-center">Redeem Amount</th>
@@ -97,7 +97,7 @@ const RedemptionApprovalTab = () => {
             <tbody>
               {data?.redemptionRequests.map((request, index) => (
                 <tr
-                  className="border-b-2 border-[#F5F2F2] text-sm text-gray"
+                  className="border-b-2 border-[#DDDDDD] text-sm text-gray"
                   key={index}
                 >
                   <td className="text-center">

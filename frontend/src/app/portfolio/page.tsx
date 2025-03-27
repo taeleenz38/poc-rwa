@@ -282,7 +282,7 @@ const Portfolio = () => {
           Track and manage your portfolio
         </h2>
 
-        <div className="flex flex-col justify-start py-3 items-start my-4 px-4 bg-[#F5F2F2]">
+        <div className="flex flex-col justify-start py-3 items-start my-4 px-4 bg-[#DDDDDD]">
           <h2 className="text-3xl font-semibold flex items-center justify-start px-1 text-primary">
             Overview
           </h2>
@@ -316,7 +316,7 @@ const Portfolio = () => {
               </h2>
               <div className="overflow-x-auto">
                 <table className="table w-full">
-                  <thead className="text-secondary bg-[#F5F2F2]">
+                  <thead className="text-secondary bg-[#DDDDDD]">
                     <tr className="border-none">
                       <th>Token</th>
                       <th>Token Price AUD</th>
@@ -354,7 +354,7 @@ const Portfolio = () => {
               {/* AYF Accordion */}
               <div className="mb-4">
                 <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  className="w-full text-left py-4 px-6 bg-[#DDDDDD] font-bold flex justify-between items-center"
                   onClick={() => toggleAccordion("AYF")}
                 >
                   <span className="text-primary">AYF</span>
@@ -379,7 +379,7 @@ const Portfolio = () => {
               </h2>
               <div className="mb-4">
                 <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  className="w-full text-left py-4 px-6 bg-[#DDDDDD] font-bold flex justify-between items-center"
                   onClick={() => toggleRedemptionAccordion("AUDC")}
                 >
                   <span className="text-primary">AUDC</span>
@@ -405,7 +405,7 @@ const Portfolio = () => {
 
               <div className="overflow-x-auto">
                 <table className="table w-full">
-                  <thead className="text-secondary bg-[#F5F2F2] border-none">
+                  <thead className="text-secondary bg-[#DDDDDD] border-none">
                     <tr className="border-none">
                       <th>Token</th>
                       <th>Status</th>
