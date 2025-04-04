@@ -16,11 +16,11 @@ const FundDescription = () => {
         {[
           {
             heading: "Fund Name",
-            description: "Stage 1 Block Majority Australian Yield Fund",
+            description: "Block Majority Australian Emerging Markets Fund",
           },
           {
             heading: "Fund Structure",
-            description: "The Fund is structured as a Bare Trust",
+            description: "The Fund is structured as a Managed Investment Trust",
           },
           {
             heading: "Trustee",
@@ -29,7 +29,7 @@ const FundDescription = () => {
           {
             heading: "Units",
             description:
-              "Issued as AYF tokens minted on the Sepolia Testnet blockchain",
+              "Issued as AUEM tokens minted on the Sepolia Testnet blockchain",
           },
           {
             heading: "Subscription Website",
@@ -38,36 +38,36 @@ const FundDescription = () => {
           {
             heading: "Investment Strategy",
             description:
-              "To invest in Australian bank bills or equivalent risk/return cash investment products",
+              "To invest in a diversified portfolio of Australian emerging market assets, including equities and debt instruments",
           },
           {
             heading: "Investor Eligibility",
             description:
-              "Only open for investment by Block Majority executives and Block Majority strategic partners",
+              "Open to wholesale investors and strategic partners of Block Majority",
           },
           {
             heading: "Liquidity",
-            description: "Daily Subscription and Redemption",
+            description: "Weekly Subscription and Redemption",
           },
           {
             heading: "Minimum and Maximum Subscription and Redemption amounts",
             description:
-              "$100,000 AUD per investor, limited initially to a total of $5,000,000 AUD",
+              "$250,000 AUD per investor, limited initially to a total of $1,000,000 AUD",
           },
           {
             heading: "Subscription and Redemption Price",
             description:
-              "The Subscription and Redemption Price of AYF tokens is calculated by the Trustee on a daily basis and posted on the blockmajority.io website. The Subscription Price is determined as the Net Asset Value (NAV) of the Fund less accrued platform fees, divided by the number of AYF tokens issued. The NAV is the total value of the Fund's assets minus its liabilities.The AYF Token Price is calculated daily by the Trustee as the Net Asset Value (NAV) of The AYF Fund less accrued platform fees, divided by the number of AYF Tokens. The Trustee connects their wallet to AYF Pricing Contract sets the price every day at 3 pm AEST",
+              "The Subscription and Redemption Price of AUEM tokens is calculated weekly by the Trustee and posted on the blockmajority.io website. The price reflects the Net Asset Value (NAV) of the Fund, adjusted for fees and expenses.",
           },
           {
             heading: "Distributions",
             description:
-              "It is the intention to not pay distributions. All distributions of the underlying Fund assets are reinvested back into the Fund. ",
+              "Distributions may be paid quarterly, depending on Fund performance, or reinvested at the discretion of the Trustee.",
           },
           {
             heading: "Fees and Expenses",
             description:
-              "Issuance Fee: 0.20% of the Subscription Amount Redemption Fee: 0.20% of the Redemption Amount",
+              "Issuance Fee: 0.50% of the Subscription Amount Redemption Fee: 0.50% of the Redemption Amount",
           },
         ].map(({ heading, description }, idx) => (
           <div key={idx} className="flex border-t last:border-b p-2">

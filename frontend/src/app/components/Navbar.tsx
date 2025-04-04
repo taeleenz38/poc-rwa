@@ -47,6 +47,7 @@ const Navbar = () => {
       // Redirect to home and show modal if not logged in
       const restrictedPaths = [
         "/admin",
+        "/fundManagement",
         "/invest",
         "/allowlist",
         "/assetsender",
@@ -79,7 +80,7 @@ const Navbar = () => {
       if (userRole === "admin") {
         router.push("/admin");
       } else if (userRole === "user") {
-        router.push("/invest");
+        // router.push("/invest");
       } else if (userRole === "guardian") {
         router.push("/allowlist");
       } else if (userRole === "assetsender") {
@@ -223,12 +224,12 @@ const Navbar = () => {
             <ul className="hidden lg:block">
               {userRole === "user" && (
                 <>
-                  <Link
+                  {/* <Link
                     href="/invest"
                     className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] `}
                   >
                     Invest
-                  </Link>
+                  </Link> */}
                   {userState === "Active" && userState !== null && (
                     <Link
                       href="/portfolio"
@@ -260,6 +261,14 @@ const Navbar = () => {
                     }`}
                   >
                     Admin
+                  </Link>
+                  <Link
+                    href="/fundManagement"
+                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
+                      currentPath === "/fundManagement" ? "text-secondary" : ""
+                    }`}
+                  >
+                    Manage
                   </Link>
                 </>
               )}

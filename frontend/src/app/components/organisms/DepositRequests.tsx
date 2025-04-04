@@ -206,7 +206,7 @@ const DepositRequests = () => {
                   key={index}
                   className={`mx-1 px-3 py-1 rounded ${
                     currentPage === index + 1
-                      ? "bg-primary text-secondary"
+                      ? "bg-primary text-white"
                       : "bg-light text-primary"
                   }`}
                   onClick={() => handlePageChange(index + 1)}

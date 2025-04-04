@@ -80,13 +80,13 @@ export default function Home() {
     }
   }, [ayfLpBalance]);
 
-    // Format large numbers (e.g., 1,000,000 -> 1.0M)
-    const formatLargeNumber = (num: number): string => {
-      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
-      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
-      if (num >= 1_000) return (num / 1_000).toFixed(1) + "K";
-      return num.toFixed(2);
-    };
+  // Format large numbers (e.g., 1,000,000 -> 1.0M)
+  const formatLargeNumber = (num: number): string => {
+    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+    if (num >= 1_000) return (num / 1_000).toFixed(1) + "K";
+    return num.toFixed(2);
+  };
 
   useEffect(() => {
     const calculateTVL = async () => {
@@ -162,12 +162,22 @@ export default function Home() {
       </h2>
       <div className="flex p-2 mt-4 gap-4 sm:gap-6 lg:gap-11">
         <PackageCard
-          heading="AYF"
-          subHeading="Block Majority Australian Yield Fund"
+          heading="AUDY"
+          subHeading="Block Majority Australian Dollar Yield Token"
           PRICE={formattedPrice}
           TVL={tvl}
-          href="/invest"
+          href="/investAUDY"
           backgroundImage="url('/Graphic1.avif')"
+          footerText="For Wholesale Investors"
+          chains={<EthIcon />}
+        />
+        <PackageCard
+          heading="AUEM"
+          subHeading="Block Majority Australian Emerging Markets Fund"
+          PRICE={formattedPrice}
+          TVL={tvl}
+          href="/investAUEM"
+          backgroundImage="url('/Fund-2.jpg')"
           footerText="For Wholesale Investors"
           chains={<EthIcon />}
         />

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAccount, useConnect, useDisconnect, useReadContract } from "wagmi";
 import { config } from "@/config";
 import ayfabi from "@/artifacts/ABBY.json";
-import FundDetails2 from "@/app/components/organisms/FundDetails2";
+import FundDetails from "@/app/components/organisms/FundDetails";
 import FundDescription from "@/app/components/organisms/FundDescription";
 import Buy from "@/app/components/organisms/Popups/RequestDeposit";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
@@ -36,7 +36,7 @@ const formatNumber = (
   });
 };
 
-const Invest = () => {
+const InvestAUDY = () => {
   const { address, isConnected } = useAccount({ config });
   const { open } = useWeb3Modal();
   const [isFetching, setIsFetching] = useState(true);
@@ -150,15 +150,15 @@ const Invest = () => {
 
   return (
     <div className="">
-      <FundDetails2
+      <FundDetails
         logoSrc="/BM-LOGO.png"
         altText="Fund logo"
-        fundName="AYF"
-        fundDescription="Block Majority Yield Fund"
+        fundName="AUDY"
+        fundDescription="Block Majority Australian Dollar Yield Fund"
         yieldText="Stable, high-quality Australian Yield Fund"
         price={formattedPrice}
         tvl={tvl}
-        Button1Text="Buy AYF"
+        Button1Text="Buy AUDY"
         Button2Text="Redeem"
         Button1Class={`bg-primary text-light hover:bg-secondary-focus ${
           userStatus === "Inactive" && "bg-white text-secondary hover:bg-white"
@@ -182,4 +182,4 @@ const Invest = () => {
   );
 };
 
-export default Invest;
+export default InvestAUDY;

@@ -116,7 +116,7 @@ const Page = () => {
               Account Details
             </h2>
             <div className="overflow-x-auto">
-              <div className="bg-[#DDDDDD]  py-4 font-bold"></div>
+              <div className="bg-[#F5F2F2]  py-4 font-bold"></div>
               {isFetching ? (
                 <div className="text-center py-4">
                   <Skeleton height={26} className="w-full" />
@@ -224,7 +224,7 @@ const Page = () => {
                 Documents
               </h2>
               <div className="overflow-x-auto">
-                <div className="bg-[#DDDDDD]  py-2 px-3 font-bold">
+                <div className="bg-[#F5F2F2]  py-2 px-3 font-bold">
                   <h3>Submitted for KYC</h3>
                 </div>
                 {isFetching ? (
@@ -269,7 +269,7 @@ const Page = () => {
             <div className="flex flex-col w-full py-8  h-fit p-5">
               <div className="mb-11"></div>
               <div className="overflow-x-auto">
-                <div className="bg-[#DDDDDD] py-2 px-3 font-bold">
+                <div className="bg-[#F5F2F2] py-2 px-3 font-bold">
                   <h3>Signed Documents</h3>
                 </div>
                 {isFetchingDocuments ? (

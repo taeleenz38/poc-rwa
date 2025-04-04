@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import PricingSection from "@/app/components/molecules/PricingSection";
 import AdminRequests from "@/app/components/organisms/AdminRequests";
 
 const Admin = () => {

@@ -19,7 +19,7 @@ const ITEMS_PER_PAGE = 6;
 const Pricing = () => {
   const [prices, setPrices] = useState<PricingResponse[]>([]);
   const [isTableLoading, setIsTableLoading] = useState(false);
-  const [addPriceOprn, setAddPriceOpen] = useState(false);
+  const [addPriceOpen, setAddPriceOpen] = useState(false);
   const [updatePriceOprn, setUpdatePriceOpen] = useState(false);
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -160,7 +160,7 @@ const Pricing = () => {
         </table>
 
         <AddPrice
-          isOpen={addPriceOprn}
+          isOpen={addPriceOpen}
           onClose={() => setAddPriceOpen(false)}
         />
         <UpdatePrice
