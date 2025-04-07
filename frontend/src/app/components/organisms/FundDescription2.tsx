@@ -29,7 +29,7 @@ const FundDescription = () => {
           {
             heading: "Units",
             description:
-              "Issued as AUEM tokens minted on the Sepolia Testnet blockchain",
+              "Issued as AEMF tokens minted on the Sepolia Testnet blockchain",
           },
           {
             heading: "Subscription Website",
@@ -57,7 +57,7 @@ const FundDescription = () => {
           {
             heading: "Subscription and Redemption Price",
             description:
-              "The Subscription and Redemption Price of AUEM tokens is calculated weekly by the Trustee and posted on the blockmajority.io website. The price reflects the Net Asset Value (NAV) of the Fund, adjusted for fees and expenses.",
+              "The Subscription and Redemption Price of AEMF tokens is calculated weekly by the Trustee and posted on the blockmajority.io website. The price reflects the Net Asset Value (NAV) of the Fund, adjusted for fees and expenses.",
           },
           {
             heading: "Distributions",

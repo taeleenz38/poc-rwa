@@ -155,7 +155,7 @@ const PricingSection = () => {
                 <strong>Redeem Amount:</strong> {request.redeemAmount} AUDC
               </p>
               <p>
-                <strong>AYF Amount In:</strong> {request.rwaAmountIn}
+                <strong>AUDY Amount In:</strong> {request.rwaAmountIn}
               </p>
               <div></div>
             </div>

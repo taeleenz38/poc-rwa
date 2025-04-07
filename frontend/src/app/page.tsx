@@ -172,11 +172,11 @@ export default function Home() {
           chains={<EthIcon />}
         />
         <PackageCard
-          heading="AUEM"
+          heading="AEMF"
           subHeading="Block Majority Australian Emerging Markets Fund"
           PRICE={formattedPrice}
           TVL={tvl}
-          href="/investAUEM"
+          href="/investAEMF"
           backgroundImage="url('/Fund-2.jpg')"
           footerText="For Wholesale Investors"
           chains={<EthIcon />}

@@ -47,7 +47,7 @@ async function main() {
   console.log('deployed ABBYManager!');
   const abbyManager = await ethers.getContract("AYFManager");
   console.log('ABBYManager contract address:', abbyManager.address)
-  const pricer = await ethers.getContract("AYF_Pricer");
+  const pricer = await ethers.getContract("AEMF_PRICER");
 
   // Grant minting role to abby manager
   await abby

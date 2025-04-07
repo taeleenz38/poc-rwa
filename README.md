@@ -56,7 +56,7 @@ To set up Digital Asset Securitisation, follow these steps:
 
 ### Fund Subscription (Deposit)
 - The investor clicks on the 'Deposit' button in the 'INVEST' page.
-- The deposit modal opens, prompting the investor to enter the amount of fund tokens (AYF) they wish to deposit their ERC20 tokens for (stablecoin).
+- The deposit modal opens, prompting the investor to enter the amount of fund tokens (AUDY/AEMF) they wish to deposit their ERC20 tokens for (stablecoin).
 - The investor will sign two transactions (one for spending approval of their ERC20 tokens and one for transferring their ERC20 tokens to the vault).
 
 ### Fund Pricing
@@ -72,9 +72,9 @@ To set up Digital Asset Securitisation, follow these steps:
   - They can set a claim timestamp using the date input in the 'Set Claim Timestamp' modal.
 
 ### End of Deposit Flow
-- The investor can view these claimable AYF tokens (fund tokens) in their 'PORTFOLIO' tab in the 'AYF' accordion (pending tokens).
+- The investor can view these claimable AUDY/AEMF tokens (fund tokens) in their 'PORTFOLIO' tab in the 'AUDY/AEMF' accordion (pending tokens).
 - The 'claim' button is disabled until the time specified in the claim timestamp.
-- Once enabled, the investor simply clicks on the button and signs a transaction which will then transfer the AYF tokens to their wallet address.
+- Once enabled, the investor simply clicks on the button and signs a transaction which will then transfer the AUDY/AEMF tokens to their wallet address.
   - This is shown in their portfolio value, as well as the TVL of the fund which will increase or decrease depending on fund performance as well as subsequence deposits/redemptions by other investors on the platform.
 
 ### Multi-Sig Admin Management

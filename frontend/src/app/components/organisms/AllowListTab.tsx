@@ -90,11 +90,11 @@ const AllowlistTab = () => {
   return (
     <div>
       <div
-        className={`p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit`}
+        className={`p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary w-fit`}
       >
         Manage AllowList
       </div>
-      <div className="flex flex-col w-full border p-4">
+      <div className="flex flex-col w-full border-[#F5F2F2] border-2 p-4">
         <div className="flex w-full justify-between items-center py-6">
           <div className="flex justify-center items-center w-full">
             <Button
@@ -130,7 +130,7 @@ const AllowlistTab = () => {
         <div className="overflow-x-auto pt-4">
           <table className="table w-full">
             <thead>
-              <tr className="text-gray text-sm bg-[#F5F2F2] border-none">
+              <tr className="text-secondary text-sm bg-[#F5F2F2] border-none">
                 <th className="text-center">Term Index</th>
                 <th className="text-center">User</th>
                 <th className="text-center">Status</th>
@@ -141,7 +141,7 @@ const AllowlistTab = () => {
             <tbody>
               {paginatedWallets.map((wallet: AccountStatusResponse, index) => (
                 <tr
-                  className="border-b-2 border-[#F5F2F2] font-medium text-gray"
+                  className="border-b-2 border-[#F5F2F2] font-medium text-secondary"
                   key={index}
                 >
                   <td className="text-center text-sm">{wallet.termIndex}</td>

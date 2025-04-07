@@ -8,9 +8,9 @@ dataSources:
     name: Pricer
     network: sepolia
     source:
-      address: "0x5866Ba9bA3AA0B4F9062d2b7a540BE54B2cb3E5F"
+      address: "0x39b4950338A66A73e6c686c289B1Beaf97430Df2"
       abi: Pricer
-      startBlock: 7935800
+      startBlock: 8000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -31,9 +31,9 @@ dataSources:
     name: AllowlistUpgradeable
     network: sepolia
     source:
-      address: "0xf18240c104EaD10fe9880f7783155dbb0c3A93C6"
+      address: "0xf10922e8470610bc06DB7CE494Aeb8ACCada8fE2"
       abi: AllowlistUpgradeable
-      startBlock: 7935800
+      startBlock: 8000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -51,9 +51,9 @@ dataSources:
     name: AYFManager
     network: sepolia
     source:
-      address: "0x95b7278e95256D1b1Ec957f55704daE076cd4F4E"
+      address: "0xE803fd12232824ad7F0D2f5252c50f5CE5951A84"
       abi: AYFManager
-      startBlock: 7935800
+      startBlock: 8000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -94,7 +94,7 @@ dataSources:
     source:
       address: "0x31931690263C2eE6ab2ccC0Ef1BCFc0E34D326aa"
       abi: HYFManager
-      startBlock: 7935800
+      startBlock: 8000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

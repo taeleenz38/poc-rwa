@@ -137,7 +137,7 @@ const RedemptionRequests = () => {
                     Request <br /> Status
                   </th>
                   <th>
-                    AYF Redemption
+                    Redemption
                     <br />
                     Requested
                   </th>

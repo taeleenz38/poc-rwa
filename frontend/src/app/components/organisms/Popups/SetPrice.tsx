@@ -49,7 +49,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_PRICER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_AUDY_PRICER_ADDRESS as `0x${string}`,
         functionName: "addPrice",
         args: [price, timestamp],
       });

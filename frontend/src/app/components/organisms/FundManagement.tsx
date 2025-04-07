@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Pricing from "@/app/components/organisms/Pricing";
-import AUEMPricing from "@/app/components/organisms/AUEMPricing";
+import AEMFPricing from "@/app/components/organisms/AEMFPricing";
 
 const FundManagement = () => {
   const [view, setView] = useState("DepositRequests");
@@ -20,18 +20,18 @@ const FundManagement = () => {
         </div>
         <div
           className={`p-4 border-b-2 text-sm md:text-base border-[#F5F2F2] ${
-            view === "AUEM"
+            view === "AEMF"
               ? "bg-[#F5F2F2] border-b-primary"
               : "bg-white text-primary cursor-pointer"
           }`}
-          onClick={() => setView("AUEM")}
+          onClick={() => setView("AEMF")}
         >
-          AUEM Pricing (NAV)
+          AEMF Pricing (NAV)
         </div>
       </div>
       <div className="p-6">
         {view === "AUDY" && <Pricing />}
-        {view === "AUEM" && <AUEMPricing />}
+        {view === "AEMF" && <AEMFPricing />}
       </div>
     </div>
   );
