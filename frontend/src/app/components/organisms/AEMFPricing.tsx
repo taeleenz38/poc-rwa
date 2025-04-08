@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import Button from "../atoms/Buttons/Button";
 import FileUpload from "@/app/components/organisms/Popups/FileUpload";
 import UpdatePrice from "./Popups/SetPriceAEMF";
+import AEMFTable from "./AEMFTable";
 
 const AEMFPricing: React.FC = () => {
   const [uploadFileOpen, setUploadFileOpen] = useState(false);
@@ -26,16 +27,7 @@ const AEMFPricing: React.FC = () => {
         />
       </div>
       <div className="overflow-x-auto pt-4">
-        <table className="table">
-          <thead>
-            <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
-              <th className="text-center">ID</th>
-              <th className="text-center">Document Name</th>
-              <th className="text-center">Net Asset Value</th>
-              <th className="text-center">Upload Date</th>
-            </tr>
-          </thead>
-        </table>
+        <AEMFTable />
       </div>
       <UpdatePrice
         isOpen={updatePriceOpen}
