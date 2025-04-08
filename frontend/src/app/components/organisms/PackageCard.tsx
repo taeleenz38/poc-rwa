@@ -69,7 +69,7 @@ export const PackageCard = (props: PackageCardProps) => {
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">
               <div className="bg-white text-black rounded-full py-1.5 px-3 flex justify-center items-center text-base">
-                <p>${TVL} TVL</p>
+                <p>${TVL} AUM</p>
               </div>
               <div className="bg-white rounded-full py-1.5 px-3 flex justify-center items-center">
                 {chains}

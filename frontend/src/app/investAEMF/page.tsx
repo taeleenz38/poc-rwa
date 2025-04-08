@@ -5,8 +5,8 @@ import { config } from "@/config";
 import ayfabi from "@/artifacts/ABBY.json";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription2 from "@/app/components/organisms/FundDescription2";
-import Buy from "@/app/components/organisms/Popups/RequestDeposit";
-import Redeem from "@/app/components/organisms/Popups/RequestRedemption";
+import Buy from "@/app/components/organisms/Popups/RequestDepositAEMF";
+import Redeem from "@/app/components/organisms/Popups/RequestRedemptionAEMF";
 import { EthIcon } from "@/app/components/atoms/Icons";
 import { GET_PRICE_LIST, GET_ACCOUNT_STATUS } from "@/lib/urqlQueries";
 import { BigNumber, ethers } from "ethers";
@@ -107,7 +107,7 @@ const InvestAEMF = () => {
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
-    address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    address: process.env.NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`,
     functionName: "totalSupply",
   });
 
@@ -127,7 +127,7 @@ const InvestAEMF = () => {
             "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
           );
           const contractAddress = process.env
-            .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+            .NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`;
           const abi = ayfabi.abi;
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
@@ -154,8 +154,8 @@ const InvestAEMF = () => {
         logoSrc="/BM-LOGO.png"
         altText="Fund logo"
         fundName="AEMF"
-        fundDescription="Block Majority Australian Emerging Markets Fund"
-        yieldText="High-growth, Australian Emerging Markets Fund"
+        fundDescription="Block Majority Asian Emerging Markets Fund"
+        yieldText="High-growth, Asian Emerging Markets Fund"
         price={formattedPrice}
         tvl={tvl}
         Button1Text="Buy AEMF"

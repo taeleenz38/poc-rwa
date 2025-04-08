@@ -387,7 +387,7 @@ const KycDetails = (props: KycDetailsProps) => {
             height={75}
           />
           <p className="text-4xl font-semibold mt-4 text-secondary text-center md:text-left px-4 md:px-0">
-            Onboard to Block Majority AYF
+            Onboard to Block Majority
           </p>
           <div className="mt-8 hidden md:block">
             <Stepper

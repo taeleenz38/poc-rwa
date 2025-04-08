@@ -5,7 +5,7 @@ const FundDescription = () => {
     <div className="flex flex-col md:flex-row w-full mx-auto max-w-screen-xl py-8 md:py-14 px-8 text-secondary">
       <div className="w-full md:w-1/3">
         <p className="text-base lg:text-lg  text-left">
-          AYF is a tokenised Fund and is designed for investors seeking a
+          AEMF is a tokenised Fund and is designed for investors seeking a
           secure, liquid, and low-risk investment option. The Fund primarily
           invests in high-quality Australian bank bills and other short-term
           money market instruments. Its objective is to provide investors with a

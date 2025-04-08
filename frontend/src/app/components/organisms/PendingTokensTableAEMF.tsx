@@ -109,7 +109,7 @@ const PendingTokensTable = ({
                   </td>
                   <td>{new Date(token.claimableTimestamp).toLocaleString()}</td>
                   <td>
-                    {formatNumber(weiToEther(token.claimableAmount ?? 0))} {type}
+                    {formatNumber(weiToEther(token.claimableAmount ?? 0))} AUDY
                   </td>
 
                   <td>

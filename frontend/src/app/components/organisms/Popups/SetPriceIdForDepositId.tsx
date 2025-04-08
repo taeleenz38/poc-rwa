@@ -110,7 +110,7 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
         functionName: "setPriceIdForDeposits",
         args: [[depositIdHexlified], [formattedPriceId]],
       });

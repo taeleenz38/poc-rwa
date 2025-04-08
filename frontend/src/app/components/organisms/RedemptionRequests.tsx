@@ -162,7 +162,7 @@ const RedemptionRequests = () => {
                     </td>
                     <td>{request.user}</td>
                     <td>{request.status}</td>
-                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} AYF</td>
+                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} AUDY</td>
                     <td>
                       {request.requestedRedeemAmountAfterFee
                         ? `${request.requestedRedeemAmountAfterFee} AUDC`

@@ -70,10 +70,10 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
 
         const approvalTx = await writeContractAsync({
           abi: ayfabi.abi,
-          address: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
+          address: process.env.NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`,
           functionName: "approve",
           args: [
-            process.env.NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
+            process.env.NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
             approvalAmount,
           ],
         });
@@ -107,7 +107,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
 
         const approvalTx = await writeContractAsync({
           abi: hyfabi.abi,
-          address: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
+          address: process.env.NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`,
           functionName: "approve",
           args: [
             process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
@@ -156,7 +156,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
           const redemptionTx = await writeContractAsync({
             abi: abi.abi,
             address: process.env
-              .NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
+              .NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
             functionName: "requestRedemption",
             args: [redemptionAmount],
           });
@@ -234,13 +234,13 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-2xl font-bold text-primary">
-            Redeem AUDY For Stablecoins
+            Redeem AEMF For Stablecoins
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 mb-4">
           Please select the stablecoin currency and the amount you wish to
-          redeem AUDY for.
+          redeem AEMF for.
         </div>
         <div className="w-full flex justify-between items-center text-center mx-auto mb-8">
           <InputField

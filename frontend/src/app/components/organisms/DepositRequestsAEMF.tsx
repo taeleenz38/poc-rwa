@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
-import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
+import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositIdAEMF";
+import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStampAEMF";
 import SetMintFee from "./Popups/SetMintFee";
 import Button from "@/app/components/atoms/Buttons/Button";
 import { GET_PENDING_DEPOSIT_REQUESTS } from "@/lib/urqlQueries";
 import { useQuery } from "urql";
+import { aemf } from "@/lib/urql";
 import { ethers } from "ethers";
 
 type DepositRequestAEMF = {
@@ -144,7 +145,7 @@ const DepositRequestsAEMF = () => {
                 {paginatedRequests.map((request) => (
                   <tr
                     key={request.id}
-                    className="border-b-2 border-[#F5F2F2]  text-sm"
+                    className="border-b-2 border-[#F5F2F2] text-sm"
                   >
                     <td className="">{hexToDecimal(request.id)}</td>
                     <td className="">{request.user}</td>

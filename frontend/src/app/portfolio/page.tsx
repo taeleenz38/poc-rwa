@@ -14,6 +14,8 @@ import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useQuery } from "urql";
+import { Provider } from "urql";
+import { aemf } from "@/lib/urql";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 import BigNumber from "bignumber.js";
 import PendingTokensTable from "@/app/components/organisms/PendingTokensTable";
@@ -32,15 +34,6 @@ type ClaimableToken = {
 };
 
 type ClaimableAUDCToken = {
-  user: string;
-  id: string;
-  rwaAmountIn: string;
-  priceId: string;
-  redeemAmount: number;
-  redemptionId: string;
-};
-
-type ClaimableUSDCToken = {
   user: string;
   id: string;
   rwaAmountIn: string;
@@ -88,7 +81,8 @@ const Portfolio = () => {
   const { address } = useAccount({
     config,
   });
-  const [claimableTokens, setClaimableTokens] = useState<ClaimableToken[]>([]);
+  const [audyTokens, setAudyTokens] = useState<ClaimableToken[]>([]);
+  const [aemfTokens, setAemfTokens] = useState<ClaimableToken[]>([]);
   const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
     ClaimableAUDCToken[]
   >([]);
@@ -101,12 +95,19 @@ const Portfolio = () => {
   const [openRedemptionAccordion, setOpenRedemptionAccordion] = useState<
     string | null
   >(null);
+  const [aemfTransactions, setAemfTransactions] = useState<Transaction[]>([]);
 
   const { writeContractAsync } = useWriteContract({ config });
 
-  const { data: ayfData } = useBalance({
+  const { data: audyData } = useBalance({
     address,
-    token: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    token: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
+    config,
+  });
+
+  const { data: aemfData } = useBalance({
+    address,
+    token: process.env.NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`,
     config,
   });
 
@@ -116,7 +117,7 @@ const Portfolio = () => {
 
   const [
     {
-      data: transactionData,
+      data: audyTransactionData,
       fetching: fetchingTransactions,
       error: transactionError,
     },
@@ -125,11 +126,60 @@ const Portfolio = () => {
     variables: { user: address || "" },
   });
 
-  const [{ data: claimableDetailsData, fetching: fetchingClaimableDetails }] =
-    useQuery({
-      query: GET_CLAIMABLE_DETAILS,
-      variables: { user: address || "" },
-    });
+  useEffect(() => {
+    const fetchAEMFTransactions = async () => {
+      try {
+        const result = await aemf
+          .query(GET_TRANSACTION_HISTORY, {
+            user: address || "",
+          })
+          .toPromise();
+
+        if (result.data) {
+          const deposits = result.data.depositTransactionHistories;
+          const redemptions = result.data.redemptionTransactionHistories;
+          setAemfTransactions([...deposits, ...redemptions]);
+        }
+      } catch (error) {
+        console.error("Error fetching AEMF transaction history:", error);
+      }
+    };
+
+    if (address) {
+      fetchAEMFTransactions();
+    }
+  }, [address]);
+
+  // AUDY query using default urql client (already in your code)
+  const [{ data: audyClaimableData }] = useQuery({
+    query: GET_CLAIMABLE_DETAILS,
+    variables: { user: address || "" },
+  });
+
+  // AEMF query using custom urql client
+  useEffect(() => {
+    const fetchAEMFClaimable = async () => {
+      try {
+        const result = await aemf
+          .query(GET_CLAIMABLE_DETAILS, {
+            user: address || "",
+          })
+          .toPromise();
+
+        if (result.data) {
+          setAemfTokens(result.data.pendingDepositRequests);
+        }
+      } catch (error) {
+        console.error("Error fetching AEMF claimable tokens", error);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    if (address) {
+      fetchAEMFClaimable();
+    }
+  }, [address]);
 
   const [
     {
@@ -141,23 +191,28 @@ const Portfolio = () => {
     variables: { user: address || "" },
   });
 
-  const transactions = transactionData
-    ? [
-        ...transactionData.depositTransactionHistories,
-        ...transactionData.redemptionTransactionHistories,
-      ]
-    : [];
+  const allTransactions = [
+    ...(audyTransactionData?.depositTransactionHistories || []),
+    ...(audyTransactionData?.redemptionTransactionHistories || []),
+    ...aemfTransactions,
+  ];
 
-  console.log("transactions", transactions);
+  const sortedTransactions = allTransactions.sort(
+    (a, b) =>
+      new Date(b.transactionDate).getTime() -
+      new Date(a.transactionDate).getTime()
+  );
+
+  console.log("transactions", allTransactions);
 
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = transactions.slice(
+  const currentTransactions = allTransactions.slice(
     indexOfFirstTransaction,
     indexOfLastTransaction
   );
 
-  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+  const totalPages = Math.ceil(allTransactions.length / transactionsPerPage);
 
   const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
     setCurrentPage(pageNumber);
@@ -171,14 +226,15 @@ const Portfolio = () => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
   };
 
-  const formattedAyfBalance = formatBalance(ayfData);
+  const formattedAyfBalance = formatBalance(audyData);
+  const formattedAemfBalance = formatBalance(aemfData);
 
   useEffect(() => {
-    if (claimableDetailsData) {
-      setClaimableTokens(claimableDetailsData.pendingDepositRequests);
+    if (audyClaimableData) {
+      setAudyTokens(audyClaimableData.pendingDepositRequests);
       setIsFetching(false);
     }
-  }, [claimableDetailsData]);
+  }, [audyClaimableData]);
 
   useEffect(() => {
     if (claimableRedemptionListData) {
@@ -186,9 +242,6 @@ const Portfolio = () => {
 
       const audcRequests = redemptionRequests.filter(
         (request: any) => request.collateralType === "AUDC"
-      );
-      const usdcRequests = redemptionRequests.filter(
-        (request: any) => request.collateralType === "USDC"
       );
 
       setClaimableAUDCTokens(audcRequests);
@@ -205,7 +258,27 @@ const Portfolio = () => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "claimMint",
+        args: [[depositIdHexlified]],
+      });
+      return tx;
+    } catch (error) {
+      console.error("Error claiming tokens:", error);
+      throw error;
+    }
+  };
+
+  const claimMintAEMF = async (depositId: string) => {
+    const depositIdFormatted = Number(depositId);
+    const depositIdHexlified = ethers.utils.hexZeroPad(
+      ethers.utils.hexlify(depositIdFormatted),
+      32
+    );
+    try {
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
         functionName: "claimMint",
         args: [[depositIdHexlified]],
       });
@@ -226,7 +299,8 @@ const Portfolio = () => {
       try {
         const tx = await writeContractAsync({
           abi: abi.abi,
-          address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+          address: process.env
+            .NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
           functionName: "claimRedemption",
           args: [[redemptionIdHexlified]],
         });
@@ -237,7 +311,8 @@ const Portfolio = () => {
       try {
         const tx = await writeContractAsync({
           abi: hyfabi.abi,
-          address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
+          address: process.env
+            .NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
           functionName: "claimRedemption",
           args: [[redemptionIdHexlified]],
         });
@@ -261,6 +336,7 @@ const Portfolio = () => {
   const parsedPrice = price !== null ? parseFloat(price) : 0;
   const ayfBalanceInEther = weiToEther(formattedAyfBalance.toString());
   const ayfMarketValueInEther = parseFloat(ayfBalanceInEther) * parsedPrice;
+  const aemfMarketValueInEther = formattedAemfBalance * 420;
 
   const toggleAccordion = (accordion: string) => {
     setOpenAccordion(openAccordion === accordion ? null : accordion);
@@ -271,6 +347,10 @@ const Portfolio = () => {
       openRedemptionAccordion === accordion ? null : accordion
     );
   };
+
+  const totalMarketValue =
+    Number(aemfMarketValueInEther) + Number(ayfMarketValueInEther);
+  const totalPortfolioValue = formatNumber(totalMarketValue);
 
   return (
     <>
@@ -298,9 +378,7 @@ const Portfolio = () => {
                       <Skeleton height={30} className="w-full" />
                     </>
                   ) : (
-                    <h3 className="text-2xl">
-                      ${formatNumber(ayfMarketValueInEther)} AUD
-                    </h3>
+                    <h3 className="text-2xl">${totalPortfolioValue} AUD</h3>
                   )}
                 </>
               </div>
@@ -339,6 +417,12 @@ const Portfolio = () => {
                           <td>{formatNumber(formattedAyfBalance)}</td>
                           <td>${formatNumber(ayfMarketValueInEther)}</td>
                         </tr>
+                        <tr className="border-b borderColor">
+                          <td>Block Majority Asian Emerging Market Fund</td>
+                          <td>$420.00</td>
+                          <td>{formatNumber(formattedAemfBalance)}</td>
+                          <td>${formatNumber(aemfMarketValueInEther)}</td>
+                        </tr>
                       </>
                     )}
                   </tbody>
@@ -351,23 +435,46 @@ const Portfolio = () => {
                 Pending Tokens
               </h2>
 
-              {/* AYF Accordion */}
+              {/* AUDY Accordion */}
               <div className="mb-4">
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleAccordion("AYF")}
+                  onClick={() => toggleAccordion("AUDY")}
                 >
-                  <span className="text-primary">AYF</span>
-                  <span>{openAccordion === "AYF" ? "▲" : "▼"}</span>
+                  <span className="text-primary">AUDY</span>
+                  <span>{openAccordion === "AUDY" ? "▲" : "▼"}</span>
                 </button>
-                {openAccordion === "AYF" && (
+                {openAccordion === "AUDY" && (
                   <div className="p-4 bg-white rounded-md mt-2">
                     <PendingTokensTable
-                      tokens={claimableTokens}
+                      tokens={audyTokens}
                       isFetching={isFetching}
                       claimMint={claimMint}
-                      type="AYF"
+                      type="AUDY"
                     />
+                  </div>
+                )}
+              </div>
+
+              {/* AEMF Accordion */}
+              <div className="mb-4">
+                <button
+                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  onClick={() => toggleAccordion("AEMF")}
+                >
+                  <span className="text-primary">AEMF</span>
+                  <span>{openAccordion === "AEMF" ? "▲" : "▼"}</span>
+                </button>
+                {openAccordion === "AEMF" && (
+                  <div className="p-4 bg-white rounded-md mt-2">
+                    <Provider value={aemf}>
+                      <PendingTokensTable
+                        tokens={aemfTokens}
+                        isFetching={isFetching}
+                        claimMint={claimMintAEMF}
+                        type="AEMF"
+                      />
+                    </Provider>
                   </div>
                 )}
               </div>

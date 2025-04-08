@@ -43,13 +43,13 @@ export default function Home() {
   const [isFetching, setIsFetching] = useState(true);
   const [price, setPrice] = useState<string | null>(null);
   const [tvl, setTvl] = useState<string>("...");
-  const [hyfTvl, setHyfTvl] = useState<string>("...");
+  const [aemfTvl, setAemfTvl] = useState<string>("...");
   const [lpBalance, setLpBalance] = useState<string>("...");
   const [lpBalanceHyf, setLpBalanceHyf] = useState<string>("...");
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
-    address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    address: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
     functionName: "totalSupply",
   });
 
@@ -70,7 +70,7 @@ export default function Home() {
 
   const { data: ayfLpBalance } = useBalance({
     address: "0x6223c2C68d1e786cd02A2eBbDF873e1f9d268D45",
-    token: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    token: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
     config,
   });
 
@@ -96,7 +96,7 @@ export default function Home() {
             "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
           );
           const contractAddress = process.env
-            .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+            .NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`;
           const abi = ayfabi.abi;
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
@@ -126,8 +126,8 @@ export default function Home() {
           "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
         );
         const contractAddress = process.env
-          .NEXT_PUBLIC_HYF_ADDRESS as `0x${string}`;
-        const abi = hyfabi.abi;
+          .NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`;
+        const abi = ayfabi.abi;
         const contract = new ethers.Contract(contractAddress, abi, provider);
 
         const supply = await contract.totalSupply();
@@ -136,8 +136,8 @@ export default function Home() {
         // Format lpBalanceHyf to two decimal places
         setLpBalanceHyf(formatNumber(formattedSupply, 2));
 
-        const tvlValue = (parseFloat(formattedSupply) * 107.34).toFixed(2);
-        setHyfTvl(formatNumber(tvlValue));
+        const tvlValue = (parseFloat(formattedSupply) * 420).toFixed(2);
+        setAemfTvl(formatNumber(tvlValue));
       } catch (error) {
         console.error("Error calculating TVL:", error);
       }
@@ -173,9 +173,9 @@ export default function Home() {
         />
         <PackageCard
           heading="AEMF"
-          subHeading="Block Majority Australian Emerging Markets Fund"
-          PRICE={formattedPrice}
-          TVL={tvl}
+          subHeading="Block Majority Asian Emerging Markets Fund"
+          PRICE={"420.00"}
+          TVL={aemfTvl}
           href="/investAEMF"
           backgroundImage="url('/Fund-2.jpg')"
           footerText="For Wholesale Investors"

@@ -107,7 +107,7 @@ const InvestAUDY = () => {
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
-    address: process.env.NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`,
+    address: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
     functionName: "totalSupply",
   });
 
@@ -127,7 +127,7 @@ const InvestAUDY = () => {
             "https://sepolia.infura.io/v3/87d9d315fbda4c4b93710160977c7370"
           );
           const contractAddress = process.env
-            .NEXT_PUBLIC_AYF_ADDRESS as `0x${string}`;
+            .NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`;
           const abi = ayfabi.abi;
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
