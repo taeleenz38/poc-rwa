@@ -19,6 +19,8 @@ interface PriceData {
   }[];
 }
 
+
+
 // Convert wei to ether
 const weiToEther = (wei: string | number): string => {
   return ethers.utils.formatUnits(wei, 18);
@@ -46,6 +48,8 @@ export default function Home() {
   const [aemfTvl, setAemfTvl] = useState<string>("...");
   const [lpBalance, setLpBalance] = useState<string>("...");
   const [lpBalanceHyf, setLpBalanceHyf] = useState<string>("...");
+  const [aemfPrice, setAemfPrice] = useState<string>("...");
+
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
@@ -150,6 +154,28 @@ export default function Home() {
     ? formatNumber(parseFloat(weiToEther(price)))
     : "...";
 
+  useEffect(() => {
+    const fetchAemfPrice = async () => {
+      try {
+        const requestOptions: RequestInit = {
+          method: "GET",
+          redirect: "follow" as RequestRedirect,
+        };
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_FILE_API}/file-upload/chainlink/aemf`, requestOptions)
+        const result = await response.json();
+        console.log(result)
+
+        const parsedPrice = parseFloat(result.NAV);
+        setAemfPrice(formatNumber(parsedPrice, 2));
+      } catch (error) {
+        console.error("Error fetching AEMF price:", error);
+      }
+    };
+
+    fetchAemfPrice();
+  }, []);
+
   return (
     <main className="min-h-screen bg-white root-container text-black">
       <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold w-full sm:w-4/5 lg:w-3/5">
@@ -174,7 +200,7 @@ export default function Home() {
         <PackageCard
           heading="AEMF"
           subHeading="Block Majority Asian Emerging Markets Fund"
-          PRICE={"420.00"}
+          PRICE={aemfPrice}
           TVL={aemfTvl}
           href="/investAEMF"
           backgroundImage="url('/Fund-2.jpg')"

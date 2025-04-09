@@ -49,9 +49,7 @@ const InvestAEMF = () => {
   );
   const email = localStorage.getItem("username");
 
-  const [{ data: priceListData, error: priceListError }] = useQuery({
-    query: GET_PRICE_LIST,
-  });
+
 
   const handleButton1Click = () => {
     if (!isConnected) {
@@ -91,19 +89,26 @@ const InvestAEMF = () => {
   fetchUserStatus(email as string);
 
   useEffect(() => {
-    if (priceListData) {
-      const sortedPriceList = priceListData.priceAddeds.sort(
-        (a: Item, b: Item) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-      const latestPrice = sortedPriceList[0];
-      setPrice(latestPrice ? latestPrice.price : "...");
-    }
-  }, [priceListData]);
+    const fetchAemfPrice = async () => {
+      try {
+        const requestOptions: RequestInit = {
+          method: "GET",
+          redirect: "follow" as RequestRedirect,
+        };
 
-  const formattedPrice = price
-    ? formatNumber(parseFloat(weiToEther(price)))
-    : "...";
+        const response = await fetch(`${process.env.NEXT_PUBLIC_FILE_API}/file-upload/chainlink/aemf`, requestOptions)
+        const result = await response.json();
+        console.log(result)
+
+        const parsedPrice = parseFloat(result.NAV);
+        setPrice(formatNumber(parsedPrice, 2));
+      } catch (error) {
+        console.error("Error fetching AEMF price:", error);
+      }
+    };
+
+    fetchAemfPrice();
+  }, []);
 
   const { data: totalSupply } = useReadContract({
     abi: ayfabi.abi,
@@ -134,7 +139,7 @@ const InvestAEMF = () => {
           const supply = await contract.totalSupply();
           const formattedSupply = ethers.utils.formatUnits(supply, 18);
 
-          const priceInEther = parseFloat(weiToEther(price));
+          const priceInEther = parseFloat(price);
 
           const tvlValue = parseFloat(formattedSupply) * priceInEther;
 
@@ -156,7 +161,7 @@ const InvestAEMF = () => {
         fundName="AEMF"
         fundDescription="Block Majority Asian Emerging Markets Fund"
         yieldText="High-growth, Asian Emerging Markets Fund"
-        price={formattedPrice}
+        price={price || "..."}
         tvl={tvl}
         Button1Text="Buy AEMF"
         Button2Text="Redeem"
