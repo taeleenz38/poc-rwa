@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../atoms/Buttons/Button";
+import UpdateLR from "./Popups/UpdateLiquidityReport";
 import AddPrice from "./Popups/SetPrice";
 import UpdatePrice from "./Popups/UpdatePrice";
 import SetPricer from "./Popups/SetPricer";
@@ -19,6 +20,7 @@ const ITEMS_PER_PAGE = 6;
 const Pricing = () => {
   const [prices, setPrices] = useState<PricingResponse[]>([]);
   const [isTableLoading, setIsTableLoading] = useState(false);
+  const [updateLROpen, setUpdateLROpen] = useState(false);
   const [addPriceOpen, setAddPriceOpen] = useState(false);
   const [updatePriceOprn, setUpdatePriceOpen] = useState(false);
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
@@ -91,6 +93,11 @@ const Pricing = () => {
     <div className="flex flex-col w-full p-4">
       <div className="flex w-full justify-around items-center py-6">
         <Button
+          text={"Update Liquidity Report"}
+          onClick={() => setUpdateLROpen(true)}
+          className="bg-primary py-2 text-light hover:bg-secondary-focus"
+        />
+        <Button
           text={"Add New Price ID"}
           onClick={() => setAddPriceOpen(true)}
           className="bg-primary py-2 text-light hover:bg-secondary-focus"
@@ -98,11 +105,10 @@ const Pricing = () => {
         <Button
           text={"Update Existing Price ID"}
           onClick={() => setUpdatePriceOpen(true)}
-          className={`${
-            selectedPriceId === null
-              ? `bg-gray/20 text-primary`
-              : "bg-primary text-light hover:bg-secondary-focus"
-          } py-2`}
+          className={`${selectedPriceId === null
+            ? `bg-gray/20 text-primary`
+            : "bg-primary text-light hover:bg-secondary-focus"
+            } py-2`}
           disabled={selectedPriceId === null}
         />
         {/* <Button
@@ -158,7 +164,10 @@ const Pricing = () => {
             )}
           </tbody>
         </table>
-
+        <UpdateLR
+          isOpen={updateLROpen}
+          onClose={() => setUpdateLROpen(false)}
+        />
         <AddPrice
           isOpen={addPriceOpen}
           onClose={() => setAddPriceOpen(false)}
@@ -176,11 +185,10 @@ const Pricing = () => {
 
       <div className="flex w-1/3 mx-auto justify-between items-center mt-8">
         <button
-          className={`mx-1 px-3 py-1 rounded ${
-            currentPage === 1
-              ? "bg-gray-300 text-secondary cursor-not-allowed"
-              : "bg-light text-primary"
-          }`}
+          className={`mx-1 px-3 py-1 rounded ${currentPage === 1
+            ? "bg-gray-300 text-secondary cursor-not-allowed"
+            : "bg-light text-primary"
+            }`}
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
         >
@@ -190,11 +198,10 @@ const Pricing = () => {
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
-              className={`mx-1 px-3 py-1 rounded ${
-                currentPage === index + 1
-                  ? "bg-primary text-light"
-                  : "bg-light text-primary"
-              }`}
+              className={`mx-1 px-3 py-1 rounded ${currentPage === index + 1
+                ? "bg-primary text-light"
+                : "bg-light text-primary"
+                }`}
               onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}
@@ -202,11 +209,10 @@ const Pricing = () => {
           ))}
         </div>
         <button
-          className={`mx-1 px-3 py-1 rounded ${
-            currentPage === totalPages
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-light text-primary"
-          }`}
+          className={`mx-1 px-3 py-1 rounded ${currentPage === totalPages
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+            : "bg-light text-primary"
+            }`}
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
