@@ -9,7 +9,7 @@ interface Document {
 
 const ITEMS_PER_PAGE = 6;
 
-const AEMFTable = () => {
+const EQVTable = () => {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -115,4 +115,4 @@ const AEMFTable = () => {
     )
 }
 
-export default AEMFTable
+export default EQVTable

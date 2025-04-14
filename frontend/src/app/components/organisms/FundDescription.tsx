@@ -5,7 +5,7 @@ const FundDescription = () => {
     <div className="flex flex-col md:flex-row w-full mx-auto max-w-screen-xl py-8 md:py-14 px-8 text-secondary">
       <div className="w-full md:w-1/3">
         <p className="text-base lg:text-lg  text-left">
-          AUDY is a tokenised Fund and is designed for investors seeking a
+          VLR is a tokenised Fund and is designed for investors seeking a
           secure, liquid, and low-risk investment option. The Fund primarily
           invests in high-quality Australian bank bills and other short-term
           money market instruments. Its objective is to provide investors with a
@@ -16,7 +16,7 @@ const FundDescription = () => {
         {[
           {
             heading: "Fund Name",
-            description: "Stage 1 Block Majority Australian Yield Fund",
+            description: "Stage 1 Velora Australian Yield Fund",
           },
           {
             heading: "Fund Structure",
@@ -24,12 +24,12 @@ const FundDescription = () => {
           },
           {
             heading: "Trustee",
-            description: "Block Majority Pty Ltd (ACN 636 227 980)",
+            description: "Velora Pty Ltd (ACN 636 227 980)",
           },
           {
             heading: "Units",
             description:
-              "Issued as AUDY tokens minted on the Sepolia Testnet blockchain",
+              "Issued as VLR tokens minted on the Sepolia Testnet blockchain",
           },
           {
             heading: "Subscription Website",
@@ -43,7 +43,7 @@ const FundDescription = () => {
           {
             heading: "Investor Eligibility",
             description:
-              "Only open for investment by Block Majority executives and Block Majority strategic partners",
+              "Only open for investment by Velora executives and Velora strategic partners",
           },
           {
             heading: "Liquidity",
@@ -57,7 +57,7 @@ const FundDescription = () => {
           {
             heading: "Subscription and Redemption Price",
             description:
-              "The Subscription and Redemption Price of AUDY tokens is calculated by the Trustee on a daily basis and posted on the blockmajority.io website. The Subscription Price is determined as the Net Asset Value (NAV) of the Fund less accrued platform fees, divided by the number of AUDY tokens issued. The NAV is the total value of the Fund's assets minus its liabilities.The AUDY Token Price is calculated daily by the Trustee as the Net Asset Value (NAV) of The AUDY Fund less accrued platform fees, divided by the number of AUDY Tokens. The Trustee connects their wallet to AUDY Pricing Contract sets the price every day at 3 pm AEST",
+              "The Subscription and Redemption Price of VLR tokens is calculated by the Trustee on a daily basis and posted on the blockmajority.io website. The Subscription Price is determined as the Net Asset Value (NAV) of the Fund less accrued platform fees, divided by the number of VLR tokens issued. The NAV is the total value of the Fund's assets minus its liabilities.The VLR Token Price is calculated daily by the Trustee as the Net Asset Value (NAV) of The VLR Fund less accrued platform fees, divided by the number of VLR Tokens. The Trustee connects their wallet to VLR Pricing Contract sets the price every day at 3 pm AEST",
           },
           {
             heading: "Distributions",

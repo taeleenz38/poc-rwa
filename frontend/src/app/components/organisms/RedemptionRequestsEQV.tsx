@@ -6,7 +6,7 @@ import { useQuery } from "urql";
 import { GET_PENDING_REDEMPTION_REQUEST_LIST } from "@/lib/urqlQueries";
 import { ethers } from "ethers";
 
-type RedemptionRequestAEMF = {
+type RedemptionRequestEQV = {
   id: string;
   user: string;
   rwaAmountIn: string;
@@ -44,7 +44,7 @@ const formatNumber = (
 
 const ITEMS_PER_PAGE = 6;
 
-const RedemptionRequestsAEMF = () => {
+const RedemptionRequestsEQV = () => {
   const [selectedRedemptionId, setSelectedRedemptionId] = useState<
     string | undefined
   >(undefined);
@@ -74,7 +74,7 @@ const RedemptionRequestsAEMF = () => {
     setIsSetPriceIdForRedemptionIdOpen(true);
   };
 
-  const redemptionRequests: RedemptionRequestAEMF[] =
+  const redemptionRequests: RedemptionRequestEQV[] =
     redemptionData?.redemptionRequests || [];
 
   const hexToDecimal = (hex: string): number => {
@@ -162,7 +162,7 @@ const RedemptionRequestsAEMF = () => {
                     </td>
                     <td>{request.user}</td>
                     <td>{request.status}</td>
-                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} AUDY</td>
+                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} VLR</td>
                     <td>
                       {request.requestedRedeemAmountAfterFee
                         ? `${request.requestedRedeemAmountAfterFee} AUDC`
@@ -244,4 +244,4 @@ const RedemptionRequestsAEMF = () => {
   );
 };
 
-export default RedemptionRequestsAEMF;
+export default RedemptionRequestsEQV;

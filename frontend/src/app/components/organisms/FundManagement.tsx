@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Pricing from "@/app/components/organisms/Pricing";
-import AEMFPricing from "@/app/components/organisms/AEMFPricing";
+import EQVPricing from "@/app/components/organisms/EQVPricing";
 
 const FundManagement = () => {
   const [view, setView] = useState("DepositRequests");
@@ -10,28 +10,28 @@ const FundManagement = () => {
       <div className="grid grid-cols-2 text-center font-semibold text-primary">
         <div
           className={`p-4 border-b-2 text-sm md:text-base border-[#F5F2F2] ${
-            view === "AUDY"
+            view === "VLR"
               ? "bg-[#F5F2F2] border-b-primary"
               : "bg-white text-primary cursor-pointer"
           }`}
-          onClick={() => setView("AUDY")}
+          onClick={() => setView("VLR")}
         >
-          AUDY Pricing (NAV)
+          VLR Pricing (NAV)
         </div>
         <div
           className={`p-4 border-b-2 text-sm md:text-base border-[#F5F2F2] ${
-            view === "AEMF"
+            view === "EQV"
               ? "bg-[#F5F2F2] border-b-primary"
               : "bg-white text-primary cursor-pointer"
           }`}
-          onClick={() => setView("AEMF")}
+          onClick={() => setView("EQV")}
         >
-          AEMF Pricing (NAV)
+          EQV Pricing (NAV)
         </div>
       </div>
       <div className="p-6">
-        {view === "AUDY" && <Pricing />}
-        {view === "AEMF" && <AEMFPricing />}
+        {view === "VLR" && <Pricing />}
+        {view === "EQV" && <EQVPricing />}
       </div>
     </div>
   );

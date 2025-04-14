@@ -48,7 +48,7 @@ const PendingTokensTable = ({
   isFetching: boolean;
   claimMint: (id: string) => Promise<any>;
   claimRedemption?: (id: string) => void;
-  type: "AUDY" | "AEMF";
+  type: "VLR" | "EQV";
 }) => {
   const [claimingTokens, setClaimingTokens] = useState<Set<string>>(new Set());
 

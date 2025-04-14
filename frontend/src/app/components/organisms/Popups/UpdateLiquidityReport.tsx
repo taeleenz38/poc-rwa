@@ -41,11 +41,11 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({ isOpen, onClose }) => 
             <div className="p-8 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
                 <div className="flex justify-between items-center mb-8">
                     <div></div>
-                    <h2 className="text-2xl font-bold text-primary">Add Price</h2>
+                    <h2 className="text-2xl font-bold text-primary">Daily Liquidity Report</h2>
                     <CloseButton onClick={onCloseModal} />
                 </div>
                 <div className="text-center px-8 l mb-4 ">
-                    Please enter the desired price for AUDY (Australian Yield Fund).
+                    Please enter the desired price for VLR (Australian Yield Fund).
                 </div>
                 <div className="w-full mx-auto mb-8">
                     <InputField

@@ -15,7 +15,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useQuery } from "urql";
 import { Provider } from "urql";
-import { aemf } from "@/lib/urql";
+import { eqv } from "@/lib/urql";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 import BigNumber from "bignumber.js";
 import PendingTokensTable from "@/app/components/organisms/PendingTokensTable";
@@ -81,8 +81,8 @@ const Portfolio = () => {
   const { address } = useAccount({
     config,
   });
-  const [audyTokens, setAudyTokens] = useState<ClaimableToken[]>([]);
-  const [aemfTokens, setAemfTokens] = useState<ClaimableToken[]>([]);
+  const [vlrTokens, setVlrTokens] = useState<ClaimableToken[]>([]);
+  const [eqvTokens, setEqvTokens] = useState<ClaimableToken[]>([]);
   const [claimableAUDCTokens, setClaimableAUDCTokens] = useState<
     ClaimableAUDCToken[]
   >([]);
@@ -95,19 +95,19 @@ const Portfolio = () => {
   const [openRedemptionAccordion, setOpenRedemptionAccordion] = useState<
     string | null
   >(null);
-  const [aemfTransactions, setAemfTransactions] = useState<Transaction[]>([]);
+  const [eqvTransactions, setEqvTransactions] = useState<Transaction[]>([]);
 
   const { writeContractAsync } = useWriteContract({ config });
 
-  const { data: audyData } = useBalance({
+  const { data: vlrData } = useBalance({
     address,
-    token: process.env.NEXT_PUBLIC_AUDY_ADDRESS as `0x${string}`,
+    token: process.env.NEXT_PUBLIC_VLR_ADDRESS as `0x${string}`,
     config,
   });
 
-  const { data: aemfData } = useBalance({
+  const { data: eqvData } = useBalance({
     address,
-    token: process.env.NEXT_PUBLIC_AEMF_ADDRESS as `0x${string}`,
+    token: process.env.NEXT_PUBLIC_EQV_ADDRESS as `0x${string}`,
     config,
   });
 
@@ -117,7 +117,7 @@ const Portfolio = () => {
 
   const [
     {
-      data: audyTransactionData,
+      data: vlrTransactionData,
       fetching: fetchingTransactions,
       error: transactionError,
     },
@@ -127,9 +127,9 @@ const Portfolio = () => {
   });
 
   useEffect(() => {
-    const fetchAEMFTransactions = async () => {
+    const fetchEQVTransactions = async () => {
       try {
-        const result = await aemf
+        const result = await eqv
           .query(GET_TRANSACTION_HISTORY, {
             user: address || "",
           })
@@ -138,46 +138,46 @@ const Portfolio = () => {
         if (result.data) {
           const deposits = result.data.depositTransactionHistories;
           const redemptions = result.data.redemptionTransactionHistories;
-          setAemfTransactions([...deposits, ...redemptions]);
+          setEqvTransactions([...deposits, ...redemptions]);
         }
       } catch (error) {
-        console.error("Error fetching AEMF transaction history:", error);
+        console.error("Error fetching EQV transaction history:", error);
       }
     };
 
     if (address) {
-      fetchAEMFTransactions();
+      fetchEQVTransactions();
     }
   }, [address]);
 
-  // AUDY query using default urql client (already in your code)
-  const [{ data: audyClaimableData }] = useQuery({
+  // VLR query using default urql client (already in your code)
+  const [{ data: vlrClaimableData }] = useQuery({
     query: GET_CLAIMABLE_DETAILS,
     variables: { user: address || "" },
   });
 
-  // AEMF query using custom urql client
+  // EQV query using custom urql client
   useEffect(() => {
-    const fetchAEMFClaimable = async () => {
+    const fetchEQVClaimable = async () => {
       try {
-        const result = await aemf
+        const result = await eqv
           .query(GET_CLAIMABLE_DETAILS, {
             user: address || "",
           })
           .toPromise();
 
         if (result.data) {
-          setAemfTokens(result.data.pendingDepositRequests);
+          setEqvTokens(result.data.pendingDepositRequests);
         }
       } catch (error) {
-        console.error("Error fetching AEMF claimable tokens", error);
+        console.error("Error fetching EQV claimable tokens", error);
       } finally {
         setIsFetching(false);
       }
     };
 
     if (address) {
-      fetchAEMFClaimable();
+      fetchEQVClaimable();
     }
   }, [address]);
 
@@ -192,9 +192,9 @@ const Portfolio = () => {
   });
 
   const allTransactions = [
-    ...(audyTransactionData?.depositTransactionHistories || []),
-    ...(audyTransactionData?.redemptionTransactionHistories || []),
-    ...aemfTransactions,
+    ...(vlrTransactionData?.depositTransactionHistories || []),
+    ...(vlrTransactionData?.redemptionTransactionHistories || []),
+    ...eqvTransactions,
   ];
 
   const sortedTransactions = allTransactions.sort(
@@ -226,15 +226,15 @@ const Portfolio = () => {
     return balanceData?.formatted ? parseFloat(balanceData.formatted) : 0.0;
   };
 
-  const formattedAyfBalance = formatBalance(audyData);
-  const formattedAemfBalance = formatBalance(aemfData);
+  const formattedVlrBalance = formatBalance(vlrData);
+  const formattedEqvBalance = formatBalance(eqvData);
 
   useEffect(() => {
-    if (audyClaimableData) {
-      setAudyTokens(audyClaimableData.pendingDepositRequests);
+    if (vlrClaimableData) {
+      setVlrTokens(vlrClaimableData.pendingDepositRequests);
       setIsFetching(false);
     }
-  }, [audyClaimableData]);
+  }, [vlrClaimableData]);
 
   useEffect(() => {
     if (claimableRedemptionListData) {
@@ -258,7 +258,7 @@ const Portfolio = () => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
         functionName: "claimMint",
         args: [[depositIdHexlified]],
       });
@@ -269,7 +269,7 @@ const Portfolio = () => {
     }
   };
 
-  const claimMintAEMF = async (depositId: string) => {
+  const claimMintEQV = async (depositId: string) => {
     const depositIdFormatted = Number(depositId);
     const depositIdHexlified = ethers.utils.hexZeroPad(
       ethers.utils.hexlify(depositIdFormatted),
@@ -278,7 +278,7 @@ const Portfolio = () => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_EQV_MANAGER_ADDRESS as `0x${string}`,
         functionName: "claimMint",
         args: [[depositIdHexlified]],
       });
@@ -300,7 +300,7 @@ const Portfolio = () => {
         const tx = await writeContractAsync({
           abi: abi.abi,
           address: process.env
-            .NEXT_PUBLIC_AUDY_MANAGER_ADDRESS as `0x${string}`,
+            .NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
           functionName: "claimRedemption",
           args: [[redemptionIdHexlified]],
         });
@@ -312,7 +312,7 @@ const Portfolio = () => {
         const tx = await writeContractAsync({
           abi: hyfabi.abi,
           address: process.env
-            .NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
+            .NEXT_PUBLIC_EQV_MANAGER_ADDRESS as `0x${string}`,
           functionName: "claimRedemption",
           args: [[redemptionIdHexlified]],
         });
@@ -334,9 +334,9 @@ const Portfolio = () => {
   }, [priceListData]);
 
   const parsedPrice = price !== null ? parseFloat(price) : 0;
-  const ayfBalanceInEther = weiToEther(formattedAyfBalance.toString());
-  const ayfMarketValueInEther = parseFloat(ayfBalanceInEther) * parsedPrice;
-  const aemfMarketValueInEther = formattedAemfBalance * 420;
+  const vlrBalanceInEther = weiToEther(formattedVlrBalance.toString());
+  const vlrMarketValueInEther = parseFloat(vlrBalanceInEther) * parsedPrice;
+  const eqvMarketValueInEther = formattedEqvBalance * 420;
 
   const toggleAccordion = (accordion: string) => {
     setOpenAccordion(openAccordion === accordion ? null : accordion);
@@ -349,7 +349,7 @@ const Portfolio = () => {
   };
 
   const totalMarketValue =
-    Number(aemfMarketValueInEther) + Number(ayfMarketValueInEther);
+    Number(eqvMarketValueInEther) + Number(vlrMarketValueInEther);
   const totalPortfolioValue = formatNumber(totalMarketValue);
 
   return (
@@ -414,14 +414,14 @@ const Portfolio = () => {
                         <tr className="border-b borderColor">
                           <td>Block Majority Australian Yield Fund</td>
                           <td>${formattedPrice}</td>
-                          <td>{formatNumber(formattedAyfBalance)}</td>
-                          <td>${formatNumber(ayfMarketValueInEther)}</td>
+                          <td>{formatNumber(formattedVlrBalance)}</td>
+                          <td>${formatNumber(vlrMarketValueInEther)}</td>
                         </tr>
                         <tr className="border-b borderColor">
                           <td>Block Majority Asian Emerging Market Fund</td>
                           <td>$420.00</td>
-                          <td>{formatNumber(formattedAemfBalance)}</td>
-                          <td>${formatNumber(aemfMarketValueInEther)}</td>
+                          <td>{formatNumber(formattedEqvBalance)}</td>
+                          <td>${formatNumber(eqvMarketValueInEther)}</td>
                         </tr>
                       </>
                     )}
@@ -435,44 +435,44 @@ const Portfolio = () => {
                 Pending Tokens
               </h2>
 
-              {/* AUDY Accordion */}
+              {/* VLR Accordion */}
               <div className="mb-4">
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleAccordion("AUDY")}
+                  onClick={() => toggleAccordion("VLR")}
                 >
-                  <span className="text-primary">AUDY</span>
-                  <span>{openAccordion === "AUDY" ? "▲" : "▼"}</span>
+                  <span className="text-primary">VLR</span>
+                  <span>{openAccordion === "VLR" ? "▲" : "▼"}</span>
                 </button>
-                {openAccordion === "AUDY" && (
+                {openAccordion === "VLR" && (
                   <div className="p-4 bg-white rounded-md mt-2">
                     <PendingTokensTable
-                      tokens={audyTokens}
+                      tokens={vlrTokens}
                       isFetching={isFetching}
                       claimMint={claimMint}
-                      type="AUDY"
+                      type="VLR"
                     />
                   </div>
                 )}
               </div>
 
-              {/* AEMF Accordion */}
+              {/* EQV Accordion */}
               <div className="mb-4">
                 <button
                   className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
-                  onClick={() => toggleAccordion("AEMF")}
+                  onClick={() => toggleAccordion("EQV")}
                 >
-                  <span className="text-primary">AEMF</span>
-                  <span>{openAccordion === "AEMF" ? "▲" : "▼"}</span>
+                  <span className="text-primary">EQV</span>
+                  <span>{openAccordion === "EQV" ? "▲" : "▼"}</span>
                 </button>
-                {openAccordion === "AEMF" && (
+                {openAccordion === "EQV" && (
                   <div className="p-4 bg-white rounded-md mt-2">
-                    <Provider value={aemf}>
+                    <Provider value={eqv}>
                       <PendingTokensTable
-                        tokens={aemfTokens}
+                        tokens={eqvTokens}
                         isFetching={isFetching}
-                        claimMint={claimMintAEMF}
-                        type="AEMF"
+                        claimMint={claimMintEQV}
+                        type="EQV"
                       />
                     </Provider>
                   </div>
@@ -549,26 +549,26 @@ const Portfolio = () => {
                             <td>
                               {transaction.price
                                 ? `$${formatNumber(
-                                    parseFloat(weiToEther(transaction.price))
-                                  )}`
+                                  parseFloat(weiToEther(transaction.price))
+                                )}`
                                 : ""}
                             </td>
                             <td>
                               {transaction.tokenAmount
                                 ? `${formatNumber(
-                                    parseFloat(
-                                      weiToEther(transaction.tokenAmount)
-                                    )
-                                  )}`
+                                  parseFloat(
+                                    weiToEther(transaction.tokenAmount)
+                                  )
+                                )}`
                                 : ""}
                             </td>
                             <td>
                               {transaction.stableAmount
                                 ? `$${formatNumber(
-                                    parseFloat(
-                                      weiToEther(transaction.stableAmount)
-                                    )
-                                  )}`
+                                  parseFloat(
+                                    weiToEther(transaction.stableAmount)
+                                  )
+                                )}`
                                 : ""}
                             </td>
                           </tr>
@@ -587,11 +587,10 @@ const Portfolio = () => {
                 <div className="flex justify-between items-center mt-4">
                   <Button
                     text="Previous"
-                    className={`btn-sm items-center flex justify-center ${
-                      currentPage !== 1
-                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
-                        : "bg-primary cursor-not-allowed"
-                    }`}
+                    className={`btn-sm items-center flex justify-center ${currentPage !== 1
+                      ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
+                      : "bg-primary cursor-not-allowed"
+                      }`}
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                   />
@@ -600,11 +599,10 @@ const Portfolio = () => {
                   </span>
                   <Button
                     text="Next"
-                    className={`py-2 btn-sm items-center flex justify-center ${
-                      currentPage !== totalPages
-                        ? "bg-[#e6e6e6] text-secondary hover:bg-light hover:text-secondary font-semibold"
-                        : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                    }`}
+                    className={`py-2 btn-sm items-center flex justify-center ${currentPage !== totalPages
+                      ? "bg-[#e6e6e6] text-secondary hover:bg-light hover:text-secondary font-semibold"
+                      : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                      }`}
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                   />

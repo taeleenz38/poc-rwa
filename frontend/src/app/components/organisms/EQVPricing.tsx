@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent } from "react";
 import Button from "../atoms/Buttons/Button";
 import FileUpload from "@/app/components/organisms/Popups/FileUpload";
-import UpdatePrice from "./Popups/SetPriceAEMF";
-import AEMFTable from "./AEMFTable";
+import UpdatePrice from "./Popups/SetPriceEQV";
+import EQVTable from "./EQVTable";
 
-const AEMFPricing: React.FC = () => {
+const EQVPricing: React.FC = () => {
   const [uploadFileOpen, setUploadFileOpen] = useState(false);
   const [updatePriceOpen, setUpdatePriceOpen] = useState(false);
 
@@ -16,25 +16,16 @@ const AEMFPricing: React.FC = () => {
           onClick={() => setUploadFileOpen(true)}
           className="bg-primary py-2 text-light hover:bg-secondary-focus"
         />
-        <Button
-          text={"Update Price ID"}
-          onClick={() => setUpdatePriceOpen(true)}
-          className="bg-primary py-2 text-light hover:bg-secondary-focus"
-        />
         <FileUpload
           isOpen={uploadFileOpen}
           onClose={() => setUploadFileOpen(false)}
         />
       </div>
       <div className="overflow-x-auto pt-4">
-        <AEMFTable />
+        <EQVTable />
       </div>
-      <UpdatePrice
-        isOpen={updatePriceOpen}
-        onClose={() => setUpdatePriceOpen(false)}
-      />
     </div>
   );
 };
 
-export default AEMFPricing;
+export default EQVPricing;

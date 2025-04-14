@@ -2,6 +2,7 @@
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
+import pricerabi from "@/artifacts/Pricer.json";
 import { config } from "@/config";
 import { GET_TRANSACTION_PRICING } from "@/lib/urqlQueries";
 import axios from "axios";
@@ -9,11 +10,13 @@ import { BigNumber, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { useEqvData } from "@/hooks/useEqvData";
 
-interface SetPriceIdForDepositIdProps {
+interface ApproveDepositRequestEQVProps {
   isOpen: boolean;
   onClose: () => void;
   depositId?: string;
+  walletAddress?: string;
 }
 
 interface PricingResponse {
@@ -27,6 +30,10 @@ const weiToEther = (wei: string | number): string => {
   return ethers.utils.formatUnits(wei, 18);
 };
 
+const hexToDecimal = (hex: string): number => {
+  return parseInt(hex, 16);
+};
+
 const formatNumber = (
   number: number | string,
   decimalPlaces: number = 2
@@ -38,19 +45,17 @@ const formatNumber = (
   });
 };
 
-const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
+const ApproveDepositRequestEQV: React.FC<ApproveDepositRequestEQVProps> = ({
   isOpen,
   onClose,
   depositId = "",
+  walletAddress = "",
 }) => {
   const [localDepositId, setLocalDepositId] = useState<string>(depositId);
   const [prices, setPrices] = useState<PricingResponse[]>([]);
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
-  const [safeTxHash, setSafeTxHash] = useState<string>("");
-  const [txHash, setTxHash] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
-  const [showLink, setShowLink] = useState(false);
-  const [error, setError] = useState<string>("");
+  const { eqvNav, eqvTotalSupply, eqvPrice } = useEqvData();
 
   const [{ data, fetching, error: queryError }] = useQuery({
     query: GET_TRANSACTION_PRICING,
@@ -67,8 +72,8 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
           index === self.findIndex((p) => p.priceId === price.priceId)
       );
 
-      const lastFourPrices = uniquePrices.slice(0, 4);
-      setPrices(lastFourPrices);
+      const lastPrice = uniquePrices.slice(0, 1);
+      setPrices(lastPrice);
     }
 
     if (queryError) {
@@ -76,11 +81,15 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
     }
   }, [data, queryError]);
 
+  useEffect(() => {
+    if (prices.length > 0) {
+      setSelectedPriceId(prices[0].priceId);
+      console.log(selectedPriceId);
+    }
+  }, [prices]);
+
   const resetForm = () => {
     setSelectedPriceId(null);
-    setShowLink(false);
-    setTxHash("");
-    setSafeTxHash("");
   };
 
   const onCloseModal = () => {
@@ -92,73 +101,63 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
     setSelectedPriceId(priceId);
   };
 
-  const handleSetPriceIdForDepositId = async () => {
-    if (!selectedPriceId) return;
-
-    const depositIdFormatted = Number(localDepositId);
-    const depositIdHexlified = ethers.utils.hexZeroPad(
-      ethers.utils.hexlify(depositIdFormatted),
-      32
-    );
-
-    const formattedPriceId = BigNumber.from(selectedPriceId);
-    console.log(
-      "Setting priceId for depositId:",
-      depositIdHexlified,
-      formattedPriceId
-    );
+  const handleUpdatePrice = async () => {
     try {
+      const priceID = Number(selectedPriceId);
+      const priceIDHexlified = ethers.utils.hexZeroPad(
+        ethers.utils.hexlify(priceID),
+        32
+      );
+
+      const parsedPrice = parseFloat(eqvPrice);
+      const price = ethers.utils.parseUnits(parsedPrice.toString(), 18);
+
+      console.log("priceID", priceID.toString());
+      console.log("price", price.toString());
+
       const tx = await writeContractAsync({
-        abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AEMF_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "setPriceIdForDeposits",
-        args: [[depositIdHexlified], [formattedPriceId]],
+        abi: pricerabi.abi,
+        address: process.env.NEXT_PUBLIC_EQV_PRICER_ADDRESS as `0x${string}`,
+        functionName: "updatePrice",
+        args: [priceIDHexlified, price],
       });
-      setSafeTxHash(tx);
+
+      console.log("Price successfully updated - transaction hash:", tx);
     } catch (error) {
-      console.error("Error setting priceId:", error);
+      console.error("Error updating price:", error);
     }
   };
 
-  useEffect(() => {
-    if (!safeTxHash) return;
+  const handleApproveDepositRequestEQV = async () => {
+    if (!selectedPriceId && eqvPrice) return;
 
-    const fetchTransactionData = async () => {
-      try {
-        const transactionResponse = await axios.get(
-          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
-        );
+    try {
+      // Call updatePrice first
+      await handleUpdatePrice();
 
-        console.log("Transaction response:", transactionResponse.data);
+      const depositIdFormatted = Number(localDepositId);
+      const depositIdHexlified = ethers.utils.hexZeroPad(
+        ethers.utils.hexlify(depositIdFormatted),
+        32
+      );
 
-        if (transactionResponse.data.transactionHash) {
-          setTxHash(transactionResponse.data.transactionHash);
-          setError("");
-        } else {
-          // If transactionHash is null, continue polling
-          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
-        }
-      } catch (error) {
-        console.error("Error fetching transaction data:", error);
-        setError("Error fetching transaction data");
-      }
-    };
+      const formattedPriceId = BigNumber.from(selectedPriceId);
+      console.log(
+        "Setting priceId for depositId:",
+        depositIdHexlified,
+        formattedPriceId
+      );
 
-    fetchTransactionData();
-  }, [safeTxHash]);
-
-  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
-    hash: txHash as `0x${string}`,
-  });
-
-  useEffect(() => {
-    if (safeTxHash) {
-      const timer = setTimeout(() => {
-        setShowLink(true);
-      }, 30000);
-      return () => clearTimeout(timer);
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC_EQV_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "setPriceIdForDeposits",
+        args: [[depositIdHexlified], [formattedPriceId]],
+      });
+    } catch (error) {
+      console.error("Error during approval process:", error);
     }
-  }, [safeTxHash]);
+  };
 
   if (!isOpen) return null;
 
@@ -209,32 +208,17 @@ const SetPriceIdForDepositId: React.FC<SetPriceIdForDepositIdProps> = ({
           </div>
           <div className="w-[49%]">
             <Submit
-              onClick={handleSetPriceIdForDepositId}
+              onClick={handleApproveDepositRequestEQV}
               label={isPending ? "Confirming..." : "Confirm"}
-              disabled={isPending || !selectedPriceId}
+              disabled={isPending || !selectedPriceId || !eqvPrice}
               className="w-full"
             />
           </div>
         </div>
-        {safeTxHash && (
-          <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {!showLink && <p>Transaction is pending...</p>}
-            {showLink && (
-              <a
-                href={`https://sepolia.etherscan.io/tx/${txHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline  overflow-x-scroll text-sm text-[#0000BF]"
-              >
-                View Transaction
-              </a>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
 };
 //
 
-export default SetPriceIdForDepositId;
+export default ApproveDepositRequestEQV;

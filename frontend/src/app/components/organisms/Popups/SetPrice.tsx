@@ -49,7 +49,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AUDY_PRICER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_VLR_PRICER_ADDRESS as `0x${string}`,
         functionName: "addPrice",
         args: [price, timestamp],
       });
@@ -111,7 +111,7 @@ const AddPrice: React.FC<AddPriceProps> = ({ isOpen, onClose }) => {
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 l mb-4 ">
-          Please enter the desired price for AUDY (Australian Yield Fund).
+          Please enter the desired price for VLR (Australian Yield Fund).
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField

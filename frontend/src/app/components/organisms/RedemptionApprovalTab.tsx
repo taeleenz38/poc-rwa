@@ -114,7 +114,7 @@ const RedemptionApprovalTab = () => {
                   </td>
                   <td className="text-center">
                     {" "}
-                    {ethers.utils.formatUnits(request.rwaAmountIn, 18)} AUDY
+                    {ethers.utils.formatUnits(request.rwaAmountIn, 18)} VLR
                   </td>
                   <td className="text-center">
                     <div className="flex justify-center items-center">

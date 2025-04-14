@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import AdminRequests from "@/app/components/organisms/AdminRequests";
 
 const Admin = () => {
-  const [tokenType, setTokenType] = useState<"AUDY" | "AEMF">("AUDY");
+  const [tokenType, setTokenType] = useState<"VLR" | "EQV">("VLR");
 
   return (
     <div className="min-h-screen root-container">
@@ -14,25 +14,24 @@ const Admin = () => {
             Track and manage your requests
           </h2>
         </div>
-        {/* Toggle for AUDY vs AEMF */}
         <div className="flex justify-end gap-2">
           <button
-            className={`px-4 py-2 rounded-full text-sm md:text-base border ${tokenType === "AUDY"
+            className={`px-4 py-2 rounded-full text-sm md:text-base border ${tokenType === "VLR"
                 ? "bg-primary text-white"
                 : "border-primary text-primary"
               }`}
-            onClick={() => setTokenType("AUDY")}
+            onClick={() => setTokenType("VLR")}
           >
-            AUDY
+            VLR
           </button>
           <button
-            className={`px-4 py-2 rounded-full text-sm md:text-base border ${tokenType === "AEMF"
+            className={`px-4 py-2 rounded-full text-sm md:text-base border ${tokenType === "EQV"
                 ? "bg-primary text-white"
                 : "border-primary text-primary"
               }`}
-            onClick={() => setTokenType("AEMF")}
+            onClick={() => setTokenType("EQV")}
           >
-            AEMF
+            EQV
           </button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
-import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
+import SetPriceIdForDepositId from "@/app/components/organisms/Popups/ApproveDepositRequest";
 import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
 import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
 import {
@@ -155,7 +155,7 @@ const PricingSection = () => {
                 <strong>Redeem Amount:</strong> {request.redeemAmount} AUDC
               </p>
               <p>
-                <strong>AUDY Amount In:</strong> {request.rwaAmountIn}
+                <strong>VLR Amount In:</strong> {request.rwaAmountIn}
               </p>
               <div></div>
             </div>

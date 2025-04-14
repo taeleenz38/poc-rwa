@@ -38,7 +38,7 @@ const PendingRedemptionsTable = ({
   tokens,
   isFetching,
   claimRedemption,
-  type, // "AUDY" or "HYF"
+  type,
 }: {
   tokens: ClaimableAUDCToken[];
   isFetching: boolean;
@@ -75,7 +75,7 @@ const PendingRedemptionsTable = ({
                   {formatNumber(
                     weiToEther(token.rwaAmountIn as unknown as number)
                   )}{" "}
-                  AUDY
+                  VLR
                 </td>
                 <td className="flex-1">
                 {formatNumber(
