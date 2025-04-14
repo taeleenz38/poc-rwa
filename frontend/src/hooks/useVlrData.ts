@@ -58,7 +58,7 @@ export function useVlrData() {
 
         if (!isNaN(nav) && !isNaN(supply) && supply > 0) {
             const price = nav / supply;
-            setVlrPrice(formatNumber(price, 4));
+            setVlrPrice(formatNumber(price, 4)); 
         }
     }, [vlrNav, vlrTotalSupply]);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UpdateLR from "@/app/components/organisms/Popups/UpdateLiquidityReport";
-import VLRTable from "../VLRTable";
+import VLRTable from "./VLRTable";
 import Button from "../atoms/Buttons/Button";
 
 const Pricing: React.FC = () => {
