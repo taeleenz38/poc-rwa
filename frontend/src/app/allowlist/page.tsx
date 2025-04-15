@@ -19,10 +19,10 @@ import AllowlistTab from "../components/organisms/AllowListTab";
 const Allowlist = () => {
   return (
     <div className="min-h-screen root-container">
-      <h1 className="text-4xl font-semibold text-black mb-4">
+      <h1 className="text-4xl font-semibold text-secondary mb-4">
         AllowList Management
       </h1>
-      <h2 className="text-xl font-normal text-black mb-12">
+      <h2 className="text-xl font-normal text-secondary mb-12">
         Manage list of all allowed users
       </h2>
       <AllowlistTab />

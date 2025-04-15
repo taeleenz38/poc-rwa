@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SetPriceIdForDepositId from "@/app/components/organisms/Popups/SetPriceIdForDepositId";
+import ApproveDepositRequest from "@/app/components/organisms/Popups/ApproveDepositRequest";
 import SetClaimTimestamp from "@/app/components/organisms/Popups/SetClaimTimeStamp";
 import SetMintFee from "./Popups/SetMintFee";
 import Button from "@/app/components/atoms/Buttons/Button";
@@ -39,7 +39,7 @@ const formatNumber = (
 
 const ITEMS_PER_PAGE = 6;
 const DepositRequests = () => {
-  const [isSetPriceIdForDepositIdOpen, setIsSetPriceIdForDepositIdOpen] =
+  const [isApproveDepositRequestOpen, setIsApproveDepositRequestOpen] =
     useState(false);
   const [isSetClaimTimestampOpen, setIsSetClaimTimestampOpen] = useState(false);
   const [isSetMintFeeOpen, setIsSetMintFeeOpen] = useState(false);
@@ -51,6 +51,9 @@ const DepositRequests = () => {
   const [selectedPriceId, setSelectedPriceId] = useState<string | undefined>(
     undefined
   );
+  const [selectedWalletAddress, setSelectedWalletAddress] = useState<
+    string | undefined
+  >(undefined);
 
   const [
     { data: depositData, fetching: fetchingDeposits, error: depositError },
@@ -63,10 +66,15 @@ const DepositRequests = () => {
     setIsSetClaimTimestampOpen(true);
   };
 
-  const handleButton2Click = (depositId: string, priceId?: string) => {
+  const handleButton2Click = (
+    depositId: string,
+    user: string,
+    priceId?: string
+  ) => {
+    setSelectedWalletAddress(user);
     setSelectedDepositId(depositId);
     setSelectedPriceId(priceId || "");
-    setIsSetPriceIdForDepositIdOpen(true);
+    setIsApproveDepositRequestOpen(true);
   };
 
   const depositRequests: DepositRequest[] =
@@ -77,8 +85,12 @@ const DepositRequests = () => {
   };
 
   const sortedDepositRequests = [...depositRequests].sort((a, b) => {
-    const timestampA = a.requestTimestamp ? new Date(a.requestTimestamp).getTime() : 0;
-    const timestampB = b.requestTimestamp ? new Date(b.requestTimestamp).getTime() : 0;
+    const timestampA = a.requestTimestamp
+      ? new Date(a.requestTimestamp).getTime()
+      : 0;
+    const timestampB = b.requestTimestamp
+      ? new Date(b.requestTimestamp).getTime()
+      : 0;
     return timestampB - timestampA;
   });
 
@@ -104,7 +116,7 @@ const DepositRequests = () => {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-  
+
   return (
     <div className="p-4">
       {/* <div className="w-full flex justify-center py-6">
@@ -121,7 +133,7 @@ const DepositRequests = () => {
           <div className="overflow-x-auto pt-4">
             <table className="table w-full">
               <thead>
-                <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
+                <tr className="text-secondary text-center text-sm font-semibold bg-[#F5F2F2] border-none">
                   <th className="">ID</th>
                   <th className="">User</th>
                   <th className="">
@@ -136,7 +148,7 @@ const DepositRequests = () => {
                     Amount
                     <br /> After Fee
                   </th>
-                  <th className="">Price ID</th>
+                  <th className="">Status</th>
                   <th className="">Claim Timestamp</th>
                 </tr>
               </thead>
@@ -144,35 +156,41 @@ const DepositRequests = () => {
                 {paginatedRequests.map((request) => (
                   <tr
                     key={request.id}
-                    className="border-b-2 border-[#F5F2F2]  text-sm"
+                    className="border-b-2 border-[#F5F2F2] text-sm"
                   >
-                    <td className="">{hexToDecimal(request.id)}</td>
-                    <td className="">{request.user}</td>
-                    <td className="">{request.status}</td>
-                    <td className="">
+                    <td className="text-center">{hexToDecimal(request.id)}</td>
+                    <td className="text-center">{request.user}</td>
+                    <td className="text-center">{request.status}</td>
+                    <td className="text-center">
                       {formatNumber(
                         weiToEther(request.collateralAmountDeposited)
                       )}{" "}
                       AUDC
                     </td>
-                    <td className="">
+                    <td className="text-center">
                       {formatNumber(weiToEther(request.depositAmountAfterFee))}{" "}
                       AUDC
                     </td>
-                    <td className="">
-                      {request.priceId ? (
+                    <td className="text-center">
+                      {request.priceId && parseInt(request.priceId) === 1 ? (
+                        "Approved"
+                      ) : request.priceId ? (
                         request.priceId
                       ) : (
                         <Button
-                          text="Set Price ID"
+                          text="Approve"
                           className="bg-primary text-light hover:bg-secondary-focus whitespace-nowrap"
                           onClick={() =>
-                            handleButton2Click(request.id, request.priceId)
+                            handleButton2Click(
+                              request.id,
+                              request.user,
+                              request.priceId
+                            )
                           }
                         />
                       )}
                     </td>
-                    <td className="">
+                    <td className="text-center">
                       {request.claimableTimestamp ? (
                         request.claimableTimestamp
                       ) : (
@@ -234,10 +252,11 @@ const DepositRequests = () => {
         onClose={() => setIsSetClaimTimestampOpen(false)}
         depositId={selectedDepositId}
       />
-      <SetPriceIdForDepositId
-        isOpen={isSetPriceIdForDepositIdOpen}
-        onClose={() => setIsSetPriceIdForDepositIdOpen(false)}
+      <ApproveDepositRequest
+        isOpen={isApproveDepositRequestOpen}
+        onClose={() => setIsApproveDepositRequestOpen(false)}
         depositId={selectedDepositId}
+        walletAddress={selectedWalletAddress}
       />
       <SetMintFee
         isOpen={isSetMintFeeOpen}

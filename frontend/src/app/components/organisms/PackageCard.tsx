@@ -21,6 +21,7 @@ type PackageCardProps = {
   TVL: string;
   footerText: string;
   chains: React.ReactNode;
+  imageSrc: string;
 };
 
 export const PackageCard = (props: PackageCardProps) => {
@@ -36,6 +37,7 @@ export const PackageCard = (props: PackageCardProps) => {
     TVL,
     footerText,
     chains,
+    imageSrc
   } = props;
 
   return (
@@ -51,7 +53,7 @@ export const PackageCard = (props: PackageCardProps) => {
       >
         <div className="flex space-x-3">
           <Image
-            src={"/BM-LOGO.png"}
+            src={imageSrc}
             alt="image"
             width={50}
             height={50}
@@ -69,7 +71,7 @@ export const PackageCard = (props: PackageCardProps) => {
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">
               <div className="bg-white text-black rounded-full py-1.5 px-3 flex justify-center items-center text-base">
-                <p>${TVL} TVL</p>
+                <p>${TVL} NAV</p>
               </div>
               <div className="bg-white rounded-full py-1.5 px-3 flex justify-center items-center">
                 {chains}

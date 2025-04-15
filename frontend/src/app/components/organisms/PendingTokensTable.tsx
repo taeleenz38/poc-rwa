@@ -48,7 +48,7 @@ const PendingTokensTable = ({
   isFetching: boolean;
   claimMint: (id: string) => Promise<any>;
   claimRedemption?: (id: string) => void;
-  type: "AYF" | "HYF";
+  type: "VLR" | "EQV";
 }) => {
   const [claimingTokens, setClaimingTokens] = useState<Set<string>>(new Set());
 
@@ -109,7 +109,7 @@ const PendingTokensTable = ({
                   </td>
                   <td>{new Date(token.claimableTimestamp).toLocaleString()}</td>
                   <td>
-                    {formatNumber(weiToEther(token.claimableAmount ?? 0))} AYF
+                    {formatNumber(weiToEther(token.claimableAmount ?? 0))} {type}
                   </td>
 
                   <td>

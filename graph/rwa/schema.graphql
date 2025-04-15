@@ -32,7 +32,7 @@ type LatestPriceUpdated @entity(immutable: false) {
   status: String!
 }
 
-type PriceIdIndex @entity {
+type PriceIdIndex @entity(immutable: false) {
   id: ID!  # `priceId` as a string
   latestPriceId: Bytes!  # The ID of the LatestPriceUpdated entity
 }
@@ -48,7 +48,7 @@ type AccountStatusSetByAdmin @entity(immutable: true) {
   status: Boolean!
 }
 
-type AccountStatusSetByIndex @entity {
+type AccountStatusSetByIndex @entity(immutable: false) {
   id: ID!  # `account` as a string
   accountStatusSetByAdmin: Bytes!  # The ID of the AccountStatusSetByAdmin entity
 }
@@ -64,7 +64,7 @@ type LatestUniqueAccountStatusSetByAdmin @entity(immutable: false) {
   status: Boolean!
 }
 
-type MintRequested @entity {
+type MintRequested @entity(immutable: false) {
   id: Bytes! # use depositId
   user: Bytes! # address
   collateralAmountDeposited: BigInt! # uint256
@@ -75,7 +75,7 @@ type MintRequested @entity {
   transactionHash: Bytes!
 }
 
-type PendingDepositRequest @entity {
+type PendingDepositRequest @entity(immutable: false) {
   id: Bytes!
   user: Bytes! # address
   collateralAmountDeposited: BigInt! # uint256
@@ -89,7 +89,7 @@ type PendingDepositRequest @entity {
   claimableAmount: BigInt
 }
 
-type DepositTransactionHistory @entity {
+type DepositTransactionHistory @entity(immutable: false) {
   id: Bytes! # depositId
   user: Bytes! # address
   stableAmount: BigInt # Optional, storing as BigInt
@@ -177,7 +177,7 @@ type RedemptionApproved @entity(immutable: true) {
   collateralType: String!
 }
 
-type RedemptionTransactionHistory @entity {
+type RedemptionTransactionHistory @entity(immutable: false) {
   id: Bytes! # redemptionId
   user: Bytes! # address
   stableAmount: BigInt # Optional, storing as BigInt

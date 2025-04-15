@@ -81,7 +81,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
           address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
           functionName: "approve",
           args: [
-            process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+            process.env.NEXT_PUBLIC__MANAGER_ADDRESS as `0x${string}`,
             approvalAmount,
           ],
         });
@@ -94,7 +94,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
 
         const tx = await writeContractAsync({
           abi: abi.abi,
-          address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+          address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
           functionName: "approveRedemptionRequest",
           args: [[redemptionIdHexlified]],
         });
@@ -221,7 +221,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8  mb-8 ">
-          {collateralType === "AUDC" ? "Please enter the amount of AUDC you wish to approve for the AYF Manager to spend for a given redemption ID." : "Please enter the amount of USDC you wish to approve for the HYF Manager to spend for a given Redemption ID."}
+          {collateralType === "AUDC" ? "Please enter the amount of AUDC you wish to approve for the VLR Manager to spend for a given redemption ID." : "Please enter the amount of USDC you wish to approve for the HYF Manager to spend for a given Redemption ID."}
         </div>
         <div className="mb-4">
           <InputField

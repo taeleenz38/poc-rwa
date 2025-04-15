@@ -51,7 +51,7 @@ const RedemptionList: React.FC = () => {
                 <strong>Redeem Amount:</strong> {item.redeemAmount}
               </p>
               <p>
-                <strong>AYF Amount In:</strong> {item.rwaAmountIn}
+                <strong>VLR Amount In:</strong> {item.rwaAmountIn}
               </p>
             </div>
           </div>

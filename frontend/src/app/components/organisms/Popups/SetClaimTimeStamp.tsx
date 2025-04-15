@@ -74,7 +74,7 @@ const SetClaimTimestamp: React.FC<SetClaimTimestampProps> = ({
     try {
       const tx = await writeContractAsync({
         abi: abi.abi,
-        address: process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+        address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
         functionName: "setClaimableTimestamp",
         args: [claimTimestampFormatted, [depositIdHexlified]],
       });

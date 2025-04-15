@@ -5,7 +5,7 @@ const FundDescription = () => {
     <div className="flex flex-col md:flex-row w-full mx-auto max-w-screen-xl py-8 md:py-14 px-8 text-secondary">
       <div className="w-full md:w-1/3">
         <p className="text-base lg:text-lg  text-left">
-          AYF is a tokenised Fund and is designed for investors seeking a
+          EQV is a tokenised Fund and is designed for investors seeking a
           secure, liquid, and low-risk investment option. The Fund primarily
           invests in high-quality Australian bank bills and other short-term
           money market instruments. Its objective is to provide investors with a
@@ -16,7 +16,7 @@ const FundDescription = () => {
         {[
           {
             heading: "Fund Name",
-            description: "Block Majority Australian Emerging Markets Fund",
+            description: "Equivest Asian Emerging Markets Fund",
           },
           {
             heading: "Fund Structure",
@@ -24,12 +24,12 @@ const FundDescription = () => {
           },
           {
             heading: "Trustee",
-            description: "Block Majority Pty Ltd (ACN 636 227 980)",
+            description: "Equivest Pty Ltd (ACN 636 227 980)",
           },
           {
             heading: "Units",
             description:
-              "Issued as AUEM tokens minted on the Sepolia Testnet blockchain",
+              "Issued as EQV tokens minted on the Sepolia Testnet blockchain",
           },
           {
             heading: "Subscription Website",
@@ -43,7 +43,7 @@ const FundDescription = () => {
           {
             heading: "Investor Eligibility",
             description:
-              "Open to wholesale investors and strategic partners of Block Majority",
+              "Open to wholesale investors and strategic partners of Equivest",
           },
           {
             heading: "Liquidity",
@@ -57,7 +57,7 @@ const FundDescription = () => {
           {
             heading: "Subscription and Redemption Price",
             description:
-              "The Subscription and Redemption Price of AUEM tokens is calculated weekly by the Trustee and posted on the blockmajority.io website. The price reflects the Net Asset Value (NAV) of the Fund, adjusted for fees and expenses.",
+              "The Subscription and Redemption Price of EQV tokens is calculated weekly by the Trustee and posted on the blockmajority.io website. The price reflects the Net Asset Value (NAV) of the Fund, adjusted for fees and expenses.",
           },
           {
             heading: "Distributions",

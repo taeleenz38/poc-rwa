@@ -43,7 +43,7 @@ const AllowlistWallets: React.FC = () => {
                 Status: {wallet.status ? "Active" : "Inactive"}
               </div>
             </div>
-            <div><strong>AYF</strong></div>
+            <div><strong>VLR</strong></div>
           </div>
         ))}
       </div>

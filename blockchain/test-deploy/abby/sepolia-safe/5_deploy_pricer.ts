@@ -19,14 +19,14 @@ async function main() {
   const gasLimit = 600000;
 
 
-  await deploy("AYF_Pricer", {
+  await deploy("AEMF_PRICER", {
     from: deployer,
     contract: "Pricer",
     args: [guardian, managerAdmin],
     log: true,
   });
 
-  const pricer = await ethers.getContract("AYF_Pricer");
+  const pricer = await ethers.getContract("AEMF_PRICER");
   console.log(pricer.address)
 
   // Set price to $1

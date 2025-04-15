@@ -32,12 +32,12 @@ async function main() {
 
   tx = await factory
     .connect(deployerSigner)
-    .deployABBY("AYF", "AYF", [
+    .deployABBY("AEMF", "AEMF", [
       blocklist.address,
       allowlist.address
     ]);
 
-  //ABBY (AYF) - DEFAULT_ADMIN_ROLE, PAUSER_ROLE - guardian, owner - guardian
+  //ABBY (AEMF) - DEFAULT_ADMIN_ROLE, PAUSER_ROLE - guardian, owner - guardian
   //MINTER_ROLE - manager
   
   const receipt = await tx.wait();

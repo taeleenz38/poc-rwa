@@ -137,7 +137,7 @@ const RedemptionRequests = () => {
                     Request <br /> Status
                   </th>
                   <th>
-                    AYF Redemption
+                    Redemption
                     <br />
                     Requested
                   </th>
@@ -162,7 +162,7 @@ const RedemptionRequests = () => {
                     </td>
                     <td>{request.user}</td>
                     <td>{request.status}</td>
-                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} AYF</td>
+                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} VLR</td>
                     <td>
                       {request.requestedRedeemAmountAfterFee
                         ? `${request.requestedRedeemAmountAfterFee} AUDC`

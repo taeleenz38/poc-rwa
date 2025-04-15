@@ -9,12 +9,15 @@ interface FileUploadProps {
 
 interface SignedUrlResponse {
   url: string;
+  attachmentId: number;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadUrl, setUploadUrl] = useState<string>("");
+  const [attachmentId, setAttachmentId] = useState<number>(0);
 
   const onCloseModal = () => {
     onClose();
@@ -32,6 +35,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
         `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/generate-signed-url/${fileName}`
       );
       const data: SignedUrlResponse = await response.json();
+      console.log("Data:", data);
+      setAttachmentId(data.attachmentId);
+      setUploadUrl(data.url);
       return data.url;
     } catch (error) {
       console.error("Error fetching signed URL", error);
@@ -56,7 +62,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
       }
 
       const uploadResponse = await fetch(signedUrl, {
-        method: "PUT", 
+        method: "PUT",
         headers: {
           "Content-Type": file.type,
         },
@@ -65,8 +71,33 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
 
       if (uploadResponse.ok) {
         alert("File uploaded successfully!");
-        setFile(null);
-        onCloseModal();
+
+        // Now perform the POST request with FormData
+        const formdata = new FormData();
+        formdata.append("attachmentId", attachmentId.toString());  // Convert number to string
+        formdata.append("fileStream", file, file.name);  // Attach the file
+
+        const requestOptions: RequestInit = {
+          method: "POST",
+          body: formdata,
+          redirect: "follow" as RequestRedirect,  // Ensuring redirect is correctly typed
+        };
+
+        // Replace with the actual URL where the POST request needs to go
+        const postUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/upload-csv-file`;
+
+        const postResponse = await fetch(postUrl, requestOptions);
+
+        if (postResponse.ok) {
+          const result = await postResponse.text();
+          console.log("POST request succeeded:", result);
+          setFile(null);
+          onCloseModal();
+        } else {
+          alert("Failed to upload the file for processing.");
+          console.error("POST request failed:", await postResponse.text());
+        }
+
       } else {
         alert("Failed to upload file.");
         console.error("Upload failed:", await uploadResponse.text());
@@ -77,7 +108,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
       setIsUploading(false);
     }
   };
-
   if (!isOpen) return null;
 
   return (

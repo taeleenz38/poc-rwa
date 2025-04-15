@@ -87,7 +87,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
         abi: audcabi.abi,
         address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
         functionName: "approve",
-        args: [process.env.NEXT_PUBLIC_AYF_MANAGER_ADDRESS, approvalAmount],
+        args: [process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS, approvalAmount],
       });
 
       setTxApprovalHash(approvalTx);
@@ -130,7 +130,7 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
           const depositTx = await writeContractAsync({
             abi: abi.abi,
             address: process.env
-              .NEXT_PUBLIC_AYF_MANAGER_ADDRESS as `0x${string}`,
+              .NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
             functionName: "requestSubscription",
             args: [depositAmount],
           });
@@ -166,11 +166,11 @@ const RequestDeposit: React.FC<RequestDepositProps> = ({ isOpen, onClose }) => {
       <div className="p-6 rounded-lg text-gray bg-white shadow-md shadow-white w-1/3">
         <div className="flex justify-between items-center mb-8">
           <div></div>
-          <h2 className="text-2xl font-bold text-primary">Buy AYF</h2>
+          <h2 className="text-2xl font-bold text-primary">Buy VLR</h2>
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8  mb-4 ">
-          Please enter the amount of AUDC you wish to deposit in return for AYF.
+          Please enter the amount of AUDC you wish to deposit in return for VLR.
         </div>
         <div className="w-full text-center mx-auto mb-4">
           <InputField
