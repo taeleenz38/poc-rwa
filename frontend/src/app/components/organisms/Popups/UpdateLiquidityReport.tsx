@@ -70,7 +70,7 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
   };
 
   if (!isOpen) return null;
-
+//
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
       <div className="p-8 rounded-lg text-gray bg-white shadow-md shadow-white w-2/5">
