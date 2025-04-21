@@ -7,7 +7,7 @@ import { config } from "@/config";
 import { ethers } from "ethers";
 import { PackageCard } from "./components/organisms/PackageCard";
 import { EthIcon } from "@/app/components/atoms/Icons";
-
+//
 export default function Home() {
   const { address } = useAccount({
     config,
