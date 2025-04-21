@@ -37,13 +37,13 @@ export const PackageCard = (props: PackageCardProps) => {
     TVL,
     footerText,
     chains,
-    imageSrc
+    imageSrc,
   } = props;
 
   return (
     <Link href={href}>
       <div
-        className="rounded-xl bg-primary opacity-100 text-white flex flex-col justify-between h-80 p-2 max-w-2xl mt-4 hover:opacity-90 hover:cursor-pointer shadow-black shadow-md transition-transform duration-500 hover:scale-105"
+        className="w-[350px] md:w-[500px] rounded-xl bg-primary opacity-100 text-white flex flex-col justify-between h-80 p-2 max-w-2xl mt-4 hover:opacity-90 hover:cursor-pointer shadow-black shadow-md transition-transform duration-500 hover:scale-105"
         style={{
           backgroundImage,
           backgroundPosition: "left",
@@ -66,7 +66,7 @@ export const PackageCard = (props: PackageCardProps) => {
         </div>
         <div className="flex flex-col space-y-4">
           <div className="flex items-end">
-            <h1 className=" font-medium text-4xl mr-6">${PRICE}</h1>
+            <h1 className="font-medium text-4xl mr-6">${PRICE}</h1>
           </div>
           <div className="flex flex-col gap-y-3 md:flex-row gap-x-2 justify-between ">
             <div className="flex flex-col gap-y-2  md:flex-row gap-x-2">
@@ -76,12 +76,9 @@ export const PackageCard = (props: PackageCardProps) => {
               <div className="bg-white rounded-full py-1.5 px-3 flex justify-center items-center">
                 {chains}
               </div>
-              <div className="border-2 border-white rounded-full py-1.5 px-3 bg-transparent text-sm font-medium flex justify-center items-center ">
-                <p className="line-clamp-1">{footerText}</p>
-              </div>
             </div>
-            <div className="border-2 w-10 h-10 rounded-full ml-0 md:ml-28 flex justify-center items-center ">
-              <IoArrowForwardSharp />
+            <div className="border-2 border-white rounded-full py-1.5 px-3 bg-transparent text-sm font-medium flex justify-center items-center ">
+              <p className="line-clamp-1">{footerText}</p>
             </div>
           </div>
         </div>

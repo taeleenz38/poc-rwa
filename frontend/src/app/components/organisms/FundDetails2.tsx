@@ -50,11 +50,11 @@ const FundDetails = (props: FundDetailsProps) => {
       className="flex justify-center items-center p-0 m-0 z-10"
       style={{
         backgroundImage: "url('/Fund-2.jpg')",
-        backgroundSize: "cover", 
+        backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
-        width: "100%", 
+        width: "100%",
       }}
     >
       <div className="max-w-screen-xl h-full grid lg:grid-cols-2 grid-cols-1 pt-10 pb-10 px-8 font-normal text-light">
@@ -101,6 +101,18 @@ const FundDetails = (props: FundDetailsProps) => {
               <p className=" text-lg opacity-70 font-semibold">Available on</p>
               <div className="flex justify-start items-center">{chains}</div>
             </div>
+          </div>
+        </div>
+        <div className="grid col-span-1 ml-20">
+          <div className="flex items-end text-base md:text-md text-right">
+            <p>
+              <b>EQV</b> is a tokenised fund targeting high-growth opportunities
+              in emerging Asian markets. It is designed for investors seeking
+              diversified exposure to dynamic economies across Asia. It aims to
+              capture long-term capital appreciation by investing in a carefully
+              curated portfolio of equities and strategic assets in emerging
+              regions.
+            </p>
           </div>
         </div>
       </div>

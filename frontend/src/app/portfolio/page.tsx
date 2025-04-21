@@ -20,6 +20,8 @@ import { useAccount, useBalance, useWriteContract } from "wagmi";
 import BigNumber from "bignumber.js";
 import PendingTokensTable from "@/app/components/organisms/PendingTokensTable";
 import RedemptionTable from "@/app/components/organisms/PendingRedemptionsTable";
+import { useEqvData } from "@/hooks/useEqvData";
+import { useVlrData } from "@/hooks/useVlrData";
 
 type ClaimableToken = {
   user: string;
@@ -96,6 +98,8 @@ const Portfolio = () => {
     string | null
   >(null);
   const [eqvTransactions, setEqvTransactions] = useState<Transaction[]>([]);
+  const { eqvNav, eqvTotalSupply, eqvPrice } = useEqvData();
+  const { vlrNav, vlrTotalSupply, vlrPrice } = useVlrData();
 
   const { writeContractAsync } = useWriteContract({ config });
 
@@ -299,8 +303,7 @@ const Portfolio = () => {
       try {
         const tx = await writeContractAsync({
           abi: abi.abi,
-          address: process.env
-            .NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
+          address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
           functionName: "claimRedemption",
           args: [[redemptionIdHexlified]],
         });
@@ -311,8 +314,7 @@ const Portfolio = () => {
       try {
         const tx = await writeContractAsync({
           abi: hyfabi.abi,
-          address: process.env
-            .NEXT_PUBLIC_EQV_MANAGER_ADDRESS as `0x${string}`,
+          address: process.env.NEXT_PUBLIC_EQV_MANAGER_ADDRESS as `0x${string}`,
           functionName: "claimRedemption",
           args: [[redemptionIdHexlified]],
         });
@@ -412,14 +414,18 @@ const Portfolio = () => {
                     ) : (
                       <>
                         <tr className="border-b borderColor">
-                          <td>Block Majority Australian Yield Fund</td>
-                          <td>${formattedPrice}</td>
+                          <td>
+                            <b>Velora</b>
+                          </td>
+                          <td>${vlrPrice}</td>
                           <td>{formatNumber(formattedVlrBalance)}</td>
                           <td>${formatNumber(vlrMarketValueInEther)}</td>
                         </tr>
                         <tr className="border-b borderColor">
-                          <td>Block Majority Asian Emerging Market Fund</td>
-                          <td>$420.00</td>
+                          <td>
+                            <b>Equivest</b>
+                          </td>
+                          <td>${eqvPrice}</td>
                           <td>{formatNumber(formattedEqvBalance)}</td>
                           <td>${formatNumber(eqvMarketValueInEther)}</td>
                         </tr>
@@ -538,41 +544,50 @@ const Portfolio = () => {
                             new Date(b.transactionDate).getTime() -
                             new Date(a.transactionDate).getTime()
                         )
-                        .map((transaction, index) => (
-                          <tr key={index} className="border-b borderColor">
-                            <td>Block Majority Australian Yield Fund</td>
-                            <td>{transaction.status}</td>
-                            <td>
-                              {transaction.type} {transaction.collateralType}
-                            </td>
-                            <td>{transaction.transactionDate}</td>
-                            <td>
-                              {transaction.price
-                                ? `$${formatNumber(
-                                  parseFloat(weiToEther(transaction.price))
-                                )}`
-                                : ""}
-                            </td>
-                            <td>
-                              {transaction.tokenAmount
-                                ? `${formatNumber(
-                                  parseFloat(
-                                    weiToEther(transaction.tokenAmount)
-                                  )
-                                )}`
-                                : ""}
-                            </td>
-                            <td>
-                              {transaction.stableAmount
-                                ? `$${formatNumber(
-                                  parseFloat(
-                                    weiToEther(transaction.stableAmount)
-                                  )
-                                )}`
-                                : ""}
-                            </td>
-                          </tr>
-                        ))
+                        .map((transaction, index) => {
+                          const priceInUsd = transaction.price
+                            ? parseFloat(weiToEther(transaction.price))
+                            : null;
+
+                          const tokenName =
+                            priceInUsd !== null && priceInUsd < 10
+                              ? "Velora"
+                              : "Equivest";
+
+                          return (
+                            <tr key={index} className="border-b borderColor">
+                              <td>{tokenName}</td>
+                              <td>{transaction.status}</td>
+                              <td>
+                                {transaction.type} {transaction.collateralType}
+                              </td>
+                              <td>{transaction.transactionDate}</td>
+                              <td>
+                                {priceInUsd !== null
+                                  ? `$${formatNumber(priceInUsd)}`
+                                  : ""}
+                              </td>
+                              <td>
+                                {transaction.tokenAmount
+                                  ? `${formatNumber(
+                                      parseFloat(
+                                        weiToEther(transaction.tokenAmount)
+                                      )
+                                    )}`
+                                  : ""}
+                              </td>
+                              <td>
+                                {transaction.stableAmount
+                                  ? `$${formatNumber(
+                                      parseFloat(
+                                        weiToEther(transaction.stableAmount)
+                                      )
+                                    )}`
+                                  : ""}
+                              </td>
+                            </tr>
+                          );
+                        })
                     ) : (
                       <tr className="border-none">
                         <td colSpan={7} className="text-center py-4">
@@ -587,10 +602,11 @@ const Portfolio = () => {
                 <div className="flex justify-between items-center mt-4">
                   <Button
                     text="Previous"
-                    className={`btn-sm items-center flex justify-center ${currentPage !== 1
-                      ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
-                      : "bg-primary cursor-not-allowed"
-                      }`}
+                    className={`btn-sm items-center flex justify-center ${
+                      currentPage !== 1
+                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
+                        : "bg-light cursor-not-allowed"
+                    }`}
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                   />
@@ -599,10 +615,11 @@ const Portfolio = () => {
                   </span>
                   <Button
                     text="Next"
-                    className={`py-2 btn-sm items-center flex justify-center ${currentPage !== totalPages
-                      ? "bg-[#e6e6e6] text-secondary hover:bg-light hover:text-secondary font-semibold"
-                      : "bg-[#e6e6e6] text-light cursor-not-allowed"
-                      }`}
+                    className={`py-2 btn-sm items-center flex justify-center ${
+                      currentPage !== totalPages
+                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
+                        : "bg-light text-light cursor-not-allowed"
+                    }`}
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                   />
@@ -617,4 +634,3 @@ const Portfolio = () => {
 };
 
 export default Portfolio;
-//

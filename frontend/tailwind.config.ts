@@ -39,7 +39,7 @@ const config: Config = {
           primary: "#9571f6",
           "primary-focus": "#9571f6",
           "primary-content": "#9571f6",
-          secondary: "rgb(128,128,128)",
+          secondary: "rgb(80, 80, 80)",
           "secondary-focus": "#9F7EF6",
           "secondary-content": "#9571f6",
           buttonhover: "#9F7EF6",

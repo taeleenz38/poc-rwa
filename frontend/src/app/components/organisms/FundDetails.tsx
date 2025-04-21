@@ -2,11 +2,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/app/components/atoms/Buttons/Button";
-import RequestDeposit from "@/app/components/organisms/Popups/RequestDeposit";
-import RequestRedemption from "@/app/components/organisms/Popups/RequestRedemption";
-import Allowlist from "@/app/components/organisms/Popups/AllowlistPopUp";
-import AddTermAndSetValidTermIndexes from "@/app/components/organisms/Popups/AddTermAndSetValidTermIndexes";
-import PriceList from "../molecules/PriceList";
 
 type FundDetailsProps = {
   logoSrc: string;
@@ -101,6 +96,18 @@ const FundDetails = (props: FundDetailsProps) => {
               <p className=" text-lg opacity-70 font-semibold">Available on</p>
               <div className="flex justify-start items-center">{chains}</div>
             </div>
+          </div>
+        </div>
+        <div className="grid col-span-1 ml-20">
+          <div className="flex items-end text-base md:text-md text-right">
+            <p>
+              <b>VLR</b> is a tokenised fund and is designed for investors
+              seeking a secure, liquid, and low-risk investment option. The Fund
+              primarily invests in high-quality Australian bank bills and other
+              short-term money market instruments. Its objective is to provide
+              investors with a stable return while preserving capital and
+              maintaining high liquidity.
+            </p>
           </div>
         </div>
       </div>
