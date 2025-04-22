@@ -186,7 +186,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center shadow-md lg:px-28 px-8 py-4 transition-all duration-300 bg-white text-primary`}
+      className={`drawer flex w-full fixed top-0 justify-between z-20 items-center shadow-md lg:px-32 px-12 transition-all duration-300 bg-[#0a0a0a] text-white`}
     >
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex items-center justify-between">
@@ -202,7 +202,7 @@ const Navbar = () => {
           ) : (
             <Link href="/">
               <Image
-                src="/BM-LOGO.png"
+                src="/BM-LOGO.svg"
                 alt="logo"
                 width={60}
                 height={60}
@@ -210,14 +210,13 @@ const Navbar = () => {
               />
             </Link>
           )}
-
           <Link href="/">
             <Image
-              src="/BM-LOGO.png"
+              src="/BM-LOGO.svg"
               alt="logo"
-              width={60}
-              height={60}
-              className="mr-16 hidden lg:block"
+              width={210}
+              height={210}
+              className="mr-16 hidden lg:block "
             />
           </Link>
           {!scrolled && isLoggedIn && (
@@ -226,27 +225,27 @@ const Navbar = () => {
                 <>
                   {/* <Link
                     href="/invest"
-                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] `}
+                    className={`font-semibold mr-14 text-2xl text-white hover:text-primary `}
                   >
                     Invest
                   </Link> */}
                   {userState === "Active" && userState !== null && (
                     <Link
                       href="/portfolio"
-                      className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969]`}
+                      className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200`}
                     >
                       Portfolio
                     </Link>
                   )}
                   <Link
                     href="/about"
-                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] `}
+                    className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200 `}
                   >
                     About
                   </Link>
                   <Link
                     href="/profile"
-                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969]`}
+                    className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200`}
                   >
                     Profile
                   </Link>
@@ -256,16 +255,16 @@ const Navbar = () => {
                 <>
                   <Link
                     href="/admin"
-                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
-                      currentPath === "/admin" ? "text-secondary" : ""
+                    className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200 ${
+                      currentPath === "/admin" ? "text-white" : ""
                     }`}
                   >
                     Admin
                   </Link>
                   <Link
                     href="/fundManagement"
-                    className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
-                      currentPath === "/fundManagement" ? "text-secondary" : ""
+                    className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200 ${
+                      currentPath === "/fundManagement" ? "text-white" : ""
                     }`}
                   >
                     Manage
@@ -275,8 +274,8 @@ const Navbar = () => {
               {userRole === "guardian" && (
                 <Link
                   href="/allowlist"
-                  className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
-                    currentPath === "/allowlist" ? "text-secondary" : ""
+                  className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200 ${
+                    currentPath === "/allowlist" ? "text-white" : ""
                   }`}
                 >
                   Guardian
@@ -285,8 +284,8 @@ const Navbar = () => {
               {userRole === "assetsender" && (
                 <Link
                   href="/assetsender"
-                  className={`font-semibold mr-14 text-2xl text-secondary hover:text-[#696969] ${
-                    currentPath === "/assetsender" ? "text-secondary" : ""
+                  className={`font-semibold mr-14 text-2xl text-white hover:text-primary duration-200 ${
+                    currentPath === "/assetsender" ? "text-white" : ""
                   }`}
                 >
                   Asset Sender
@@ -347,8 +346,8 @@ const Navbar = () => {
                     <Link
                       href="/invest"
                       onClick={closeSidebar}
-                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                        currentPath === "/invest" ? "text-secondary" : ""
+                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                        currentPath === "/invest" ? "text-white" : ""
                       }`}
                     >
                       Invest
@@ -359,8 +358,8 @@ const Navbar = () => {
                       <Link
                         href="/portfolio"
                         onClick={closeSidebar}
-                        className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                          currentPath === "/portfolio" ? "text-secondary" : ""
+                        className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                          currentPath === "/portfolio" ? "text-white" : ""
                         }`}
                       >
                         Portfolio
@@ -371,8 +370,8 @@ const Navbar = () => {
                     <Link
                       href="/about"
                       onClick={closeSidebar}
-                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                        currentPath === "/about" ? "text-secondary" : ""
+                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                        currentPath === "/about" ? "text-white" : ""
                       }`}
                     >
                       About
@@ -382,8 +381,8 @@ const Navbar = () => {
                     <Link
                       href="/profile"
                       onClick={closeSidebar}
-                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                        currentPath === "/profile" ? "text-secondary" : ""
+                      className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                        currentPath === "/profile" ? "text-white" : ""
                       }`}
                     >
                       Profile
@@ -396,8 +395,8 @@ const Navbar = () => {
                   <Link
                     href="/admin"
                     onClick={closeSidebar}
-                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                      currentPath === "/admin" ? "text-secondary" : ""
+                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                      currentPath === "/admin" ? "text-white" : ""
                     }`}
                   >
                     Admin
@@ -409,8 +408,8 @@ const Navbar = () => {
                   <Link
                     href="/allowlist"
                     onClick={closeSidebar}
-                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                      currentPath === "/allowlist" ? "text-secondary" : ""
+                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                      currentPath === "/allowlist" ? "text-white" : ""
                     }`}
                   >
                     Guardian
@@ -422,8 +421,8 @@ const Navbar = () => {
                   <Link
                     href="/assetsender"
                     onClick={closeSidebar}
-                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-[#696969] ${
-                      currentPath === "/assetsender" ? "text-secondary" : ""
+                    className={`font-semibold mr-14 text-2xl text-[rgb(128,128,128)] hover:text-primary ${
+                      currentPath === "/assetsender" ? "text-white" : ""
                     }`}
                   >
                     Asset Sender
@@ -438,7 +437,7 @@ const Navbar = () => {
                 <div className="">
                   <Button
                     text={"Sign Out"}
-                    className="font-semibold text-2xl text-[rgb(128,128,128)] hover:bg-secondary-focus hover:text-[#696969]"
+                    className="font-semibold text-2xl text-[rgb(128,128,128)] hover:bg-secondary-focus hover:text-primary"
                     onClick={() => {
                       handleSignOut();
                       closeSidebar();

@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`rounded-full bg-primary ${className} duration-150`}
+      className={`rounded-xl bg-primary ${className} duration-150`}
       onClick={onClick}
       disabled={disabled}
     >
