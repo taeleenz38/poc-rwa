@@ -6,14 +6,13 @@ import ayfabi from "@/artifacts/ABBY.json";
 import { useEqvData } from "@/hooks/useEqvData";
 import FundDetails2 from "@/app/components/organisms/FundDetails2";
 import FundDescription2 from "@/app/components/organisms/FundDescription2";
+import EQVInfo from "../components/molecules/EQVInfo";
 import Buy from "@/app/components/organisms/Popups/RequestDepositAEMF";
 import Redeem from "@/app/components/organisms/Popups/RequestRedemptionAEMF";
 import { EthIcon } from "@/app/components/atoms/Icons";
-import { GET_PRICE_LIST, GET_ACCOUNT_STATUS } from "@/lib/urqlQueries";
-import { BigNumber, ethers } from "ethers";
+import HomepageCard from "../components/molecules/HomepageCard";
 import axios from "axios";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useQuery } from "urql";
 
 const formatLargeNumber = (num: number): string => {
   if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
@@ -78,7 +77,8 @@ const InvestEQV = () => {
         altText="Fund logo"
         fundName="EQV"
         fundDescription="Equivest - Asian Emerging Markets"
-        yieldText="High-growth, Asian Emerging Markets Fund"
+        yieldText="Asian emerging markets. Professional strategy. Scalable returns"
+        apy={"3.80"}
         price={eqvPrice}
         tvl={formatLargeNumber(parseFloat(eqvNav))}
         Button1Text="Buy EQV"
@@ -96,6 +96,27 @@ const InvestEQV = () => {
           </>
         }
       />
+      <EQVInfo />
+      <div className="text-center text-4xl mt-6 mb-12 font-medium text-secondary">
+        Onchain & DeFi Ready
+      </div>
+      <div className="flex justify-center w-[1100px] gap-12 mb-16 mx-auto">
+        <HomepageCard
+          src="/institutional.svg"
+          title="Institutional Grade"
+          description="Built with the performance, security, and scalability standards demanded by banks and large financial institutions."
+        />
+        <HomepageCard
+          src="/regulatory.svg"
+          title="Regulatory Compliant"
+          description="Designed to align with evolving legal frameworks to ensure safe, secure, and compliant access to digital assets."
+        />
+        <HomepageCard
+          src="/defi.svg"
+          title="DeFi Composability"
+          description="Tokenised access with instant issuance and redemption of ERC-20 tokens (Velora + Equivest)."
+        />
+      </div>
       <FundDescription2 />
       <Buy isOpen={isBuyOpen} onClose={() => setIsBuyOpen(false)} />
       <Redeem isOpen={isRedeemOpen} onClose={() => setIsRedeemOpen(false)} />

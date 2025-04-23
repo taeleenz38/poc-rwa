@@ -26,8 +26,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen w-full bg-white text-secondary">
-      <div className="flex h-[500px] bg-[url('/home-bg.jpg')] bg-cover bg-center bg-no-repeat text-white px-40 pt-20">
-        <div className="flex flex-col w-[1000px]">
+      <div className="flex h-[500px] bg-[url('/home-bg.jpg')] bg-cover bg-center bg-no-repeat text-white pt-20">
+        <div className="flex flex-col w-[1000px] mx-auto">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-medium">
             Seamless FX and debt liquidity across traditional and decentralized
             ecosystems.
@@ -72,7 +72,7 @@ export default function Home() {
       <div className="text-center text-4xl mt-16 mb-12 font-medium">
         Onchain & DeFi Ready
       </div>
-      <div className="flex px-28 justify-evenly mb-16">
+      <div className="flex w-[1100px] gap-12 mb-16 mx-auto">
         <HomepageCard
           src="/institutional.svg"
           title="Institutional Grade"

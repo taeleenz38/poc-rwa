@@ -21,7 +21,7 @@ createWeb3Modal({
   projectId,
   themeVariables: {
     "--w3m-accent": "#9571f6",
-    "--w3m-border-radius-master": "20px",
+    "--w3m-border-radius-master": "12px",
     "--w3m-font-size-master": "9.5px"
   },
 });
