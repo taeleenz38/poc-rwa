@@ -307,7 +307,7 @@ const Navbar = () => {
                     onClick={handleSignOut}
                   />
                 </div>
-                <div className="rounded-full">
+                <div className="rounded-xl">
                   <w3m-button />
                 </div>
               </>

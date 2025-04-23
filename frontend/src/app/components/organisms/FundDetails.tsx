@@ -10,6 +10,7 @@ type FundDetailsProps = {
   fundDescription: string;
   yieldText: string;
   price: string;
+  apy: string;
   tvl: string;
   chains: React.ReactNode;
   Button1Text: string;
@@ -29,6 +30,7 @@ const FundDetails = (props: FundDetailsProps) => {
     fundDescription,
     yieldText,
     price,
+    apy,
     tvl,
     chains,
     Button1Text,
@@ -45,14 +47,14 @@ const FundDetails = (props: FundDetailsProps) => {
       className="flex justify-center items-center p-0 m-0 z-10"
       style={{
         backgroundImage: "url('/Graphic1.avif')",
-        backgroundSize: "cover", // Ensures the image covers the container
+        backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat", // No repeating background
-        backgroundAttachment: "fixed", // Keeps the background fixed
-        width: "100%", // Ensure full width
+        backgroundRepeat: "no-repeat", 
+        backgroundAttachment: "fixed",
+        width: "100%", 
       }}
     >
-      <div className="max-w-screen-xl h-full grid lg:grid-cols-2 grid-cols-1 pt-10 pb-10 px-8 font-normal text-light">
+      <div className="max-w-screen-xl h-full grid lg:grid-cols-2 grid-cols-1 py-20 px-8 font-normal text-light">
         <div className="grid col-span-1">
           <div className="flex justify-start items-center gap-x-2 mb-1">
             <Image
@@ -67,7 +69,6 @@ const FundDetails = (props: FundDetailsProps) => {
           <p className="mb-3 text-sm opacity-80">{fundDescription}</p>
           <p className="lg:text-5xl text-3xl mb-5 font-semibold mt-2">
             {yieldText}
-            <span className="text-3xl align-top">*</span>
           </p>
           <div className="flex gap-x-2 mt-3">
             <Button
@@ -83,18 +84,24 @@ const FundDetails = (props: FundDetailsProps) => {
               disabled={userStatus === "Inactive"}
             />
           </div>
-          <div className="flex items-center pt-14 gap-x-8 gap-y-2">
-            <div className="flex-col justify-start font-normal items-center text-light">
-              <p className="text-lg font-semibold opacity-70">Price</p>
-              <h4 className="text-lg">${price}</h4>
+          <div className="flex items-center pt-14 gap-y-2">
+            <div className="flex-col justify-start font-normal items-center border-r-2 border-white pr-8">
+              <p className="text-lg font-semibold opacity-90">APY</p>
+              <h4 className="text-xl">{apy}%</h4>
             </div>
-            <div className="flex-col justify-start items-center ">
-              <p className=" text-lg opacity-70 font-semibold">NAV</p>
-              <p className="text-lg">${tvl}</p>
+            <div className="flex-col justify-start font-normal items-center border-r-2 border-white px-8">
+              <p className="text-lg font-semibold opacity-90">Price</p>
+              <h4 className="text-xl">${price}</h4>
             </div>
-            <div className="flex-col justify-start items-center ">
-              <p className=" text-lg opacity-70 font-semibold">Available on</p>
-              <div className="flex justify-start items-center">{chains}</div>
+            <div className="flex-col justify-start items-center border-r-2 border-white px-8">
+              <p className=" text-lg opacity-90 font-semibold">NAV</p>
+              <p className="text-xl">${tvl}</p>
+            </div>
+            <div className="flex-col justify-start items-center pl-8">
+              <p className="text-lg opacity-90 font-semibold">Available on</p>
+              <div className="flex items-center text-xl gap-1">
+                {chains} <span>ETH</span>
+              </div>
             </div>
           </div>
         </div>

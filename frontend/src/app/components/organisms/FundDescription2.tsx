@@ -60,9 +60,9 @@ const FundDescription = () => {
               "Issuance Fee: 0.50% of the Subscription Amount Redemption Fee: 0.50% of the Redemption Amount",
           },
         ].map(({ heading, description }, idx) => (
-          <div key={idx} className="flex border-t last:border-b p-2">
-            <h2 className="font-bold basis-1/3 p-2 ">{heading}</h2>
-            <p className="basis-2/3 p-2 font-sm ml-5 md:ml-10">{description}</p>
+          <div key={idx} className="flex border-t last:border-b p-4">
+            <h2 className="font-bold basis-1/3 text-primary p-4 ">{heading}</h2>
+            <p className="basis-2/3 p-4 font-sm ml-5 md:ml-10">{description}</p>
           </div>
         ))}
     </div>
