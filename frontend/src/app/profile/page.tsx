@@ -5,6 +5,11 @@ import { config } from "@/config";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import UserDetailsCard from "../components/organisms/UserDetailsCard";
+import UserOverviewCard from "../components/organisms/UserOverview";
+import UserDocumentsCard from "../components/organisms/UserDocumentsCard";
+import SignedDocumentsCard from "../components/organisms/SignedDocumentsCard";
+
 interface UserDetails {
   firstName: string;
   lastName: string;
@@ -106,200 +111,32 @@ const Page = () => {
         <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
           Your Profile
         </h1>
-        <h2 className="flex text-xl font-normal items-center justify-start mb-4">
+        <h2 className="flex text-xl font-normal items-center justify-start mb-8">
           Track and manage your information
         </h2>
-
-        <div className="flex flex-col md:flex-row md:gap-x-16 mb-0 md:mb-12">
-          <div className="flex flex-col w-full md:w-1/2  h-fit py-5 px-6 border borderColor">
-            <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
-              Account Details
-            </h2>
-            <div className="overflow-x-auto">
-              <div className="bg-[#F5F2F2]  py-4 font-bold"></div>
-              {isFetching ? (
-                <div className="text-center py-4">
-                  <Skeleton height={26} className="w-full" />
-                </div>
-              ) : !userDetails ? (
-                <p className="text-center py-4">No account details found.</p>
-              ) : (
-                <div className=" p-3 mb-4">
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold text-sm">First Name</div>
-                    <div className="text-sm break-all">
-                      {userDetails?.firstName}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold text-sm">Last Name</div>
-                    <div className="text-sm break-all">
-                      {userDetails?.lastName}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold text-sm">Email</div>
-                    <div className="text-sm break-all">
-                      {userDetails?.email}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold text-sm">Country</div>
-                    <div className="text-sm break-all">
-                      {userDetails?.country}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                    <div className="font-semibold text-sm">Date of Birth</div>
-                    <div className="text-sm">{userDetails?.birthdate}</div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 flex flex-col mt-4 md:mt-0">
-            <div className="flex flex-col justify-start py-3 items-start px-4 border borderColor">
-              <h2 className="text-xl font-bold flex items-center justify-start px-1 text-primary">
-                Overview
-              </h2>
-              <div className="flex flex-col justify-start items-start my-4 mx-2">
-                <div className="border-l-4 border-primary px-3">
-                  <div className="flex flex-col gap-y-5">
-                    <div className="flex flex-col gap-2 w-full">
-                      <h3>
-                        <span className="text-sm font-semibold">
-                          User Status -{" "}
-                        </span>
-                        {isFetchingStatus ? (
-                          <Skeleton height={26} className="w-full]" />
-                        ) : (
-                          <span className="text-sm">{userStatus}</span>
-                        )}
-                      </h3>
-                      <h3>
-                        <span className="text-sm font-semibold">
-                          KYC Status -
-                        </span>
-                        {isFetchingStatus ? (
-                          <Skeleton height={26} className="w-full" />
-                        ) : userStatus === "Active" ? (
-                          <span className="text-sm"> Completed</span>
-                        ) : (
-                          <span className="text-sm"> Pending</span>
-                        )}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-end py-3 items-start my-4 px-4 border borderColor">
-              <h2 className="text-xl font-bold flex items-center justify-start px-1 text-primary">
-                Wallet Address
-              </h2>
-              <div className="flex flex-col justify-start py-2 items-start my-4 mx-2">
-                <div className="border-l-4 border-primary px-3">
-                  <div className="flex flex-col gap-y-5">
-                    <div>
-                      <h3 className="text-sm  break-all">
-                        {userDetails?.walletAddress}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-                <h3 className="text-lg">&nbsp;</h3>
-              </div>
-            </div>
-          </div>
+        <div className="text-center bg-[url('/home-bg.jpg')] bg-cover bg-center bg-no-repeat rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-8 text-white font-bold text-2xl">
+          Account Details
         </div>
-
-        <div className="flex flex-col md:flex-row gap-x-16 border borderColor">
-          <div className="flex flex-col gap-y-4 w-full md:w-1/2">
-            <div className="flex flex-col w-full py-8  h-fit p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
-                Documents
-              </h2>
-              <div className="overflow-x-auto">
-                <div className="bg-[#F5F2F2]  py-2 px-3 font-bold">
-                  <h3>Submitted for KYC</h3>
-                </div>
-                {isFetching ? (
-                  <div className="text-center py-4">
-                    <Skeleton height={26} className="w-full" />
-                  </div>
-                ) : !userDetails ? (
-                  <p className="text-center py-4">No document details found.</p>
-                ) : (
-                  <div className=" p-3 mb-4">
-                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold text-sm">ID Document</div>
-                      <div className="text-sm">{userDetails?.idDocument}</div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold text-sm">ID Number</div>
-                      <div className="text-sm">{userDetails?.idNumber}</div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold text-sm">ID Expiry</div>
-                      <div className="text-sm">{userDetails?.idExpiry}</div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold text-sm">Country</div>
-                      <div className="text-sm">{userDetails?.country}</div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-x-4 py-2 border-b borderColor">
-                      <div className="font-semibold text-sm">Date of Birth</div>
-                      <div className="text-sm">{userDetails?.birthdate}</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-y-4 w-full md:w-1/2">
-            <div className="flex flex-col w-full py-8  h-fit p-5">
-              <div className="mb-11"></div>
-              <div className="overflow-x-auto">
-                <div className="bg-[#F5F2F2] py-2 px-3 font-bold">
-                  <h3>Signed Documents</h3>
-                </div>
-                {isFetchingDocuments ? (
-                  <div className="text-center py-4">
-                    <Skeleton height={26} className="w-full" />
-                  </div>
-                ) : !userDocument ? (
-                  <p className="text-center py-4 text-sm">
-                    No signed documents found.
-                  </p>
-                ) : (
-                  <div className=" p-3 mb-4">
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-b borderColor py-2">
-                      <div className="font-semibold px-0.5 text-sm">
-                        Agreement
-                      </div>
-                      <a
-                        href={userDocument?.downloadUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-md text-[#007BFF] hover:text-[#0056b3] text-sm"
-                      >
-                        View Signed Document
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col md:flex-row items-center md:gap-x-24 mb-0 md:mb-4">
+          <UserDetailsCard userDetails={userDetails} isFetching={isFetching} />
+          <UserOverviewCard
+            userStatus={userStatus}
+            isFetchingStatus={isFetchingStatus}
+            userDetails={userDetails}
+          />
+        </div>
+        <div className="text-center bg-[url('/home-bg.jpg')] bg-cover bg-center bg-no-repeat rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-8 text-white font-bold text-2xl">
+          Documents
+        </div>
+        <div className="flex flex-col md:flex-row gap-x-16">
+          <UserDocumentsCard
+            isFetching={isFetching}
+            userDetails={userDetails}
+          />
+          <SignedDocumentsCard
+            isFetchingDocuments={isFetchingDocuments}
+            userDocument={userDocument}
+          />
         </div>
       </div>
     </>

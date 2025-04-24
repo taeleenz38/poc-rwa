@@ -22,6 +22,8 @@ import PendingTokensTable from "@/app/components/organisms/PendingTokensTable";
 import RedemptionTable from "@/app/components/organisms/PendingRedemptionsTable";
 import { useEqvData } from "@/hooks/useEqvData";
 import { useVlrData } from "@/hooks/useVlrData";
+import TransactionTable from "../components/organisms/TransactionsTable";
+import HoldingsTable from "../components/organisms/HoldingsTable";
 
 type ClaimableToken = {
   user: string;
@@ -357,30 +359,32 @@ const Portfolio = () => {
   return (
     <>
       <div className="min-h-screen w-full flex flex-col text-secondary py-4 md:py-8 lg:py-16 px-4 lg:px-[7.7rem]">
-        <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start">
+        <h1 className="flex text-4xl font-semibold mb-4 items-center justify-start text-secondary">
           Your portfolio
         </h1>
-        <h2 className="flex text-xl font-normal items-center justify-start mb-2">
+        <h2 className="flex text-xl font-normal items-center justify-start mb-2 text-secondary">
           Track and manage your portfolio
         </h2>
 
-        <div className="flex flex-col justify-start py-3 items-start my-4 px-4 bg-[#F5F2F2]">
-          <h2 className="text-3xl font-semibold flex items-center justify-start px-1 text-primary">
+        <div className="flex flex-col justify-start py-3 items-start my-4 px-4 bg-[url('/home-bg.jpg')] bg-cover bg-center bg-no-repeat rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+          <h2 className="text-3xl font-semibold flex items-center justify-start px-1 text-white ">
             Overview
           </h2>
           <div className="flex flex-col justify-start py-2 items-start my-4 mx-4">
-            <div className="border-l-4 border-primary px-3">
+            <div className="border-l-4 border-white px-3">
               <div className="flex flex-col gap-y-5">
-                <h3 className="text-xl flex items-center justify-start">
+                <h3 className="text-xl flex items-center justify-start text-white">
                   Current portfolio value
                 </h3>
                 <>
                   {isFetching ? (
                     <>
-                      <Skeleton height={30} className="w-full" />
+                      <Skeleton height={30} className="w-full text-white" />
                     </>
                   ) : (
-                    <h3 className="text-2xl">${totalPortfolioValue} AUD</h3>
+                    <h3 className="text-2xl text-white">
+                      ${totalPortfolioValue} AUD
+                    </h3>
                   )}
                 </>
               </div>
@@ -388,66 +392,30 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="border borderColor">
-          <div className="flex flex-col gap-y-4 w-full px-4">
-            <div className="flex flex-col w-full py-8 text-secondary overflow-y-scroll rounded-md h-fit p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
-                Holdings
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  <thead className="text-secondary bg-[#F5F2F2]">
-                    <tr className="border-none">
-                      <th>Token</th>
-                      <th>Token Price AUD</th>
-                      <th>Position</th>
-                      <th>Market Value - AUD</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {isFetching ? (
-                      <tr className="border-none">
-                        <td colSpan={4} className="text-center py-4">
-                          <Skeleton height={26} className="w-full" />
-                        </td>
-                      </tr>
-                    ) : (
-                      <>
-                        <tr className="border-b borderColor">
-                          <td>
-                            <b>Velora</b>
-                          </td>
-                          <td>${vlrPrice}</td>
-                          <td>{formatNumber(formattedVlrBalance)}</td>
-                          <td>${formatNumber(vlrMarketValueInEther)}</td>
-                        </tr>
-                        <tr className="border-b borderColor">
-                          <td>
-                            <b>Equivest</b>
-                          </td>
-                          <td>${eqvPrice}</td>
-                          <td>{formatNumber(formattedEqvBalance)}</td>
-                          <td>${formatNumber(eqvMarketValueInEther)}</td>
-                        </tr>
-                      </>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+        <div className="rounded-xl">
+          <div className="flex flex-col gap-y-4 w-full">
+            <HoldingsTable
+              isFetching={isFetching}
+              vlrPrice={vlrPrice}
+              formattedVlrBalance={formattedVlrBalance}
+              vlrMarketValueInEther={vlrMarketValueInEther}
+              eqvPrice={eqvPrice}
+              formattedEqvBalance={formattedEqvBalance}
+              eqvMarketValueInEther={eqvMarketValueInEther}
+            />
 
-            <div className="flex flex-col w-full py-8 text-secondary rounded-md p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
+            <div className="flex flex-col w-full text-secondary rounded-xl p-8 border-2 border-primary border-opacity-30 mt-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+              <h2 className="flex font-bold text-2xl mb-8 justify-center items-center text-secondary">
                 Pending Tokens
               </h2>
 
               {/* VLR Accordion */}
-              <div className="mb-4">
+              <div className="mb-8">
                 <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  className="w-full text-left p-8 bg-[url('/home-bg.jpg')] text-white bg-cover bg-center bg-opacity-50 bg-no-repeat rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] font-bold flex justify-between items-center"
                   onClick={() => toggleAccordion("VLR")}
                 >
-                  <span className="text-primary">VLR</span>
+                  <span className="text-white">VLR</span>
                   <span>{openAccordion === "VLR" ? "▲" : "▼"}</span>
                 </button>
                 {openAccordion === "VLR" && (
@@ -465,10 +433,10 @@ const Portfolio = () => {
               {/* EQV Accordion */}
               <div className="mb-4">
                 <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  className="w-full text-left p-8 bg-[url('/home-bg.jpg')] text-white bg-cover bg-center bg-opacity-50 bg-no-repeat rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] font-bold flex justify-between items-center"
                   onClick={() => toggleAccordion("EQV")}
                 >
-                  <span className="text-primary">EQV</span>
+                  <span className="text-white">EQV</span>
                   <span>{openAccordion === "EQV" ? "▲" : "▼"}</span>
                 </button>
                 {openAccordion === "EQV" && (
@@ -486,20 +454,20 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-secondary rounded-md p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center text-primary">
+            <div className="flex flex-col w-full text-secondary rounded-xl p-8 border-2 border-primary border-opacity-30 mt-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+              <h2 className="flex font-bold text-2xl mb-8  justify-center items-center text-secondary">
                 Pending Redemptions
               </h2>
               <div className="mb-4">
                 <button
-                  className="w-full text-left py-4 px-6 bg-[#F5F2F2] font-bold flex justify-between items-center"
+                  className="w-full text-left p-8 bg-[url('/home-bg.jpg')] text-white bg-cover bg-center bg-opacity-50 bg-no-repeat rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] font-bold flex justify-between items-center"
                   onClick={() => toggleRedemptionAccordion("AUDC")}
                 >
-                  <span className="text-primary">AUDC</span>
+                  <span className="text-white">AUDC</span>
                   <span>{openRedemptionAccordion === "AUDC" ? "▲" : "▼"}</span>
                 </button>
                 {openRedemptionAccordion === "AUDC" && (
-                  <div className="p-4 bg-white mt-2">
+                  <div className="p-4 bg-white mt-2 ">
                     <RedemptionTable
                       tokens={claimableAUDCTokens}
                       isFetching={isFetchingAUDC}
@@ -511,121 +479,13 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="flex flex-col w-full py-8 text-secondary overflow-y-scroll rounded-md h-fit p-5">
-              <h2 className="flex font-bold text-xl mb-4 justify-start items-center">
-                Transactions
-              </h2>
-
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  <thead className="text-secondary bg-[#F5F2F2] border-none">
-                    <tr className="border-none">
-                      <th>Token</th>
-                      <th>Status</th>
-                      <th>Type</th>
-                      <th>Date</th>
-                      <th>Token Price AUD</th>
-                      <th>Token Amount</th>
-                      <th>Value AUD</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {fetchingTransactions ? (
-                      <tr className="border-none">
-                        <td colSpan={7} className="text-center py-4">
-                          <Skeleton height={26} className="w-full" />
-                        </td>
-                      </tr>
-                    ) : currentTransactions.length > 0 ? (
-                      currentTransactions
-                        .slice()
-                        .sort(
-                          (a, b) =>
-                            new Date(b.transactionDate).getTime() -
-                            new Date(a.transactionDate).getTime()
-                        )
-                        .map((transaction, index) => {
-                          const priceInUsd = transaction.price
-                            ? parseFloat(weiToEther(transaction.price))
-                            : null;
-
-                          const tokenName =
-                            priceInUsd !== null && priceInUsd < 10
-                              ? "Velora"
-                              : "Equivest";
-
-                          return (
-                            <tr key={index} className="border-b borderColor">
-                              <td>{tokenName}</td>
-                              <td>{transaction.status}</td>
-                              <td>
-                                {transaction.type} {transaction.collateralType}
-                              </td>
-                              <td>{transaction.transactionDate}</td>
-                              <td>
-                                {priceInUsd !== null
-                                  ? `$${formatNumber(priceInUsd)}`
-                                  : ""}
-                              </td>
-                              <td>
-                                {transaction.tokenAmount
-                                  ? `${formatNumber(
-                                      parseFloat(
-                                        weiToEther(transaction.tokenAmount)
-                                      )
-                                    )}`
-                                  : ""}
-                              </td>
-                              <td>
-                                {transaction.stableAmount
-                                  ? `$${formatNumber(
-                                      parseFloat(
-                                        weiToEther(transaction.stableAmount)
-                                      )
-                                    )}`
-                                  : ""}
-                              </td>
-                            </tr>
-                          );
-                        })
-                    ) : (
-                      <tr className="border-none">
-                        <td colSpan={7} className="text-center py-4">
-                          No transactions found
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              {!fetchingTransactions && totalPages > 1 && (
-                <div className="flex justify-between items-center mt-4">
-                  <Button
-                    text="Previous"
-                    className={`btn-sm items-center flex justify-center ${
-                      currentPage !== 1
-                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
-                        : "bg-light cursor-not-allowed"
-                    }`}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                  />
-                  <span>
-                    {currentPage} of {totalPages}
-                  </span>
-                  <Button
-                    text="Next"
-                    className={`py-2 btn-sm items-center flex justify-center ${
-                      currentPage !== totalPages
-                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
-                        : "bg-light text-light cursor-not-allowed"
-                    }`}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                  />
-                </div>
-              )}
-            </div>
+            <TransactionTable
+              transactions={currentTransactions}
+              fetchingTransactions={fetchingTransactions}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+            />
           </div>
         </div>
       </div>
