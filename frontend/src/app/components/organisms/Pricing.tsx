@@ -12,7 +12,7 @@ const Pricing: React.FC = () => {
         <Button
           text={"Update Liquidity Report"}
           onClick={() => setUpdateLrOpen(true)}
-          className="bg-primary py-2 text-light hover:bg-secondary-focus"
+          className="bg-primary py-3 text-light hover:bg-secondary-focus"
         />
         <UpdateLR
           isOpen={updateLrOpen}

@@ -14,7 +14,7 @@ const EQVPricing: React.FC = () => {
         <Button
           text={"Upload Performance Report"}
           onClick={() => setUploadFileOpen(true)}
-          className="bg-primary py-2 text-light hover:bg-secondary-focus"
+          className="bg-primary py-3 text-light hover:bg-secondary-focus"
         />
         <FileUpload
           isOpen={uploadFileOpen}
