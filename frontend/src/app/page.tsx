@@ -42,10 +42,10 @@ export default function Home() {
           </p>
         </div>
       </div>
-      <div className="text-center text-5xl mt-16 mb-8 font-medium">
+      <div className="text-center text-5xl mt-32 mb-8 font-medium">
         Liquid Fund Tokens
       </div>
-      <div className="flex justify-center items-center md:items-start gap-12 mb-16">
+      <div className="flex justify-center items-center md:items-start gap-12 mb-36">
         <PackageCard
           heading="VLR"
           subHeading="Velora - Stable AUD Yield"
@@ -72,7 +72,7 @@ export default function Home() {
       <div className="text-center text-4xl mt-16 mb-12 font-medium">
         Onchain & DeFi Ready
       </div>
-      <div className="flex w-[1100px] gap-12 mb-16 mx-auto">
+      <div className="flex w-[1100px] gap-12 mb-36 mx-auto">
         <HomepageCard
           src="/institutional.svg"
           title="Institutional Grade"

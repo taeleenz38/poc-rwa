@@ -131,20 +131,20 @@ const RedemptionRequestsEQV = () => {
             <table className="table w-full">
               <thead>
                 <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
-                  <th>ID</th>
-                  <th>User</th>
-                  <th>
+                  <th className="rounded-tl-xl text-center">ID</th>
+                  <th className=" text-center">User</th>
+                  <th className=" text-center">
                     Request <br /> Status
                   </th>
-                  <th>
+                  <th className=" text-center">
                     Redemption
                     <br />
                     Requested
                   </th>
-                  <th>
+                  <th className=" text-center">
                     Redemption <br /> Amount
                   </th>
-                  <th>Price ID</th>
+                  <th className="rounded-tr-xl text-center">Price ID</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,22 +153,24 @@ const RedemptionRequestsEQV = () => {
                     key={request.id}
                     className="border-b-2 border-[#F5F2F2] text-sm"
                   >
-                    <td>
+                    <td className="text-center py-8">
                       {(() => {
                         const [hexPart, token] = request.displayId.split("-");
                         const decimalNumber = parseInt(hexPart, 16);
                         return `${decimalNumber}-${token}`;
                       })()}
                     </td>
-                    <td>{request.user}</td>
-                    <td>{request.status}</td>
-                    <td>{formatNumber(weiToEther(request.rwaAmountIn))} VLR</td>
-                    <td>
+                    <td className="text-center py-8">{request.user}</td>
+                    <td className="text-center py-8">{request.status}</td>
+                    <td className="text-center py-8">
+                      {formatNumber(weiToEther(request.rwaAmountIn))} VLR
+                    </td>
+                    <td className="text-center py-8">
                       {request.requestedRedeemAmountAfterFee
                         ? `${request.requestedRedeemAmountAfterFee} AUDC`
                         : "Pending Redemption"}
                     </td>
-                    <td>
+                    <td className="text-center py-8">
                       {request.priceId ? (
                         request.priceId
                       ) : (

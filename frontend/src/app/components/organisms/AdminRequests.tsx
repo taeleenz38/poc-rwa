@@ -14,22 +14,24 @@ const AdminRequests = ({ tokenType }: AdminRequestsProps) => {
   const [view, setView] = useState("DepositRequests");
 
   return (
-    <div className="text-black flex flex-col border-2 border-[#F5F2F2]">
+    <div className="text-black flex flex-col border-2 border-primary border-opacity-30 rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
       <div className="grid grid-cols-2 text-center font-semibold text-primary">
         <div
-          className={`p-4 border-b-2 border-r-2 text-sm md:text-base border-[#F5F2F2] ${view === "DepositRequests"
-            ? "bg-[#F5F2F2] border-b-primary"
-            : "bg-white text-primary cursor-pointer"
-            }`}
+          className={`p-6 border-b-2 text-sm md:text-base border-primary border-opacity-30 rounded-tl-xl ${
+            view === "DepositRequests"
+              ? "bg-[#F5F2F2] border-opacity-100"
+              : "bg-white text-primary cursor-pointer"
+          }`}
           onClick={() => setView("DepositRequests")}
         >
           Deposit Requests
         </div>
         <div
-          className={`p-4 pr-2 md:pr-0 border-b-2 border-r-2 text-sm md:text-base border-[#F5F2F2] ${view === "RedemptionRequests"
-            ? "bg-[#F5F2F2] border-b-primary"
-            : "bg-white text-primary cursor-pointer"
-            }`}
+          className={`p-6 border-b-2 text-sm md:text-base border-primary border-opacity-30 rounded-tr-xl ${
+            view === "RedemptionRequests"
+              ? "bg-[#F5F2F2] border-opacity-100"
+              : "bg-white text-primary cursor-pointer"
+          }`}
           onClick={() => setView("RedemptionRequests")}
         >
           Redemption Requests

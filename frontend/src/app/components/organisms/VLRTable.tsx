@@ -51,12 +51,12 @@ const VLRTable = () => {
       <table className="table">
         <thead>
           <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
-            <th className="text-center w-1/6">ID</th>
+            <th className="text-center w-1/6 rounded-tl-xl">ID</th>
             <th className="text-center w-1/6">Daily Liquid Assets</th>
             <th className="text-center w-1/6">Weekly Liquid Assets</th>
             <th className="text-center w-1/6">% Daily</th>
             <th className="text-center w-1/6">% Weekly</th>
-            <th className="text-center w-1/6">Date</th>
+            <th className="text-center w-1/6 rounded-tr-xl">Date</th>
           </tr>
         </thead>
         <tbody>
@@ -65,20 +65,20 @@ const VLRTable = () => {
               className="border-b-2 border-[#F5F2F2] text-center text-sm text-secondary"
               key={doc.id}
             >
-              <td>{doc.id}</td>
-              <td>
+              <td className="py-6">{doc.id}</td>
+              <td className="py-6">
                 {Number(doc.totalDailyLiquidAssets).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
               </td>
-              <td>
+              <td className="py-6">
                 {Number(doc.totalWeeklyLiquidAssets).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
               </td>
-              <td>{doc.percentageDailyLiquidAssets}%</td>
-              <td>{doc.percentageWeeklyLiquidAssets}%</td>
-              <td>{new Date(doc.date).toLocaleDateString()}</td>
+              <td className="py-6">{doc.percentageDailyLiquidAssets}%</td>
+              <td className="py-6">{doc.percentageWeeklyLiquidAssets}%</td>
+              <td className="py-6">{new Date(doc.date).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
@@ -88,8 +88,8 @@ const VLRTable = () => {
         <button
           className={`mx-1 px-3 py-1 rounded ${
             currentPage === 1
-              ? "bg-gray-300 text-secondary cursor-not-allowed"
-              : "bg-light text-primary"
+              ? "bg-light text-secondary cursor-not-allowed"
+              : "bg-primary text-white hover:bg-secondary-focus"
           }`}
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
@@ -115,7 +115,7 @@ const VLRTable = () => {
           className={`mx-1 px-3 py-1 rounded ${
             currentPage === totalPages
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-light text-primary"
+              : "bg-primary text-white hover:bg-secondary-focus"
           }`}
           onClick={handleNextPage}
           disabled={currentPage === totalPages}

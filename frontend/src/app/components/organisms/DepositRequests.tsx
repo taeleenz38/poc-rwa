@@ -134,22 +134,22 @@ const DepositRequests = () => {
             <table className="table w-full">
               <thead>
                 <tr className="text-secondary text-center text-sm font-semibold bg-[#F5F2F2] border-none">
-                  <th className="">ID</th>
-                  <th className="">User</th>
-                  <th className="">
+                  <th className="rounded-tl-xl text-center">ID</th>
+                  <th className=" text-center">User</th>
+                  <th className=" text-center">
                     Request
                     <br /> Status
                   </th>
-                  <th className="">
+                  <th className=" text-center">
                     Amount
                     <br /> Deposited
                   </th>
-                  <th className="">
+                  <th className=" text-center">
                     Amount
                     <br /> After Fee
                   </th>
-                  <th className="">Status</th>
-                  <th className="">Claim Timestamp</th>
+                  <th className=" text-center">Status</th>
+                  <th className="rounded-tr-xl text-center">Claim Timestamp</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,20 +158,20 @@ const DepositRequests = () => {
                     key={request.id}
                     className="border-b-2 border-[#F5F2F2] text-sm"
                   >
-                    <td className="text-center">{hexToDecimal(request.id)}</td>
-                    <td className="text-center">{request.user}</td>
-                    <td className="text-center">{request.status}</td>
-                    <td className="text-center">
+                    <td className="text-center py-8">{hexToDecimal(request.id)}</td>
+                    <td className="text-center py-8">{request.user}</td>
+                    <td className="text-center py-8">{request.status}</td>
+                    <td className="text-center py-8">
                       {formatNumber(
                         weiToEther(request.collateralAmountDeposited)
                       )}{" "}
                       AUDC
                     </td>
-                    <td className="text-center">
+                    <td className="text-center py-8">
                       {formatNumber(weiToEther(request.depositAmountAfterFee))}{" "}
                       AUDC
                     </td>
-                    <td className="text-center">
+                    <td className="text-center py-8">
                       {request.priceId && parseInt(request.priceId) === 1 ? (
                         "Approved"
                       ) : request.priceId ? (
@@ -196,7 +196,7 @@ const DepositRequests = () => {
                       ) : (
                         <Button
                           text="Set Claim Timestamp"
-                          className="bg-primary py-2 text-light hover:bg-secondary-focus whitespace-nowrap"
+                          className="bg-primary py-3 text-light hover:bg-secondary-focus whitespace-nowrap"
                           onClick={() => handleButton1Click(request.id)}
                         />
                       )}
@@ -224,7 +224,7 @@ const DepositRequests = () => {
                   key={index}
                   className={`mx-1 px-3 py-1 rounded ${
                     currentPage === index + 1
-                      ? "bg-primary text-white"
+                      ? "bg-primary text-light"
                       : "bg-light text-primary"
                   }`}
                   onClick={() => handlePageChange(index + 1)}
