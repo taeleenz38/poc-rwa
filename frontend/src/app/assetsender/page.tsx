@@ -10,7 +10,7 @@ const AssetSender = () => {
   };
 
   return (
-    <div className="min-h-screen text-black root-container">
+    <div className="min-h-screen text-secondary root-container">
       <h1 className="text-4xl font-semibold mb-4">
         Redemption Approval
       </h1>

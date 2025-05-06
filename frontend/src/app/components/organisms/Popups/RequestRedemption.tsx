@@ -239,7 +239,7 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
           <CloseButton onClick={onCloseModal} />
         </div>
         <div className="text-center px-8 mb-4">
-          Please select the stablecoin currency and the amount you wish to
+          Please enter the amount of AUDC you wish to
           redeem VLR for.
         </div>
         <div className="w-full flex justify-between items-center text-center mx-auto mb-8">
@@ -248,17 +248,6 @@ const RequestRedemption: React.FC<RequestRedemptionProps> = ({
             value={amount || ""}
             onChange={onAmountChange}
           />
-          <div className="ml-4">
-            <select
-              id="currency"
-              value={selectedCurrency}
-              onChange={(e) => setSelectedCurrency(e.target.value)}
-              className="mt-1 mb-5 p-2 border border-primary bg-primary text-white rounded-md hover:cursor-pointer"
-            >
-              <option value="AUDC">AUDC</option>
-              <option value="USDC">USDC</option>
-            </select>
-          </div>
         </div>
         <div className="w-full flex justify-between">
           <div className="w-[49%]">
