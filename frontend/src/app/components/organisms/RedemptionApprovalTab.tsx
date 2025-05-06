@@ -46,7 +46,7 @@ const RedemptionApprovalTab = () => {
   if (isLoading) {
     return (
       <>
-        <div className="p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit">
+        <div className="p-4 border-b-2 border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary w-fit">
           Incoming Redemption Requests
         </div>
         <div className="flex justify-center items-center flex-col w-full p-10 border h-full">
@@ -60,24 +60,24 @@ const RedemptionApprovalTab = () => {
 
   return (
     <div>
-      <div className="p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary bg-secondary/20 w-fit">
+      <div className="p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary rounded-t-xl w-fit">
         Incoming Redemption Requests
       </div>
-      <div className="flex flex-col w-full border p-4">
+      <div className="flex flex-col w-full border-2 border-primary border-opacity-30 rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-tl-none p-4">
         <div className="flex w-full justify-around items-center py-6">
           <Button
             text={"Approve Redemption Request"}
             onClick={() => setApproveRedeem(true)}
-            className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-              !selectedRedemption && "bg-white text-primary cursor-not-allowed"
+            className={`bg-primary py-2 text-light hover:bg-secondary-focus hover:text-white rounded-md ${
+              !selectedRedemption && "bg-white text-secondary cursor-not-allowed"
             }`}
             disabled={!selectedRedemption}
           />
           <Button
             text={"Reject Redemption Request"}
             onClick={() => ""}
-            className={`bg-primary py-2 text-light hover:bg-light hover:text-primary rounded-md ${
-              true && "bg-white text-primary cursor-not-allowed"
+            className={`bg-primary py-2 text-light hover:bg-secondary-focus hover:text-white rounded-md ${
+              true && "bg-white text-secondary cursor-not-allowed"
             }`}
             disabled={true}
           />
@@ -100,23 +100,23 @@ const RedemptionApprovalTab = () => {
                   className="border-b-2 border-[#F5F2F2] text-sm text-gray"
                   key={index}
                 >
-                  <td className="text-center">
+                  <td className="text-center py-6">
                     {(() => {
                       const [hexPart, token] = request.displayId.split("-");
                       const decimalNumber = parseInt(hexPart, 16);
                       return `${decimalNumber}-${token}`;
                     })()}
                   </td>
-                  <td className="text-center">{request.user}</td>
-                  <td className="text-center">
+                  <td className="text-center py-6">{request.user}</td>
+                  <td className="text-center py-6">
                     {ethers.utils.formatUnits(request.redeemAmount, 18)}{" "}
                     {request.collateralType === "AUDC" ? "AUDC" : "USDC"}
                   </td>
-                  <td className="text-center">
+                  <td className="text-center py-6">
                     {" "}
                     {ethers.utils.formatUnits(request.rwaAmountIn, 18)} VLR
                   </td>
-                  <td className="text-center">
+                  <td className="text-center py-6">
                     <div className="flex justify-center items-center">
                       <input
                         type="radio"
@@ -142,7 +142,6 @@ const RedemptionApprovalTab = () => {
               ? parseInt(selectedRedemption.redemptionId, 16).toString()
               : ""
           }
-          collateralType={selectedRedemption?.collateralType || ""}
           tokenAmount={selectedRedemption?.tokenAmount || ""}
           redeemAmount={
             selectedRedemption?.redeemAmount

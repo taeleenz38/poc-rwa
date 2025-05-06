@@ -12,10 +12,10 @@ import { useQuery } from "urql";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { useVlrData } from "@/hooks/useVlrData";
 
-interface ApproveDepositRequestProps {
+interface ApproveRedemptionRequestProps {
   isOpen: boolean;
   onClose: () => void;
-  depositId?: string;
+  redemptionId?: string;
 }
 
 interface PricingResponse {
@@ -44,12 +44,13 @@ const formatNumber = (
   });
 };
 
-const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
+const ApproveRedemptionRequest: React.FC<ApproveRedemptionRequestProps> = ({
   isOpen,
   onClose,
-  depositId = "",
+  redemptionId = "",
 }) => {
-  const [localDepositId, setLocalDepositId] = useState<string>(depositId);
+  const [localRedemptionId, setLocalRedemptionId] =
+    useState<string>(redemptionId);
   const [prices, setPrices] = useState<PricingResponse[]>([]);
   const [selectedPriceId, setSelectedPriceId] = useState<string | 1>(1);
   const { writeContractAsync, isPending } = useWriteContract({ config });
@@ -60,8 +61,8 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
   });
 
   useEffect(() => {
-    setLocalDepositId(depositId);
-  }, [depositId]);
+    setLocalRedemptionId(redemptionId);
+  }, [redemptionId]);
 
   useEffect(() => {
     if (data) {
@@ -122,31 +123,31 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
     }
   };
 
-  const handleApproveDepositRequest = async () => {
+  const handleApproveRedemptionRequest = async () => {
     if (!selectedPriceId && vlrPrice) return;
 
     try {
       // Call updatePrice first
       await handleUpdatePrice();
 
-      const depositIdFormatted = Number(localDepositId);
-      const depositIdHexlified = ethers.utils.hexZeroPad(
-        ethers.utils.hexlify(depositIdFormatted),
+      const redemptionIdFormatted = Number(localRedemptionId);
+      const redemptionIdHexlified = ethers.utils.hexZeroPad(
+        ethers.utils.hexlify(redemptionIdFormatted),
         32
       );
 
       const formattedPriceId = BigNumber.from(selectedPriceId);
       console.log(
-        "Setting priceId for depositId:",
-        depositIdHexlified,
+        "Setting priceId for redemptionId:",
+        redemptionIdHexlified,
         formattedPriceId
       );
 
       const tx = await writeContractAsync({
         abi: abi.abi,
         address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
-        functionName: "setPriceIdForDeposits",
-        args: [[depositIdHexlified], [formattedPriceId]],
+        functionName: "setPriceIdForRedemptions",
+        args: [[redemptionIdHexlified], [formattedPriceId]],
       });
     } catch (error) {
       console.error("Error during approval process:", error);
@@ -161,7 +162,7 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-2xl font-bold text-primary">
-            Review Deposit Request
+            Review Redemption Request
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
@@ -170,9 +171,9 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
         </div> */}
         <div className="flex-col items-center font-semibold">
           <div className="text-center font-bold mb-2">
-            Deposit ID: {hexToDecimal(localDepositId)}
+            Redemption ID: {hexToDecimal(localRedemptionId)}
           </div>
-          <div className="text-center mb-2">
+          <div className="text-center mb-8">
             VLR Price Per Token:{" "}
             {formatNumber(weiToEther(prices[0]?.price || "0"))} AUDC
           </div>
@@ -188,7 +189,7 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
           </div>
           <div className="w-[49%]">
             <Submit
-              onClick={handleApproveDepositRequest}
+              onClick={handleApproveRedemptionRequest}
               label={isPending ? "Confirming..." : "Confirm"}
               disabled={isPending || !selectedPriceId || !vlrPrice}
               className="w-full"
@@ -201,4 +202,4 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
 };
 //
 
-export default ApproveDepositRequest;
+export default ApproveRedemptionRequest;

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Button from "@/app/components/atoms/Buttons/Button";
-import SetPriceIdForRedemptionId from "@/app/components/organisms/Popups/SetPriceIdForRedemptionId";
+import ApproveRedemptionRequest from "./Popups/ApproveRedemptionRequest";
 import SetRedemptionFee from "./Popups/SetRedemptionFee";
 import { useQuery } from "urql";
 import { GET_PENDING_REDEMPTION_REQUEST_LIST } from "@/lib/urqlQueries";
 import { ethers } from "ethers";
+import App from "next/app";
 
 type RedemptionRequest = {
   id: string;
@@ -48,10 +49,7 @@ const RedemptionRequests = () => {
   const [selectedRedemptionId, setSelectedRedemptionId] = useState<
     string | undefined
   >(undefined);
-  const [selectedCollateralType, setSelectedCollateralType] = useState<
-    string | undefined
-  >(undefined);
-  const [isSetPriceIdForRedemptionIdOpen, setIsSetPriceIdForRedemptionIdOpen] =
+  const [isApproveRedemptionRequestOpen, setIsApproveRedemptionRequestOpen] =
     useState(false);
   const [isRedemptionFeeOpen, setIsRedemptionFeeOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -70,8 +68,7 @@ const RedemptionRequests = () => {
     console.log("redemptionId", redemptionId);
     console.log("collateralType", collateralType);
     setSelectedRedemptionId(redemptionId);
-    setSelectedCollateralType(collateralType);
-    setIsSetPriceIdForRedemptionIdOpen(true);
+    setIsApproveRedemptionRequestOpen(true);
   };
 
   const redemptionRequests: RedemptionRequest[] =
@@ -175,8 +172,8 @@ const RedemptionRequests = () => {
                         request.priceId
                       ) : (
                         <Button
-                          text="Set Price ID"
-                          className="bg-primary text-light hover:bg-light hover:text-primary rounded-md whitespace-nowrap"
+                          text="Approve"
+                          className="bg-primary text-light hover:bg-secondary-focus whitespace-nowrap"
                           onClick={() =>
                             handleButtonClick(
                               request.redemptionId,
@@ -232,11 +229,10 @@ const RedemptionRequests = () => {
           </div>
         </div>
       )}
-      <SetPriceIdForRedemptionId
-        isOpen={isSetPriceIdForRedemptionIdOpen}
-        onClose={() => setIsSetPriceIdForRedemptionIdOpen(false)}
+      <ApproveRedemptionRequest
+        isOpen={isApproveRedemptionRequestOpen}
+        onClose={() => setIsApproveRedemptionRequestOpen(false)}
         redemptionId={selectedRedemptionId}
-        collateralType={selectedCollateralType}
       />
       <SetRedemptionFee
         isOpen={isRedemptionFeeOpen}

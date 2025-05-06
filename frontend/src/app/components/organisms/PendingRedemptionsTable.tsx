@@ -78,7 +78,7 @@ const PendingRedemptionsTable = ({
                   VLR
                 </td>
                 <td className="flex-1">
-                {formatNumber(
+                  {formatNumber(
                     weiToEther(token.redeemAmount as unknown as number)
                   )}{" "}
                   {type === "AUDC" ? "AUDC" : "USDC"}
@@ -88,8 +88,8 @@ const PendingRedemptionsTable = ({
                     text="Claim"
                     className={`py-2 btn-sm items-center flex justify-center ${
                       true
-                        ? "bg-[#e6e6e6] text-primary hover:bg-light hover:text-secondary font-semibold"
-                        : "bg-[#e6e6e6] text-light cursor-not-allowed"
+                        ? "bg-primary text-light hover:bg-secondary-focus font-semibold"
+                        : "bg-primary text-light cursor-not-allowed"
                     }`}
                     onClick={() => claimRedemption(token.redemptionId)}
                     disabled={false}

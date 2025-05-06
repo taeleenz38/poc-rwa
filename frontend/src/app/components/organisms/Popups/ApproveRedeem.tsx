@@ -5,12 +5,8 @@ import InputField from "@/app/components/atoms/Inputs/TextInput";
 import CloseButton from "@/app/components/atoms/Buttons/CloseButton";
 import Submit from "@/app/components/atoms/Buttons/Submit";
 import abi from "@/artifacts/ABBYManager.json";
-import hyfabi from "@/artifacts/HYFManager.json";
-import axios from "axios";
 import audcabi from "@/artifacts/AUDC.json";
-import usdcabi from "@/artifacts/USDC.json";
-import hyf from "@/artifacts/HYF.json";
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useWriteContract } from "wagmi";
 import { config } from "@/config";
 
 interface ApproveRedeemProps {
@@ -18,7 +14,6 @@ interface ApproveRedeemProps {
   onClose: () => void;
   redemptionId: string;
   redeemAmount: number;
-  collateralType: string;
   tokenAmount: string;
 }
 
@@ -27,18 +22,13 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
   onClose,
   redemptionId,
   redeemAmount,
-  collateralType,
   tokenAmount,
 }) => {
   const [amount, setAmount] = useState<string>("");
   const [redemptionIdInput, setRedemptionIdInput] = useState<string>("");
   const [txApprovalHash, setTxApprovalHash] = useState<string | null>(null);
-  const [safe, Setsafe] = useState<string | null>(null);
   const [safeTxHash, setSafeTxHash] = useState<string>("");
-  const [txHash, setTxHash] = useState<string>("");
-  const [error, setError] = useState<string>("");
   const { writeContractAsync, isPending } = useWriteContract({ config });
-  const [showLink, setShowLink] = useState(false);
 
   useEffect(() => {
     if (redemptionId && redeemAmount) {
@@ -51,7 +41,6 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
     setAmount("");
     setTxApprovalHash(null);
     setSafeTxHash("");
-    setShowLink(false);
   };
 
   const onCloseModal = () => {
@@ -59,154 +48,43 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
     resetForm();
   };
 
-  const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value);
-  };
-
-  const onRedemptionIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRedemptionIdInput(e.target.value);
-  };
-
   const handleApproveRedeem = async () => {
-    if (collateralType === "AUDC") {
-      try {
-        const parsedAmount = parseFloat(amount);
-        const approvalAmount = ethers.utils.parseUnits(
-          parsedAmount.toString(),
-          18
-        );
+    try {
+      const parsedAmount = parseFloat(amount);
+      const approvalAmount = ethers.utils.parseUnits(
+        parsedAmount.toString(),
+        18
+      );
 
-        const approvalTx = await writeContractAsync({
-          abi: audcabi.abi,
-          address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
-          functionName: "approve",
-          args: [
-            process.env.NEXT_PUBLIC__MANAGER_ADDRESS as `0x${string}`,
-            approvalAmount,
-          ],
-        });
+      const approvalTx = await writeContractAsync({
+        abi: audcabi.abi,
+        address: process.env.NEXT_PUBLIC_AUDC_ADDRESS as `0x${string}`,
+        functionName: "approve",
+        args: [
+          process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
+          approvalAmount,
+        ],
+      });
 
-        const redemptionIdFormatted = Number(redemptionIdInput);
-        const redemptionIdHexlified = ethers.utils.hexZeroPad(
-          ethers.utils.hexlify(redemptionIdFormatted),
-          32
-        );
+      const redemptionIdFormatted = Number(redemptionIdInput);
+      const redemptionIdHexlified = ethers.utils.hexZeroPad(
+        ethers.utils.hexlify(redemptionIdFormatted),
+        32
+      );
 
-        const tx = await writeContractAsync({
-          abi: abi.abi,
-          address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
-          functionName: "approveRedemptionRequest",
-          args: [[redemptionIdHexlified]],
-        });
+      const tx = await writeContractAsync({
+        abi: abi.abi,
+        address: process.env.NEXT_PUBLIC_VLR_MANAGER_ADDRESS as `0x${string}`,
+        functionName: "approveRedemptionRequest",
+        args: [[redemptionIdHexlified]],
+      });
 
-        setTxApprovalHash(approvalTx);
-        setSafeTxHash(tx);
-      } catch (error) {
-        console.error("Error approving:", error);
-      }
-    } else {
-      try {
-        const parsedAmount = parseFloat(amount);
-        const approvalAmount = ethers.utils.parseUnits(
-          parsedAmount.toString(),
-          18
-        );
-
-        const approvalTx = await writeContractAsync({
-          abi: usdcabi.abi,
-          address: process.env.NEXT_PUBLIC_USDC_ADDRESS as `0x${string}`,
-          functionName: "approve",
-          args: [
-            process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
-            approvalAmount,
-          ],
-        });
-
-        const parsedAmountHyf = tokenAmount.toString(); 
-        const hyfAmount = ethers.utils.formatUnits(parsedAmountHyf, 18);
-        const parsedHyf = parseFloat(hyfAmount);
-        const hyfApprovalAmount = ethers.utils.parseUnits(
-          parsedHyf.toString(),
-          18
-        );  
-        console.log(hyfAmount);
-        const hyfAmountTx = await writeContractAsync({
-          abi: hyf.abi,
-          address: process.env.NEXT_PUBLIC_HYF_ADDRESS as `0x${string}`,
-          functionName: "approve",
-          args: [
-            process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
-            hyfApprovalAmount,
-          ],
-        });
-
-        const redemptionIdFormatted = Number(redemptionIdInput);
-        const redemptionIdHexlified = ethers.utils.hexZeroPad(
-          ethers.utils.hexlify(redemptionIdFormatted),
-          32
-        );
-
-        const tx = await writeContractAsync({
-          abi: hyfabi.abi,
-          address: process.env.NEXT_PUBLIC_HYF_MANAGER_ADDRESS as `0x${string}`,
-          functionName: "approveRedemptionRequest",
-          args: [[redemptionIdHexlified]],
-        });
-
-        setTxApprovalHash(approvalTx);
-        setSafeTxHash(tx);
-      } catch (error) {
-        console.error("Error approving:", error);
-      }
+      setTxApprovalHash(approvalTx);
+      setSafeTxHash(tx);
+    } catch (error) {
+      console.error("Error approving:", error);
     }
   };
-
-  useEffect(() => {
-    console.log(tokenAmount);
-    console.log(collateralType);
-    if (!safeTxHash) return;
-
-    const fetchTransactionData = async () => {
-      try {
-        const transactionResponse = await axios.get(
-          `https://safe-transaction-sepolia.safe.global/api/v1/multisig-transactions/${safeTxHash}/`
-        );
-
-        console.log("Transaction response:", transactionResponse.data);
-
-        if (transactionResponse.data.transactionHash) {
-          setTxHash(transactionResponse.data.transactionHash);
-          setError("");
-        } else {
-          setTimeout(fetchTransactionData, 5000); // Retry after 5 seconds
-        }
-      } catch (error) {
-        console.error("Error fetching transaction data:", error);
-        setError("Error fetching transaction data");
-      }
-    };
-
-    fetchTransactionData();
-  }, [safeTxHash, tokenAmount, collateralType]);
-
-  const { data: approvalReceipt, isLoading: isApprovalLoading } =
-    useWaitForTransactionReceipt({
-      hash: txApprovalHash as `0x${string}`,
-    });
-
-  useEffect(() => {
-    if (safeTxHash) {
-      const timer = setTimeout(() => {
-        setShowLink(true);
-      }, 20000);
-      return () => clearTimeout(timer);
-    }
-  }, [safeTxHash]);
-
-  const { data: SecondReceipt, isLoading: isSecondLoading } =
-    useWaitForTransactionReceipt({
-      hash: safe as `0x${string}`,
-    });
 
   if (!isOpen) return null;
 
@@ -220,14 +98,15 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8  mb-8 ">
-          {collateralType === "AUDC" ? "Please enter the amount of AUDC you wish to approve for the VLR Manager to spend for a given redemption ID." : "Please enter the amount of USDC you wish to approve for the HYF Manager to spend for a given Redemption ID."}
+        <div className="text-center px-8 mb-8">
+          Please enter the amount of AUDC you wish to approve for the VLR
+          Manager to spend for a given redemption ID.
         </div>
         <div className="mb-4">
           <InputField
             label="Redemption ID:"
             value={redemptionIdInput}
-            onChange={onRedemptionIdChange}
+            onChange={(e) => setRedemptionIdInput(e.target.value)}
             className="w-full p-2 rounded-md"
           />
         </div>
@@ -236,7 +115,7 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
             label="Amount:"
             type="number"
             value={amount}
-            onChange={onAmountChange}
+            onChange={(e) => setAmount(e.target.value)}
             className="w-full p-2 rounded-md"
           />
         </div>
@@ -258,21 +137,6 @@ const ApproveRedeem: React.FC<ApproveRedeemProps> = ({
             />
           </div>
         </div>
-        {safeTxHash && (
-          <div className="mt-4 text-primary text-center overflow-x-scroll">
-            {!showLink && <p>Redemption approval transaction is pending...</p>}
-            {showLink && (
-              <a
-                href={`https://sepolia.etherscan.io/tx/${txHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline overflow-x-scroll text-sm text-[#0000BF]"
-              >
-                View Transaction
-              </a>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

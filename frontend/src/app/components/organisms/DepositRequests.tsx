@@ -158,7 +158,9 @@ const DepositRequests = () => {
                     key={request.id}
                     className="border-b-2 border-[#F5F2F2] text-sm"
                   >
-                    <td className="text-center py-8">{hexToDecimal(request.id)}</td>
+                    <td className="text-center py-8">
+                      {hexToDecimal(request.id)}
+                    </td>
                     <td className="text-center py-8">{request.user}</td>
                     <td className="text-center py-8">{request.status}</td>
                     <td className="text-center py-8">
@@ -256,7 +258,6 @@ const DepositRequests = () => {
         isOpen={isApproveDepositRequestOpen}
         onClose={() => setIsApproveDepositRequestOpen(false)}
         depositId={selectedDepositId}
-        walletAddress={selectedWalletAddress}
       />
       <SetMintFee
         isOpen={isSetMintFeeOpen}

@@ -18,8 +18,6 @@ interface AccountStatusResponse {
 const ITEMS_PER_PAGE = 6;
 
 const AllowlistTab = () => {
-  // const [wallets, setWallets] = useState<AccountStatusResponse[]>([]);
-  // const [isTableLoading, setIsTableLoading] = useState(false);
   const [addAddressOpen, setAddAddressOpen] = useState(false);
   const [removeAddressOpen, setRemoveAddressOpen] = useState(false);
   const [addTerm, setAddTerm] = useState(false);
@@ -90,11 +88,11 @@ const AllowlistTab = () => {
   return (
     <div>
       <div
-        className={`p-4 border-b-2 font-bold border-[#F5F2F2] bg-[#F5F2F2] border-b-primary text-primary w-fit`}
+        className={`p-4 border-b-2 font-bold border-[#F5F2F2] rounded-t-xl bg-[#F5F2F2] border-b-primary text-primary w-fit`}
       >
         Manage AllowList
       </div>
-      <div className="flex flex-col w-full border-[#F5F2F2] border-2 p-4">
+      <div className="flex flex-col w-full border-2 border-primary border-opacity-30 rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-tl-none p-4">
         <div className="flex w-full justify-between items-center py-6">
           <div className="flex justify-center items-center w-full">
             <Button
@@ -144,13 +142,13 @@ const AllowlistTab = () => {
                   className="border-b-2 border-[#F5F2F2] font-medium text-secondary"
                   key={index}
                 >
-                  <td className="text-center text-sm">{wallet.termIndex}</td>
-                  <td className="text-center text-sm">{wallet.account}</td>
-                  <td className="text-center text-sm">
+                  <td className="text-center text-sm py-6">{wallet.termIndex}</td>
+                  <td className="text-center text-sm py-6">{wallet.account}</td>
+                  <td className="text-center text-sm py-6">
                     {wallet.status ? "Active" : "Paused"}
                   </td>
-                  <td className="text-center text-sm">{wallet.date}</td>
-                  <td className="text-center text-sm">
+                  <td className="text-center text-sm py-6">{wallet.date}</td>
+                  <td className="text-center text-sm py-6">
                     <div className="flex justify-center items-center">
                       <input
                         type="radio"
@@ -171,7 +169,7 @@ const AllowlistTab = () => {
           <button
             className={`mx-1 px-3 py-1 rounded ${
               currentPage === 1
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-gray-300 text-secondary cursor-not-allowed"
                 : "bg-light text-primary"
             }`}
             onClick={handlePreviousPage}
@@ -197,7 +195,7 @@ const AllowlistTab = () => {
           <button
             className={`mx-1 px-3 py-1 rounded ${
               currentPage === totalPages
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-gray-300 text-secondary cursor-not-allowed"
                 : "bg-light text-primary"
             }`}
             onClick={handleNextPage}
