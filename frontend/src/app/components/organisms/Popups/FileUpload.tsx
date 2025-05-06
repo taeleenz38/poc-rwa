@@ -83,8 +83,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
           redirect: "follow" as RequestRedirect,  // Ensuring redirect is correctly typed
         };
 
-        // Replace with the actual URL where the POST request needs to go
-        const postUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/upload-csv-file`;
+        const postUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/upload-xls-file`;
 
         const postResponse = await fetch(postUrl, requestOptions);
 
