@@ -74,13 +74,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
 
         // Now perform the POST request with FormData
         const formdata = new FormData();
-        formdata.append("attachmentId", attachmentId.toString());  // Convert number to string
-        formdata.append("fileStream", file, file.name);  // Attach the file
+        formdata.append("attachmentId", attachmentId.toString()); // Convert number to string
+        formdata.append("fileStream", file, file.name); // Attach the file
 
         const requestOptions: RequestInit = {
           method: "POST",
           body: formdata,
-          redirect: "follow" as RequestRedirect,  // Ensuring redirect is correctly typed
+          redirect: "follow" as RequestRedirect, // Ensuring redirect is correctly typed
         };
 
         const postUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/upload-xls-file`;
@@ -96,7 +96,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
           alert("Failed to upload the file for processing.");
           console.error("POST request failed:", await postResponse.text());
         }
-
       } else {
         alert("Failed to upload file.");
         console.error("Upload failed:", await uploadResponse.text());

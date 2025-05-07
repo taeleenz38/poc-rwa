@@ -10,9 +10,9 @@ const EQVPricing: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full p-4">
-      <div className="flex w-full justify-around items-center py-6">
+      <div className="flex w-full justify-around items-center pb-6">
         <Button
-          text={"Upload Performance Report"}
+          text={"Upload Portfolio Data"}
           onClick={() => setUploadFileOpen(true)}
           className="bg-primary py-3 text-light hover:bg-secondary-focus"
         />

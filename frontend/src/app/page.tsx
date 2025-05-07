@@ -29,8 +29,8 @@ export default function Home() {
       <div className="flex h-[500px] bg-[url('/home-bg.jpg')] bg-cover bg-center bg-no-repeat text-white pt-20">
         <div className="flex flex-col w-[1000px] mx-auto">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-medium">
-            Seamless FX and debt liquidity across traditional and decentralized
-            ecosystems.
+            Seamless access to tokenized fund liquidity across traditional and
+            decentralized ecosystems.
           </h1>
           <h3 className="text-lg md:text-xl mt-4 sm:mt-8">
             We connect capital markets across TradFi and DeFi to power the next
@@ -48,7 +48,7 @@ export default function Home() {
       <div className="flex justify-center items-center md:items-start gap-12 mb-36">
         <PackageCard
           heading="VLR"
-          subHeading="Velora - Stable AUD Yield"
+          subHeading="Blockvest | Velora (AUD Yield)"
           PRICE={vlrPrice}
           TVL={formatLargeNumber(parseFloat(vlrNav))}
           href="/investVLR"
@@ -59,7 +59,7 @@ export default function Home() {
         />
         <PackageCard
           heading="EQV"
-          subHeading="Equivest - Asian Emerging Markets"
+          subHeading="Blockvest | Equivest (Emerging Markets)"
           PRICE={eqvPrice}
           TVL={formatLargeNumber(parseFloat(eqvNav))}
           href="/investEQV"

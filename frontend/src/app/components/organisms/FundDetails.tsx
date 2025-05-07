@@ -90,11 +90,11 @@ const FundDetails = (props: FundDetailsProps) => {
               <h4 className="text-xl">{apy}%</h4>
             </div>
             <div className="flex-col justify-start font-normal items-center border-r-2 border-white px-8">
-              <p className="text-lg font-semibold opacity-90">Price</p>
+              <p className="text-lg font-semibold opacity-90">NAV</p>
               <h4 className="text-xl">${price}</h4>
             </div>
             <div className="flex-col justify-start items-center border-r-2 border-white px-8">
-              <p className=" text-lg opacity-90 font-semibold">NAV</p>
+              <p className=" text-lg opacity-90 font-semibold">TVL</p>
               <p className="text-xl">${tvl}</p>
             </div>
             <div className="flex-col justify-start items-center pl-8">
