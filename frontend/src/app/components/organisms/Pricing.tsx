@@ -8,7 +8,7 @@ const Pricing: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full p-4">
-      <div className="flex w-full justify-around items-center py-6">
+      <div className="flex w-full justify-around items-center pb-6">
         <Button
           text={"Update Liquidity Report"}
           onClick={() => setUpdateLrOpen(true)}
