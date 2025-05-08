@@ -32,7 +32,6 @@ const Admin = () => {
       <AdminRequests tokenType={tokenType} />
     </div>
   );
-  //
 };
 
 export default Admin;

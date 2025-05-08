@@ -6,6 +6,7 @@ interface VLRDocument {
   totalWeeklyLiquidAssets: string;
   percentageDailyLiquidAssets: string;
   percentageWeeklyLiquidAssets: string;
+  totalAssetsValue: string;
   date: string;
 }
 
@@ -51,9 +52,11 @@ const VLRTable = () => {
       <table className="table">
         <thead>
           <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
-            <th className="text-center w-1/6 rounded-tl-xl">ID</th>
-            <th className="text-center w-1/6">Daily Liquid Assets</th>
+            <th className="text-center w-1/6 rounded-tl-xl">
+              Daily Liquid Assets
+            </th>
             <th className="text-center w-1/6">Weekly Liquid Assets</th>
+            <th className="text-center w-1/6">Total Assets</th>
             <th className="text-center w-1/6">% Daily</th>
             <th className="text-center w-1/6">% Weekly</th>
             <th className="text-center w-1/6 rounded-tr-xl">Date</th>
@@ -65,7 +68,6 @@ const VLRTable = () => {
               className="border-b-2 border-[#F5F2F2] text-center text-sm text-secondary"
               key={doc.id}
             >
-              <td className="py-6">{doc.id}</td>
               <td className="py-6">
                 {Number(doc.totalDailyLiquidAssets).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
@@ -76,9 +78,12 @@ const VLRTable = () => {
                   minimumFractionDigits: 2,
                 })}
               </td>
+              <td className="py-6">{doc.totalAssetsValue}</td>
               <td className="py-6">{doc.percentageDailyLiquidAssets}%</td>
               <td className="py-6">{doc.percentageWeeklyLiquidAssets}%</td>
-              <td className="py-6">{new Date(doc.date).toLocaleDateString()}</td>
+              <td className="py-6">
+                {new Date(doc.date).toLocaleDateString()}
+              </td>
             </tr>
           ))}
         </tbody>

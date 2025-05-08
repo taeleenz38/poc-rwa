@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "fund-tokenisation",
+  "private_key_id": "fdf3ad69f03b6f6cf9ff9fc22352d01f70b275c6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCacycgtcKMgO56\nVoFMV1TIf+wlkTsg/wtd7DcaH9jsut5s7eOIrQCBN//g0568HkAIU3lovB270d2J\nHRQ0d9DDDIXZcToNqHgYp3elU+GMZTLwh9mQyNvzJaVV2XFKWynmW+o6oMF0r2Zw\nZ3qHhb7AfJTgG+nP+L0lDc8nKHskkYTfDaMHeg0pnK8moTFNcyUNRedOQ7v3jL4z\ntRT7MXkjdX3+YBD5xnJJXCpgBSYsMfDOvdnnKQAi4UEyDWQxHfkSL/fivneKJ6xG\nJ/MtNVnk+aue4Sm/OjZl5pBCNFNYeTsxb6StuAYhvIl9+o1mCfbgwF9vGeCzfuYN\nM0M2z5/dAgMBAAECggEAGC95DJO5y9OyxGCAbcptIdp6SaW02yVlC8eeF06uYt+e\nTfNwgmoI3rM8s+GfhTi9cTBVHjP6+frSlJKDo/WxMKHo4dRrsVDUwZOT1kVM1/XO\n5MB5LsVtP+WAvvFGXszowkRZaOXcdV+0DFz/4HHunWjEzVVBp0n9oGxJqImbwu1y\nLMNzmVaEDnbuJEOMVRZKI3XOq+vLb9EZKkxwK39fhYcTPR0rhpddwUwufN8aF74R\njJunTqTY999Hl24koo14K3x2Lh49QpIGTCsQQFjvS825TkSNGtfsygJGLed3kSdz\nAyLGinAj6TNjvxAryO0EZnG3DcOcmc8WXf+KlImswQKBgQDWO01MAn8B1Tioc4cw\nEMCRiUupUm7ZVEak5H+rElVVCL4V8BJ+hR0Z7ZPWmitXlyx9LABvcclO3UkKFrbW\nnF0PnNyBuNhFL+1KhwojWB7hQRg5sv00Nx8piVOwOo2HWtZNKSOA7+2GI+B1aKeE\nrHhZ1pox1/+9riE8/gvuq6NmIQKBgQC4kAdstuyduJIo3qOAFHudyWa86V97/E1l\nUemhifrV6ohKdCTe2zbAM4XHYUgz6dGFYTqRZynlNvh0Z4PNT6cc8j+NGUmn/HoY\nWl3F+AGjcK4eF+W4jkdjEuccPj2NxkH553mPdjsxkWP3+9UaIlsjMiImRPQWFr96\ngmPlLIMKPQKBgFC4q5l2X1DbfKvMTCYKSeUMrJuyWd496Rh8mLZnBAw0bRtrCCzw\nD1UTtd7o3Gf2qGbJy6gyYb37l2fbwyz+YfpeCqA+fA8lze2FEIbcz1Xk5zHmhY3F\nL1LBUe1XQri7u3/7fks5HHCs2AilVGmjav2+5P7e+pgIIrIOr4RQ3BLBAoGAU06/\n6zSOjYrYfpYwWwnj2o8kTrVQolh6Xvega4gqrxBUQLc4RVfR2OPoyNyCiNxL9Na0\nZxmX8ZzkfTaUacJAfnJieUAm3Sq7ue5gUZHmu22LSo4i5TFjy7amlzsI8cvB0BnJ\n5xXJFlC4PSFxSYCkfriMbZXGT4opGBVvHez/oUkCgYA70R9N3DB/VJKbpxi4jBzf\nEu0ndEuslDvk0dFbOgYhnvjbhnL/hQX9uTe1Mk5Dp4ClJ/I8NJfUASkVT3+VCjvW\nYpISb4UxZCwgX1d152w0oIHoi6b8lCPoJRocWRLDgSZKYEnWtVKemX4jxBMjyrgt\nq7OeTP6kAXIX40IsCI1B1g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "tokenisation-upload@fund-tokenisation.iam.gserviceaccount.com",
+  "client_id": "112744407668718200086",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tokenisation-upload%40fund-tokenisation.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
