@@ -20,6 +20,7 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
     useState<string>("");
   const [weeklyAssetsPercentage, setWeeklyAssetsPercentage] =
     useState<string>("");
+  const [totalAssetsValue, setTotalAssetsValue] = useState<string>("");
   const [date, setDate] = useState<string>("");
 
   const resetForm = () => {
@@ -44,6 +45,7 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
       totalWeeklyLiquidAssets: parseFloat(weeklyAssets),
       percentageDailyLiquidAssets: parseFloat(dailyAssetsPercentage),
       percentageWeeklyLiquidAssets: parseFloat(weeklyAssetsPercentage),
+      totalAssetsValue: parseFloat(totalAssetsValue),
       date: date,
     };
 
@@ -73,7 +75,7 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex justify-center items-center">
-      <div className="p-8 rounded-lg text-gray bg-white shadow-md shadow-white w-2/5">
+      <div className="p-8 rounded-lg text-gray bg-white shadow-md shadow-white w-1/2">
         <div className="flex justify-between items-center mb-8">
           <div></div>
           <h2 className="text-2xl font-bold text-primary">
@@ -81,7 +83,7 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
           </h2>
           <CloseButton onClick={onCloseModal} />
         </div>
-        <div className="text-center px-8 l mb-4 ">
+        <div className="text-center px-8 l mb-6">
           Please enter the desired price for VLR (Australian Yield Fund).
         </div>
         <div className="w-full mx-auto mb-8">
@@ -93,23 +95,30 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField
-            label="Weekly Liquid Assets Value (incl. daily) ($):"
+            label="Weekly Liquid Assets Value ($):"
             value={weeklyAssets || ""}
             onChange={(e) => setWeeklyAssets(e.target.value)}
           />
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField
-            label="% of Total Assets in Daily Liquid Assets:"
+            label="Daily Liquid Assets (%):"
             value={dailyAssetsPercentage || ""}
             onChange={(e) => setDailyAssetsPercentage(e.target.value)}
           />
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField
-            label="% of Total Assets in Weekly Liquid Assets (incl. daily):"
+            label="Weekly Liquid Assets (%):"
             value={weeklyAssetsPercentage || ""}
             onChange={(e) => setWeeklyAssetsPercentage(e.target.value)}
+          />
+        </div>
+        <div className="w-full mx-auto mb-8">
+          <InputField
+            label="Total Value of Assets ($):"
+            value={totalAssetsValue || ""}
+            onChange={(e) => setTotalAssetsValue(e.target.value)}
           />
         </div>
         <div className="w-full mx-auto mb-8">
