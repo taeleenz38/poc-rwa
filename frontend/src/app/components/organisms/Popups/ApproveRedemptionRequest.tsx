@@ -174,8 +174,7 @@ const ApproveRedemptionRequest: React.FC<ApproveRedemptionRequestProps> = ({
             Redemption ID: {hexToDecimal(localRedemptionId)}
           </div>
           <div className="text-center mb-8">
-            VLR Price Per Token:{" "}
-            {formatNumber(weiToEther(prices[0]?.price || "0"))} AUDC
+            VLR Price Per Token: {vlrPrice} AUDC
           </div>
         </div>
         <div className="w-full flex justify-between">
