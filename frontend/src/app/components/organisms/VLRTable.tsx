@@ -69,6 +69,11 @@ const VLRTable = () => {
               key={doc.id}
             >
               <td className="py-6">
+                {Number(doc.totalAssetsValue).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </td>
+              <td className="py-6">
                 {Number(doc.totalDailyLiquidAssets).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
@@ -77,8 +82,7 @@ const VLRTable = () => {
                 {Number(doc.totalWeeklyLiquidAssets).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
-              </td>
-              <td className="py-6">{doc.totalAssetsValue}</td>
+              </td>{" "}
               <td className="py-6">{doc.percentageDailyLiquidAssets}%</td>
               <td className="py-6">{doc.percentageWeeklyLiquidAssets}%</td>
               <td className="py-6">

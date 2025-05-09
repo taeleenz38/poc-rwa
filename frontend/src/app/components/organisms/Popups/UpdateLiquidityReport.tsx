@@ -88,6 +88,13 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
         </div>
         <div className="w-full mx-auto mb-8">
           <InputField
+            label="Total Value of Assets ($):"
+            value={totalAssetsValue || ""}
+            onChange={(e) => setTotalAssetsValue(e.target.value)}
+          />
+        </div>
+        <div className="w-full mx-auto mb-8">
+          <InputField
             label="Daily Liquid Assets Value ($):"
             value={dailyAssets || ""}
             onChange={(e) => setDailyAssets(e.target.value)}
@@ -112,13 +119,6 @@ const UpdateLiquidityReport: React.FC<UpdateLRProps> = ({
             label="Weekly Liquid Assets (%):"
             value={weeklyAssetsPercentage || ""}
             onChange={(e) => setWeeklyAssetsPercentage(e.target.value)}
-          />
-        </div>
-        <div className="w-full mx-auto mb-8">
-          <InputField
-            label="Total Value of Assets ($):"
-            value={totalAssetsValue || ""}
-            onChange={(e) => setTotalAssetsValue(e.target.value)}
           />
         </div>
         <div className="w-full mx-auto mb-8">
