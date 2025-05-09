@@ -183,7 +183,7 @@ const ApproveDepositRequestEQV: React.FC<ApproveDepositRequestEQVProps> = ({
               <div>
                 <label className="font-semibold">ID: {price.priceId}</label>
                 <div className="font-semibold">
-                  Price: {formatNumber(weiToEther(price.price))} AUDC
+                  Price: {eqvPrice} AUDC
                 </div>
               </div>
               <input

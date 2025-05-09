@@ -174,7 +174,7 @@ const ApproveDepositRequest: React.FC<ApproveDepositRequestProps> = ({
           </div>
           <div className="text-center mb-2">
             VLR Price Per Token:{" "}
-            {formatNumber(weiToEther(prices[0]?.price || "0"))} AUDC
+            {vlrPrice} AUDC
           </div>
         </div>
         <div className="w-full flex justify-between">
