@@ -29,16 +29,15 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const getSignedUrl = async (fileName: string): Promise<string | null> => {
+  const getSignedUrl = async (
+    fileName: string
+  ): Promise<SignedUrlResponse | null> => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/generate-signed-url/${fileName}`
       );
       const data: SignedUrlResponse = await response.json();
-      console.log("Data:", data);
-      setAttachmentId(data.attachmentId);
-      setUploadUrl(data.url);
-      return data.url;
+      return data;
     } catch (error) {
       console.error("Error fetching signed URL", error);
       return null;
@@ -54,12 +53,14 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
     setIsUploading(true);
 
     try {
-      const signedUrl = await getSignedUrl(file.name);
-      if (!signedUrl) {
-        alert("Failed to get signed URL.");
-        setIsUploading(false);
+      const signedData = await getSignedUrl(file.name);
+
+      if (!signedData || !signedData.url || !signedData.attachmentId) {
+        alert("Failed to get a valid signed URL or attachment ID.");
         return;
       }
+
+      const { url: signedUrl, attachmentId } = signedData;
 
       const uploadResponse = await fetch(signedUrl, {
         method: "PUT",
@@ -69,43 +70,42 @@ const FileUpload: React.FC<FileUploadProps> = ({ isOpen, onClose }) => {
         body: file,
       });
 
-      if (uploadResponse.ok) {
-        alert("File uploaded successfully!");
-
-        // Now perform the POST request with FormData
-        const formdata = new FormData();
-        formdata.append("attachmentId", attachmentId.toString()); // Convert number to string
-        formdata.append("fileStream", file, file.name); // Attach the file
-
-        const requestOptions: RequestInit = {
-          method: "POST",
-          body: formdata,
-          redirect: "follow" as RequestRedirect, // Ensuring redirect is correctly typed
-        };
-
-        const postUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/upload-xls-file`;
-
-        const postResponse = await fetch(postUrl, requestOptions);
-
-        if (postResponse.ok) {
-          const result = await postResponse.text();
-          console.log("POST request succeeded:", result);
-          setFile(null);
-          onCloseModal();
-        } else {
-          alert("Failed to upload the file for processing.");
-          console.error("POST request failed:", await postResponse.text());
-        }
-      } else {
+      if (!uploadResponse.ok) {
         alert("Failed to upload file.");
         console.error("Upload failed:", await uploadResponse.text());
+        return;
       }
+
+      alert("File uploaded successfully!");
+
+      const formdata = new FormData();
+      formdata.append("attachmentId", attachmentId.toString());
+      formdata.append("fileStream", file, file.name);
+
+      const postUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file-upload/upload-xls-file`;
+      const postResponse = await fetch(postUrl, {
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      });
+
+      if (!postResponse.ok) {
+        alert("Failed to upload the file for processing.");
+        console.error("POST request failed:", await postResponse.text());
+        return;
+      }
+
+      const result = await postResponse.text();
+      console.log("POST request succeeded:", result);
+      setFile(null);
+      onCloseModal();
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
       setIsUploading(false);
     }
   };
+
   if (!isOpen) return null;
 
   return (
