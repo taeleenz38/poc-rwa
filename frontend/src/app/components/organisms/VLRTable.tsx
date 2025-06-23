@@ -53,10 +53,10 @@ const VLRTable = () => {
         <thead>
           <tr className="text-secondary text-sm font-semibold bg-[#F5F2F2] border-none">
             <th className="text-center w-1/6 rounded-tl-xl">
-              Daily Liquid Assets
+              Total Assets
             </th>
             <th className="text-center w-1/6">Weekly Liquid Assets</th>
-            <th className="text-center w-1/6">Total Assets</th>
+            <th className="text-center w-1/6">Daily Liquid Assets</th>
             <th className="text-center w-1/6">% Daily</th>
             <th className="text-center w-1/6">% Weekly</th>
             <th className="text-center w-1/6 rounded-tr-xl">Date</th>
