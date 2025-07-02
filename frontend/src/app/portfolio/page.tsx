@@ -340,7 +340,8 @@ const Portfolio = () => {
   const parsedPrice = price !== null ? parseFloat(price) : 0;
   const vlrBalanceInEther = weiToEther(formattedVlrBalance.toString());
   const vlrMarketValueInEther = parseFloat(vlrBalanceInEther) * parsedPrice;
-  const eqvMarketValueInEther = formattedEqvBalance * 420;
+  const parsedEqvPrice = eqvPrice !== null ? parseFloat(eqvPrice) : 0;
+  const eqvMarketValueInEther = formattedEqvBalance * parsedEqvPrice;
 
   const toggleAccordion = (accordion: string) => {
     setOpenAccordion(openAccordion === accordion ? null : accordion);
